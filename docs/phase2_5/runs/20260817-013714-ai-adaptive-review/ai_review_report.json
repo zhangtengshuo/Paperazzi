@@ -1,0 +1,1458 @@
+{
+ "generated_at": "2026-08-16T17:37:14+00:00",
+ "run": "20260817-013714-ai-adaptive-review",
+ "prompt": "prompts/local_ai/PDF_EVIDENCE_AGENT.md",
+ "schema": "schemas/pdf_evidence_review.schema.json",
+ "source_pool": "docs/phase2_5/runs/20260817-005040-pdf-evidence-v1",
+ "aggregates": {
+  "selected_documents": 40,
+  "attempt1_PASS": 6,
+  "attempt1_ACCEPT_PARTIAL": 3,
+  "attempt1_RETRY": 30,
+  "attempt1_UNRESOLVED": 1,
+  "attempt1_NEEDS_OCR": 0,
+  "attempt2_executed": 30,
+  "attempt2_resolved": 24,
+  "attempt3_executed": 5,
+  "attempt3_resolved": 3,
+  "final_UNRESOLVED": 1,
+  "final_NEEDS_OCR": 1,
+  "reference_sections_before_ai_review": 20,
+  "reference_sections_after_ai_review": 37,
+  "segmented_reference_documents_before": 11,
+  "segmented_reference_documents_after": 17,
+  "reference_entries_before": 398,
+  "reference_entries_after": 552,
+  "AI_rejected_false_positive_reference_outputs": 3,
+  "AI_rejected_false_positive_affiliation_candidates": 10,
+  "AI_rejected_false_positive_correspondence_candidates": 2
+ },
+ "final_status_counts": {
+  "PASS": 14,
+  "ACCEPT_PARTIAL": 24,
+  "NEEDS_OCR": 1,
+  "UNRESOLVED": 1
+ },
+ "strategy_summary": [
+  {
+   "strategy": "TAIL_REFERENCE_RECOVERY",
+   "count": 18,
+   "success": 16
+  },
+  {
+   "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+   "count": 11,
+   "success": 8
+  },
+  {
+   "strategy": "ZOTERO_FT_CACHE_FALLBACK",
+   "count": 1,
+   "success": 0
+  },
+  {
+   "strategy": "BLOCK_COLUMN_RECONSTRUCTION+numbered-chain (A3)",
+   "count": 1,
+   "success": 1
+  },
+  {
+   "strategy": "strict-lis-chain (A3)",
+   "count": 3,
+   "success": 2
+  },
+  {
+   "strategy": "wider-tail-footnote-raw (A3)",
+   "count": 1,
+   "success": 1
+  }
+ ],
+ "documents": [
+  {
+   "document_identity": "zotero:1:2JCKSTGY",
+   "pdf_path": "/mnt/d/zotero/storage/ML8BY2T3/Salet et al_1980_PHOTOPHYSICAL PROPERTIES OF AMINOMETHYLPSORALEN IN PRESENCE AND ABSENCE OF DNA.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "numbered-bare 1..9; Paris/Manchester affiliations genuine"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-bare",
+   "reference_count": 9,
+   "needs_ocr": false,
+   "quality_notes": "numbered-bare 1..9; Paris/Manchester affiliations genuine"
+  },
+  {
+   "document_identity": "zotero:1:2NXTYF2H",
+   "pdf_path": "/mnt/d/zotero/storage/GJ7L6U98/Sadlej - 1988 - Medium-size polarized basis sets for high-level correlated calculations of molecular electric proper.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "61 entries verified; second aff candidate (body prose) rejected"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 61,
+   "needs_ocr": false,
+   "quality_notes": "Front-matter noise candidate rejected; Lund affiliation retained."
+  },
+  {
+   "document_identity": "zotero:1:2S9VFGBG",
+   "pdf_path": "/mnt/d/zotero/storage/JX6EKHSQ/Widmark et al. - 1990 - Density matrix averaged atomic natural orbital (ANO) basis sets for correlated molecular wave functi.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "correspondence-candidate-is-body-text"
+     ],
+     "notes": "COR candidate is prose sentence; IBM Sweden aff genuine"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 18,
+   "needs_ocr": false,
+   "quality_notes": "False correspondence candidate rejected per prompt 5.2."
+  },
+  {
+   "document_identity": "zotero:1:4MGS7U3Q",
+   "pdf_path": "/mnt/d/zotero/storage/ZJMPDA8W/Beaumont et al_1980_THE REACTIVITIES OF FUROCOUMARIN EXCITED-STATES WITH DNA IN SOLUTION - A LASER.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "numbered 1..23; correspondence line genuine"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-bare",
+   "reference_count": 23,
+   "needs_ocr": false,
+   "quality_notes": "numbered 1..23; correspondence line genuine"
+  },
+  {
+   "document_identity": "zotero:1:4YY7KPTD",
+   "pdf_path": "/mnt/d/zotero/storage/7HXBWS7C/Thorsteinsson et al. - 1996 - Modern valence bond representations of CASSCF wavefunctions.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "affiliation-candidate-is-author-line"
+     ],
+     "notes": "First candidate is displayed author line without address"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 35,
+   "needs_ocr": false,
+   "quality_notes": "First candidate is displayed author line without address"
+  },
+  {
+   "document_identity": "zotero:1:5FT8R4NV",
+   "pdf_path": "/mnt/d/zotero/storage/PDKPCZ27/Gill - 1996 - A new gradient-corrected exchange functional.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "affiliation-candidate-is-download-banner"
+     ],
+     "notes": "'Downloaded by [Marquette University]' rejected"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "NO_USEFUL_EVIDENCE",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 28,
+   "needs_ocr": false,
+   "quality_notes": "Anchor: publisher download banner correctly rejected as affiliation evidence."
+  },
+  {
+   "document_identity": "zotero:1:5NJRG27Y",
+   "pdf_path": "/mnt/d/zotero/storage/NWUH3N33/Andersson - 1995 - Different forms of the zeroth-order hamiltonian in second-order perturbation theory with a complete.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "Lund affiliation genuine"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 26,
+   "needs_ocr": false,
+   "quality_notes": "Lund affiliation genuine"
+  },
+  {
+   "document_identity": "zotero:1:5XF7PTU4",
+   "pdf_path": "/mnt/d/zotero/storage/JPH9CJ4R/Sadlej - 1992 - Medium-size polarized basis sets for high-level-correlated calculations of molecular electric proper.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "39 entries; second aff candidate (prose) rejected"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 39,
+   "needs_ocr": false,
+   "quality_notes": "39 entries; second aff candidate (prose) rejected"
+  },
+  {
+   "document_identity": "zotero:1:6PJGB8M2",
+   "pdf_path": "/mnt/d/zotero/storage/3RSRDY6A/Lindh - 1993 - The reduced multiplication scheme of the rys-gauss quadrature for 1st order integral derivatives.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "PASS",
+     "problems": [],
+     "notes": ""
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 1,
+   "attempt_count": 1,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "numbered-punctuated",
+   "reference_count": 36,
+   "needs_ocr": false,
+   "quality_notes": ""
+  },
+  {
+   "document_identity": "zotero:1:WJ24ZRL5",
+   "pdf_path": "/mnt/d/zotero/storage/MD8N7CDD/Wahrseheinlichkeitstheorie - On the Foundations of Combinatorial Theory I. Theory of Miibius Functions.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "author-year-bibliography-unsegmented"
+     ],
+     "notes": "Rota 1964: years 1943/1962 no longer ordinals after fix; raw kept"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "entry-estimate-unreliable"
+     ],
+     "notes": "Line-start estimate=1 (real list ~40+); raw section p26-28 preserved, not force-split"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Anchor: year-as-ordinal regression confirmed fixed on real library."
+  },
+  {
+   "document_identity": "zotero:1:AKYWUBHN",
+   "pdf_path": "/mnt/d/zotero/storage/I97Q72KK/Lambert 等 - 2023 - QuTiP-BoFiN A bosonic and fermionic numerical hierarchical-equations-of-motion library with applica.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": "APS layout, no exact heading"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "RETRY",
+     "problems": [
+      "density-window-miss"
+     ],
+     "notes": "Multi-line entries: [n] first lines score 0; 4/6 window never triggers"
+    },
+    {
+     "attempt": 3,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "BLOCK_COLUMN_RECONSTRUCTION+numbered-chain",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "Pages 15-17: 78 numbered lines, 77/77 consecutive, 1..78"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 3,
+   "attempt_count": 3,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-numbered-chain",
+   "reference_count": 78,
+   "needs_ocr": false,
+   "quality_notes": "Anchor: QuTiP-BoFiN recovered after density criterion adapted to multi-line entries."
+  },
+  {
+   "document_identity": "zotero:1:ISXE3SQW",
+   "pdf_path": "/mnt/d/zotero/storage/QRV8DDP9/Soriano和Palacios - 2014 - Theory of projections with nonorthogonal basis sets Partitioning techniques and effective Hamiltoni.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "44 numbered entries recovered from p9-10"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 44,
+   "needs_ocr": false,
+   "quality_notes": "Anchor: Soriano&Palacios; aff + email correspondence evidence genuine."
+  },
+  {
+   "document_identity": "zotero:1:DPYWY6NC",
+   "pdf_path": "/mnt/d/zotero/storage/F8BGV3IM/King 等 - 1967 - Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": "1967 scan"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "fragmented-scan-text"
+     ],
+     "notes": "Raw tail retained; only 7 cite-like lines"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw tail retained; only 7 cite-like lines"
+  },
+  {
+   "document_identity": "zotero:1:6WAAIXPY",
+   "pdf_path": "/mnt/d/zotero/storage/AVQHTZD2/Verbeek和Van Lenthe - 1991 - The generalized Slater–Condon rules.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "Bibliography [l]-style OCR letters-as-digits; 6-entry chain valid"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 6,
+   "needs_ocr": false,
+   "quality_notes": "Bibliography [l]-style OCR letters-as-digits; 6-entry chain valid"
+  },
+  {
+   "document_identity": "zotero:1:26P284ME",
+   "pdf_path": "/mnt/d/zotero/storage/JL9YDTZ3/Rakowitz et al. - 1999 - Spin-free relativistic no-pair ab initio core model potentials and valence basis sets for the.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "recovered-text-not-citation-like"
+     ],
+     "notes": "49 raw lines but 0 cite-like; rejected as reference section; front matter genuine"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "NO_REFERENCE_SECTION_FOUND",
+   "reference_parse_method": null,
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "A2 raw rejected by review: would have created false reference section."
+  },
+  {
+   "document_identity": "zotero:1:28CW969P",
+   "pdf_path": "/mnt/d/zotero/storage/J99X9MWN/Clivio et al. - 1991 - DNA photodamage mechanistic studies characterizat.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "RETRY",
+     "problems": [
+      "density-window-miss"
+     ],
+     "notes": "3-page JACS communication"
+    },
+    {
+     "attempt": 3,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "wider-tail-footnote-raw",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "Footnote-style refs (8)(9)(10) at end of p1 recovered as raw"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 3,
+   "attempt_count": 3,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-footnote-raw",
+   "reference_count": 10,
+   "needs_ocr": false,
+   "quality_notes": "Footnote-style bibliography format discovered; regex '(' opener not covered by v1."
+  },
+  {
+   "document_identity": "zotero:1:29MFCBN9",
+   "pdf_path": "/mnt/d/zotero/storage/CGBPQC3L/Igel-Mann et al. - 1988 - Pseudopotentials for main group elements (IIIa through VIIa).pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "29 entries"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 29,
+   "needs_ocr": false,
+   "quality_notes": "Anchor: T&F 'downloaded by' banner rejected; Stuttgart affiliation genuine."
+  },
+  {
+   "document_identity": "zotero:1:2ITDV9ID",
+   "pdf_path": "/mnt/d/zotero/storage/9FBUS978/Rubio et al. - 1994 - A theoretical study of the electronic spectrum of naphthalene.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "author-year-layout"
+     ],
+     "notes": "46 cite-like lines kept raw"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "46 cite-like lines kept raw"
+  },
+  {
+   "document_identity": "zotero:1:2LG7LJJS",
+   "pdf_path": "/mnt/d/zotero/storage/QE7W7XUJ/Atchity_Ruedenberg_1997_Determination of diabatic states through enforcement of configurational.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "22 entries; 'Correspondence to: K. Ruedenberg' genuine"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 22,
+   "needs_ocr": false,
+   "quality_notes": "22 entries; 'Correspondence to: K. Ruedenberg' genuine"
+  },
+  {
+   "document_identity": "zotero:1:2YS32RZ6",
+   "pdf_path": "/mnt/d/zotero/storage/R7JM3PLJ/Wood_Johnston_1998_Photoionization and photosensitized electron-transfer reactions of psoralens.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "low-citation-density"
+     ],
+     "notes": "Raw retained conservatively"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw retained conservatively"
+  },
+  {
+   "document_identity": "zotero:1:36G6LWLU",
+   "pdf_path": "/mnt/d/zotero/storage/SKM6Z7RR/Holthausen, Max C._Koch, Wolfram - A Chemist's Guide to Density Functional Theory (2015_2001, Wiley-VCH) - libgen.li.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented-book-bibliography"
+     ],
+     "notes": "306-page book"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "entry-estimate-2"
+     ],
+     "notes": "Book bibliography kept raw"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "NO_USEFUL_EVIDENCE",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Book bibliography kept raw"
+  },
+  {
+   "document_identity": "zotero:1:3KIPA9PA",
+   "pdf_path": "/mnt/d/zotero/storage/IWR2QEJY/Grimsley 等 - 2009 - A summary of the measured p K values of the ionizable groups in folded proteins.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "ordinal-sequence-implausible"
+     ],
+     "notes": "HIGH but ord [20,2,3,...]; entries mixed with online-material notes"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "RETRY",
+     "problems": [
+      "wrong-strategy-numbered-format"
+     ],
+     "notes": "estimate=0; doc is numbered format"
+    },
+    {
+     "attempt": 3,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "strict-lis-chain",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "47 numbered lines, LIS 1..47 all consecutive"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 3,
+   "attempt_count": 3,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-strict-lis-chain",
+   "reference_count": 47,
+   "needs_ocr": false,
+   "quality_notes": "A1 HIGH output with chaotic ordinals rejected and rebuilt."
+  },
+  {
+   "document_identity": "zotero:1:8GEMR85N",
+   "pdf_path": "/mnt/d/zotero/storage/IYZXINNB/Roos et al. - 2005 - New relativistic ANO basis sets for actinide atoms.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "partial-count"
+     ],
+     "notes": "3 anchor lines; raw kept"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "3 anchor lines; raw kept"
+  },
+  {
+   "document_identity": "zotero:1:2TXGRZTB",
+   "pdf_path": "/mnt/d/zotero/storage/87JCS8EY/Yamazaki et al. - 2015 - Photocatalytic reduction of CO2 using metal comple.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "ordinal-sequence-implausible"
+     ],
+     "notes": "HIGH n=104 ord [3,6,1,2,9,3,...]; Nature two-line entries"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "RETRY",
+     "problems": [
+      "wrong-strategy"
+     ],
+     "notes": "estimate=0"
+    },
+    {
+     "attempt": 3,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "strict-lis-chain",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "numbers-on-separate-lines"
+     ],
+     "notes": "Only 1 numbered line; segmentation not defensible; raw section p29-31 retained"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 3,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-downgraded-from-segmented",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Parser HIGH output rejected: no false citation edges from chaotic ordinals."
+  },
+  {
+   "document_identity": "zotero:1:3FIPZEAA",
+   "pdf_path": "/mnt/d/zotero/storage/JE5Z2CXY/Wang et al. - 2019 - Phenylated acene derivatives as candidates for intermolecular singlet fission.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": "heading '43 REFERENCES' page-header粘连"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "partial-count"
+     ],
+     "notes": "3 anchors; raw kept"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "3 anchors; raw kept"
+  },
+  {
+   "document_identity": "zotero:1:28YYUTF9",
+   "pdf_path": "/mnt/d/zotero/storage/B2WMIQKG/Zhang 等 - 2023 - Artificial intelligence for science in quantum, atomistic, and continuum systems.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": "263-page review"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "estimate-8-of-hundreds"
+     ],
+     "notes": "Raw REFERENCES p217-262 kept"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw REFERENCES p217-262 kept"
+  },
+  {
+   "document_identity": "zotero:1:2RB2EPWK",
+   "pdf_path": "/mnt/d/zotero/storage/8JCK959A/Chen 等 - 2022 - Methods to Calculate Electronic Excited-State Dynamics for Molecules on Large Metal Clusters with Ma.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "RETRY",
+     "problems": [
+      "wrong-strategy"
+     ],
+     "notes": "estimate=0"
+    },
+    {
+     "attempt": 3,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "strict-lis-chain",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "no-line-start-numbers"
+     ],
+     "notes": "0 numbered lines; raw retained"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 3,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "0 numbered lines; raw retained"
+  },
+  {
+   "document_identity": "zotero:1:6XKR76GX",
+   "pdf_path": "/mnt/d/zotero/storage/UR4JFYRK/Salet et al_1979_TRIPLET EXCITED STATES OF PYRIMIDINE NUCLEOSIDES AND NUCLEOTIDES.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "16-anchor-lines"
+     ],
+     "notes": "Raw kept"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw kept"
+  },
+  {
+   "document_identity": "zotero:1:P5HR8GEC",
+   "pdf_path": "/mnt/d/zotero/storage/EPHETKCE/Gallup and Norbeck - 1973 - Population analyses of valence-bond wavefunctions and BeH2.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": "1973 OCR-degraded"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "estimate-0-ocr-noise"
+     ],
+     "notes": "Raw kept; OCR-quality aff noise rejected"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw kept; OCR-quality aff noise rejected"
+  },
+  {
+   "document_identity": "zotero:1:PBUG39KI",
+   "pdf_path": "/mnt/d/zotero/storage/V6JN32SH/Dall'Acqua et al_1979_Kinetic analysis of the photoreaction (365 nm) between psoralen and DNA.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "unsegmented"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ALTERNATIVE_REFERENCE_SEGMENTATION",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [
+      "9-anchor-lines"
+     ],
+     "notes": "Raw kept"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 1,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "raw-author-year",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Raw kept"
+  },
+  {
+   "document_identity": "zotero:1:IJ7CANTR",
+   "pdf_path": "/mnt/d/zotero/storage/97QM5VCX/Chirgwin and Coulson - 1950 - The electronic structure of conjugated systems. VI.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "sparse-text-layer"
+     ],
+     "notes": "1950 scan; COR 'Email alerting service' RSC noise rejected"
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "ZOTERO_FT_CACHE_FALLBACK",
+     "decision": "NEEDS_OCR",
+     "problems": [
+      "cache-only-1403-chars"
+     ],
+     "notes": "Cache too sparse for references"
+    }
+   ],
+   "final_status": "NEEDS_OCR",
+   "accepted_attempt": null,
+   "attempt_count": 2,
+   "text_source": "ZOTERO_FT_CACHE",
+   "front_matter_status": "NO_USEFUL_EVIDENCE",
+   "reference_status": "NO_REFERENCE_SECTION_FOUND",
+   "reference_parse_method": null,
+   "reference_count": null,
+   "needs_ocr": true,
+   "quality_notes": "Cache too sparse for references"
+  },
+  {
+   "document_identity": "zotero:1:2VWBA2V6",
+   "pdf_path": "/mnt/d/zotero/storage/E2QLL5JX/Nagami 等 - 2020 - Vibronic coupling density analysis and quantum dyn.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "UNRESOLVED",
+     "problems": [
+      "zero-page-pdf"
+     ],
+     "notes": "File is an EPS-derived figure PDF with 0 pages; not repairable locally"
+    }
+   ],
+   "final_status": "UNRESOLVED",
+   "accepted_attempt": null,
+   "attempt_count": 1,
+   "text_source": null,
+   "front_matter_status": "NO_USEFUL_EVIDENCE",
+   "reference_status": "NO_REFERENCE_SECTION_FOUND",
+   "reference_parse_method": null,
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "File is an EPS-derived figure PDF with 0 pages; not repairable locally"
+  },
+  {
+   "document_identity": "zotero:1:32TTQQ28",
+   "pdf_path": "/mnt/d/zotero/storage/4JXNC6LT/Becke - 1986 - Density functional calculations of molecular bond energies.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "24 cite-like lines; JCP page-header aff noise rejected; Becke Kingston genuine"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "24 cite-like lines; JCP page-header aff noise rejected; Becke Kingston genuine"
+  },
+  {
+   "document_identity": "zotero:1:3B4V28EN",
+   "pdf_path": "/mnt/d/zotero/storage/L9B7F2RF/Cave和Newton - 1997 - Calculation of electronic coupling matrix elements for ground and excited state electron transfer re.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "Cave/Newton affiliations genuine"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "Cave/Newton affiliations genuine"
+  },
+  {
+   "document_identity": "zotero:1:3EB2ECCJ",
+   "pdf_path": "/mnt/d/zotero/storage/LWLAEP6V/Venkateswarlu and Leszczynski - 1998 - Tautomerism and Proton Transfer in 6-Selenoguanine.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "25 cite-like lines"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "25 cite-like lines"
+  },
+  {
+   "document_identity": "zotero:1:3IWX6NTY",
+   "pdf_path": "/mnt/d/zotero/storage/URYVA95I/Almlöf and Taylor - 1987 - General contraction of gaussian basis sets. I. Atomic natural orbitals for first- and second-row ato.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "AIP publisher-block aff candidate rejected; Almlöf Minnesota genuine"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "AIP publisher-block aff candidate rejected; Almlöf Minnesota genuine"
+  },
+  {
+   "document_identity": "zotero:1:3RZVCS2Z",
+   "pdf_path": "/mnt/d/zotero/storage/CWC5LJ5J/Ronfardharet et al_1982_SOME PROPERTIES OF THE TRIPLET EXCITED-STATE OF THE PHOTOSENSITIZING.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "65 cite-like lines (author-year)"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "65 cite-like lines (author-year)"
+  },
+  {
+   "document_identity": "zotero:1:3S2W3K79",
+   "pdf_path": "/mnt/d/zotero/storage/2AHRB8UC/Raos et al. - 1994 - Spin correlation in π-electron systems from spin-coupled wavefunctions. I. Theory and first applicat.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "30-entry chain"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 30,
+   "needs_ocr": false,
+   "quality_notes": "30-entry chain"
+  },
+  {
+   "document_identity": "zotero:1:4DNCF3TI",
+   "pdf_path": "/mnt/d/zotero/storage/WF7WMZ7J/Cave和Newton - 1996 - Generalization of the Mulliken-Hush treatment for the calculation of electron transfer matrix elemen.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "PASS",
+     "problems": [],
+     "notes": "21-entry chain; Brookhaven genuine"
+    }
+   ],
+   "final_status": "PASS",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "GOOD",
+   "reference_status": "SEGMENTED",
+   "reference_parse_method": "ai-tail-numbered",
+   "reference_count": 21,
+   "needs_ocr": false,
+   "quality_notes": "21-entry chain; Brookhaven genuine"
+  },
+  {
+   "document_identity": "zotero:1:4GQYP6HK",
+   "pdf_path": "/mnt/d/zotero/storage/DX2SQFHF/Vosko et al. - 1980 - Accurate spin-dependent electron liquid correlation energies for local spin density calculations a.pdf",
+   "prompt_version": "PDF_EVIDENCE_AGENT.md@bb7cb47",
+   "attempts": [
+    {
+     "attempt": 1,
+     "actor": "DETERMINISTIC",
+     "strategy": "deterministic-v2",
+     "decision": "RETRY",
+     "problems": [
+      "reference-section-not-found"
+     ],
+     "notes": ""
+    },
+    {
+     "attempt": 2,
+     "actor": "LOCAL_AI_CONTROLLED",
+     "strategy": "TAIL_REFERENCE_RECOVERY",
+     "decision": "ACCEPT_PARTIAL",
+     "problems": [],
+     "notes": "1980 two-column scan"
+    }
+   ],
+   "final_status": "ACCEPT_PARTIAL",
+   "accepted_attempt": 2,
+   "attempt_count": 2,
+   "text_source": "PDF_NATIVE",
+   "front_matter_status": "PARTIAL",
+   "reference_status": "RAW_SECTION_ONLY",
+   "reference_parse_method": "ai-tail-raw",
+   "reference_count": null,
+   "needs_ocr": false,
+   "quality_notes": "1980 two-column scan"
+  }
+ ]
+}
