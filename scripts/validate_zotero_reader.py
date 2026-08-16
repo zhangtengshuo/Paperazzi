@@ -27,6 +27,22 @@ def safe_label(value: str) -> str:
     return cleaned.strip("_") or "reader"
 
 
+def _missing_file_record(item, attachment) -> dict:
+    return {
+        "parent": item.zotero_identity,
+        "library_id": item.library_id,
+        "item_type": item.item_type,
+        "title": item.title,
+        "attachment_key": attachment.item_key,
+        "link_mode": attachment.link_mode_name,
+        "content_type": attachment.content_type,
+        "stored_path": attachment.path,
+        "sync_state": attachment.sync_state,
+        "storage_hash": attachment.storage_hash,
+        "resolution": attachment.resolution,
+    }
+
+
 def build_report(reader: ZoteroSQLiteReader) -> dict:
     all_items = reader.read_items(include_deleted=True)
     active = [item for item in all_items if not item.deleted]
@@ -39,6 +55,10 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
     attachment_content_types: Counter[str] = Counter()
     attachment_resolution: Counter[str] = Counter()
     local_states: Counter[str] = Counter()
+    missing_by_link_mode: Counter[str] = Counter()
+    missing_by_content_type: Counter[str] = Counter()
+    missing_by_sync_state: Counter[str] = Counter()
+    missing_by_library: Counter[str] = Counter()
 
     missing_title = []
     no_creators = []
@@ -47,9 +67,25 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
 
     for item in active:
         if not item.title or not item.title.strip():
-            missing_title.append(item.zotero_identity)
+            missing_title.append(
+                {
+                    "identity": item.zotero_identity,
+                    "item_type": item.item_type,
+                    "doi": item.doi,
+                }
+            )
         if not item.creators:
-            no_creators.append(item.zotero_identity)
+            no_creators.append(
+                {
+                    "identity": item.zotero_identity,
+                    "library_id": item.library_id,
+                    "item_type": item.item_type,
+                    "title": item.title,
+                    "doi": item.doi,
+                    "date": item.fields.get("date"),
+                    "publication_title": item.fields.get("publicationTitle"),
+                }
+            )
         if item.item_type == "journalArticle":
             journal_articles.append(item)
 
@@ -64,21 +100,23 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
                 local_states["exists"] += 1
             elif attachment.local_exists is False:
                 local_states["missing"] += 1
-                missing_local_files.append(
-                    {
-                        "parent": item.zotero_identity,
-                        "title": item.title,
-                        "attachment_key": attachment.item_key,
-                        "content_type": attachment.content_type,
-                        "stored_path": attachment.path,
-                        "resolution": attachment.resolution,
-                    }
-                )
+                missing_by_link_mode[attachment.link_mode_name] += 1
+                missing_by_content_type[attachment.content_type or "<none>"] += 1
+                missing_by_sync_state[str(attachment.sync_state)] += 1
+                missing_by_library[str(item.library_id)] += 1
+                missing_local_files.append(_missing_file_record(item, attachment))
             else:
                 local_states["unresolved_or_not_applicable"] += 1
 
     journal_with_doi = sum(1 for item in journal_articles if item.doi and item.doi.strip())
     journal_with_authors = sum(1 for item in journal_articles if item.creators)
+    journal_without_creators = [
+        entry for entry in no_creators if entry["item_type"] == "journalArticle"
+    ]
+
+    deleted_attachment_count = int(
+        reader.conn.execute(reader.adapter.deleted_attachments_sql).fetchone()[0]
+    )
 
     recent = sorted(
         active,
@@ -120,6 +158,7 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
                         "content_type": a.content_type,
                         "stored_path": a.path,
                         "local_exists": a.local_exists,
+                        "sync_state": a.sync_state,
                         "resolution": a.resolution,
                     }
                     for a in item.attachments
@@ -144,6 +183,7 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
             "attachments_by_content_type": dict(sorted(attachment_content_types.items())),
             "attachments_by_resolution": dict(sorted(attachment_resolution.items())),
             "attachment_local_state": dict(sorted(local_states.items())),
+            "deleted_attachments_filtered": deleted_attachment_count,
         },
         "quality": {
             "active_items_missing_title": len(missing_title),
@@ -151,10 +191,19 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
             "journal_articles": len(journal_articles),
             "journal_articles_with_doi": journal_with_doi,
             "journal_articles_with_creators": journal_with_authors,
+            "journal_articles_without_creators": len(journal_without_creators),
+        },
+        "missing_file_breakdown": {
+            "total": len(missing_local_files),
+            "by_link_mode": dict(sorted(missing_by_link_mode.items())),
+            "by_content_type": dict(sorted(missing_by_content_type.items())),
+            "by_sync_state": dict(sorted(missing_by_sync_state.items())),
+            "by_library": dict(sorted(missing_by_library.items())),
         },
         "anomalies": {
-            "missing_title_identities": missing_title[:100],
-            "no_creator_identities": no_creators[:100],
+            "missing_title_items": missing_title[:100],
+            "no_creator_items": no_creators[:100],
+            "journal_articles_without_creators": journal_without_creators[:100],
             "missing_local_files": missing_local_files[:100],
             "anomaly_lists_truncated_at": 100,
         },
@@ -165,6 +214,7 @@ def build_report(reader: ZoteroSQLiteReader) -> dict:
 def render_markdown(report: dict) -> str:
     counts = report["counts"]
     quality = report["quality"]
+    missing = report["missing_file_breakdown"]
     lines = [
         "# Phase 2 — ZoteroSQLiteReader validation report",
         "",
@@ -186,6 +236,7 @@ def render_markdown(report: dict) -> str:
         f"- Journal articles: **{quality['journal_articles']}**",
         f"- Journal articles with DOI: **{quality['journal_articles_with_doi']}**",
         f"- Journal articles with creators: **{quality['journal_articles_with_creators']}**",
+        f"- Journal articles without creators: **{quality['journal_articles_without_creators']}**",
         "",
         "## Creator roles",
         "",
@@ -197,14 +248,20 @@ def render_markdown(report: dict) -> str:
         f"- Content types: `{json.dumps(counts['attachments_by_content_type'], sort_keys=True)}`",
         f"- Resolution: `{json.dumps(counts['attachments_by_resolution'], sort_keys=True)}`",
         f"- Local state: `{json.dumps(counts['attachment_local_state'], sort_keys=True)}`",
+        f"- Deleted attachment rows filtered from canonical items: **{counts['deleted_attachments_filtered']}**",
+        f"- Missing local files (full count): **{missing['total']}**",
+        f"- Missing by link mode: `{json.dumps(missing['by_link_mode'], sort_keys=True)}`",
+        f"- Missing by content type: `{json.dumps(missing['by_content_type'], sort_keys=True)}`",
+        f"- Missing by sync state: `{json.dumps(missing['by_sync_state'], sort_keys=True)}`",
+        f"- Missing by library: `{json.dumps(missing['by_library'], sort_keys=True)}`",
         "",
         "## Anomalies",
         "",
-        f"- Missing local files recorded: **{len(report['anomalies']['missing_local_files'])}** (list capped at 100)",
-        f"- Missing-title identities recorded: **{len(report['anomalies']['missing_title_identities'])}** (list capped at 100)",
-        f"- No-creator identities recorded: **{len(report['anomalies']['no_creator_identities'])}** (list capped at 100)",
+        f"- Missing local file details recorded: **{len(report['anomalies']['missing_local_files'])}** (list capped at 100)",
+        f"- Missing-title item details recorded: **{len(report['anomalies']['missing_title_items'])}** (list capped at 100)",
+        f"- No-creator item details recorded: **{len(report['anomalies']['no_creator_items'])}** (list capped at 100)",
         "",
-        "See `reader_report.json` for recent reconstructed samples and anomaly details.",
+        "See `reader_report.json` for reconstructed samples and anomaly details.",
         "",
     ]
     return "\n".join(lines)
@@ -250,7 +307,9 @@ def main() -> int:
     print(f"Phase 2 reader validation completed: {run_dir}")
     print(f"  active bibliographic items: {report['counts']['active_bibliographic_items']}")
     print(f"  deleted bibliographic items: {report['counts']['deleted_bibliographic_items']}")
+    print(f"  deleted attachments filtered: {report['counts']['deleted_attachments_filtered']}")
     print(f"  missing titles: {report['quality']['active_items_missing_title']}")
+    print(f"  no-creator items: {report['quality']['active_items_without_creators']}")
     print(f"  local attachment state: {report['counts']['attachment_local_state']}")
     print(f"  report: {md_path}")
     return 0
