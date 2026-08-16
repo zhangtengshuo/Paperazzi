@@ -1,203 +1,337 @@
 # Paperazzi：基于 Zotero 的学术作者知识库与关系网络
 
-**状态：Design v0.1**  
-**目标：Local-first / Human-triggered / AI-assisted / Evidence-first**
+**状态：Design v0.2**  
+**目标：Local-first / Human-triggered / AI-assisted / Evidence-first / Zotero-process-independent**
 
 ---
 
-## 0. 项目一句话定义
+## 0. 项目定义
 
-Paperazzi 是一个围绕个人 Zotero 文献库构建的**作者知识库、学术关系网络与作者动态追踪系统**。
+Paperazzi 是围绕个人 Zotero 文献库构建的**作者知识库、学术关系网络与作者动态追踪系统**。
 
-它以 Zotero 中已经收藏的论文为“研究兴趣的事实入口”，抽取第一作者、通讯作者及重要合作者，为每位作者建立可追溯来源的个人档案，并以网页方式展示作者、论文、机构、研究主题及其关系网络。
+它以 Zotero 中已经收藏的论文为研究兴趣入口，识别第一作者、通讯作者及重要合作者，为作者建立可追溯来源的个人档案，并通过网页展示作者、论文、机构、研究主题、合作网络、学术谱系与近期动态。
 
-系统不要求实时联网，也不要求持续自动爬取。所有更新均由用户主动触发：
+Paperazzi **不依赖 Zotero Desktop 是否正在运行**。Zotero 的本地数据库 `zotero.sqlite` 及其 `storage/` 文件目录是唯一的本地事实源。Paperazzi 对 Zotero 数据目录只读，不通过 Zotero Local API 获取核心数据，也绝不修改 Zotero 数据库。
 
-1. 本地程序检查 Zotero 与上次快照的差异；
-2. 本地 AI/确定性程序完成文献解析、作者识别和需求生成；
-3. 对于需要互联网的信息，生成固定格式的“在线检索需求包”；
-4. 在线 AI 根据需求检索公开资料并返回固定格式 ZIP；
-5. 本地程序校验 ZIP、做作者消歧、冲突检测和数据合并；
-6. 用户可以在网页的 Review Center 中查看证据、修正错误和执行 merge/split。
+所有更新由用户主动触发：
 
-核心原则：**AI 不直接写数据库。AI 只产生候选事实与证据；数据库修改由确定性程序执行。**
+1. 从 `zotero.sqlite` 创建一致性只读快照；
+2. 与上一次 Paperazzi 导入状态比较；
+3. 找出新增、修改、删除或重新关联的 Zotero 条目；
+4. 本地程序解析论文、作者、附件和 collection/tag 信息；
+5. 本地 AI/确定性程序完成作者识别和资料缺口分析；
+6. 需要互联网的信息生成固定格式在线检索需求包；
+7. 在线 AI 返回固定格式 ZIP；
+8. 本地程序校验、消歧、冲突检测并更新 Paperazzi 数据库；
+9. 网页 Review Center 负责低置信度结果、merge/split 和冲突修复。
+
+核心原则：
+
+> **Zotero 只读；AI 只提交候选事实；Paperazzi 数据库只由确定性程序修改。**
 
 ---
 
-# 1. 主要目标
+# 1. 系统边界
 
-## 1.1 作者数据库
+## 1.1 Zotero 负责什么
 
-针对 Zotero 中论文涉及的作者，重点维护：
+Zotero 是以下数据的 Source of Truth：
 
-- 第一作者；
-- 通讯作者；
-- 重要/高频合作者；
-- 用户手工加入的重点关注作者。
+- 本地收藏的论文；
+- Zotero item key；
+- creator 顺序；
+- title / journal / year / DOI / abstract 等本地书目元数据；
+- collection；
+- tag；
+- notes；
+- attachment；
+- PDF 文件实际位置。
 
-每位作者建立统一档案：
+Paperazzi 不尝试取代 Zotero 的文献管理功能。
 
-- 标准姓名与姓名变体；
-- ORCID / OpenAlex / Semantic Scholar 等外部 ID；
-- 当前单位、职位；
-- 历史任职经历；
+## 1.2 Paperazzi 负责什么
+
+Paperazzi 管理 Zotero 本身不适合表达的信息：
+
+- 作者统一身份；
+- 第一作者/通讯作者等 paper-level role；
+- 作者履历；
 - 教育经历；
-- 博士导师/博士后导师等可验证学术关系；
-- 出生日期或出生年份（仅在公开、可靠来源明确给出时）；
-- 性别/性别认同（仅保存公开资料中明确陈述的信息，不从姓名、照片或国籍推断）；
-- 个人主页；
-- ORCID；
-- Google Scholar / Semantic Scholar / GitHub / LinkedIn / X 等公开页面链接；
-- 头像/照片及其来源；
-- 简短人物简介；
-- AI 总结的研究方向；
-- 研究关键词；
-- 研究方向随时间的变化；
-- 论文时间线；
-- 新闻、奖项、职位变化、基金、学术报告等动态。
-
-所有非 Zotero 原始字段都必须保留**来源、检索时间、可信度和生成方式**。
-
-## 1.2 作者关系网络
-
-至少支持以下关系层：
-
-### A. 直接事实关系
-
-- coauthor：共同署名；
-- first_author ↔ corresponding_author；
-- advisor → student；
-- postdoc_advisor → postdoc；
-- same_lab / same_group（有证据时）；
-- same_institution；
-- former_same_institution；
-- collaborator（由多篇共同论文归纳）；
-- paper_citation（论文层关系，可进一步投影为作者层关系）。
-
-### B. 计算关系
-
-- topic_similarity：研究主题相似度；
-- collaboration_strength：合作强度；
-- collaboration_recency：近期合作强度；
-- shared_reference / bibliographic_similarity；
-- local_library_overlap：在本地 Zotero 关注范围内的共同覆盖度。
-
-计算关系必须与“事实关系”视觉上区分。
-
-## 1.3 Zotero 论文入口
-
-网页中的论文记录必须保留 Zotero item key 和 attachment key。
-
-点击论文时至少提供：
-
-- **Open PDF**：通过本地 Paperazzi 后端/Zotero Local API 打开本地 PDF；
-- **Show in Zotero**：定位到 Zotero 条目；
-- DOI / publisher 页面；
-- 作者详情；
-- 本论文在作者网络中的位置。
-
-Paperazzi 不复制 Zotero 成为第二套文献管理系统；Zotero 始终是本地 PDF 和核心书目元数据的主数据源。
+- 当前与历史任职；
+- ORCID/OpenAlex/Semantic Scholar 等外部身份；
+- 导师/学生/实验室/合作关系；
+- 研究主题及其时间演化；
+- 作者近期论文和新闻；
+- 本地 Zotero 尚未收藏的新论文；
+- Evidence / Claim / Confidence；
+- 人工 merge/split/lock；
+- 作者网络及统计分析。
 
 ---
 
-# 2. 核心架构原则
+# 2. Zotero 数据读取架构
 
-## 2.1 Zotero 是文献 Source of Truth
+## 2.1 唯一入口：只读 `zotero.sqlite`
 
-优先使用 Zotero Desktop 的 Local API，而不是直接读写 `zotero.sqlite`。
+Paperazzi 不把 Zotero Local API 作为核心依赖。
 
 原因：
 
-- Local API 与 Zotero Web API v3 基本一致；
-- 可以通过 library/item version 做增量检查；
-- 可获得 item、creator、collection 和 attachment；
-- Local API 可返回 attachment 的本地文件位置；
-- 避免直接绑定 Zotero 内部 SQLite schema。
+- Local API 依赖 Zotero Desktop 进程；
+- Local API 还要求相关本地通信设置处于可用状态；
+- Paperazzi 的人工 batch 更新不应受到 Zotero 是否打开的影响；
+- `zotero.sqlite` 已经包含 Paperazzi 所需的绝大多数本地元数据；
+- attachment 的实际文件也直接存在 Zotero data directory 中；
+- 对于只读科研数据提取，数据库快照比运行时服务更可重复。
 
-Paperazzi 只缓存自己需要的规范化论文元数据和 Zotero key。
+**绝对禁止：**
 
-## 2.2 AI 不拥有数据库写权限
+- 对 `zotero.sqlite` 执行 INSERT/UPDATE/DELETE；
+- 修改 Zotero schema；
+- 把 Paperazzi 自身字段写入 Zotero 内部表；
+- 依赖修改数据库来标记“已处理”。
 
-采用三层结构：
+Paperazzi 自己的状态全部保存在 `paperazzi.sqlite3`。
 
-```text
-AI / Internet Search
-        ↓
-Candidate JSON + Evidence
-        ↓
-Schema Validator + Resolver + Merge Rules
-        ↓
-Paperazzi Database
-```
+## 2.2 一致性快照，而不是长期占用原库
 
-AI 不能直接执行 SQL UPDATE。
-
-这样可保证：
-
-- 同一个输入包可以重复导入并得到一致结果；
-- 模型更换不会改变数据库语义；
-- 每个字段可追溯；
-- 错误可以回滚；
-- 作者同名误合并不会不可逆地污染数据。
-
-## 2.3 Evidence-first
-
-数据库不只保存“当前答案”，还保存“这个答案为什么存在”。
-
-例如：
+每次用户执行更新：
 
 ```text
-Current affiliation:
-University X, Professor
-
-Evidence:
-1. University X faculty page, retrieved 2026-08-16
-2. ORCID employment record, retrieved 2026-08-16
-
-Confidence: verified
+paperazzi zotero scan
 ```
 
-人物资料的来源优先级建议：
-
-1. 大学/研究机构官方主页；
-2. ORCID；
-3. 本人实验室/个人主页；
-4. 论文出版社页面；
-5. 基金机构、学会、会议官方页面；
-6. OpenAlex / Semantic Scholar；
-7. 可靠新闻来源；
-8. 社交网络；
-9. 其他聚合网站。
-
-任何冲突都保留，不由 AI 静默覆盖。
-
-## 2.4 数据不是“实时数据库”
-
-系统采用 batch run：
+执行：
 
 ```text
-Zotero Update Run
-Author Enrichment Run
-Monthly Watch Run
-Manual Repair Run
+Zotero data directory
+        ↓
+open zotero.sqlite READ ONLY
+        ↓
+SQLite consistent snapshot / backup
+        ↓
+data/cache/zotero-snapshots/<run_id>.sqlite
+        ↓
+所有后续解析只读取 snapshot
 ```
 
-每次 run 都生成唯一 `run_id`，记录：
+这样做有四个目的：
 
-- 输入快照；
-- 产生的任务；
-- AI 返回包；
-- 实际写入；
-- 冲突；
-- 失败项。
+1. Zotero 关闭时可以直接读取；
+2. Zotero 打开并正在写入时，也尽可能获得事务一致的读取视图；
+3. 一次 Paperazzi run 的输入被冻结，便于复现和审计；
+4. 长时间 AI/解析工作不会持续占用 Zotero 原数据库。
+
+快照是临时输入，不是长期备份系统。默认只保留最近若干次，旧快照可自动清理。
+
+## 2.3 不使用 `immutable=1` 作为默认读取模式
+
+如果 Zotero 正在运行，SQLite 可能存在 journal/WAL 状态。默认应使用正常的 `mode=ro` 只读连接，使 SQLite 自己处理一致性，而不是假定主文件永远是独立完整状态。
+
+推荐抽象：
+
+```text
+ZoteroSQLiteSource
+  ├── discover_data_dir()
+  ├── open_readonly()
+  ├── create_snapshot()
+  ├── inspect_schema()
+  └── close()
+```
+
+## 2.4 Zotero schema 是内部 schema：接受绑定，但必须隔离
+
+直接读取 SQLite 的代价不是“不稳定”，而是**需要承担 Zotero schema 兼容层**。
+
+因此所有 Zotero SQL 必须集中在：
+
+```text
+backend/paperazzi/zotero_sqlite/
+├── source.py
+├── snapshot.py
+├── schema_probe.py
+├── reader.py
+├── attachments.py
+├── adapters/
+│   ├── current.py
+│   └── ...
+└── tests/
+```
+
+业务代码不得在其他位置直接查询 Zotero 表。
+
+启动扫描时先执行 schema probe：
+
+```text
+PRAGMA user_version
+sqlite_master tables/indexes
+required columns
+known Zotero schema fingerprints
+```
+
+结果分为：
+
+```text
+SUPPORTED
+SUPPORTED_WITH_WARNING
+UNKNOWN_SCHEMA
+INCOMPATIBLE
+```
+
+如果 Zotero 升级导致结构变化，Paperazzi 应当**拒绝错误解析并报告 schema mismatch**，而不是静默产生错误作者数据。
+
+## 2.5 Canonical Zotero Record
+
+Zotero SQLite 的内部多表结构先被 reader 转换成 Paperazzi 自己的稳定中间对象：
+
+```text
+CanonicalZoteroItem
+- library_id
+- item_id
+- item_key
+- item_type
+- date_added
+- date_modified
+- zotero_version
+- fields{}
+- creators[]
+- collections[]
+- tags[]
+- attachments[]
+- parent_item_key
+- deleted
+```
+
+从这一层以后，Paperazzi 其他模块不需要知道 Zotero 内部表名。
+
+这一步是隔离 Zotero schema 变化的关键。
+
+## 2.6 PDF attachment 解析
+
+不再通过 Local API 查询文件位置。
+
+对 imported attachment：
+
+```text
+zotero_data_dir/
+└── storage/
+    └── <ATTACHMENT_ITEM_KEY>/
+        └── <filename.pdf>
+```
+
+由 SQLite 中 attachment 记录和 item key 确定路径。
+
+对 linked attachment，则读取 Zotero 保存的 linked path，并由 attachment resolver 解析。
+
+Paperazzi 数据库保存：
+
+```text
+zotero_attachment_key
+attachment_mode
+relative_or_linked_path
+content_type
+filename
+```
+
+网页点击 **Open PDF** 时由 Paperazzi backend 直接解析本地路径并打开文件，**不需要启动 Zotero**。
+
+## 2.7 Show in Zotero 与 Open PDF 分离
+
+两个功能语义不同：
+
+### Open PDF
+
+核心功能。直接从 filesystem 打开，因此 Zotero 关闭也可用。
+
+### Show in Zotero
+
+辅助功能。如果 Zotero URL scheme/系统关联可用，则调用 Zotero 定位 item；此功能允许启动 Zotero，但不能成为阅读 PDF 或数据库运行的前置条件。
 
 ---
 
-# 3. 三条核心工作流
+# 3. Zotero 增量更新
 
-## 3.1 Workflow A：Zotero 增量更新
+## 3.1 不依赖 Local API `since=version`
 
-用户执行：
+Paperazzi 自己维护导入状态。
+
+每次扫描生成：
+
+```text
+zotero_scan_manifest
+- run_id
+- source_path
+- source_db_size
+- source_db_mtime
+- schema_fingerprint
+- scanned_at
+- item_count
+- attachment_count
+- canonical_hash
+```
+
+对每个 canonical item 保存：
+
+```text
+zotero_item_state
+- item_key
+- item_type
+- zotero_version
+- date_modified
+- canonical_hash
+- present_in_last_scan
+- last_seen_run_id
+```
+
+## 3.2 差异判定
+
+比较当前扫描与上次扫描：
+
+```text
+NEW
+MODIFIED
+UNCHANGED
+REMOVED
+RESTORED
+```
+
+**最终以 canonical content hash 为准**，`version` 和 `dateModified` 仅作为快速筛选条件。
+
+这样避免把增量逻辑绑定到 Zotero API 的同步语义。
+
+## 3.3 删除检测
+
+不能只看“新版本号”。
+
+当前快照中不存在、而上一轮存在的 item key 标记为：
+
+```text
+REMOVED_FROM_ZOTERO
+```
+
+Paperazzi 不立即物理删除历史作者/关系，而是设置：
+
+```text
+removed_from_zotero_at
+```
+
+这样可以保留历史来源与 undo 能力。
+
+## 3.4 第一版可以接受全库扫描
+
+Paperazzi 更新是人工触发，而不是实时守护进程。因此 v1 优先考虑正确性与可重复性。
+
+即使每次把数千或数万 Zotero item 规范化并 hash 一遍，成本通常远小于后续 PDF/AI 分析。
+
+因此：
+
+> **先做 deterministic full scan + diff，再考虑极限增量优化。**
+
+---
+
+# 4. 三条核心工作流
+
+## 4.1 Workflow A：Zotero 更新
 
 ```text
 paperazzi update-zotero
@@ -206,11 +340,17 @@ paperazzi update-zotero
 流程：
 
 ```text
-读取上次 Zotero library version
+发现 Zotero data directory
         ↓
-调用 Zotero Local API ?since=<version>
+创建只读一致性 snapshot
         ↓
-new / modified / deleted items
+schema probe
+        ↓
+SQLite → CanonicalZoteroItem
+        ↓
+与上次 scan state 比较
+        ↓
+NEW / MODIFIED / REMOVED
         ↓
 规范化论文元数据
         ↓
@@ -218,27 +358,25 @@ new / modified / deleted items
         ↓
 作者 identity resolution
         ↓
-重新计算第一作者/通讯作者/合作者关系
+重新计算本地作者关系
         ↓
-发现未知作者或资料缺失作者
-        ↓
-生成 enrichment request
+生成 enrichment requests
 ```
 
 ### 第一作者
 
-由 creator 顺序确定。
+由 Zotero creator 顺序确定。
 
 ### 通讯作者
 
-通讯作者信息不能假定 Zotero 必然包含。
+通讯作者信息不能假定 Zotero metadata 必然包含。
 
-建议按以下来源确定：
+来源顺序：
 
-1. 已有人工标记；
-2. PDF 第一页/author information/correspondence 信息；
+1. 已有 Paperazzi 人工标记；
+2. 本地 PDF 第一页 / Correspondence / Author Information；
 3. publisher metadata；
-4. 在线检索结果。
+4. 在线 AI 检索结果。
 
 保存：
 
@@ -248,16 +386,14 @@ corresponding_confidence
 corresponding_source
 ```
 
-一篇论文允许多个通讯作者。
+允许一篇论文有多个通讯作者。
 
-## 3.2 Workflow B：新作者资料补全
+## 4.2 Workflow B：新作者资料补全
 
-当 Zotero 增加论文后，本地程序首先做作者消歧。
-
-对于新增或资料不足的作者，生成：
+对于新增或资料不足作者生成：
 
 ```text
-requests/author_enrichment_2026-08-16/
+requests/author_enrichment_<date>/
 ├── REQUEST.md
 ├── manifest.json
 ├── authors.jsonl
@@ -267,51 +403,17 @@ requests/author_enrichment_2026-08-16/
     └── media.schema.json
 ```
 
-`authors.jsonl` 中每项包含本地已知信息，例如：
-
-```json
-{
-  "request_id": "ARQ-000012",
-  "author_id": "A-01J...",
-  "name": "Example Author",
-  "known_affiliations": ["University X"],
-  "known_papers": [
-    {"title": "...", "doi": "...", "year": 2025}
-  ],
-  "known_external_ids": {
-    "orcid": null,
-    "openalex": null
-  },
-  "requested_fields": [
-    "identity",
-    "current_position",
-    "affiliation_history",
-    "education",
-    "public_profiles",
-    "research_summary",
-    "keywords",
-    "photo",
-    "notable_news"
-  ]
-}
-```
-
-在线 AI 返回固定格式 ZIP：
+在线 AI 返回：
 
 ```text
 paperazzi-enrichment-result.zip
 ├── manifest.json
 ├── authors/
-│   ├── ARQ-000012.json
-│   └── ARQ-000013.json
 ├── evidence/
-│   ├── ARQ-000012.jsonl
-│   └── ARQ-000013.jsonl
 └── assets/
-    └── ...
 ```
 
-导入流程：
+导入：
 
 ```text
 ZIP
@@ -328,23 +430,19 @@ conflict detection
  ↓
 merge proposal
  ↓
-auto-accept safe fields / queue uncertain fields
+auto-accept safe fields / Review Center
 ```
 
-## 3.3 Workflow C：每月作者动态更新
-
-用户执行：
+## 4.3 Workflow C：月度作者动态
 
 ```text
 paperazzi watch prepare
 ```
 
-程序遍历作者，但不盲目要求完整重查。
-
-根据每个字段的 `last_checked_at` 生成增量需求：
+对作者按 `last_checked_at` 生成增量需求：
 
 ```text
-Check since 2026-07-01:
+Check since <last_checked_at>:
 - new papers
 - affiliation / position changes
 - awards
@@ -355,66 +453,37 @@ Check since 2026-07-01:
 - newly discovered public profiles
 ```
 
-在线 AI 返回：
-
-```text
-paperazzi-watch-2026-08.zip
-├── manifest.json
-├── events/
-│   ├── A-xxx.json
-│   └── A-yyy.json
-├── works/
-│   └── ...
-└── evidence/
-    └── ...
-```
-
-导入后网页首页出现：
-
-```text
-Monthly Digest
-
-+ 17 new papers
-+ 2 affiliation changes
-+ 4 awards/grants
-+ 8 public news events
-+ 6 possible identity conflicts
-+ 11 papers not yet in Zotero
-```
+在线 AI 返回固定格式 ZIP，本地程序导入。
 
 ---
 
-# 4. 作者身份消歧：整个系统最关键的部分
+# 5. 作者身份消歧
 
-同名作者误合并的破坏性远高于漏掉一条新闻，因此 identity resolution 必须是独立模块。
+作者身份是整个系统最需要保守处理的部分。
 
-## 4.1 内部永久 ID
-
-永远不要把姓名、ORCID 或 OpenAlex ID 当数据库主键。
-
-使用：
+## 5.1 内部永久 ID
 
 ```text
 author_id = UUIDv7 / ULID
 ```
 
-外部 ID 都只是 identity links。
+姓名、ORCID、OpenAlex ID 均不得作为内部主键。
 
-## 4.2 消歧证据
+## 5.2 消歧证据
 
-候选作者评分可以使用：
+可使用：
 
 - ORCID 精确匹配；
 - DOI-author-ORCID 映射；
-- 单位；
+- affiliation；
 - email domain；
-- 已知合作者重合；
-- 研究主题；
-- 论文标题/年份；
-- 姓名变体；
-- 学术履历时间是否可能。
+- coauthor overlap；
+- research topics；
+- paper titles / years；
+- name variants；
+- career timeline consistency。
 
-## 4.3 状态
+## 5.3 状态
 
 ```text
 IDENTIFIED
@@ -426,33 +495,35 @@ CONFLICT
 
 低置信度候选不自动 merge。
 
-## 4.4 人工 Merge / Split
+## 5.4 人工修复
 
-网页必须提供：
+网页必须支持：
 
 - Merge authors；
 - Split identity；
 - Mark not same person；
 - Lock identity；
 - Preferred name；
-- 手工绑定 ORCID/OpenAlex。
-
-`Lock identity` 后，AI 更新不得自动改变身份。
+- 手工绑定 ORCID/OpenAlex；
+- Undo merge。
 
 ---
 
-# 5. 数据模型
+# 6. Paperazzi 数据模型
 
-推荐 SQLite 起步。该项目的数据规模主要是数千到数万作者和论文，不需要一开始引入 Neo4j。
+Paperazzi 自己使用独立 SQLite：
 
-关系网络仍然存储为关系表，图分析时由 Python/igraph/NetworkX 或 SQL 投影。
+```text
+data/paperazzi.sqlite3
+```
 
-## 5.1 papers
+Zotero 数据库与 Paperazzi 数据库永远是两个数据库。
+
+## 6.1 papers
 
 ```text
 paper_id
 zotero_item_key
-zotero_item_version
 title
 doi
 pmid
@@ -466,25 +537,29 @@ volume
 issue
 pages
 url
+zotero_canonical_hash
+first_seen_run_id
+last_seen_run_id
+removed_from_zotero_at
 created_at
 updated_at
-removed_from_zotero_at
 ```
 
-## 5.2 paper_attachments
+## 6.2 paper_attachments
 
 ```text
 attachment_id
 paper_id
 zotero_attachment_key
+attachment_mode
+path_value
 content_type
 filename
 is_primary_pdf
+last_verified_at
 ```
 
-不长期硬编码绝对 PDF 路径；需要打开时向 Zotero Local API 请求当前 attachment 路径。
-
-## 5.3 authors
+## 6.3 authors
 
 ```text
 author_id
@@ -506,88 +581,28 @@ last_enriched_at
 last_watched_at
 ```
 
-`birth_date`、`gender_public_statement` 默认 NULL。
+出生日期、性别等默认 NULL；仅接受公开来源明确陈述，不从姓名或照片推断。
 
-禁止根据姓名、照片或模型常识自动推断。
-
-## 5.4 author_aliases
-
-```text
-author_id
-name
-name_type
-language
-source_id
-```
-
-## 5.5 external_identities
-
-```text
-author_id
-type        # orcid/openalex/semantic_scholar/scopus/researcherid/github/...
-value
-url
-confidence
-verified
-source_id
-```
-
-## 5.6 authorships
-
-这是 Paperazzi 最重要的关系表之一。
+## 6.4 authorships
 
 ```text
 paper_id
 author_id
 author_order
-role                # first / middle / last
+role
 is_corresponding
 corresponding_confidence
 affiliation_text
 source_id
 ```
 
-## 5.7 institutions
+第一作者/通讯作者是论文上的 authorship 属性。
 
-```text
-institution_id
-name
-normalized_name
-ror_id
-openalex_id
-country
-city
-url
-```
+## 6.5 institutions / affiliations / education
 
-## 5.8 affiliations
+分别记录机构实体、任职历史和教育历史，并保留 source/confidence。
 
-```text
-author_id
-institution_id
-position
-start_date
-end_date
-is_current
-confidence
-source_id
-```
-
-## 5.9 education
-
-```text
-author_id
-institution_id
-degree
-field
-start_year
-end_year
-advisor_author_id
-confidence
-source_id
-```
-
-## 5.10 author_relationships
+## 6.6 author_relationships
 
 ```text
 relationship_id
@@ -602,7 +617,7 @@ confidence
 source_id
 ```
 
-`type` 示例：
+关系示例：
 
 ```text
 coauthor
@@ -613,48 +628,15 @@ same_institution
 topic_similarity
 ```
 
-其中 coauthor 不应由 AI 创建，而由 authorships 表确定性计算。
+其中 coauthor 必须由 authorships 确定性计算，而不是由 AI 自由生成。
 
-## 5.11 topics
+## 6.7 topics / author_topics
 
-```text
-topic_id
-name
-normalized_name
-parent_topic_id
-source
-```
+保存作者研究主题及时间窗口，用于 Topic Evolution。
 
-## 5.12 author_topics
+## 6.8 events
 
-```text
-author_id
-topic_id
-score
-start_year
-end_year
-method
-```
-
-这使网页可以显示“研究方向演化”，而不是只有一组永久关键词。
-
-## 5.13 events
-
-```text
-event_id
-author_id
-event_type
-title
-summary
-event_date
-url
-importance
-confidence
-source_id
-first_seen_at
-```
-
-类型：
+记录：
 
 ```text
 new_paper
@@ -669,204 +651,105 @@ public_announcement
 other
 ```
 
-## 5.14 media_assets
+## 6.9 sources / claims
+
+所有外部资料必须保留：
 
 ```text
-asset_id
-author_id
-type
-local_path
-remote_url
-source_url
-license
-retrieved_at
-```
-
-图片建议默认保存 URL + 来源。只有许可证/使用条件允许或用户明确选择时才缓存本地副本。
-
-## 5.15 sources
-
-```text
-source_id
-url
-title
-publisher_or_site
-source_type
+source
 retrieved_at
 content_hash
-archive_path
-```
-
-## 5.16 claims
-
-建议增加通用 claim 层，解决“同一个字段有多个相互冲突来源”的问题。
-
-```text
-claim_id
-subject_type
-subject_id
-predicate
-value_json
-valid_from
-valid_to
+claim
 confidence
 status
-source_id
 extractor
 run_id
-created_at
 ```
 
-例如：
+网页展示 accepted claim，但历史和冲突 claim 不删除。
 
-```text
-subject=A123
-predicate=current_position
-value={"position":"Professor","institution":"..."}
-status=accepted
-```
+## 6.10 zotero_scan_runs / zotero_item_state
 
-网页展示的是 accepted claim；旧 claim 和冲突 claim 仍然保留。
+专门保存 Zotero 快照导入历史和 canonical hash。
 
-## 5.17 runs / jobs
-
-```text
-runs
-- run_id
-- run_type
-- started_at
-- finished_at
-- status
-- input_manifest
-- result_summary
-
-jobs
-- job_id
-- run_id
-- subject_id
-- request_type
-- status
-- request_path
-- result_path
-```
+这是从 SQLite 自主实现可靠增量检测的基础。
 
 ---
 
-# 6. 网页信息架构
+# 7. 网页信息架构
 
-Paperazzi 应该是**人物中心的科研情报界面**，而不是 Zotero 的网页复制品。
+Paperazzi 应当是**人物中心的科研情报界面**，不是 Zotero 的网页复制品。
 
-## 6.1 Home / Dashboard
+## 7.1 Dashboard
 
-首页回答：**“我的文献库背后有哪些人，最近发生了什么？”**
+回答：
 
-建议布局：
+> 我的 Zotero 文献背后有哪些人，最近发生了什么？
 
-### 顶部指标
+显示：
 
-```text
-Papers      Authors      Corresponding Authors      Institutions
-2,814       4,932        781                        642
-```
-
-### 中部左：Recent Update Feed
-
-- 新增 Zotero 论文；
-- 新识别通讯作者；
+- Papers；
+- Authors；
+- Corresponding Authors；
+- Institutions；
+- Zotero 最近新增论文；
+- 新作者；
 - 已关注作者新论文；
-- 人事变动；
-- 奖项/基金/新闻。
+- position/award/news；
+- unresolved identities；
+- claim conflicts；
+- papers outside Zotero。
 
-### 中部右：Network Pulse
+## 7.2 Authors
 
-小型作者网络图：
-
-- 新出现的作者；
-- 最近合作边；
-- 热点 cluster。
-
-### 底部
-
-- Unresolved Authors；
-- Conflicting Claims；
-- Missing Author Profiles；
-- Papers outside Zotero。
-
-## 6.2 Authors
-
-默认是信息密度较高的 table/card 混合页面。
-
-过滤：
+支持按以下条件过滤：
 
 - first author；
 - corresponding author；
-- both；
 - institution；
 - country；
 - topic；
-- year active；
-- Zotero paper count；
+- active year；
+- local paper count；
 - watchlist；
 - profile completeness；
 - identity confidence。
 
-卡片信息：
+## 7.3 Author Profile
 
-```text
-[photo] Name
-        Position @ Institution
-        SF · excited states · multireference methods
-        12 papers in Zotero · 7 coauthors in tracked network
-        Corresponding author in 5 local papers
-```
+核心页面包括：
 
-## 6.3 Author Profile
+### Header
 
-这是核心页面。
-
-### Hero
-
-- photo；
+- portrait；
 - preferred name；
-- current title/institution；
-- ORCID 等链接；
-- watch/unwatch；
-- profile confidence；
+- current position / institution；
+- public profiles；
+- identity confidence；
 - last checked。
 
 ### Research Summary
 
-AI 总结，但明确标注生成时间和基础论文范围。
+AI 总结研究领域，同时记录生成时间和基础论文范围。
 
 ### Topic Evolution
 
-例如：
-
-```text
-2008–2013  Organic electronics
-2013–2018  Singlet fission
-2018–2023  Exciton dynamics / ultrafast spectroscopy
-2023–      Quantum materials / data-driven molecular design
-```
-
-用 timeline / stacked area 展示。
+按时间窗口展示研究方向变化。
 
 ### Local Papers
 
-只显示 Zotero 中已有论文，支持：
+只列 Zotero 中已有论文：
 
 - Open PDF；
 - Show in Zotero；
 - DOI；
-- first/corresponding 标记。
+- first/corresponding role。
+
+**Open PDF 必须在 Zotero 未运行时仍可使用。**
 
 ### External Recent Papers
 
-显示在线更新发现、但**尚未进入 Zotero**的论文。
-
-这是一个非常有价值的功能：Paperazzi 不只整理过去，还可以帮助发现“我关注的人最近发表了什么”。
-
-状态：
+显示在线更新发现但尚未进入 Zotero 的论文：
 
 ```text
 IN_ZOTERO
@@ -877,34 +760,32 @@ POSSIBLE_DUPLICATE
 ### Collaborators
 
 - top collaborators；
-- 合作次数；
-- 最近一次合作；
-- 点击进入 relationship view。
+- collaboration count；
+- first/last collaboration year；
+- relationship view。
 
 ### Career / Education
 
-时间线展示教育和任职经历。
+时间线展示。
 
-### News & Events
+### News / Events
 
-按月/年显示。
+展示月度更新结果。
 
 ### Evidence
 
-每个字段可点击 `Sources`，展开来源。
+每个字段可展开来源。
 
-## 6.4 Network Explorer
+## 7.4 Network Explorer
 
-参考 Connected Papers / ResearchRabbit 的交互逻辑，但节点主体是**作者**。
-
-网络图支持 layer：
+作者作为节点，支持图层：
 
 ```text
-[✓] Coauthor
-[ ] Advisor/student
-[ ] Same institution
-[ ] Topic similarity
-[ ] Citation-derived
+Coauthor
+Advisor/student
+Same institution
+Topic similarity
+Citation-derived
 ```
 
 控制：
@@ -915,95 +796,21 @@ POSSIBLE_DUPLICATE
 - institution；
 - topic；
 - 1-hop / 2-hop；
-- local papers only / external papers included。
+- local papers only / external included。
 
-节点：
+## 7.5 Relationship Path
 
-- size：默认 local paper count；
-- ring：通讯作者状态；
-- label：作者名；
-- cluster：community detection；
-- hover：机构、方向、论文数。
-
-点击节点后右侧 drawer 显示作者摘要。
-
-### Relationship Path
-
-非常建议增加：
+选择两个作者：
 
 ```text
-Find path: Author A → Author B
+A → coauthor B → advisor of C → collaborator D
 ```
 
-返回：
+每一条边都能展开论文或证据。
 
-```text
-A
- └─ coauthored 3 papers with B
-      └─ PhD advisor of C
-           └─ coauthored with D
-```
+## 7.6 Review Center
 
-每一步可查看证据。
-
-## 6.5 Papers
-
-这里不是完整 Zotero UI，而是人物网络的论文索引。
-
-字段：
-
-- title；
-- year；
-- journal；
-- first author；
-- corresponding author；
-- tracked author count；
-- topics；
-- PDF status。
-
-## 6.6 Institutions
-
-展示：
-
-- 当前跟踪作者；
-- 历史作者；
-- 本地论文数；
-- 研究主题；
-- 作者之间的内部网络。
-
-## 6.7 Topics
-
-每个 topic 页面显示：
-
-- 相关作者；
-- 相关论文；
-- 年度趋势；
-- 机构；
-- 作者 community。
-
-## 6.8 Updates
-
-管理所有 batch run：
-
-```text
-Zotero Sync
-Enrichment Requests
-Import AI Package
-Monthly Watch
-```
-
-并显示：
-
-- 待导出的 request；
-- 待导入 ZIP；
-- 校验错误；
-- 本次改动摘要。
-
-## 6.9 Review Center
-
-必须存在。
-
-页面队列：
+必须存在：
 
 ```text
 Identity conflicts
@@ -1012,116 +819,118 @@ Claim conflicts
 Low-confidence corresponding authors
 Missing sources
 Broken profile URLs
+Zotero schema warnings
+Broken PDF paths
 ```
-
-系统可信度很大程度取决于这个页面，而不是 AI 模型有多强。
 
 ---
 
-# 7. 值得增加的功能
+# 8. 建议增加的高价值功能
 
-## 7.1 Library Gap Detector
+## 8.1 Library Gap Detector
 
-每月更新后比较：
+比较：
 
 ```text
-Known recent works of tracked authors
+Tracked authors' recent works
 vs.
-Papers currently in Zotero
+Current Zotero canonical items
 ```
 
-得到：
+找出：
 
 ```text
-Missing from Zotero
+NEW PAPER — NOT IN ZOTERO
 ```
 
-用户可直接看到 DOI、摘要和作者，然后决定是否加入 Zotero。
+## 8.2 Why do I know this author?
 
-这是建议作为 v1 的核心特色之一。
-
-## 7.2 Author Watchlist
-
-不是所有 5,000 个作者都值得同样强度更新。
-
-级别：
-
-```text
-NORMAL
-WATCH
-HIGH_PRIORITY
-IGNORE_EXTERNAL_UPDATES
-```
-
-月度在线检索可优先处理重点作者。
-
-## 7.3 Research Lineage
-
-当导师关系有可靠来源时生成：
-
-```text
-academic genealogy
-```
-
-这与普通 coauthor graph 是不同的信息层。
-
-## 7.4 Collaboration Lifecycle
-
-显示某两位作者合作历史：
-
-```text
-2012  first paper
-2013  3 papers
-2014  5 papers
-2015  1 paper
-2016– no collaboration
-```
-
-可辅助判断实验室成员、长期合作组、一次性合作等。
-
-## 7.5 Topic Drift / Research Pivot
-
-不是只生成 `keywords=[...]`，而是按时间窗口重新聚类论文关键词/embedding。
-
-可识别：
-
-- 研究方向转移；
-- 新方向形成；
-- 合作网络改变后带来的主题改变。
-
-## 7.6 “Why do I know this author?”
-
-作者页给出：
+作者页显示其最初进入 Paperazzi 的原因：
 
 ```text
 Entered Paperazzi because:
-2026-07-14 Zotero item ABC123
+Zotero item ABC123
 Role: corresponding author
-Collection: Singlet Fission / NOCI
+Collection: Singlet Fission
 ```
 
-这能把人物信息重新连接回用户自己的研究上下文。
+## 8.3 Research Lineage
 
-## 7.7 Data Completeness Score
+有可靠导师信息时形成 academic genealogy。
 
-不是评价学者，而是评价**数据库对该人物了解有多完整**：
+## 8.4 Collaboration Lifecycle
 
-```text
-Identity      100%
-Affiliation   100%
-Education      70%
-Public links   80%
-Research       90%
-Recent check  stale
-```
+显示作者对之间合作随时间的变化。
 
-用于生成下一次 enrichment request。
+## 8.5 Topic Drift / Research Pivot
+
+按年度论文主题识别方向迁移，而不是只保存静态 keywords。
+
+## 8.6 Data Completeness Score
+
+评价的是 Paperazzi 对该作者资料的完整程度，而不是评价学者本人。
 
 ---
 
-# 8. 技术栈建议
+# 9. AI 数据交换协议
 
-目标是固定、简单、容易让本地 AI/Codex 操作。
+在线 AI 不直接连接 Paperazzi 数据库。
+
+## 9.1 请求包
+
+```text
+author_enrichment_request/
+├── REQUEST.md
+├── manifest.json
+├── authors.jsonl
+└── schemas/
+```
+
+每个作者包含：
+
+- Paperazzi author_id；
+- known names；
+- known affiliations；
+- 本地 Zotero papers；
+- known external IDs；
+- requested fields；
+- ambiguity notes。
+
+## 9.2 返回包
+
+```text
+paperazzi-result.zip
+├── manifest.json
+├── authors/
+├── works/
+├── events/
+├── evidence/
+└── assets/
+```
+
+## 9.3 本地导入原则
+
+```text
+AI result
+ ↓
+Schema Validator
+ ↓
+Identity Resolver
+ ↓
+Evidence Validator
+ ↓
+Conflict Detector
+ ↓
+Deterministic Merge
+ ↓
+Paperazzi DB
+```
+
+AI 永远不执行 SQL。
+
+---
+
+# 10. 技术栈
 
 ## Backend
 
@@ -1132,10 +941,11 @@ SQLAlchemy 2
 Alembic
 Pydantic
 SQLite + WAL + FTS5
-httpx
 ```
 
-可选分析库：
+Zotero 读取层直接使用 Python `sqlite3` 或兼容 SQLite driver，只读连接 Zotero snapshot。
+
+可选：
 
 ```text
 igraph
@@ -1143,7 +953,7 @@ NetworkX
 scikit-learn
 ```
 
-不建议 v1 上 Neo4j、PostgreSQL、Elasticsearch。
+v1 不需要 Neo4j、PostgreSQL 或 Elasticsearch。
 
 ## Frontend
 
@@ -1157,58 +967,30 @@ Cytoscape.js
 Apache ECharts
 ```
 
-UI 可以使用轻量组件库，但业务数据结构不要绑定组件库。
-
-## Search
-
-v1：SQLite FTS5。
-
-搜索对象：
-
-- author names；
-- aliases；
-- papers；
-- institutions；
-- topics；
-- event titles/summaries。
-
-## Local AI
-
-AI 层做成 provider adapter，不把系统绑定到某一个模型：
-
-```text
-LocalAgentProvider
-├── cli provider
-├── OpenAI-compatible provider
-└── manual package provider
-```
-
-但无论模型是什么，都只能输出 schema-defined JSON。
-
 ---
 
-# 9. 推荐目录结构
+# 11. 推荐目录结构
 
 ```text
 Paperazzi/
 ├── README.md
 ├── DESIGN.md
 ├── pyproject.toml
-├── package.json
 ├── config/
 │   └── paperazzi.example.toml
 ├── schemas/
-│   ├── author_profile.schema.json
-│   ├── author_update.schema.json
-│   ├── evidence.schema.json
-│   ├── request_manifest.schema.json
-│   └── result_manifest.schema.json
 ├── backend/
 │   └── paperazzi/
 │       ├── api/
 │       ├── db/
 │       ├── models/
-│       ├── zotero/
+│       ├── zotero_sqlite/
+│       │   ├── source.py
+│       │   ├── snapshot.py
+│       │   ├── schema_probe.py
+│       │   ├── reader.py
+│       │   ├── attachments.py
+│       │   └── adapters/
 │       ├── identity/
 │       ├── ingest/
 │       ├── enrichment/
@@ -1216,15 +998,10 @@ Paperazzi/
 │       ├── search/
 │       └── cli/
 ├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   ├── components/
-│   │   ├── graph/
-│   │   └── api/
-│   └── ...
 ├── data/
 │   ├── paperazzi.sqlite3
 │   ├── cache/
+│   │   └── zotero-snapshots/
 │   ├── requests/
 │   ├── imports/
 │   └── assets/
@@ -1232,126 +1009,54 @@ Paperazzi/
 └── docs/
 ```
 
-`data/` 默认全部加入 `.gitignore`。
-
-人物资料、Zotero 元数据和照片不应默认提交 GitHub。
+`data/` 默认全部 `.gitignore`。
 
 ---
 
-# 10. 外部数据源策略
+# 12. 外部数据源
 
-Paperazzi 不应依赖任何一个学术平台做唯一身份源。
+外部网络信息用于 enrichment，而不是替代 Zotero 本地库。
 
-## Zotero
+建议使用：
 
-用途：
+- ORCID：身份、employment、education、works；
+- OpenAlex：author/work/institution/topic/citation graph；
+- Semantic Scholar：author/paper/citation/reference；
+- Crossref / publisher：DOI 和出版社 metadata；
+- University / lab / personal sites：当前职位、教育、biography、portrait、news；
+- 公开社交网络：仅作为补充证据。
 
-- 本地收藏论文；
-- creator 顺序；
-- PDF attachment；
-- collections/tags；
-- 增量版本。
-
-## ORCID
-
-用途：
-
-- 稳定身份 ID；
-- employment；
-- education；
-- works；
-- public profile。
-
-## OpenAlex
-
-用途：
-
-- author disambiguation 候选；
-- works；
-- institutions；
-- topics；
-- citation graph；
-- affiliation history 的辅助信息。
-
-## Semantic Scholar
-
-用途：
-
-- author/paper identity 交叉验证；
-- citation/reference；
-- author paper list；
-- bibliometric metadata。
-
-## Crossref / Publisher
-
-用途：
-
-- DOI metadata；
-- author/affiliation metadata；
-- publication date；
-- publisher landing page。
-
-## University / Lab / Personal sites
-
-用途：
-
-- 当前职位；
-- 教育经历；
-- biography；
-- portrait；
-- news；
-- group membership。
-
-任何来源数据均先进入 evidence/claim 层，不直接覆盖 author 表。
+所有外部数据先进入 Evidence/Claim 层。
 
 ---
 
-# 11. 公开人物信息的边界
+# 13. 人物公开信息边界
 
-Paperazzi 的目标是科研知识组织，不应成为无来源的人物画像生成器。
-
-规则：
-
-1. 只收集公开可访问的职业/学术相关资料；
-2. 出生日期、性别等字段只在公开来源明确陈述时保存；
-3. 不从姓名、照片、语言、国籍推断性别、年龄、族裔等属性；
-4. 对照片保存来源 URL 和许可信息；
-5. 不要求在线 AI 绕过登录墙、付费墙或访问控制；
-6. 每条人物事实应能回答“来源是什么”；
-7. 支持删除某个字段、某个 source 或某个 author 的 enrichment 数据；
-8. 对错误身份合并提供完整 undo/repair 路径。
+1. 只收集公开可访问、与职业/学术相关的信息；
+2. 出生日期、年龄、性别等只在可靠公开来源明确给出时保存；
+3. 不从姓名、照片、语言、国籍推断敏感属性；
+4. 照片保留来源和许可信息；
+5. 不绕过登录墙、付费墙或访问控制；
+6. 每条人物事实必须可追溯；
+7. 支持删除单个 claim/source/enrichment 结果；
+8. identity merge 必须可撤销。
 
 ---
 
-# 12. UI 参考方向
+# 14. MVP 开发阶段
 
-不是复制这些产品，而是分别吸收一种交互模式：
-
-- **Connected Papers**：force-directed graph、局部关系探索；
-- **ResearchRabbit**：论文/作者/概念关系探索和 collection 思维；
-- **OpenAlex**：author/work/institution/topic 作为知识图谱实体；
-- **Semantic Scholar**：作者页面 + 论文列表 + citation metadata；
-- **ORCID**：结构化个人履历和稳定 researcher identity。
-
-Paperazzi 的差异是：
-
-> 它不是从“全球文献搜索”出发，而是从“我的 Zotero 里已经出现的人”出发。
-
-因此首页和网络图应优先体现 **local relevance**，而不是全局 citation count。
-
----
-
-# 13. MVP 范围建议
-
-## Phase 0 — Foundation
+## Phase 0 — Zotero SQLite Foundation
 
 - repository skeleton；
-- SQLite schema；
-- migrations；
-- Zotero Local API connectivity；
-- initial full import；
-- incremental Zotero import；
-- authors/papers/authorships。
+- Paperazzi SQLite schema；
+- Zotero data directory 配置/发现；
+- read-only source；
+- snapshot；
+- schema probe；
+- CanonicalZoteroItem；
+- full scan + hash diff；
+- attachment path resolver；
+- tests with fixture Zotero databases。
 
 ## Phase 1 — Core Website
 
@@ -1359,31 +1064,31 @@ Paperazzi 的差异是：
 - Authors；
 - Author Profile；
 - Papers；
-- local PDF opening；
+- Open PDF without Zotero process；
 - simple coauthor graph；
-- full-text search。
+- search。
 
-## Phase 2 — Identity + AI Package Protocol
+## Phase 2 — Identity + AI Package
 
 - author resolution；
 - external IDs；
-- JSON Schemas；
+- JSON Schema；
 - enrichment request export；
-- ZIP result import；
+- ZIP import；
 - sources/claims；
 - Review Center。
 
 ## Phase 3 — Research Intelligence
 
-- monthly watch workflow；
+- monthly watch；
 - external recent papers；
 - Library Gap Detector；
-- news/events；
+- events/news；
 - watchlist。
 
 ## Phase 4 — Advanced Graph
 
-- multi-layer author network；
+- multi-layer network；
 - topic evolution；
 - community detection；
 - relationship path；
@@ -1392,73 +1097,91 @@ Paperazzi 的差异是：
 
 ---
 
-# 14. 第一版开发验收标准
-
-Paperazzi v0.1 不需要“所有人物资料都完整”。它需要先证明整个闭环可靠：
+# 15. 第一版验收标准
 
 ```text
-Zotero 新增一篇论文
+Zotero 可以处于关闭状态
        ↓
-Paperazzi 发现它
+Paperazzi 读取 zotero.sqlite
        ↓
-正确识别第一作者/作者顺序
+创建一致性 snapshot
        ↓
-生成未知作者 enrichment request
+识别 Zotero 新增论文
+       ↓
+正确读取 creator 顺序和 attachment
+       ↓
+识别第一作者
+       ↓
+必要时从 PDF/在线结果确定通讯作者
+       ↓
+生成 enrichment request
        ↓
 在线 AI 返回标准 ZIP
        ↓
-本地校验并创建作者档案
+本地校验并更新作者档案
        ↓
-网页出现该作者
+网页出现作者、论文和关系
        ↓
-作者页可看到该论文
+点击论文可直接打开 storage 中 PDF
        ↓
-点击可打开本地 PDF
-       ↓
-网络图出现合作关系
-       ↓
-所有外部人物信息都可追溯到 source
+全部外部信息可追溯到 evidence
 ```
 
-这个闭环稳定后，再扩展月度动态和高级图分析。
+同时必须验证另一种情况：
+
+```text
+Zotero 正在运行并修改数据库
+       ↓
+Paperazzi 仍然只能 READ ONLY
+       ↓
+创建事务一致 snapshot
+       ↓
+不阻断或污染 Zotero
+       ↓
+本次 run 基于被冻结的 snapshot 完成
+```
 
 ---
 
-# 15. 当前建议的关键决策
+# 16. 当前关键决策
 
-1. **Local API，不直接依赖 Zotero SQLite schema。**
-2. **SQLite，不在 v1 引入图数据库。**
-3. **作者使用内部永久 ID，外部 ID 只是映射。**
-4. **AI 输出候选 JSON，不直接写数据库。**
-5. **所有互联网信息进入 evidence + claim 层。**
-6. **第一作者/通讯作者是 authorship 属性，不是作者永久属性。**
-7. **Network graph 是数据库的投影视图，不是主数据。**
-8. **月度更新是人工触发 batch，不做后台持续监控。**
-9. **重点实现 identity merge/split 和 Review Center。**
-10. **把“已知作者新论文但 Zotero 尚未收藏”作为核心特色功能。**
+1. **只读 `zotero.sqlite` 是 Zotero 数据的唯一主入口。**
+2. **Paperazzi 不依赖 Zotero Desktop 进程，也不依赖 Local API。**
+3. **每次更新先建立 SQLite 一致性 snapshot，再做后续解析。**
+4. **所有 Zotero SQL 集中在独立 adapter 层，schema 变化必须显式检测。**
+5. **增量更新由 Paperazzi 自己的 canonical hash + scan state 完成。**
+6. **本地 PDF 路径直接从 SQLite + Zotero data directory 解析。**
+7. **Paperazzi 使用独立 SQLite，不向 Zotero 数据库写入任何内容。**
+8. **作者使用内部永久 ID；ORCID/OpenAlex 等只是身份映射。**
+9. **AI 输出候选 JSON，不直接写数据库。**
+10. **所有互联网信息进入 evidence + claim 层。**
+11. **第一作者/通讯作者是 authorship 属性。**
+12. **Network graph 是数据库投影，不是主数据。**
+13. **月度更新人工触发，不做后台持续监控。**
+14. **identity merge/split、Review Center 和 schema compatibility 属于可靠性核心。**
+15. **“已知作者新论文但 Zotero 尚未收藏”作为核心特色功能。**
 
 ---
 
-# 16. 参考资料
+# 17. 参考资料
 
-- Zotero Local API: https://www.zotero.org/support/dev/web_api/v3/local_api
-- Zotero Web API v3: https://www.zotero.org/support/dev/web_api/v3/basics
-- Zotero Syncing / version model: https://www.zotero.org/support/dev/web_api/v3/syncing
+- Zotero — Direct Access to the Zotero SQLite Database: https://www.zotero.org/support/dev/client_coding/direct_sqlite_database_access
+- Zotero — Data Directory: https://www.zotero.org/support/zotero_data
+- Zotero data schema repository: https://github.com/zotero/zotero-schema
+- Zotero source repository: https://github.com/zotero/zotero
 - ORCID Public API: https://info.orcid.org/what-is-orcid/services/public-api/
 - OpenAlex API: https://developers.openalex.org/
-- OpenAlex Authors: https://developers.openalex.org/api-reference/authors
 - Semantic Scholar Academic Graph API: https://www.semanticscholar.org/product/api
 - Crossref REST API: https://api.crossref.org/
-- Connected Papers: https://www.connectedpapers.com/about
-- ResearchRabbit: https://www.researchrabbit.ai/features
 
 ---
 
-## 下一步建议
+## 下一步
 
-下一份设计应当优先固定两个东西：
+下一份设计优先固定：
 
-1. **SQLite ER model / migration v1**；
-2. **在线 AI request/response ZIP protocol + JSON Schema v1**。
+1. **`ZoteroSQLiteReader` 的实际 SQL / CanonicalZoteroItem schema / snapshot 策略；**
+2. **Paperazzi SQLite ER model + migration v1；**
+3. **在线 AI request/response ZIP protocol + JSON Schema v1。**
 
-这两个协议一旦稳定，前端和 AI provider 都可以独立迭代，而不会破坏已有数据。
+其中第 1 项现在应当排在最前面，因为它定义 Paperazzi 与 Zotero 之间唯一、长期稳定的本地数据边界。
