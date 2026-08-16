@@ -97,21 +97,24 @@ class CanonicalZoteroItem:
         return None if value is None else str(value)
 
     def stable_payload(self) -> dict[str, Any]:
-        """Serializable representation used for deterministic scan-to-scan hashing.
+        """Semantic payload used for deterministic scan-to-scan content hashing.
 
-        Numeric itemID/creatorID/collectionID values are deliberately excluded from
-        the hash. They are useful diagnostics but are SQLite-internal identities.
+        Deliberately excluded:
+        - SQLite-internal numeric IDs;
+        - Zotero sync/version counters;
+        - dateAdded/dateModified/clientDateModified;
+        - deleted status (tracked separately by the diff engine);
+        - local attachment existence/resolution state;
+        - attachment sync timestamps/state.
+
+        This prevents a pure Zotero sync or local file download from masquerading as a
+        bibliographic metadata change. Attachment storage hashes remain included so a
+        genuinely replaced attachment can be detected.
         """
         return {
             "library_id": self.library_id,
             "item_key": self.item_key,
             "item_type": self.item_type,
-            "zotero_version": self.zotero_version,
-            "synced": self.synced,
-            "date_added": self.date_added,
-            "date_modified": self.date_modified,
-            "client_date_modified": self.client_date_modified,
-            "deleted": self.deleted,
             "fields": dict(sorted(self.fields.items())),
             "creators": [
                 {
@@ -144,8 +147,6 @@ class CanonicalZoteroItem:
                     "link_mode_name": a.link_mode_name,
                     "content_type": a.content_type,
                     "path": a.path,
-                    "sync_state": a.sync_state,
-                    "storage_mod_time": a.storage_mod_time,
                     "storage_hash": a.storage_hash,
                 }
                 for a in sorted(self.attachments, key=lambda x: (x.library_id, x.item_key))
