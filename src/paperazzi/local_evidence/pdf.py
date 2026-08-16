@@ -21,12 +21,15 @@ EMAIL_RE = re.compile(
 )
 YEAR_RE = re.compile(r"\b(?:18|19|20)\d{2}[a-z]?\b", re.IGNORECASE)
 
-# Reference ordinals above 999 are not useful for the scholarly corpus we target and
-# are much more likely to be publication years/OCR artefacts.  The first real-library
-# validation showed author-year bibliographies being misread as ordinals such as
-# 1943/1962/1954, so keep the deterministic baseline deliberately conservative.
+# Keep deterministic reference ordinals deliberately conservative. The first real-
+# library validation showed publication years (1943/1962/1954) being mistaken for
+# ordinals. Phase 2.5b additionally showed that noisy marker streams can look locally
+# plausible, so v3 selects a strict increasing ordinal chain before segmentation.
 NUMBERED_REFERENCE_START_RE = re.compile(
     r"(?m)^\s*(?:\[(\d{1,3})\]|(\d{1,3})[.)])\s+"
+)
+PAREN_NUMBERED_REFERENCE_START_RE = re.compile(
+    r"(?m)^\s*\((\d{1,3})\)\s*(?=(?:\([a-z]\)\s*)?\S)"
 )
 BARE_NUMBERED_REFERENCE_START_RE = re.compile(
     r"(?m)^\s*(\d{1,3})\s+(?=[A-ZÀ-ÖØ-Þ])"
@@ -187,79 +190,198 @@ def _reference_marker_number(match: re.Match[str]) -> int | None:
                 number = int(group)
             except ValueError:
                 return None
-            # Defensive even if a future regex becomes wider again.
             if number > 999 or 1800 <= number <= 2099:
                 return None
             return number
     return None
 
 
-def _markers_are_plausible(markers: list[tuple[int, int]]) -> bool:
-    """Require enough locally near-sequential markers before trusting splitting."""
-    if len(markers) < 3:
-        return False
-    numbers = [number for _, number in markers]
-    if any(number < 1 or number > 999 for number in numbers):
-        return False
+def _select_strict_ordinal_chain(matches: list[re.Match[str]]) -> list[re.Match[str]]:
+    """Return the strongest increasing bibliography-number chain.
 
-    deltas = [b - a for a, b in zip(numbers, numbers[1:])]
-    if not deltas:
-        return False
+    A valid transition increases by 1..10. This tolerates a few missing markers while
+    dropping interleaved years, page numbers, OCR artefacts, and unrelated numbered
+    material. Dynamic programming is small here because a bibliography normally has
+    at most a few hundred markers.
+    """
+    candidates = [(match, _reference_marker_number(match)) for match in matches]
+    candidates = [(match, number) for match, number in candidates if number is not None]
+    if len(candidates) < 3:
+        return []
 
-    # Extraction may skip a few markers, especially across columns/pages, but real
-    # bibliography numbering should not look like a sequence of publication years or
-    # make huge arbitrary jumps.  Require at least ~70% small forward moves.
-    plausible_forward = sum(1 for delta in deltas if 1 <= delta <= 50)
-    required = max(2, (len(deltas) * 7 + 9) // 10)
-    return plausible_forward >= required
+    n = len(candidates)
+    length = [1] * n
+    predecessor = [-1] * n
+    gap_cost = [0] * n
+
+    for i in range(n):
+        _, current = candidates[i]
+        assert current is not None
+        for j in range(i):
+            _, previous = candidates[j]
+            assert previous is not None
+            delta = current - previous
+            if not 1 <= delta <= 10:
+                continue
+            candidate_length = length[j] + 1
+            candidate_gap_cost = gap_cost[j] + (delta - 1)
+            if candidate_length > length[i] or (
+                candidate_length == length[i] and candidate_gap_cost < gap_cost[i]
+            ):
+                length[i] = candidate_length
+                predecessor[i] = j
+                gap_cost[i] = candidate_gap_cost
+
+    best = max(
+        range(n),
+        key=lambda i: (
+            length[i],
+            -gap_cost[i],
+            -(candidates[i][1] or 999),
+        ),
+    )
+    if length[best] < 3:
+        return []
+
+    indices: list[int] = []
+    cursor = best
+    while cursor >= 0:
+        indices.append(cursor)
+        cursor = predecessor[cursor]
+    indices.reverse()
+
+    chain = [candidates[index] for index in indices]
+    numbers = [number for _, number in chain if number is not None]
+    if len(numbers) < 3:
+        return []
+
+    # High-confidence automatic splitting requires the chain to be mostly consecutive.
+    consecutive = sum(1 for a, b in zip(numbers, numbers[1:]) if b == a + 1)
+    if consecutive < max(2, int((len(numbers) - 1) * 0.70)):
+        return []
+
+    return [match for match, _ in chain]
+
+
+def _entries_from_matches(
+    normalized: str,
+    matches: list[re.Match[str]],
+) -> tuple[ReferenceEntry, ...]:
+    entries: list[ReferenceEntry] = []
+    for index, match in enumerate(matches):
+        start = match.end()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(normalized)
+        raw = " ".join(normalized[start:end].split())
+        if not raw:
+            continue
+        entries.append(
+            ReferenceEntry(
+                ordinal=_reference_marker_number(match),
+                raw_text=raw,
+                dois=extract_dois(raw),
+                years=tuple(dict.fromkeys(YEAR_RE.findall(raw))),
+            )
+        )
+    return tuple(entries)
 
 
 def segment_reference_entries(text: str) -> tuple[tuple[ReferenceEntry, ...], str, str]:
-    """Best-effort reference segmentation.
-
-    Returns ``(entries, method, confidence)``.  When segmentation is not trustworthy,
-    an empty entry list is returned while the caller still retains the raw section.
-    """
+    """Best-effort reference segmentation with strict ordinal-chain filtering."""
     normalized = text.replace("\r\n", "\n").replace("\r", "\n")
 
     for pattern, method in (
         (NUMBERED_REFERENCE_START_RE, "numbered-punctuated"),
+        (PAREN_NUMBERED_REFERENCE_START_RE, "numbered-parenthesized"),
         (BARE_NUMBERED_REFERENCE_START_RE, "numbered-bare"),
     ):
-        matches = list(pattern.finditer(normalized))
-        markers: list[tuple[int, int]] = []
-        for match in matches:
-            number = _reference_marker_number(match)
-            if number is not None:
-                markers.append((match.start(), number))
-        if not _markers_are_plausible(markers):
+        chain = _select_strict_ordinal_chain(list(pattern.finditer(normalized)))
+        if not chain:
             continue
-
-        entries: list[ReferenceEntry] = []
-        usable_matches = [m for m in matches if _reference_marker_number(m) is not None]
-        for index, match in enumerate(usable_matches):
-            start = match.end()
-            end = usable_matches[index + 1].start() if index + 1 < len(usable_matches) else len(normalized)
-            raw = " ".join(normalized[start:end].split())
-            if not raw:
-                continue
-            entries.append(
-                ReferenceEntry(
-                    ordinal=_reference_marker_number(match),
-                    raw_text=raw,
-                    dois=extract_dois(raw),
-                    years=tuple(dict.fromkeys(YEAR_RE.findall(raw))),
-                )
-            )
+        entries = _entries_from_matches(normalized, chain)
         if len(entries) >= 3:
-            return tuple(entries), method, "HIGH"
+            return entries, method, "HIGH"
 
-    # Author-year bibliographies are deliberately not force-split yet.  A raw section
-    # with many year anchors is still valuable evidence for a local AI/parser later.
+    # Author-year bibliographies are deliberately not force-split. A raw section with
+    # many year anchors remains valuable evidence for local-AI recovery later.
     years = YEAR_RE.findall(normalized)
     if len(years) >= 3:
         return (), "raw-author-year-or-unsegmented", "MEDIUM"
     return (), "raw-unsegmented", "LOW"
+
+
+def _find_implicit_numbered_reference_section(pages: list[str]) -> ReferenceSection | None:
+    """Conservatively recover a late numbered bibliography without a literal heading.
+
+    Phase 2.5b showed common physics layouts with no extracted References heading and
+    multi-line entries whose marker line is the only stable signal. We therefore use
+    marker chains rather than single-line citation-density scoring. To avoid inventing
+    citation sections from ordinary numbered prose, implicit recovery requires at
+    least eight mostly-consecutive entries and a chain beginning near 1.
+    """
+    if len(pages) < 2:
+        return None
+
+    start_page = max(0, int(len(pages) * 0.60))
+    tail_pages = pages[start_page:]
+    tail_text = "\n\f\n".join(tail_pages)
+
+    best: tuple[int, list[re.Match[str]], str] | None = None
+    for pattern, method in (
+        (NUMBERED_REFERENCE_START_RE, "implicit-numbered-punctuated"),
+        (PAREN_NUMBERED_REFERENCE_START_RE, "implicit-numbered-parenthesized"),
+        (BARE_NUMBERED_REFERENCE_START_RE, "implicit-numbered-bare"),
+    ):
+        chain = _select_strict_ordinal_chain(list(pattern.finditer(tail_text)))
+        if len(chain) < 8:
+            continue
+        numbers = [_reference_marker_number(match) for match in chain]
+        numbers = [number for number in numbers if number is not None]
+        if not numbers or numbers[0] > 5:
+            continue
+        score = len(chain)
+        if best is None or score > best[0]:
+            best = (score, chain, method)
+
+    if best is None:
+        return None
+
+    _, chain, method = best
+    first_offset = chain[0].start()
+    raw_text = tail_text[first_offset:].strip()
+    entries = _entries_from_matches(raw_text, list(next(
+        pattern.finditer(raw_text)
+        for pattern, pattern_method in (
+            (NUMBERED_REFERENCE_START_RE, "implicit-numbered-punctuated"),
+            (PAREN_NUMBERED_REFERENCE_START_RE, "implicit-numbered-parenthesized"),
+            (BARE_NUMBERED_REFERENCE_START_RE, "implicit-numbered-bare"),
+        )
+        if pattern_method == method
+    )))
+
+    # Re-run strict-chain selection in the sliced text; offsets changed after slicing.
+    selected_pattern = {
+        "implicit-numbered-punctuated": NUMBERED_REFERENCE_START_RE,
+        "implicit-numbered-parenthesized": PAREN_NUMBERED_REFERENCE_START_RE,
+        "implicit-numbered-bare": BARE_NUMBERED_REFERENCE_START_RE,
+    }[method]
+    sliced_chain = _select_strict_ordinal_chain(list(selected_pattern.finditer(raw_text)))
+    entries = _entries_from_matches(raw_text, sliced_chain)
+    if len(entries) < 8:
+        return None
+
+    # Approximate the first source page by counting form-feed separators before the
+    # chosen start. Exact evidence spans are refined by the AI review when needed.
+    local_page_offset = tail_text[:first_offset].count("\f")
+    reference_start_page = min(len(pages) - 1, start_page + local_page_offset)
+    return ReferenceSection(
+        heading="",
+        start_page=reference_start_page,
+        end_page=len(pages) - 1,
+        method=method,
+        confidence="HIGH",
+        raw_text=raw_text,
+        entries=entries,
+    )
 
 
 def find_reference_section(page_texts: Iterable[str]) -> ReferenceSection | None:
@@ -278,10 +400,8 @@ def find_reference_section(page_texts: Iterable[str]) -> ReferenceSection | None
                 candidates.append((page_index, line_index, line))
 
     if not candidates:
-        return None
+        return _find_implicit_numbered_reference_section(pages)
 
-    # The last exact heading in the latter 70% of a paper is usually the real
-    # bibliography heading and avoids TOC/front-matter mentions of "References".
     page_index, line_index, heading = candidates[-1]
     first_page_lines = _normalized_lines(pages[page_index])
     first_page_tail = "\n".join(first_page_lines[line_index + 1 :]).strip()
@@ -384,11 +504,7 @@ def _text_status(normal: int, thin: int, empty: int, page_count: int) -> str:
 
 
 def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEvidence:
-    """Read a local PDF and return deterministic evidence without changing the file.
-
-    PDF-derived information is evidence, not Zotero metadata.  Failure is represented
-    in the returned object so one bad or scanned PDF never blocks library ingestion.
-    """
+    """Read a local PDF and return deterministic evidence without changing the file."""
     pdf_path = Path(path).expanduser().resolve()
     try:
         file_size = pdf_path.stat().st_size
@@ -435,14 +551,13 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
                     error="PDF requires a password",
                 )
 
-            page_count = int(doc.page_count)
             metadata = dict(doc.metadata or {})
             for page in doc:
                 page_texts.append(page.get_text("text", sort=True) or "")
                 raw_blocks = page.get_text("blocks", sort=True) or []
                 text_blocks = [tuple(block) for block in raw_blocks if len(block) < 7 or block[6] == 0]
                 blocks_by_page.append(text_blocks)
-    except Exception as exc:  # backend-specific parse failures must be non-fatal
+    except Exception as exc:
         return PdfEvidence(
             path=str(pdf_path),
             file_size=file_size,
