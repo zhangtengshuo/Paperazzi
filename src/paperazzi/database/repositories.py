@@ -48,11 +48,7 @@ def raw_text_hash(text: str) -> str:
 
 
 def deterministic_reference_quality(section: Any | None) -> tuple[str | None, str | None, str]:
-    """Return section confidence, segmentation confidence and initial entry quality.
-
-    The deterministic parser's section existence and segmentation quality are separate.
-    Entry text is never declared GOOD before the mandatory local-AI review.
-    """
+    """Return section confidence, segmentation confidence and initial entry quality."""
     if section is None:
         return None, None, "UNREVIEWED"
     if section.heading:
@@ -69,12 +65,7 @@ def decide_extraction_trigger(
     extractor_version: str,
     prompt_hash: str,
 ) -> str | None:
-    """Return the trigger for a new extraction run, or None if none is needed.
-
-    A STARTED run blocks duplicate extraction while its deterministic output is waiting
-    for the mandatory AI review. Completed accepted runs are compared against file,
-    extractor and prompt identities.
-    """
+    """Return the trigger for a new extraction run, or None if none is needed."""
     if document.availability_status != "PDF_AVAILABLE":
         return None
 
@@ -141,6 +132,17 @@ def create_extraction_run(
     session.add(run)
     session.flush()
     return run
+
+
+def _latest_review(
+    session: Any, attempt: DocumentExtractionAttempt
+) -> DocumentExtractionReview | None:
+    return (
+        session.query(DocumentExtractionReview)
+        .filter_by(attempt_id=attempt.attempt_id)
+        .order_by(DocumentExtractionReview.review_id.desc())
+        .first()
+    )
 
 
 def add_extraction_attempt(
@@ -247,6 +249,11 @@ def record_extraction_review(
         raise ExtractionError(f"invalid reviewer_type={reviewer_type}")
     if decision not in ("PASS", "ACCEPT_PARTIAL", "RETRY", "UNRESOLVED", "NEEDS_OCR"):
         raise ExtractionError(f"invalid review decision={decision}")
+    if attempt.attempt_number == 3 and decision == "RETRY":
+        raise ExtractionError(
+            "Attempt 3 is the final allowed attempt; its review must be terminal "
+            "(PASS/ACCEPT_PARTIAL/UNRESOLVED/NEEDS_OCR)"
+        )
     review = DocumentExtractionReview(
         attempt_id=attempt.attempt_id,
         reviewer_type=reviewer_type,
@@ -373,15 +380,33 @@ def persist_reference_section(
     return row
 
 
-def _latest_review(
-    session: Any, attempt: DocumentExtractionAttempt
-) -> DocumentExtractionReview | None:
-    return (
-        session.query(DocumentExtractionReview)
-        .filter_by(attempt_id=attempt.attempt_id)
-        .order_by(DocumentExtractionReview.review_id.desc())
-        .first()
+def _supersede_earlier_attempt_outputs(
+    session: Any,
+    run: DocumentExtractionRun,
+    attempt: DocumentExtractionAttempt,
+    superseded_status: str,
+) -> None:
+    earlier = (
+        session.query(DocumentExtractionAttempt)
+        .filter(
+            DocumentExtractionAttempt.extraction_run_id == run.extraction_run_id,
+            DocumentExtractionAttempt.attempt_number < attempt.attempt_number,
+        )
+        .all()
     )
+    for prev in earlier:
+        session.query(DocumentEvidenceSpan).filter(
+            DocumentEvidenceSpan.attempt_id == prev.attempt_id,
+            DocumentEvidenceSpan.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
+        ).update({"acceptance_status": superseded_status})
+        session.query(PaperReferenceSection).filter(
+            PaperReferenceSection.attempt_id == prev.attempt_id,
+            PaperReferenceSection.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
+        ).update({"acceptance_status": superseded_status})
+        session.query(PaperReference).filter(
+            PaperReference.originating_attempt_id == prev.attempt_id,
+            PaperReference.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
+        ).update({"acceptance_status": superseded_status})
 
 
 def accept_attempt(
@@ -394,14 +419,17 @@ def accept_attempt(
     reference_status: str = "ACCEPTED",
     superseded_status: str = "SUPERSEDED",
 ) -> None:
-    """Accept a reviewed attempt; final status is owned by the latest review."""
+    """Accept a reviewed PASS/ACCEPT_PARTIAL attempt."""
     review = _latest_review(session, attempt)
     if review is None:
         raise ExtractionError(
             f"attempt_id={attempt.attempt_id} has no AI/manual review; cannot accept"
         )
-    if review.decision == "RETRY":
-        raise ExtractionError("a RETRY review decision cannot finalize an extraction run")
+    if review.decision not in ("PASS", "ACCEPT_PARTIAL"):
+        raise ExtractionError(
+            f"review decision {review.decision} is terminal-but-unaccepted or retry; "
+            "only PASS/ACCEPT_PARTIAL may accept evidence"
+        )
     if attempt.extraction_run_id != run.extraction_run_id:
         raise ExtractionError("attempt does not belong to extraction run")
     if final_status is not None and final_status != review.decision:
@@ -438,28 +466,47 @@ def accept_attempt(
         PaperReference.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
     ).update({"acceptance_status": reference_status})
 
-    earlier = (
-        session.query(DocumentExtractionAttempt)
-        .filter(
-            DocumentExtractionAttempt.extraction_run_id == run.extraction_run_id,
-            DocumentExtractionAttempt.attempt_number < attempt.attempt_number,
-        )
-        .all()
-    )
-    for prev in earlier:
-        session.query(DocumentEvidenceSpan).filter(
-            DocumentEvidenceSpan.attempt_id == prev.attempt_id,
-            DocumentEvidenceSpan.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
-        ).update({"acceptance_status": superseded_status})
-        session.query(PaperReferenceSection).filter(
-            PaperReferenceSection.attempt_id == prev.attempt_id,
-            PaperReferenceSection.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
-        ).update({"acceptance_status": superseded_status})
-        session.query(PaperReference).filter(
-            PaperReference.originating_attempt_id == prev.attempt_id,
-            PaperReference.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
-        ).update({"acceptance_status": superseded_status})
-
+    _supersede_earlier_attempt_outputs(session, run, attempt, superseded_status)
     session.query(PaperDocument).filter_by(document_id=run.document_id).update(
         {"current_extraction_run_id": run.extraction_run_id, "updated_at": utcnow()}
     )
+
+
+def finalize_unaccepted_attempt(
+    session: Any,
+    run: DocumentExtractionRun,
+    attempt: DocumentExtractionAttempt,
+    *,
+    rejected_status: str = "REJECTED",
+    superseded_status: str = "SUPERSEDED",
+) -> None:
+    """Complete NEEDS_OCR/UNRESOLVED without promoting candidate evidence."""
+    review = _latest_review(session, attempt)
+    if review is None:
+        raise ExtractionError("cannot finalize an unreviewed attempt")
+    if review.decision not in ("NEEDS_OCR", "UNRESOLVED"):
+        raise ExtractionError(
+            "finalize_unaccepted_attempt only accepts NEEDS_OCR/UNRESOLVED reviews"
+        )
+    if attempt.extraction_run_id != run.extraction_run_id:
+        raise ExtractionError("attempt does not belong to extraction run")
+
+    run.status = "COMPLETED"
+    run.completed_at = utcnow()
+    run.final_status = review.decision
+    run.accepted_attempt_id = None
+
+    session.query(DocumentEvidenceSpan).filter(
+        DocumentEvidenceSpan.attempt_id == attempt.attempt_id,
+        DocumentEvidenceSpan.acceptance_status == "CANDIDATE",
+    ).update({"acceptance_status": rejected_status})
+    session.query(PaperReferenceSection).filter(
+        PaperReferenceSection.attempt_id == attempt.attempt_id,
+        PaperReferenceSection.acceptance_status == "CANDIDATE",
+    ).update({"acceptance_status": rejected_status})
+    session.query(PaperReference).filter(
+        PaperReference.originating_attempt_id == attempt.attempt_id,
+        PaperReference.acceptance_status == "CANDIDATE",
+    ).update({"acceptance_status": rejected_status})
+
+    _supersede_earlier_attempt_outputs(session, run, attempt, superseded_status)
