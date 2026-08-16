@@ -30,6 +30,7 @@ class CanonicalCollection:
     collection_key: str
     name: str
     parent_collection_id: int | None
+    parent_collection_key: str | None
     order_index: int
 
 
@@ -82,7 +83,7 @@ class CanonicalZoteroItem:
 
     @property
     def zotero_identity(self) -> str:
-        """Stable Zotero-side identity. Numeric itemID is intentionally excluded."""
+        """Stable Zotero-side identity within the local library set."""
         return f"zotero:{self.library_id}:{self.item_key}"
 
     @property
@@ -98,9 +99,8 @@ class CanonicalZoteroItem:
     def stable_payload(self) -> dict[str, Any]:
         """Serializable representation used for deterministic scan-to-scan hashing.
 
-        SQLite's internal itemID/creatorID/collectionID values are excluded where they
-        are not stable identifiers.  Zotero libraryID + item key remains the source
-        identity for now; Paperazzi's own author/item UUIDs are introduced later.
+        Numeric itemID/creatorID/collectionID values are deliberately excluded from
+        the hash. They are useful diagnostics but are SQLite-internal identities.
         """
         return {
             "library_id": self.library_id,
@@ -127,7 +127,7 @@ class CanonicalZoteroItem:
                 {
                     "collection_key": c.collection_key,
                     "name": c.name,
-                    "parent_collection_id": c.parent_collection_id,
+                    "parent_collection_key": c.parent_collection_key,
                     "order_index": c.order_index,
                 }
                 for c in self.collections
