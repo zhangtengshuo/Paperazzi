@@ -24,6 +24,13 @@ from .service import (
 )
 
 
+def _require_unlocked(author: Author) -> None:
+    if author.locked:
+        raise IdentityResolutionError(
+            "identity is locked; explicitly unlock it before changing identity state"
+        )
+
+
 def unlink_mention(
     session: Any,
     creator_mention_id: int,
@@ -38,8 +45,9 @@ def unlink_mention(
     if membership is None:
         return
     author = session.get(Author, membership.author_id)
-    if author.locked and actor != "MANUAL":
-        raise IdentityResolutionError("locked identities may only be modified manually")
+    if author is None:
+        raise IdentityResolutionError("accepted membership points to missing author")
+    _require_unlocked(author)
     membership.status = "SUPERSEDED"
     membership.updated_at = utcnow()
     active = (
@@ -77,8 +85,7 @@ def mark_not_same_person(
     author = session.get(Author, author_id)
     if mention is None or author is None:
         raise IdentityResolutionError("mention or author does not exist")
-    if author.locked and actor != "MANUAL":
-        raise IdentityResolutionError("locked identities may only be modified manually")
+    _require_unlocked(author)
 
     accepted = _accepted_membership(session, creator_mention_id)
     if accepted is not None and accepted.author_id == author_id:
@@ -193,6 +200,7 @@ def add_external_id(
     author = session.get(Author, author_id)
     if author is None:
         raise IdentityResolutionError("author does not exist")
+    _require_unlocked(author)
     namespace_norm = namespace.strip().upper()
     value_norm = normalize_external_id(namespace_norm, value)
 
