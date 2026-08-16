@@ -61,8 +61,6 @@ class PdfEvidenceHeuristicTests(unittest.TestCase):
         self.assertIn("2021", entries[1].years)
 
     def test_author_year_lines_are_not_misread_as_bare_reference_ordinals(self) -> None:
-        # Regression from the first real-library validation: an old bibliography was
-        # incorrectly split at years such as 1943, 1962 and 1954.
         text = """
 FRONTERA MARQUES, B.: Una funcion numerica. Zaragoza, 1943.
 1962 FRUCHT, R., and G.-C. ROTA: La funcion de Mobius. Scientia.
@@ -73,6 +71,32 @@ FRONTERA MARQUES, B.: Una funcion numerica. Zaragoza, 1943.
         self.assertEqual(entries, ())
         self.assertEqual(method, "raw-author-year-or-unsegmented")
         self.assertEqual(confidence, "MEDIUM")
+
+    def test_strict_chain_discards_implausible_number_noise(self) -> None:
+        text = """
+[20] unrelated numbered line
+[2] B. Beta, Journal B 2, 20 (2020).
+[3] C. Gamma, Journal C 3, 30 (2021).
+[4] D. Delta, Journal D 4, 40 (2022).
+[5] E. Epsilon, Journal E 5, 50 (2023).
+[90] unrelated trailing marker
+"""
+        entries, method, confidence = segment_reference_entries(text)
+        self.assertEqual(method, "numbered-punctuated")
+        self.assertEqual(confidence, "HIGH")
+        self.assertEqual([entry.ordinal for entry in entries], [2, 3, 4, 5])
+
+    def test_parenthesized_main_reference_keeps_subreferences_together(self) -> None:
+        text = """
+(8) (a) A. Alpha, Journal A 1, 10 (2018). (b) A. Alpha, Journal B 2, 20 (2019).
+(9) (a) B. Beta, Journal C 3, 30 (2020). (b) B. Beta, Journal D 4, 40 (2021).
+(10) C. Gamma, Journal E 5, 50 (2022).
+"""
+        entries, method, confidence = segment_reference_entries(text)
+        self.assertEqual(method, "numbered-parenthesized")
+        self.assertEqual(confidence, "HIGH")
+        self.assertEqual([entry.ordinal for entry in entries], [8, 9, 10])
+        self.assertIn("(b) A. Alpha", entries[0].raw_text)
 
     def test_reference_heading_prefers_late_exact_heading(self) -> None:
         pages = [
@@ -87,6 +111,46 @@ FRONTERA MARQUES, B.: Una funcion numerica. Zaragoza, 1943.
         self.assertEqual(section.heading, "REFERENCES")
         self.assertEqual(len(section.entries), 3)
         self.assertEqual(section.confidence, "HIGH")
+
+    def test_implicit_tail_bibliography_supports_multiline_entry_starts(self) -> None:
+        pages = [
+            "Title\nIntroduction and body text.",
+            "Methods\nMore body text.",
+            "Discussion\nFinal discussion paragraph.",
+            """[1]
+A. Alpha, Journal A 1, 10 (2010).
+[2]
+B. Beta, Journal B 2, 20 (2011).
+[3]
+C. Gamma, Journal C 3, 30 (2012).
+[4]
+D. Delta, Journal D 4, 40 (2013).
+[5]
+E. Epsilon, Journal E 5, 50 (2014).
+[6]
+F. Zeta, Journal F 6, 60 (2015).
+[7]
+G. Eta, Journal G 7, 70 (2016).
+[8]
+H. Theta, Journal H 8, 80 (2017).
+[9]
+I. Iota, Journal I 9, 90 (2018).
+""",
+        ]
+        section = find_reference_section(pages)
+        self.assertIsNotNone(section)
+        assert section is not None
+        self.assertEqual(section.heading, "")
+        self.assertEqual(section.method, "implicit-numbered-punctuated")
+        self.assertEqual([entry.ordinal for entry in section.entries], list(range(1, 10)))
+
+    def test_short_numbered_tail_is_not_assumed_to_be_references(self) -> None:
+        pages = [
+            "Title\nBody",
+            "Discussion\nMore body",
+            "1. First conclusion\n2. Second conclusion\n3. Third conclusion\n4. Fourth conclusion\n5. Fifth conclusion",
+        ]
+        self.assertIsNone(find_reference_section(pages))
 
     def test_author_year_section_is_preserved_even_when_not_force_split(self) -> None:
         pages = [
