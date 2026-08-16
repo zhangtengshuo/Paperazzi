@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://paperazzi.local/schemas/phase4_report.schema.json",
+  "title": "Paperazzi Phase 4 Validation Report",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "status",
+    "migration_head",
+    "tests",
+    "identity",
+    "authorships",
+    "reference_resolution",
+    "integrity",
+    "idempotency",
+    "reversibility"
+  ],
+  "properties": {
+    "phase": {
+      "const": "PHASE_4"
+    },
+    "status": {
+      "enum": ["PASS", "FAIL"]
+    },
+    "migration_head": {
+      "type": "string"
+    },
+    "tests": {
+      "type": "object",
+      "required": ["passed", "failed"],
+      "properties": {
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "skipped": {"type": "integer", "minimum": 0}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "creator_mentions",
+        "canonical_authors",
+        "accepted_memberships",
+        "candidate_memberships",
+        "rejected_memberships",
+        "unresolved_mentions",
+        "name_only_auto_merges"
+      ],
+      "properties": {
+        "creator_mentions": {"type": "integer", "minimum": 0},
+        "canonical_authors": {"type": "integer", "minimum": 0},
+        "accepted_memberships": {"type": "integer", "minimum": 0},
+        "candidate_memberships": {"type": "integer", "minimum": 0},
+        "rejected_memberships": {"type": "integer", "minimum": 0},
+        "unresolved_mentions": {"type": "integer", "minimum": 0},
+        "identity_conflicts": {"type": "integer", "minimum": 0},
+        "manual_locks": {"type": "integer", "minimum": 0},
+        "name_only_auto_merges": {"const": 0}
+      }
+    },
+    "authorships": {
+      "type": "object",
+      "required": ["rows", "first_author_rows", "corresponding_author_rows"],
+      "properties": {
+        "rows": {"type": "integer", "minimum": 0},
+        "first_author_rows": {"type": "integer", "minimum": 0},
+        "corresponding_author_rows": {"type": "integer", "minimum": 0},
+        "corresponding_from_candidate_evidence": {"const": 0}
+      }
+    },
+    "reference_resolution": {
+      "type": "object",
+      "required": [
+        "eligible_accepted_references",
+        "accepted_matches",
+        "candidate_matches",
+        "rejected_matches",
+        "unresolved_references",
+        "candidate_reference_inputs_matched"
+      ],
+      "properties": {
+        "eligible_accepted_references": {"type": "integer", "minimum": 0},
+        "accepted_matches": {"type": "integer", "minimum": 0},
+        "candidate_matches": {"type": "integer", "minimum": 0},
+        "rejected_matches": {"type": "integer", "minimum": 0},
+        "unresolved_references": {"type": "integer", "minimum": 0},
+        "candidate_reference_inputs_matched": {"const": 0},
+        "by_match_type": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["foreign_key_check_rows", "duplicate_active_memberships"],
+      "properties": {
+        "foreign_key_check_rows": {"const": 0},
+        "duplicate_active_memberships": {"const": 0},
+        "direct_cites_edges_written": {"const": 0}
+      }
+    },
+    "idempotency": {
+      "type": "object",
+      "required": ["passed"],
+      "properties": {
+        "passed": {"const": true},
+        "duplicate_identity_decisions_on_rerun": {"const": 0},
+        "duplicate_reference_matches_on_rerun": {"const": 0}
+      }
+    },
+    "reversibility": {
+      "type": "object",
+      "required": ["merge_split_roundtrip_passed", "manual_lock_passed"],
+      "properties": {
+        "merge_split_roundtrip_passed": {"const": true},
+        "manual_lock_passed": {"const": true}
+      }
+    },
+    "review_queues": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

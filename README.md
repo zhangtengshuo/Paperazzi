@@ -6,7 +6,7 @@ The project treats Zotero's local `zotero.sqlite` database and `storage/` direct
 
 ## Current status
 
-**Phase 3 — Paperazzi persistence: ready to implement.**
+**Phase 4 — Author identity and local reference resolution: ready to implement.**
 
 Completed foundations:
 
@@ -15,18 +15,27 @@ Phase 1   Zotero SQLite reconnaissance                         PASS
 Phase 2   production read-only Zotero schema adapter/reader    PASS
 Phase 2.5 local PDF evidence + AI-supervised adaptive parsing  PASS
            deterministic PDF baseline                          FROZEN_V3
+Phase 3   relational persistence + incremental scan state      PASS
+Phase 3.1 persistence hardening                                PASS
+           database schema                                     PHASE3_V1
 ```
 
-Phase 3 now builds the first durable `paperazzi.sqlite3`: Zotero scan/diff state, current paper/creator/attachment projections, document availability, extraction attempts, evidence spans, raw reference sections/entries and provenance.
+Phase 4 resolves paper-local creator mentions into reversible canonical author identities, projects authorships/roles from accepted evidence, and resolves accepted local reference entries to papers already present in the Paperazzi corpus.
 
-Start Phase 3 here:
+Start Phase 4 here:
 
-- [`docs/phase3/README.md`](docs/phase3/README.md) — Phase 3 entry point.
-- [`docs/architecture/PERSISTENCE_MODEL.md`](docs/architecture/PERSISTENCE_MODEL.md) — normative persistence schema and semantics.
-- [`docs/phase3/PHASE3_IMPLEMENTATION.md`](docs/phase3/PHASE3_IMPLEMENTATION.md) — four gated implementation milestones and acceptance tests.
-- [`prompts/local_ai/PHASE3_IMPLEMENTATION_AGENT.md`](prompts/local_ai/PHASE3_IMPLEMENTATION_AGENT.md) — operating prompt for the local implementation AI.
-- [`schemas/phase3_report.schema.json`](schemas/phase3_report.schema.json) — final machine-readable validation report contract.
-- [`DESIGN.md`](DESIGN.md) — overall system design; where its older v0.4 persistence sketch conflicts with the Phase 3 normative persistence document, `PERSISTENCE_MODEL.md` governs Phase 3.
+- [`docs/phase4/README.md`](docs/phase4/README.md) — Phase 4 entry point and hard branch policy.
+- [`docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md`](docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md) — normative identity/reference semantics.
+- [`docs/phase4/PHASE4_IMPLEMENTATION.md`](docs/phase4/PHASE4_IMPLEMENTATION.md) — gated Phase 4 implementation plan.
+- [`prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`](prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md) — operating prompt for the local implementation AI.
+- [`schemas/phase4_report.schema.json`](schemas/phase4_report.schema.json) — final machine-readable validation contract.
+- [`docs/architecture/PERSISTENCE_MODEL.md`](docs/architecture/PERSISTENCE_MODEL.md) — frozen Phase 3 persistence semantics that Phase 4 must preserve.
+
+## Phase 4 branch policy
+
+**Phase 4 is developed directly on `main`. Do not create new development branches or PR branches.**
+
+All Phase 4 code, tests, documentation and validation reports are committed directly to `main` after their milestone tests pass. This project-specific rule overrides generic agent conventions that prefer feature branches.
 
 ## Repository layout
 
@@ -40,19 +49,20 @@ Paperazzi/
 │   ├── phase1/
 │   ├── phase2/
 │   ├── phase2_5/
-│   └── phase3/
+│   ├── phase3/
+│   └── phase4/
 ├── prompts/local_ai/
 ├── schemas/
 ├── src/paperazzi/
 │   ├── zotero_sqlite/      # read-only Zotero access + schema adapters
 │   ├── ingest/             # canonical records and scan/diff semantics
 │   ├── local_evidence/     # frozen-v3 local PDF evidence extraction
-│   ├── database/           # Phase 3 SQLAlchemy persistence
-│   ├── identity/           # Phase 4
+│   ├── database/           # PHASE3_V1 persistence
+│   ├── identity/           # Phase 4 identity/resolution logic
 │   ├── enrichment/         # later online enrichment protocol
 │   ├── graph/              # later derived graph
 │   └── api/                # later backend API
-├── migrations/             # Phase 3 Alembic migrations
+├── migrations/
 ├── frontend/               # later React/TypeScript web UI
 ├── scripts/
 ├── tests/
@@ -61,13 +71,20 @@ Paperazzi/
 └── data/                   # local runtime state; ignored by Git
 ```
 
-Only directories needed by the current phase need to exist. Zotero-specific SQL remains isolated inside `zotero_sqlite`; PDF parsing remains isolated inside `local_evidence`; Paperazzi persistence belongs in `database`.
+Zotero-specific SQL remains isolated inside `zotero_sqlite`; PDF parsing remains isolated inside `local_evidence`; Paperazzi-owned persistence belongs in `database`; identity and semantic resolution belong in `identity`/resolver services.
 
-## Phase 3 boundary
+## Phase 4 boundary
 
-Phase 3 deliberately stores **paper-local creator mentions**, not resolved author identities. It also stores raw references without matching them to cited papers.
+Phase 4 deliberately separates source records from semantic decisions:
 
-Author identity, author-affiliation/correspondence resolution, citation matching, graph construction, API/UI and online enrichment begin only after Phase 3 persistence passes.
+```text
+paper_creator_mention != canonical author
+paper_reference       != cited paper
+```
+
+Normalized names may generate identity candidates but may not by themselves auto-merge authors. Only accepted PDF/reference evidence may participate as authoritative semantic evidence. Only accepted reference matches may later produce derived `CITES` edges.
+
+Broad author profile enrichment (photos, education, social profiles, age/gender, monthly monitoring), graph visualization, API and frontend are later phases.
 
 ## Safety rule
 
