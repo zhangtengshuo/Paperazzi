@@ -154,13 +154,91 @@ class CanonicalZoteroItem:
         }
 
     def content_hash(self) -> str:
-        payload = json.dumps(
-            self.stable_payload(),
-            ensure_ascii=False,
-            sort_keys=True,
-            separators=(",", ":"),
+        """Compatibility alias for the full stable payload (pre-split semantics)."""
+        return self._hash(self.stable_payload())
+
+    @staticmethod
+    def _hash(payload: dict[str, Any]) -> str:
+        encoded = json.dumps(
+            payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
         ).encode("utf-8")
-        return hashlib.sha256(payload).hexdigest()
+        return hashlib.sha256(encoded).hexdigest()
+
+    # --- Phase 3 split hashes (normative: PERSISTENCE_MODEL.md §4) ---
+
+    def bibliographic_payload(self) -> dict[str, Any]:
+        return {
+            "library_id": self.library_id,
+            "item_key": self.item_key,
+            "item_type": self.item_type,
+            "fields": dict(sorted(self.fields.items())),
+            "creators": [
+                {
+                    "creator_type": c.creator_type,
+                    "order_index": c.order_index,
+                    "first_name": c.first_name,
+                    "last_name": c.last_name,
+                    "field_mode": c.field_mode,
+                }
+                for c in self.creators
+            ],
+        }
+
+    def organization_payload(self) -> dict[str, Any]:
+        return {
+            "collections": [
+                {
+                    "collection_key": c.collection_key,
+                    "name": c.name,
+                    "parent_collection_key": c.parent_collection_key,
+                    "order_index": c.order_index,
+                }
+                for c in sorted(
+                    self.collections,
+                    key=lambda c: (
+                        c.collection_key or "", c.name or "", c.order_index
+                    ),
+                )
+            ],
+            "tags": [
+                {"name": t.name, "tag_type": t.tag_type}
+                for t in sorted(self.tags, key=lambda x: (x.name.casefold(), x.tag_type))
+            ],
+        }
+
+    def attachment_payload(self) -> dict[str, Any]:
+        return {
+            "attachments": [
+                {
+                    "library_id": a.library_id,
+                    "item_key": a.item_key,
+                    "link_mode": a.link_mode,
+                    "link_mode_name": a.link_mode_name,
+                    "content_type": a.content_type,
+                    "path": a.path,
+                    "storage_hash": a.storage_hash,
+                }
+                for a in sorted(self.attachments, key=lambda x: (x.library_id, x.item_key))
+            ]
+        }
+
+    def bibliographic_hash(self) -> str:
+        return self._hash(self.bibliographic_payload())
+
+    def organization_hash(self) -> str:
+        return self._hash(self.organization_payload())
+
+    def attachment_hash(self) -> str:
+        return self._hash(self.attachment_payload())
+
+    def canonical_hash(self) -> str:
+        return self._hash(
+            {
+                "bibliographic_hash": self.bibliographic_hash(),
+                "organization_hash": self.organization_hash(),
+                "attachment_hash": self.attachment_hash(),
+            }
+        )
 
     def to_dict(self) -> dict[str, Any]:
         result = asdict(self)
