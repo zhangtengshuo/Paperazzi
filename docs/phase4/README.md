@@ -56,6 +56,37 @@ The phase must remain conservative and reversible. A false author merge or false
 
 ---
 
+## Complete author coverage and special roles
+
+**Every author on every Zotero paper is recorded.** First and corresponding authors are not the only authors in Paperazzi; they are ordinary authorships with additional role metadata.
+
+```text
+all Zotero author mentions
+        ↓
+paper_creator_mentions            complete source record
+        ↓
+accepted identity resolution
+        ↓
+authors + authorships             semantic projection
+        ↓
++ is_first_author
++ is_corresponding_author          special roles
+```
+
+An unresolved identity never removes an author from the paper: the complete source author mention remains stored and queryable.
+
+Later public-profile/biographical enrichment is intentionally narrower:
+
+```text
+active enrichment target = first author OR corresponding author
+```
+
+Ordinary coauthors remain recorded and participate in publication lists, author ordering, coauthor networks and identity resolution, but Paperazzi does not proactively retrieve broad personal profiles for them unless they later become first/corresponding authors in the local corpus or the user explicitly requests it.
+
+Normative detail: `docs/architecture/AUTHOR_RECORDING_AND_ENRICHMENT_SCOPE.md`.
+
+---
+
 ## Phase 4 milestones
 
 ### Phase 4A — author identity persistence and normalization
@@ -74,10 +105,11 @@ A normalized name is a blocking/candidate-generation feature, **not an identity 
 
 ### Phase 4B — authorship roles and accepted local evidence
 
-Project resolved authors onto papers while preserving source creator mentions.
+Project resolved authors onto papers while preserving **all** source author mentions.
 
 Phase 4B covers:
 
+- complete source author recording;
 - ordered authorship;
 - deterministic first-author status from accepted creator order;
 - corresponding-author status only from accepted evidence or explicit structured metadata;
@@ -110,11 +142,19 @@ Validate the identity and reference layers against the real Zotero-derived Paper
 
 The final report must distinguish:
 
+- total source author mentions;
+- accepted canonical memberships;
+- candidate memberships;
+- unresolved author mentions;
+- first-author resolution coverage;
+- corresponding-author evidence coverage;
 - automatically accepted high-confidence decisions;
 - ambiguous candidates requiring review;
 - explicit conflicts;
-- unresolved creator mentions/references;
+- unresolved references;
 - reversible manual decisions.
+
+`candidate memberships` and `unresolved author mentions` are different metrics: one unresolved mention may have several candidates.
 
 ---
 
@@ -123,11 +163,12 @@ The final report must distinguish:
 Read in this order:
 
 1. `docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md`
-2. `docs/phase4/PHASE4_IMPLEMENTATION.md`
-3. `docs/architecture/PERSISTENCE_MODEL.md`
-4. `docs/architecture/AI_SUPERVISED_PDF_EXTRACTION.md`
-5. `prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`
-6. `schemas/phase4_report.schema.json`
+2. `docs/architecture/AUTHOR_RECORDING_AND_ENRICHMENT_SCOPE.md`
+3. `docs/phase4/PHASE4_IMPLEMENTATION.md`
+4. `docs/architecture/PERSISTENCE_MODEL.md`
+5. `docs/architecture/AI_SUPERVISED_PDF_EXTRACTION.md`
+6. `prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`
+7. `schemas/phase4_report.schema.json`
 
 Phase 4 code must continue to respect all Phase 3 provenance and acceptance semantics.
 
@@ -138,11 +179,12 @@ Phase 4 code must continue to respect all Phase 3 provenance and acceptance sema
 Author identity may consume:
 
 - `papers`;
-- `paper_creator_mentions`;
+- all `paper_creator_mentions` whose `creator_type='author'`;
 - accepted local PDF evidence spans;
 - accepted extraction review results;
 - explicit external identifiers already present in trusted local/returned structured evidence;
-- coauthor, affiliation, publication and topic context as supporting evidence.
+- immutable source-corpus coauthor structure;
+- affiliation, publication and topic context as supporting evidence.
 
 Reference resolution may consume:
 
@@ -170,7 +212,7 @@ Phase 4 does **not** implement:
 - graph materialization or visualization;
 - automatic Internet research.
 
-Those remain later enrichment/UI/graph work.
+Those remain later enrichment/UI/graph work. When broad profile enrichment is introduced, its default target set is first and corresponding authors, not every ordinary coauthor.
 
 ---
 
@@ -187,8 +229,9 @@ NEXT_PHASE = PHASE_5_BACKEND_AND_WEB_UI
 
 The system must be able to answer, with provenance:
 
-1. which canonical author a creator mention is linked to, or why it remains unresolved;
-2. which authorship roles are known for a paper;
-3. which accepted raw reference points to which local paper, or why it remains unresolved;
-4. which decisions were automatic, AI-reviewed or manual;
-5. how to reverse an incorrect identity merge or reference decision without rewriting source history.
+1. which authors are recorded on each paper, including unresolved source mentions;
+2. which canonical author an accepted creator mention is linked to, or why it remains unresolved;
+3. which authorship roles are known for a paper;
+4. which accepted raw reference points to which local paper, or why it remains unresolved;
+5. which decisions were automatic, AI-reviewed or manual;
+6. how to reverse an incorrect identity merge or reference decision without rewriting source history.
