@@ -1,4 +1,4 @@
-"""Phase 3B — Zotero scan/diff persistence service.
+"""Phase 3B/3.1 — Zotero scan/diff persistence service.
 
 Consumes validated ``CanonicalZoteroItem`` records and persists one scan
 atomically. Never executes Zotero-specific SQL here; the caller supplies
@@ -7,14 +7,12 @@ canonical records produced by the validated reader.
 
 from __future__ import annotations
 
-import dataclasses
 import hashlib
 import json
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
-
-import sqlalchemy as sa
 
 from paperazzi.ingest.models import CanonicalZoteroItem
 
@@ -40,6 +38,8 @@ CHANGE_RESTORED = "RESTORED"
 DIM_BIBLIOGRAPHIC = "BIBLIOGRAPHIC"
 DIM_ORGANIZATION = "ORGANIZATION"
 DIM_ATTACHMENT = "ATTACHMENT"
+
+PDF_CONTENT_TYPE = "application/pdf"
 
 
 @dataclass(frozen=True)
@@ -80,13 +80,7 @@ def persist_zotero_scan(
     canonical_items: Sequence[CanonicalZoteroItem],
     scan_metadata: dict[str, Any],
 ) -> ScanResult:
-    """Persist one full active-library scan atomically.
-
-    ``scan_metadata`` keys: run_token, source_db_path, snapshot_path (optional),
-    adapter_name (optional), userdata_version (optional),
-    global_schema_version (optional), source_db_size (optional),
-    source_db_mtime_ns (optional).
-    """
+    """Persist one full active-library scan atomically."""
     run_token = scan_metadata.get("run_token")
     if not run_token:
         raise ScanPersistenceError("scan_metadata requires run_token")
@@ -112,6 +106,7 @@ def persist_zotero_scan(
 
         try:
             result = _apply_scan(session, run_id, canonical_items)
+            run = session.get(ZoteroScanRun, run_id)
             run.status = "COMPLETED"
             run.item_count = len(canonical_items)
             run.new_count = result["counts"].get(CHANGE_NEW, 0)
@@ -119,9 +114,7 @@ def persist_zotero_scan(
             run.unchanged_count = result["counts"].get(CHANGE_UNCHANGED, 0)
             run.removed_count = result["counts"].get(CHANGE_REMOVED, 0)
             run.restored_count = result["counts"].get(CHANGE_RESTORED, 0)
-            run.bibliographic_corpus_hash = _corpus_hash(
-                canonical_items, "bibliographic_hash"
-            )
+            run.bibliographic_corpus_hash = _corpus_hash(canonical_items, "bibliographic_hash")
             run.canonical_corpus_hash = _corpus_hash(canonical_items, "canonical_hash")
             run.completed_at = utcnow()
             session.commit()
@@ -133,6 +126,7 @@ def persist_zotero_scan(
             )
         except Exception as exc:
             session.rollback()
+            run = session.get(ZoteroScanRun, run_id)
             run.status = "FAILED"
             run.error_type = type(exc).__name__
             run.error_message = str(exc)[:2000]
@@ -148,12 +142,20 @@ def _apply_scan(
     run_id: int,
     items: Sequence[CanonicalZoteroItem],
 ) -> dict[str, Any]:
-    counts = {k: 0 for k in (CHANGE_NEW, CHANGE_MODIFIED, CHANGE_UNCHANGED, CHANGE_REMOVED, CHANGE_RESTORED)}
+    counts = {
+        k: 0
+        for k in (
+            CHANGE_NEW,
+            CHANGE_MODIFIED,
+            CHANGE_UNCHANGED,
+            CHANGE_REMOVED,
+            CHANGE_RESTORED,
+        )
+    }
     changes: list[ItemChange] = []
-
     states = {
-        (s.library_id, s.item_key): s
-        for s in session.query(ZoteroItemState).all()
+        (state.library_id, state.item_key): state
+        for state in session.query(ZoteroItemState).all()
     }
     seen_identities: set[tuple[int, str]] = set()
 
@@ -165,12 +167,10 @@ def _apply_scan(
             )
         seen_identities.add(identity)
 
-        b_hash, o_hash, a_hash, c_hash = (
-            item.bibliographic_hash(),
-            item.organization_hash(),
-            item.attachment_hash(),
-            item.canonical_hash(),
-        )
+        b_hash = item.bibliographic_hash()
+        o_hash = item.organization_hash()
+        a_hash = item.attachment_hash()
+        c_hash = item.canonical_hash()
         current = {
             "bibliographic_hash": b_hash,
             "organization_hash": o_hash,
@@ -181,7 +181,9 @@ def _apply_scan(
         prior = states.get(identity)
         if prior is None:
             change_type = CHANGE_NEW
-            dimensions: frozenset[str] = frozenset()
+            dimensions: frozenset[str] = frozenset(
+                (DIM_BIBLIOGRAPHIC, DIM_ORGANIZATION, DIM_ATTACHMENT)
+            )
         elif not prior.present_in_last_scan:
             change_type = CHANGE_RESTORED
             dimensions = _dimensions(prior, current)
@@ -199,15 +201,30 @@ def _apply_scan(
                 change_type=change_type,
                 changed_dimensions=dimensions,
                 previous_hashes={
-                    k: getattr(prior, k) if prior is not None else None
-                    for k in ("bibliographic_hash", "organization_hash", "attachment_hash", "canonical_hash")
+                    key: getattr(prior, key) if prior is not None else None
+                    for key in (
+                        "bibliographic_hash",
+                        "organization_hash",
+                        "attachment_hash",
+                        "canonical_hash",
+                    )
                 },
                 current_hashes=current,
             )
         )
 
         if change_type == CHANGE_UNCHANGED:
+            # Local file availability is intentionally outside semantic hashes. It
+            # still has to refresh every scan so a newly downloaded PDF becomes
+            # PDF_AVAILABLE and can trigger FIRST_AVAILABLE extraction.
+            prior.zotero_version = item.zotero_version
+            prior.date_modified = item.date_modified
+            prior.client_date_modified = item.client_date_modified
             prior.last_seen_run_id = run_id
+            prior.updated_at = utcnow()
+            _refresh_attachment_runtime_state(
+                session, prior.paper_id, prior, item, run_id
+            )
             continue
 
         if prior is None:
@@ -244,17 +261,20 @@ def _apply_scan(
             )
             session.add(state)
             session.flush()
+            _reconcile_mentions(session, paper.paper_id, state.zotero_item_state_id, item)
+            _replace_tags(session, state.zotero_item_state_id, item)
+            _replace_collections(session, state.zotero_item_state_id, item)
+            _replace_attachments(session, paper.paper_id, state, item, run_id)
         else:
-            paper = session.get(Paper, prior.paper_id)
-            paper.title = item.title
-            paper.doi = item.doi
-            paper.publication_year = _publication_year(item.fields)
-            paper.publication_date_text = item.fields.get("date")
-            paper.venue = _venue(item.fields)
-            paper.item_type = item.item_type
+            state = prior
+            paper = session.get(Paper, state.paper_id)
+            if paper is None:
+                raise ScanPersistenceError(
+                    f"missing paper_id={state.paper_id} for {item.zotero_identity}"
+                )
+
             paper.active_in_zotero = True
             paper.updated_at = utcnow()
-            state = prior
             state.item_type = item.item_type
             state.zotero_version = item.zotero_version
             state.date_added = item.date_added
@@ -269,36 +289,51 @@ def _apply_scan(
             state.canonical_hash = c_hash
             state.canonical_payload_json = _canonical_json(item)
             state.updated_at = utcnow()
-            # 替换子投影(组织变化时替换 tags/collections; 一律替换 mentions/attachments)
-            session.query(PaperCreatorMention).filter_by(
-                zotero_item_state_id=state.zotero_item_state_id
-            ).delete()
-            session.query(ZoteroItemTag).filter_by(
-                zotero_item_state_id=state.zotero_item_state_id
-            ).delete()
-            session.query(ZoteroItemCollection).filter_by(
-                zotero_item_state_id=state.zotero_item_state_id
-            ).delete()
 
-        _replace_mentions(session, paper.paper_id, state.zotero_item_state_id, item)
-        _replace_tags(session, state.zotero_item_state_id, item)
-        _replace_collections(session, state.zotero_item_state_id, item)
-        _replace_attachments(session, paper.paper_id, state, item, run_id)
+            if DIM_BIBLIOGRAPHIC in dimensions:
+                paper.title = item.title
+                paper.doi = item.doi
+                paper.publication_year = _publication_year(item.fields)
+                paper.publication_date_text = item.fields.get("date")
+                paper.venue = _venue(item.fields)
+                paper.item_type = item.item_type
+                _reconcile_mentions(
+                    session, paper.paper_id, state.zotero_item_state_id, item
+                )
 
-        version = ZoteroItemVersion(
-            zotero_item_state_id=state.zotero_item_state_id,
-            scan_run_id=run_id,
-            change_type=change_type,
-            changed_dimensions_json=json.dumps(sorted(dimensions)),
-            bibliographic_hash=b_hash,
-            organization_hash=o_hash,
-            attachment_hash=a_hash,
-            canonical_hash=c_hash,
-            canonical_payload_json=_canonical_json(item),
+            if DIM_ORGANIZATION in dimensions:
+                session.query(ZoteroItemTag).filter_by(
+                    zotero_item_state_id=state.zotero_item_state_id
+                ).delete()
+                session.query(ZoteroItemCollection).filter_by(
+                    zotero_item_state_id=state.zotero_item_state_id
+                ).delete()
+                _replace_tags(session, state.zotero_item_state_id, item)
+                _replace_collections(session, state.zotero_item_state_id, item)
+
+            # RESTORED must reactivate child presence even if the semantic
+            # attachment hash is unchanged from before removal.
+            if DIM_ATTACHMENT in dimensions or change_type == CHANGE_RESTORED:
+                _replace_attachments(session, paper.paper_id, state, item, run_id)
+            else:
+                _refresh_attachment_runtime_state(
+                    session, paper.paper_id, state, item, run_id
+                )
+
+        session.add(
+            ZoteroItemVersion(
+                zotero_item_state_id=state.zotero_item_state_id,
+                scan_run_id=run_id,
+                change_type=change_type,
+                changed_dimensions_json=json.dumps(sorted(dimensions)),
+                bibliographic_hash=b_hash,
+                organization_hash=o_hash,
+                attachment_hash=a_hash,
+                canonical_hash=c_hash,
+                canonical_payload_json=_canonical_json(item),
+            )
         )
-        session.add(version)
 
-    # REMOVED: 先前 present 但本次未见
     for (lib_id, key), prior in states.items():
         if (lib_id, key) not in seen_identities and prior.present_in_last_scan:
             counts[CHANGE_REMOVED] += 1
@@ -306,8 +341,10 @@ def _apply_scan(
             prior.last_seen_run_id = run_id
             prior.updated_at = utcnow()
             paper = session.get(Paper, prior.paper_id)
-            paper.active_in_zotero = False
-            paper.updated_at = utcnow()
+            if paper is not None:
+                paper.active_in_zotero = False
+                paper.updated_at = utcnow()
+            _mark_parent_attachments_removed(session, prior, run_id)
             session.add(
                 ZoteroItemVersion(
                     zotero_item_state_id=prior.zotero_item_state_id,
@@ -325,9 +362,7 @@ def _apply_scan(
                 ItemChange(
                     identity=f"zotero:{lib_id}:{key}",
                     change_type=CHANGE_REMOVED,
-                    previous_hashes={
-                        "canonical_hash": prior.canonical_hash,
-                    },
+                    previous_hashes={"canonical_hash": prior.canonical_hash},
                     current_hashes={"canonical_hash": None},
                 )
             )
@@ -358,28 +393,55 @@ def _venue(fields: dict[str, Any]) -> str | None:
     return fields.get("publicationTitle") or fields.get("journalAbbreviation")
 
 
-def _replace_mentions(
+def _reconcile_mentions(
     session: Any, paper_id: int, state_id: int, item: CanonicalZoteroItem
 ) -> None:
+    """Update creator mentions in place, preserving IDs for persistent order slots."""
+    existing = {
+        mention.order_index: mention
+        for mention in session.query(PaperCreatorMention)
+        .filter_by(zotero_item_state_id=state_id)
+        .all()
+    }
+    seen: set[int] = set()
     for creator in item.creators:
-        session.add(
-            PaperCreatorMention(
-                paper_id=paper_id,
-                zotero_item_state_id=state_id,
-                source_creator_id=creator.creator_id,
-                creator_type=creator.creator_type,
-                order_index=creator.order_index,
-                first_name=creator.first_name,
-                last_name=creator.last_name,
-                field_mode=creator.field_mode,
-                display_name=" ".join(
-                    part
-                    for part in (creator.first_name or "", creator.last_name or "")
-                    if part
-                )
-                or None,
+        seen.add(creator.order_index)
+        display_name = (
+            " ".join(
+                part
+                for part in (creator.first_name or "", creator.last_name or "")
+                if part
             )
+            or None
         )
+        mention = existing.get(creator.order_index)
+        if mention is None:
+            session.add(
+                PaperCreatorMention(
+                    paper_id=paper_id,
+                    zotero_item_state_id=state_id,
+                    source_creator_id=creator.creator_id,
+                    creator_type=creator.creator_type,
+                    order_index=creator.order_index,
+                    first_name=creator.first_name,
+                    last_name=creator.last_name,
+                    field_mode=creator.field_mode,
+                    display_name=display_name,
+                )
+            )
+        else:
+            mention.paper_id = paper_id
+            mention.source_creator_id = creator.creator_id
+            mention.creator_type = creator.creator_type
+            mention.first_name = creator.first_name
+            mention.last_name = creator.last_name
+            mention.field_mode = creator.field_mode
+            mention.display_name = display_name
+            mention.updated_at = utcnow()
+
+    for order_index, mention in existing.items():
+        if order_index not in seen:
+            session.delete(mention)
 
 
 def _replace_tags(session: Any, state_id: int, item: CanonicalZoteroItem) -> None:
@@ -416,12 +478,12 @@ def _replace_attachments(
     item: CanonicalZoteroItem,
     run_id: int,
 ) -> None:
-    """Upsert attachment rows by (library_id, item_key); absent children stay present=False."""
+    """Upsert all Zotero attachments; create PaperDocument only for PDFs."""
     existing = {
-        (a.library_id, a.item_key): a
-        for a in session.query(ZoteroAttachment).filter_by(
-            zotero_item_state_id=state.zotero_item_state_id
-        ).all()
+        (row.library_id, row.item_key): row
+        for row in session.query(ZoteroAttachment)
+        .filter_by(zotero_item_state_id=state.zotero_item_state_id)
+        .all()
     }
     seen: set[tuple[int, str]] = set()
     for att in item.attachments:
@@ -451,27 +513,109 @@ def _replace_attachments(
             session.add(row)
             session.flush()
         else:
-            row.paper_id = paper_id
-            row.link_mode = att.link_mode
-            row.link_mode_name = att.link_mode_name
-            row.content_type = att.content_type
-            row.stored_path = att.path
-            row.resolved_path = att.resolved_path
-            row.resolution = att.resolution
-            row.local_exists = att.local_exists
-            row.storage_hash = att.storage_hash
-            row.storage_mod_time = att.storage_mod_time
-            row.present_in_last_scan = True
-            row.last_seen_run_id = run_id
-            row.updated_at = utcnow()
-        # 对应 paper_documents(每个 PDF 附件一个)
-        _upsert_document(session, paper_id, row, att, run_id)
+            _update_attachment_row(row, paper_id, att, run_id)
+
+        if _is_pdf(att):
+            _upsert_document(session, paper_id, row, att, run_id)
+        else:
+            document = (
+                session.query(PaperDocument)
+                .filter_by(zotero_attachment_id=row.zotero_attachment_id)
+                .one_or_none()
+            )
+            if document is not None:
+                document.present_in_last_scan = False
+                document.availability_status = "FILE_UNAVAILABLE"
+                document.last_seen_run_id = run_id
+                document.updated_at = utcnow()
 
     for identity, row in existing.items():
         if identity not in seen:
-            row.present_in_last_scan = False
-            row.last_seen_run_id = run_id
-            row.updated_at = utcnow()
+            _mark_attachment_removed(session, row, run_id)
+
+
+def _refresh_attachment_runtime_state(
+    session: Any,
+    paper_id: int,
+    state: ZoteroItemState,
+    item: CanonicalZoteroItem,
+    run_id: int,
+) -> None:
+    """Refresh local-file state without creating a semantic Zotero MODIFIED."""
+    existing = {
+        (row.library_id, row.item_key): row
+        for row in session.query(ZoteroAttachment)
+        .filter_by(zotero_item_state_id=state.zotero_item_state_id)
+        .all()
+    }
+    for att in item.attachments:
+        row = existing.get((att.library_id, att.item_key))
+        if row is None:
+            _replace_attachments(session, paper_id, state, item, run_id)
+            return
+        _update_attachment_row(row, paper_id, att, run_id)
+        if _is_pdf(att):
+            _upsert_document(session, paper_id, row, att, run_id)
+
+
+def _update_attachment_row(
+    row: ZoteroAttachment, paper_id: int, att: Any, run_id: int
+) -> None:
+    row.paper_id = paper_id
+    row.link_mode = att.link_mode
+    row.link_mode_name = att.link_mode_name
+    row.content_type = att.content_type
+    row.stored_path = att.path
+    row.resolved_path = att.resolved_path
+    row.resolution = att.resolution
+    row.local_exists = att.local_exists
+    row.storage_hash = att.storage_hash
+    row.storage_mod_time = att.storage_mod_time
+    row.present_in_last_scan = True
+    row.last_seen_run_id = run_id
+    row.updated_at = utcnow()
+
+
+def _mark_parent_attachments_removed(
+    session: Any, state: ZoteroItemState, run_id: int
+) -> None:
+    for row in (
+        session.query(ZoteroAttachment)
+        .filter_by(zotero_item_state_id=state.zotero_item_state_id)
+        .all()
+    ):
+        _mark_attachment_removed(session, row, run_id)
+
+
+def _mark_attachment_removed(
+    session: Any, row: ZoteroAttachment, run_id: int
+) -> None:
+    row.present_in_last_scan = False
+    row.last_seen_run_id = run_id
+    row.updated_at = utcnow()
+    document = (
+        session.query(PaperDocument)
+        .filter_by(zotero_attachment_id=row.zotero_attachment_id)
+        .one_or_none()
+    )
+    if document is not None:
+        document.present_in_last_scan = False
+        document.last_seen_run_id = run_id
+        document.updated_at = utcnow()
+
+
+def _is_pdf(att: Any) -> bool:
+    return (att.content_type or "").lower() == PDF_CONTENT_TYPE
+
+
+def _runtime_file_state(att: Any) -> tuple[int | None, int | None]:
+    if not att.local_exists or not att.resolved_path:
+        return None, None
+    try:
+        stat = Path(att.resolved_path).stat()
+    except OSError:
+        return None, None
+    return int(stat.st_size), int(stat.st_mtime_ns)
 
 
 def _upsert_document(
@@ -481,50 +625,59 @@ def _upsert_document(
     att: Any,
     run_id: int,
 ) -> None:
-    document = session.query(PaperDocument).filter_by(
-        zotero_attachment_id=attachment.zotero_attachment_id
-    ).one_or_none()
+    file_size, file_mtime_ns = _runtime_file_state(att)
+    local_path = (
+        att.resolved_path
+        if att.resolution in ("zotero-storage", "linked-absolute-path")
+        else None
+    )
+    document = (
+        session.query(PaperDocument)
+        .filter_by(zotero_attachment_id=attachment.zotero_attachment_id)
+        .one_or_none()
+    )
+    values = {
+        "paper_id": paper_id,
+        "content_type": att.content_type,
+        "local_path": local_path,
+        "availability_status": _availability(att),
+        "file_size": file_size,
+        "file_mtime_ns": file_mtime_ns,
+        "zotero_storage_hash": att.storage_hash,
+        "document_change_key": _change_key(att, file_size, file_mtime_ns),
+        "present_in_last_scan": True,
+        "last_seen_run_id": run_id,
+    }
     if document is None:
         document = PaperDocument(
-            paper_id=paper_id,
             zotero_attachment_id=attachment.zotero_attachment_id,
-            content_type=att.content_type,
-            local_path=att.resolved_path if att.resolution == "zotero-storage" else None,
-            availability_status=_availability(att),
-            file_size=None,
-            file_mtime_ns=None,
-            zotero_storage_hash=att.storage_hash,
-            document_change_key=_change_key(att),
-            present_in_last_scan=True,
             first_seen_run_id=run_id,
-            last_seen_run_id=run_id,
+            **values,
         )
         session.add(document)
     else:
-        document.paper_id = paper_id
-        document.content_type = att.content_type
-        document.local_path = att.resolved_path if att.resolution == "zotero-storage" else None
-        document.availability_status = _availability(att)
-        document.zotero_storage_hash = att.storage_hash
-        document.document_change_key = _change_key(att)
-        document.present_in_last_scan = True
-        document.last_seen_run_id = run_id
+        for key, value in values.items():
+            setattr(document, key, value)
         document.updated_at = utcnow()
 
 
 def _availability(att: Any) -> str:
-    if att.resolution == "zotero-storage" or (
-        att.resolution == "absolute-linked-path" and att.resolved_path
-    ):
+    if att.resolution in ("zotero-storage", "linked-absolute-path"):
         return "PDF_AVAILABLE" if att.local_exists else "PDF_RECORD_ONLY"
-    if att.resolution in ("linked-base-directory-required", "unresolved"):
+    if att.resolution in (
+        "linked-base-directory-required",
+        "linked-relative-path-unresolved",
+        "linked-windows-path-unmapped",
+    ):
         return "UNRESOLVED_PATH"
     return "FILE_UNAVAILABLE"
 
 
-def _change_key(att: Any) -> str | None:
+def _change_key(
+    att: Any, file_size: int | None, file_mtime_ns: int | None
+) -> str | None:
     if att.storage_hash:
         return f"zotero:{att.storage_hash}"
-    if att.local_exists and att.resolved_path and att.storage_mod_time is not None:
-        return f"fs:{att.storage_mod_time}"
+    if att.local_exists and file_size is not None and file_mtime_ns is not None:
+        return f"fs:{file_size}:{file_mtime_ns}"
     return None

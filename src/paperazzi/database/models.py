@@ -1,14 +1,4 @@
-"""Phase 3 ORM models — normative per docs/architecture/PERSISTENCE_MODEL.md.
-
-Migration 0001 (zotero persistence): zotero_scan_runs, papers, zotero_item_state,
-zotero_item_versions, paper_creator_mentions, zotero_item_tags,
-zotero_item_collections, zotero_attachments, paper_documents.
-
-Migration 0002 (document evidence/references): document_extraction_runs,
-document_extraction_attempts, document_evidence_spans, paper_reference_sections,
-paper_references, paper_reference_identifiers, paper_reference_matches,
-plus paper_documents.current_extraction_run_id.
-"""
+"""Phase 3/3.1 ORM models — persistence ledger and review provenance."""
 
 from __future__ import annotations
 
@@ -158,8 +148,7 @@ class ZoteroItemTag(Base):
 
     zotero_item_tag_id: Mapped[int] = mapped_column(primary_key=True)
     zotero_item_state_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="CASCADE"),
-        nullable=False,
+        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="CASCADE"), nullable=False
     )
     tag_id: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
     tag_type: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
@@ -172,8 +161,7 @@ class ZoteroItemCollection(Base):
 
     zotero_item_collection_id: Mapped[int] = mapped_column(primary_key=True)
     zotero_item_state_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="CASCADE"),
-        nullable=False,
+        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="CASCADE"), nullable=False
     )
     collection_id: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
     collection_key: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
@@ -195,8 +183,7 @@ class ZoteroAttachment(Base):
         sa.ForeignKey("papers.paper_id", ondelete="RESTRICT"), nullable=False
     )
     zotero_item_state_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("zotero_item_state.zotero_item_state_id", ondelete="RESTRICT"), nullable=False
     )
     library_id: Mapped[int] = mapped_column(sa.Integer, nullable=False)
     item_key: Mapped[str] = mapped_column(sa.Text, nullable=False)
@@ -232,16 +219,14 @@ class PaperDocument(Base):
         sa.ForeignKey("papers.paper_id", ondelete="RESTRICT"), nullable=False
     )
     zotero_attachment_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("zotero_attachments.zotero_attachment_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("zotero_attachments.zotero_attachment_id", ondelete="RESTRICT"), nullable=False
     )
     content_type: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     local_path: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     availability_status: Mapped[str | None] = mapped_column(
         sa.Text,
         sa.CheckConstraint(
-            "availability_status IN "
-            "('PDF_AVAILABLE','PDF_RECORD_ONLY','UNRESOLVED_PATH','FILE_UNAVAILABLE')"
+            "availability_status IN ('PDF_AVAILABLE','PDF_RECORD_ONLY','UNRESOLVED_PATH','FILE_UNAVAILABLE')"
         ),
         nullable=True,
     )
@@ -256,7 +241,10 @@ class PaperDocument(Base):
     last_seen_run_id: Mapped[int] = mapped_column(
         sa.ForeignKey("zotero_scan_runs.scan_run_id"), nullable=False
     )
-    current_extraction_run_id: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
+    current_extraction_run_id: Mapped[int | None] = mapped_column(
+        sa.ForeignKey("document_extraction_runs.extraction_run_id", name="fk_document_current_extraction_run"),
+        nullable=True,
+    )
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
     updated_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow, onupdate=utcnow)
 
@@ -266,8 +254,7 @@ class DocumentExtractionRun(Base):
     __table_args__ = (
         sa.Index("ix_extraction_runs_document_started", "document_id", "started_at"),
         sa.CheckConstraint(
-            "trigger IN ('FIRST_AVAILABLE','FILE_CHANGED','EXTRACTOR_CHANGED',"
-            "'PROMPT_CHANGED','MANUAL_REBUILD')"
+            "trigger IN ('FIRST_AVAILABLE','FILE_CHANGED','EXTRACTOR_CHANGED','PROMPT_CHANGED','MANUAL_REBUILD')"
         ),
         sa.CheckConstraint("status IN ('STARTED','COMPLETED','FAILED')"),
     )
@@ -287,12 +274,14 @@ class DocumentExtractionRun(Base):
     final_status: Mapped[str | None] = mapped_column(
         sa.Text,
         sa.CheckConstraint(
-            "final_status IN ('PASS','ACCEPT_PARTIAL','UNRESOLVED','NEEDS_OCR','FAILED') "
-            "OR final_status IS NULL"
+            "final_status IN ('PASS','ACCEPT_PARTIAL','UNRESOLVED','NEEDS_OCR','FAILED') OR final_status IS NULL"
         ),
         nullable=True,
     )
-    accepted_attempt_id: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
+    accepted_attempt_id: Mapped[int | None] = mapped_column(
+        sa.ForeignKey("document_extraction_attempts.attempt_id", name="fk_run_accepted_attempt"),
+        nullable=True,
+    )
     error_type: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     error_message: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
 
@@ -302,18 +291,15 @@ class DocumentExtractionAttempt(Base):
     __table_args__ = (
         sa.UniqueConstraint("extraction_run_id", "attempt_number", name="uq_attempt_number"),
         sa.CheckConstraint("attempt_number BETWEEN 1 AND 3"),
+        sa.CheckConstraint("actor IN ('DETERMINISTIC','LOCAL_AI_CONTROLLED','OCR')"),
         sa.CheckConstraint(
-            "actor IN ('DETERMINISTIC','LOCAL_AI_CONTROLLED','OCR')"
-        ),
-        sa.CheckConstraint(
-            "decision IN ('PASS','ACCEPT_PARTIAL','RETRY','UNRESOLVED','NEEDS_OCR')"
+            "decision IN ('REVIEW_PENDING','PASS','ACCEPT_PARTIAL','RETRY','UNRESOLVED','NEEDS_OCR')"
         ),
     )
 
     attempt_id: Mapped[int] = mapped_column(primary_key=True)
     extraction_run_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("document_extraction_runs.extraction_run_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("document_extraction_runs.extraction_run_id", ondelete="RESTRICT"), nullable=False
     )
     attempt_number: Mapped[int] = mapped_column(sa.Integer, nullable=False)
     actor: Mapped[str] = mapped_column(sa.Text, nullable=False)
@@ -340,13 +326,39 @@ class DocumentExtractionAttempt(Base):
     completed_at: Mapped[Any] = mapped_column(sa.DateTime(), nullable=True)
 
 
+class DocumentExtractionReview(Base):
+    __tablename__ = "document_extraction_reviews"
+    __table_args__ = (
+        sa.Index("ix_extraction_reviews_attempt", "attempt_id", "reviewed_at"),
+        sa.CheckConstraint("reviewer_type IN ('LOCAL_AI','MANUAL')"),
+        sa.CheckConstraint(
+            "decision IN ('PASS','ACCEPT_PARTIAL','RETRY','UNRESOLVED','NEEDS_OCR')"
+        ),
+    )
+
+    review_id: Mapped[int] = mapped_column(primary_key=True)
+    attempt_id: Mapped[int] = mapped_column(
+        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"), nullable=False
+    )
+    reviewer_type: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    prompt_version: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    prompt_hash: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    reviewer_runtime: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    decision: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    problem_codes_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    quality_notes: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    section_confidence: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    segmentation_confidence: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    entry_text_quality: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    review_output_hash: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    reviewed_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
+
+
 class DocumentEvidenceSpan(Base):
     __tablename__ = "document_evidence_spans"
     __table_args__ = (
         sa.Index("ix_evidence_document_kind", "document_id", "kind"),
-        sa.CheckConstraint(
-            "acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"
-        ),
+        sa.CheckConstraint("acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
     )
 
     evidence_span_id: Mapped[int] = mapped_column(primary_key=True)
@@ -354,8 +366,7 @@ class DocumentEvidenceSpan(Base):
         sa.ForeignKey("paper_documents.document_id", ondelete="RESTRICT"), nullable=False
     )
     attempt_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"), nullable=False
     )
     kind: Mapped[str] = mapped_column(sa.Text, nullable=False)
     page_start: Mapped[int] = mapped_column(sa.Integer, nullable=False)
@@ -373,9 +384,7 @@ class PaperReferenceSection(Base):
     __tablename__ = "paper_reference_sections"
     __table_args__ = (
         sa.Index("ix_ref_sections_document_status", "document_id", "acceptance_status"),
-        sa.CheckConstraint(
-            "acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"
-        ),
+        sa.CheckConstraint("acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
     )
 
     reference_section_id: Mapped[int] = mapped_column(primary_key=True)
@@ -386,8 +395,7 @@ class PaperReferenceSection(Base):
         sa.ForeignKey("paper_documents.document_id", ondelete="RESTRICT"), nullable=False
     )
     attempt_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"), nullable=False
     )
     heading: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     is_explicit_heading: Mapped[bool] = mapped_column(sa.Boolean(), nullable=False, default=False)
@@ -409,9 +417,7 @@ class PaperReference(Base):
     __tablename__ = "paper_references"
     __table_args__ = (
         sa.UniqueConstraint("reference_section_id", "ordinal", name="uq_ref_section_ordinal"),
-        sa.CheckConstraint(
-            "acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"
-        ),
+        sa.CheckConstraint("acceptance_status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
         sa.Index("ix_references_citing_paper", "citing_paper_id"),
     )
 
@@ -420,15 +426,13 @@ class PaperReference(Base):
         sa.ForeignKey("papers.paper_id", ondelete="RESTRICT"), nullable=False
     )
     reference_section_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("paper_reference_sections.reference_section_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("paper_reference_sections.reference_section_id", ondelete="RESTRICT"), nullable=False
     )
     document_id: Mapped[int] = mapped_column(
         sa.ForeignKey("paper_documents.document_id", ondelete="RESTRICT"), nullable=False
     )
     originating_attempt_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"),
-        nullable=False,
+        sa.ForeignKey("document_extraction_attempts.attempt_id", ondelete="RESTRICT"), nullable=False
     )
     ordinal: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)
     raw_text: Mapped[str] = mapped_column(sa.Text, nullable=False)
@@ -441,8 +445,7 @@ class PaperReferenceIdentifier(Base):
     __tablename__ = "paper_reference_identifiers"
     __table_args__ = (
         sa.UniqueConstraint(
-            "reference_id", "identifier_type", "normalized_value",
-            name="uq_reference_identifier",
+            "reference_id", "identifier_type", "normalized_value", name="uq_reference_identifier"
         ),
         sa.Index("ix_ref_identifiers_type_value", "identifier_type", "normalized_value"),
     )
@@ -459,7 +462,7 @@ class PaperReferenceIdentifier(Base):
 
 
 class PaperReferenceMatch(Base):
-    """Reserved for Phase 4 — created empty, never populated in Phase 3."""
+    """Reserved for Phase 4 — never populated by Phase 3/3.1."""
 
     __tablename__ = "paper_reference_matches"
     __table_args__ = (

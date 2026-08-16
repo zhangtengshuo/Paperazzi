@@ -1,9 +1,10 @@
-"""Phase 3C — document extraction / evidence / reference persistence."""
+"""Phase 3C/3.1 — document extraction, review, evidence and reference persistence."""
 
 from __future__ import annotations
 
 import hashlib
 import json
+from pathlib import Path
 from typing import Any
 
 import sqlalchemy as sa
@@ -12,6 +13,7 @@ from .base import utcnow
 from .models import (
     DocumentEvidenceSpan,
     DocumentExtractionAttempt,
+    DocumentExtractionReview,
     DocumentExtractionRun,
     PaperDocument,
     PaperReference,
@@ -20,8 +22,21 @@ from .models import (
 )
 
 EXTRACTOR_VERSION = "deterministic-v3"
-PROMPT_VERSION = "PDF_EVIDENCE_AGENT.md@bb7cb47"
-PROMPT_HASH = hashlib.sha256(PROMPT_VERSION.encode()).hexdigest()[:16]
+PROMPT_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "prompts"
+    / "local_ai"
+    / "PDF_EVIDENCE_AGENT.md"
+)
+PROMPT_VERSION = "PDF_EVIDENCE_AGENT.md"
+
+
+def prompt_content_hash(path: str | Path = PROMPT_PATH) -> str:
+    prompt_path = Path(path)
+    return hashlib.sha256(prompt_path.read_bytes()).hexdigest()
+
+
+PROMPT_HASH = prompt_content_hash()
 
 
 class ExtractionError(RuntimeError):
@@ -32,32 +47,64 @@ def raw_text_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def deterministic_reference_quality(section: Any | None) -> tuple[str | None, str | None, str]:
+    """Return section confidence, segmentation confidence and initial entry quality.
+
+    The deterministic parser's section existence and segmentation quality are separate.
+    Entry text is never declared GOOD before the mandatory local-AI review.
+    """
+    if section is None:
+        return None, None, "UNREVIEWED"
+    if section.heading:
+        section_confidence = "HIGH"
+    else:
+        section_confidence = section.confidence
+    segmentation_confidence = section.confidence if section.entries else None
+    return section_confidence, segmentation_confidence, "UNREVIEWED"
+
+
 def decide_extraction_trigger(
     document: PaperDocument,
     document_change_key: str | None,
     extractor_version: str,
     prompt_hash: str,
 ) -> str | None:
-    """Return the trigger for a new extraction run, or None if no re-extraction needed.
+    """Return the trigger for a new extraction run, or None if none is needed.
 
-    Re-extraction triggers: first local availability, file/document change-key
-    change, extractor version change, prompt version/hash change, or manual rebuild.
+    A STARTED run blocks duplicate extraction while its deterministic output is waiting
+    for the mandatory AI review. Completed accepted runs are compared against file,
+    extractor and prompt identities.
     """
-    if document.availability_status == "PDF_AVAILABLE":
-        if document.current_extraction_run_id is None:
-            return "FIRST_AVAILABLE"
-        run = (
-            sa.inspect(document).session.query(DocumentExtractionRun)
-            .filter_by(extraction_run_id=document.current_extraction_run_id)
-            .one()
-        )
-        if run.document_change_key != document_change_key and document_change_key is not None:
-            return "FILE_CHANGED"
-        if run.extractor_version != extractor_version:
-            return "EXTRACTOR_CHANGED"
-        if run.prompt_hash != prompt_hash:
-            return "PROMPT_CHANGED"
+    if document.availability_status != "PDF_AVAILABLE":
         return None
+
+    session = sa.inspect(document).session
+    if session is None:
+        raise ExtractionError("PaperDocument must be attached to a session")
+
+    pending = (
+        session.query(DocumentExtractionRun)
+        .filter_by(document_id=document.document_id, status="STARTED")
+        .order_by(DocumentExtractionRun.extraction_run_id.desc())
+        .first()
+    )
+    if pending is not None:
+        return None
+
+    if document.current_extraction_run_id is None:
+        return "FIRST_AVAILABLE"
+
+    run = (
+        session.query(DocumentExtractionRun)
+        .filter_by(extraction_run_id=document.current_extraction_run_id)
+        .one()
+    )
+    if run.document_change_key != document_change_key and document_change_key is not None:
+        return "FILE_CHANGED"
+    if run.extractor_version != extractor_version:
+        return "EXTRACTOR_CHANGED"
+    if run.prompt_hash != prompt_hash:
+        return "PROMPT_CHANGED"
     return None
 
 
@@ -71,6 +118,16 @@ def create_extraction_run(
     prompt_version: str = PROMPT_VERSION,
     prompt_hash: str = PROMPT_HASH,
 ) -> DocumentExtractionRun:
+    active = (
+        session.query(DocumentExtractionRun)
+        .filter_by(document_id=document_id, status="STARTED")
+        .first()
+    )
+    if active is not None:
+        raise ExtractionError(
+            f"document_id={document_id} already has STARTED extraction_run_id="
+            f"{active.extraction_run_id}"
+        )
     run = DocumentExtractionRun(
         document_id=document_id,
         trigger=trigger,
@@ -94,7 +151,7 @@ def add_extraction_attempt(
     actor: str,
     strategy: str,
     text_source: str,
-    decision: str,
+    decision: str = "REVIEW_PENDING",
     strategy_parameters: dict[str, Any] | None = None,
     backend: str | None = None,
     backend_version: str | None = None,
@@ -103,7 +160,7 @@ def add_extraction_attempt(
     problem_codes: list[str] | None = None,
     section_confidence: str | None = None,
     segmentation_confidence: str | None = None,
-    entry_text_quality: str | None = None,
+    entry_text_quality: str | None = "UNREVIEWED",
     front_matter_status: str | None = None,
     reference_status: str | None = None,
     output_hash: str | None = None,
@@ -113,6 +170,11 @@ def add_extraction_attempt(
 ) -> DocumentExtractionAttempt:
     if not 1 <= attempt_number <= 3:
         raise ExtractionError(f"attempt_number must be 1..3, got {attempt_number}")
+    if decision != "REVIEW_PENDING":
+        raise ExtractionError(
+            "new extraction attempts must start as REVIEW_PENDING; "
+            "record a review before assigning PASS/ACCEPT_PARTIAL/RETRY"
+        )
     attempt = DocumentExtractionAttempt(
         extraction_run_id=run.extraction_run_id,
         attempt_number=attempt_number,
@@ -141,6 +203,47 @@ def add_extraction_attempt(
     session.add(attempt)
     session.flush()
     return attempt
+
+
+def record_extraction_review(
+    session: Any,
+    attempt: DocumentExtractionAttempt,
+    *,
+    reviewer_type: str,
+    decision: str,
+    problem_codes: list[str] | None = None,
+    quality_notes: str | None = None,
+    section_confidence: str | None = None,
+    segmentation_confidence: str | None = None,
+    entry_text_quality: str | None = None,
+    review_output_hash: str | None = None,
+    reviewer_runtime: str | None = None,
+    prompt_version: str = PROMPT_VERSION,
+    prompt_hash: str = PROMPT_HASH,
+) -> DocumentExtractionReview:
+    if reviewer_type not in ("LOCAL_AI", "MANUAL"):
+        raise ExtractionError(f"invalid reviewer_type={reviewer_type}")
+    if decision not in ("PASS", "ACCEPT_PARTIAL", "RETRY", "UNRESOLVED", "NEEDS_OCR"):
+        raise ExtractionError(f"invalid review decision={decision}")
+    review = DocumentExtractionReview(
+        attempt_id=attempt.attempt_id,
+        reviewer_type=reviewer_type,
+        prompt_version=prompt_version if reviewer_type == "LOCAL_AI" else None,
+        prompt_hash=prompt_hash if reviewer_type == "LOCAL_AI" else None,
+        reviewer_runtime=reviewer_runtime,
+        decision=decision,
+        problem_codes_json=json.dumps(problem_codes or []),
+        quality_notes=quality_notes,
+        section_confidence=section_confidence,
+        segmentation_confidence=segmentation_confidence,
+        entry_text_quality=entry_text_quality,
+        review_output_hash=review_output_hash,
+        reviewed_at=utcnow(),
+    )
+    session.add(review)
+    attempt.decision = decision
+    session.flush()
+    return review
 
 
 def persist_evidence_spans(
@@ -184,10 +287,13 @@ def persist_reference_section(
     attempt: DocumentExtractionAttempt,
     section: Any,
     *,
-    acceptance_status: str = "ACCEPTED",
+    acceptance_status: str = "CANDIDATE",
     text_source: str = "PDF_NATIVE",
 ) -> PaperReferenceSection:
-    """Persist a reference section and its segmented entries/identifiers."""
+    """Persist a deterministic reference section as candidate evidence."""
+    section_confidence, segmentation_confidence, entry_text_quality = (
+        deterministic_reference_quality(section)
+    )
     row = PaperReferenceSection(
         paper_id=paper_id,
         document_id=document_id,
@@ -197,9 +303,9 @@ def persist_reference_section(
         start_page=section.start_page,
         end_page=section.end_page,
         parse_method=section.method,
-        section_confidence=section.confidence,
-        segmentation_confidence=section.confidence,
-        entry_text_quality=attempt.entry_text_quality,
+        section_confidence=section_confidence,
+        segmentation_confidence=segmentation_confidence,
+        entry_text_quality=entry_text_quality,
         text_source=text_source,
         text_channel=section.text_channel,
         acceptance_status=acceptance_status,
@@ -209,7 +315,6 @@ def persist_reference_section(
     session.add(row)
     session.flush()
 
-    entry_count = 0
     for entry in section.entries:
         entry_row = PaperReference(
             citing_paper_id=paper_id,
@@ -223,7 +328,6 @@ def persist_reference_section(
         )
         session.add(entry_row)
         session.flush()
-        entry_count += 1
         for doi in entry.dois:
             session.add(
                 PaperReferenceIdentifier(
@@ -231,7 +335,7 @@ def persist_reference_section(
                     identifier_type="DOI",
                     identifier_value=doi,
                     normalized_value=doi.lower(),
-                    extractor="deterministic-v3",
+                    extractor=EXTRACTOR_VERSION,
                 )
             )
         for year in entry.years:
@@ -241,10 +345,21 @@ def persist_reference_section(
                     identifier_type="YEAR",
                     identifier_value=year,
                     normalized_value=year,
-                    extractor="deterministic-v3",
+                    extractor=EXTRACTOR_VERSION,
                 )
             )
     return row
+
+
+def _latest_review(
+    session: Any, attempt: DocumentExtractionAttempt
+) -> DocumentExtractionReview | None:
+    return (
+        session.query(DocumentExtractionReview)
+        .filter_by(attempt_id=attempt.attempt_id)
+        .order_by(DocumentExtractionReview.review_id.desc())
+        .first()
+    )
 
 
 def accept_attempt(
@@ -257,28 +372,46 @@ def accept_attempt(
     reference_status: str = "ACCEPTED",
     superseded_status: str = "SUPERSEDED",
 ) -> None:
-    """Mark the accepted attempt and supersede earlier attempts' accepted outputs."""
+    """Accept a reviewed attempt; unreviewed deterministic output cannot be accepted."""
+    review = _latest_review(session, attempt)
+    if review is None:
+        raise ExtractionError(
+            f"attempt_id={attempt.attempt_id} has no AI/manual review; cannot accept"
+        )
+    if review.decision == "RETRY":
+        raise ExtractionError("a RETRY review decision cannot finalize an extraction run")
+    if attempt.extraction_run_id != run.extraction_run_id:
+        raise ExtractionError("attempt does not belong to extraction run")
+
     run.status = "COMPLETED"
     run.completed_at = utcnow()
     run.final_status = final_status
     run.accepted_attempt_id = attempt.attempt_id
 
+    if review.entry_text_quality is not None:
+        attempt.entry_text_quality = review.entry_text_quality
+
+    section_updates: dict[str, Any] = {"acceptance_status": reference_status}
+    if review.section_confidence is not None:
+        section_updates["section_confidence"] = review.section_confidence
+    if review.segmentation_confidence is not None:
+        section_updates["segmentation_confidence"] = review.segmentation_confidence
+    if review.entry_text_quality is not None:
+        section_updates["entry_text_quality"] = review.entry_text_quality
+
     session.query(DocumentEvidenceSpan).filter(
         DocumentEvidenceSpan.attempt_id == attempt.attempt_id,
         DocumentEvidenceSpan.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
     ).update({"acceptance_status": evidence_status})
-
     session.query(PaperReferenceSection).filter(
         PaperReferenceSection.attempt_id == attempt.attempt_id,
         PaperReferenceSection.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
-    ).update({"acceptance_status": reference_status})
-
+    ).update(section_updates)
     session.query(PaperReference).filter(
         PaperReference.originating_attempt_id == attempt.attempt_id,
         PaperReference.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
     ).update({"acceptance_status": reference_status})
 
-    # 早于被接受尝试的同一 run 内尝试: 其候选输出标记 SUPERSEDED
     earlier = (
         session.query(DocumentExtractionAttempt)
         .filter(
@@ -301,7 +434,6 @@ def accept_attempt(
             PaperReference.acceptance_status.in_(("CANDIDATE", "ACCEPTED")),
         ).update({"acceptance_status": superseded_status})
 
-    # 指向接受的 run
-    session.query(PaperDocument).filter_by(
-        document_id=run.document_id
-    ).update({"current_extraction_run_id": run.extraction_run_id, "updated_at": utcnow()})
+    session.query(PaperDocument).filter_by(document_id=run.document_id).update(
+        {"current_extraction_run_id": run.extraction_run_id, "updated_at": utcnow()}
+    )

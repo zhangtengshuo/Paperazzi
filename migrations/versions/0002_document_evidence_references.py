@@ -4,6 +4,8 @@ Revision ID: 0002_document_evidence_references
 Revises: 0001_zotero_persistence
 Create Date: 2026-08-17
 
+Phase 3.1 note: this pre-freeze migration was hardened before PHASE3_V1 was
+released. Fresh Phase 3/3.1 databases must be rebuilt from migration head.
 """
 from __future__ import annotations
 
@@ -37,6 +39,7 @@ def upgrade() -> None:
     sa.CheckConstraint("status IN ('STARTED','COMPLETED','FAILED')"),
     sa.CheckConstraint("trigger IN ('FIRST_AVAILABLE','FILE_CHANGED','EXTRACTOR_CHANGED','PROMPT_CHANGED','MANUAL_REBUILD')"),
     sa.ForeignKeyConstraint(['document_id'], ['paper_documents.document_id'], ondelete='RESTRICT'),
+    sa.ForeignKeyConstraint(['accepted_attempt_id'], ['document_extraction_attempts.attempt_id'], name='fk_run_accepted_attempt'),
     sa.PrimaryKeyConstraint('extraction_run_id')
     )
     op.create_table('document_extraction_attempts',
@@ -66,7 +69,7 @@ def upgrade() -> None:
     sa.Column('started_at', sa.DateTime(), nullable=False),
     sa.Column('completed_at', sa.DateTime(), nullable=True),
     sa.CheckConstraint("actor IN ('DETERMINISTIC','LOCAL_AI_CONTROLLED','OCR')"),
-    sa.CheckConstraint("decision IN ('PASS','ACCEPT_PARTIAL','RETRY','UNRESOLVED','NEEDS_OCR')"),
+    sa.CheckConstraint("decision IN ('REVIEW_PENDING','PASS','ACCEPT_PARTIAL','RETRY','UNRESOLVED','NEEDS_OCR')"),
     sa.CheckConstraint('attempt_number BETWEEN 1 AND 3'),
     sa.ForeignKeyConstraint(['extraction_run_id'], ['document_extraction_runs.extraction_run_id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('attempt_id'),
