@@ -42,6 +42,11 @@ Phase 4 tests now cover:
 - reversible merge/split/unlink/relink history;
 - manual locks and explicit NOT_SAME_PERSON;
 - external-ID conflicts;
+- **immutable source-corpus collaboration scoring**;
+- **cascade-trap first-pass resolution + strict rerun idempotency**;
+- **logical identity partition independence from source item order**;
+- **complete source recording of every Zotero author**;
+- non-author creators retained as source creators but excluded from canonical author resolution;
 - authorship order/first-author projection;
 - accepted-only corresponding/affiliation evidence;
 - accepted-reference-only citation matching;
@@ -58,7 +63,13 @@ Run:
 python scripts/validate_phase4.py
 ```
 
-This creates an ignored validation database under:
+### Fresh DB is mandatory after identity-policy changes
+
+After any change to identity scoring, source seeding, candidate blocking or policy version, Stage 1 **must** start from a fresh validation database. Do not use `--reuse-db` to validate a changed identity algorithm.
+
+`--reuse-db` is reserved for continuing the *same already-validated identity state* after explicit PDF/reference anchor review.
+
+The fresh command above recreates the ignored database under:
 
 ```text
 data/phase4-validation/paperazzi.sqlite3
@@ -69,17 +80,60 @@ It then:
 1. migrates to current head;
 2. creates a transaction-consistent read-only Zotero snapshot;
 3. imports the full canonical Zotero corpus;
-4. runs the conservative author identity bootstrap;
-5. reruns identity resolution to test idempotency;
-6. consumes only already-accepted authorship evidence;
-7. runs local reference resolution only for already-`ACCEPTED` references;
-8. checks FKs, duplicate accepted memberships, candidate-input leakage and resolver idempotency.
+4. verifies complete source creator/author recording;
+5. runs the source-stable author identity bootstrap;
+6. reruns identity resolution to test strict idempotency;
+7. measures first-author resolution coverage separately from overall author coverage;
+8. consumes only already-accepted authorship evidence;
+9. runs local reference resolution only for already-`ACCEPTED` references;
+10. checks FKs, duplicate accepted memberships, candidate-input leakage and resolver idempotency.
 
-### Expected first-run result
+### Identity stability requirement
+
+For the same source snapshot and policy, the second identity run must add no new semantic state:
+
+```text
+second_run.created = 0
+second_run.linked = 0
+duplicate_identity_decisions_on_rerun = 0
+duplicate_identity_memberships_on_rerun = 0
+```
+
+The deterministic resolver must not rely on canonical memberships/authorships produced by its own earlier decisions. Collaboration evidence comes from immutable Phase-3 `paper_creator_mentions` source structure.
+
+### Complete author-recording requirement
+
+Every Zotero creator whose `creator_type='author'` must exist as a Paperazzi source author mention, regardless of identity resolution success.
+
+The report distinguishes:
+
+```text
+total_creator_mentions
+source_author_mentions
+non_author_creator_mentions
+accepted_memberships
+candidate_memberships
+unresolved_author_mentions
+```
+
+`candidate_memberships` and `unresolved_author_mentions` are intentionally different metrics: one unresolved author mention may have multiple candidate identities.
+
+First/corresponding author coverage is reported separately:
+
+```text
+papers_with_resolved_first_author
+papers_with_unresolved_first_author
+papers_with_accepted_corresponding_author
+papers_without_accepted_corresponding_author
+```
+
+Corresponding-author coverage may be zero before accepted PDF evidence exists; this is not permission to consume candidate evidence.
+
+### Expected first-run final status
 
 On a fresh Phase 4 validation DB there will normally be **zero accepted PDF references**, because deterministic PDF extraction is review-gated.
 
-Therefore the first run is expected to end with a nonzero exit code and a report note similar to:
+Therefore, even when the complete identity/integrity Stage 1 gate passes, the overall command is expected to end with a nonzero exit code and a report note similar to:
 
 ```text
 Final real-reference gate not met: 0 accepted references; need at least 5.
@@ -93,13 +147,22 @@ Inspect:
 data/phase4-validation/phase4_report.json
 ```
 
-The identity/integrity sections should already be internally consistent even if the final status remains `FAIL` because the real-reference anchor gate has not yet been met.
+Identity Stage 1 is ready to advance only when at minimum:
+
+```text
+source_author_recording_complete = true
+all_creator_recording_complete = true
+name_only_auto_merges = 0
+duplicate_active_memberships = 0
+duplicate_identity_decisions_on_rerun = 0
+duplicate_identity_memberships_on_rerun = 0
+```
 
 ---
 
 ## 3. Stage 2 — seed deterministic PDF candidates for anchor selection
 
-Run:
+Only after the identity Stage 1 metrics above are stable, run:
 
 ```bash
 python scripts/seed_phase4_reference_anchors.py --sample-size 120 --anchor-count 8
@@ -215,7 +278,7 @@ The importer never accepts `RETRY`; retries belong to the normal adaptive extrac
 
 ## 6. Stage 5 — final real-library Phase 4 validation
 
-Rerun against the same validation DB:
+Rerun against the same validation DB **only if the identity resolver/policy has not changed since Stage 1**:
 
 ```bash
 python scripts/validate_phase4.py --reuse-db
@@ -239,9 +302,10 @@ A final PASS requires all of the following simultaneously:
 unit/regression suite PASS
 migration head current
 foreign_key_check = 0
+complete source author recording
 accepted author membership uniqueness holds
 name-only auto-merge violations = 0
-identity rerun creates no duplicate decisions/memberships
+identity rerun creates no decisions/memberships
 corresponding-author assignment from candidate evidence = 0
 candidate paper_reference inputs matched = 0
 reference matching rerun creates no duplicate matches
@@ -258,40 +322,4 @@ and must conform to:
 
 ```text
 schemas/phase4_report.schema.json
-```
-
----
-
-## 7. What is not required for Phase 4 validation
-
-Do **not** block Phase 4 on:
-
-- reviewing all 2161 local PDFs;
-- resolving all 12381 creator mentions;
-- forcing all same-name authors into one identity;
-- resolving every bibliography entry;
-- online author enrichment;
-- author portraits/education/social profiles;
-- UI/API;
-- materialized graph/CITES tables.
-
-Unresolved and review-required cases are expected outcomes. Precision and provenance have priority over coverage.
-
----
-
-## 8. Final expected state
-
-Only after the staged real-library run passes:
-
-```text
-PHASE_4_STATUS = PASS
-PAPERAZZI_IDENTITY_SCHEMA = PHASE4_V1
-NEXT_PHASE = PHASE_5_BACKEND_AND_MINIMAL_UI
-```
-
-Until then:
-
-```text
-CURRENT_PHASE = PHASE_4_IDENTITY_AND_RESOLUTION
-PHASE_4_STATUS = IN_PROGRESS
 ```
