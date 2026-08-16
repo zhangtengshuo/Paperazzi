@@ -12,6 +12,9 @@ license = { text = "Private" }
 authors = [{ name = "Paperazzi" }]
 dependencies = []
 
+[project.optional-dependencies]
+pdf = ["PyMuPDF>=1.24"]
+
 [project.scripts]
 paperazzi-zotero-probe = "paperazzi.zotero_sqlite.probe:main"
 
