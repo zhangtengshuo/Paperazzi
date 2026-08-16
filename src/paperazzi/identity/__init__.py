@@ -1,5 +1,9 @@
 """Phase 4 author identity and local semantic resolution."""
 
+# Import the stable bootstrap first.  It compatibility-patches the historical
+# paperazzi.identity.service import path so existing callers get the source-stable
+# resolver without breaking merge/split/manual-operation APIs.
+from .stable_bootstrap import bootstrap_author_identities, score_mention_against_author
 from .authorship_evidence import accept_authorship_evidence, propose_authorship_evidence
 from .normalization import NameFeatures, name_features, normalize_name, normalize_search_text
 from .operations import (
@@ -18,10 +22,10 @@ from .reference_resolution import LocalReferenceResolver, normalize_doi, normali
 from .service import (
     IdentityResolutionError,
     accept_membership,
-    bootstrap_author_identities,
     merge_authors,
     split_mention,
 )
+from .source_collaboration import SourceCollaborationIndex
 
 __all__ = [
     "NameFeatures",
@@ -31,6 +35,8 @@ __all__ = [
     "IdentityResolutionError",
     "accept_membership",
     "bootstrap_author_identities",
+    "score_mention_against_author",
+    "SourceCollaborationIndex",
     "merge_authors",
     "split_mention",
     "unlink_mention",
