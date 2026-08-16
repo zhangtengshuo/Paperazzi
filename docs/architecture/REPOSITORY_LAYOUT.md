@@ -11,12 +11,16 @@ Paperazzi/
 ├── pyproject.toml
 ├── docs/
 │   ├── architecture/
-│   │   └── REPOSITORY_LAYOUT.md
-│   └── phase1/
-│       └── ZOTERO_SQLITE_PROBE.md
+│   │   ├── REPOSITORY_LAYOUT.md
+│   │   ├── ZOTERO_DATA_BOUNDARY.md
+│   │   └── LOCAL_PDF_EVIDENCE.md
+│   ├── phase1/
+│   ├── phase2/
+│   └── phase2_5/
 ├── src/paperazzi/
 │   ├── zotero_sqlite/
 │   ├── ingest/
+│   ├── local_evidence/
 │   ├── identity/
 │   ├── database/
 │   ├── enrichment/
@@ -48,36 +52,52 @@ Responsibilities:
 - resolve imported and linked attachment paths;
 - expose stable Python records to `ingest`.
 
-Future internal shape:
-
-```text
-zotero_sqlite/
-├── source.py
-├── snapshot.py
-├── schema_probe.py
-├── reader.py
-├── attachments.py
-└── adapters/
-    ├── __init__.py
-    └── zotero_<schema>.py
-```
-
 **Dependency rule:** no SQL referring to Zotero internal tables may appear outside this package.
 
 ### `src/paperazzi/ingest/`
 
 Transforms Zotero-specific records into Paperazzi's stable canonical representation and computes scan-to-scan differences.
 
-Planned objects:
+Core objects:
 
 - `CanonicalZoteroItem`;
 - `CanonicalCreator`;
 - `CanonicalAttachment`;
 - scan manifest;
-- content hashes;
+- semantic content hashes;
 - `NEW / MODIFIED / UNCHANGED / REMOVED / RESTORED` diff.
 
 This layer must not know how Zotero tables are joined.
+
+### `src/paperazzi/local_evidence/`
+
+Independent read-only evidence extraction from local documents. It must not contain Zotero SQL and must not mutate `CanonicalZoteroItem` to make PDF evidence look like Zotero metadata.
+
+Initial responsibility:
+
+```text
+local_evidence/
+└── pdf.py
+```
+
+- open local PDF files read-only;
+- PyMuPDF text/blocks/metadata extraction;
+- text-layer quality classification;
+- first-page/front-matter evidence spans;
+- affiliation/correspondence/e-mail candidates;
+- reference-section detection;
+- conservative reference segmentation;
+- DOI/year extraction from references;
+- non-fatal handling of missing/encrypted/scan-only/malformed PDFs.
+
+Future adapters may include:
+
+```text
+zotero_fulltext_cache.py
+ocr.py / mineru.py
+```
+
+All outputs are evidence with provenance. Semantic interpretation belongs in resolver/identity/graph layers.
 
 ### `src/paperazzi/identity/`
 
@@ -88,6 +108,7 @@ Responsibilities:
 - normalized names/name variants;
 - external-ID matching;
 - coauthor/affiliation/topic evidence;
+- local-PDF author/affiliation/correspondence evidence consumption;
 - candidate scoring;
 - merge/split/not-same-person rules;
 - identity locks;
@@ -107,7 +128,16 @@ Responsibilities:
 - transaction boundaries;
 - Paperazzi DB schema versioning.
 
-The primary database will initially be SQLite. The domain model should not depend on SQLite-specific behavior where avoidable.
+Phase 3 must include first-class persistence for:
+
+```text
+paper_documents
+document_evidence_spans
+paper_references
+paper_reference_matches
+```
+
+rather than hiding PDF-derived evidence in opaque JSON.
 
 ### `src/paperazzi/enrichment/`
 
@@ -132,6 +162,8 @@ Derived scholarly graph.
 Responsibilities:
 
 - coauthorship edges;
+- accepted paper-to-paper `CITES` edges from `paper_reference_matches`;
+- citation-derived author relations;
 - first-author/corresponding-author relations;
 - advisor/student and institution relations when evidenced;
 - collaboration weights/time decay;
@@ -149,12 +181,12 @@ Responsibilities:
 
 - author/paper/institution/topic endpoints;
 - search;
-- network explorer queries;
+- network/citation explorer queries;
 - review center actions;
 - local PDF open/serve actions;
-- update-run status.
+- update/extraction run status.
 
-It must call domain/service layers rather than embedding SQL or AI logic in route handlers.
+It must call domain/service layers rather than embedding SQL, PDF parsing, or AI logic in route handlers.
 
 ### `frontend/`
 
@@ -169,6 +201,7 @@ frontend/src/
 │   ├── dashboard/
 │   ├── authors/
 │   ├── papers/
+│   ├── citations/
 │   ├── network/
 │   ├── topics/
 │   ├── institutions/
@@ -182,11 +215,19 @@ Network visualization is a UI projection of backend graph data, not a second sou
 
 ### `scripts/`
 
-Thin operational entry points only. Business logic belongs in `src/paperazzi/`.
+Thin operational/validation entry points only. Business logic belongs in `src/paperazzi/`.
+
+Current examples:
+
+```text
+probe_zotero.py
+validate_zotero_reader.py
+validate_pdf_evidence.py
+```
 
 ### `tests/`
 
-Mirrors backend modules. Real Zotero databases and user PDFs must never become test fixtures in Git.
+Mirrors backend modules. Real Zotero databases and user PDFs must never become committed test fixtures. Synthetic PDFs may be generated inside temporary directories during tests.
 
 ### `requests/`, `imports/`, `data/`
 
@@ -194,7 +235,7 @@ Local runtime working directories:
 
 - `requests/` — generated packages for online AI;
 - `imports/` — returned packages awaiting/after validation;
-- `data/` — Paperazzi database, snapshots, caches, generated assets.
+- `data/` — Paperazzi database, snapshots, evidence caches, generated assets.
 
 Their runtime contents are ignored by Git.
 
@@ -203,25 +244,33 @@ Their runtime contents are ignored by Git.
 Preferred dependency flow:
 
 ```text
-zotero_sqlite ──> ingest ──> identity ──> database
-                         └──> enrichment ──> database
-                         └──> graph ───────> database
+zotero_sqlite ──> ingest ──────────────┐
+                                        ├──> identity ──> database
+local_evidence ─────────────────────────┤
+                                        ├──> graph ─────> database
+                                        └──> enrichment -> database
 
 api ──> service/domain layers above
 frontend ──HTTP──> api
 ```
 
-More precisely, domain dataclasses/interfaces may later be factored into a small `domain/` package if circular dependencies emerge. Do not create that abstraction prematurely.
+More precisely:
+
+- `zotero_sqlite` may know Zotero tables but not AI/PDF semantics;
+- `local_evidence` may know PDF/text extraction but not Zotero tables;
+- identity/graph/resolver layers are where these evidence channels meet;
+- `database` persists accepted facts and evidence provenance.
+
+Domain dataclasses/interfaces may later be factored into a small `domain/` package if circular dependencies emerge. Do not create that abstraction prematurely.
 
 ## Development phases
 
-1. **SQLite reconnaissance** — current phase.
-2. **Zotero schema adapter + canonical importer.**
-3. **Paperazzi relational schema + incremental scan state.**
-4. **Author identity resolution.**
-5. **Minimal backend + author/paper web UI + Open PDF.**
-6. **AI enrichment request/result protocol + Review Center.**
-7. **Relationship graph and research-topic timeline.**
-8. **Monthly author watch / library-gap detection.**
+1. **Phase 1 — SQLite reconnaissance** — complete.
+2. **Phase 2 — Zotero schema adapter + canonical reader** — complete after correctness fixes.
+3. **Phase 2.5 — Local PDF Evidence validation** — current.
+4. **Phase 3 — Paperazzi relational schema + incremental scan state + PDF evidence/reference persistence.**
+5. **Phase 4 — author identity + local/online semantic resolution.**
+6. **Phase 5 — minimal backend + author/paper/citation web UI + Open PDF.**
+7. **Phase 6 — enrichment protocol, advanced relationship/citation graph, monthly watch and library-gap detection.**
 
 Each phase must leave an auditable deterministic path from source evidence to stored facts.
