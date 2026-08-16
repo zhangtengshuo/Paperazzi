@@ -9,7 +9,6 @@ import re
 import sys
 from collections import Counter
 from pathlib import Path
-from typing import Iterable
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -92,7 +91,6 @@ def select_records(records, limit: int | None):
             selected_keys.add(key)
             selected.append(pair)
 
-    # Keep known real-world layouts from reconnaissance whenever they are present.
     for pair in records:
         title = (pair[0].title or "").casefold()
         if any(anchor in title for anchor in ANCHOR_TITLE_SUBSTRINGS):
@@ -168,6 +166,7 @@ def evidence_summary(item, attachment, evidence: PdfEvidence) -> dict:
         if refs is None
         else {
             "heading": refs.heading,
+            "is_explicit_heading": bool(refs.heading.strip()),
             "start_page": refs.start_page,
             "end_page": refs.end_page,
             "method": refs.method,
@@ -192,7 +191,9 @@ def build_report(reader: ZoteroSQLiteReader, *, limit: int | None) -> dict:
     with_affiliation_candidates = 0
     with_correspondence_candidates = 0
     with_emails = 0
-    with_reference_heading = 0
+    with_reference_section = 0
+    with_explicit_reference_heading = 0
+    with_implicit_reference_section = 0
     with_segmented_references = 0
     total_segmented_entries = 0
     total_reference_dois = 0
@@ -210,7 +211,11 @@ def build_report(reader: ZoteroSQLiteReader, *, limit: int | None) -> dict:
         if evidence.emails:
             with_emails += 1
         if evidence.references is not None:
-            with_reference_heading += 1
+            with_reference_section += 1
+            if evidence.references.heading.strip():
+                with_explicit_reference_heading += 1
+            else:
+                with_implicit_reference_section += 1
             reference_confidence[evidence.references.confidence] += 1
             reference_methods[evidence.references.method] += 1
             if evidence.references.entries:
@@ -234,7 +239,9 @@ def build_report(reader: ZoteroSQLiteReader, *, limit: int | None) -> dict:
             "with_affiliation_candidates": with_affiliation_candidates,
             "with_correspondence_candidates": with_correspondence_candidates,
             "with_emails": with_emails,
-            "with_reference_heading": with_reference_heading,
+            "with_reference_section": with_reference_section,
+            "with_explicit_reference_heading": with_explicit_reference_heading,
+            "with_implicit_reference_section": with_implicit_reference_section,
             "with_segmented_references": with_segmented_references,
             "reference_confidence": dict(sorted(reference_confidence.items())),
             "reference_methods": dict(sorted(reference_methods.items())),
@@ -266,7 +273,9 @@ def render_markdown(report: dict) -> str:
         "",
         "## References",
         "",
-        f"- PDFs with an exact reference-section heading: **{counts['with_reference_heading']}**",
+        f"- PDFs with a recovered reference section: **{counts['with_reference_section']}**",
+        f"- Explicit reference headings: **{counts['with_explicit_reference_heading']}**",
+        f"- Implicit numbered sections recovered without a heading: **{counts['with_implicit_reference_section']}**",
         f"- PDFs with high/usable deterministic reference segmentation: **{counts['with_segmented_references']}**",
         f"- Reference confidence: `{json.dumps(counts['reference_confidence'], sort_keys=True)}`",
         f"- Reference methods: `{json.dumps(counts['reference_methods'], sort_keys=True)}`",
@@ -275,7 +284,7 @@ def render_markdown(report: dict) -> str:
         "",
         "## Interpretation",
         "",
-        "These are coverage diagnostics, not acceptance requirements for Zotero ingestion. A missing or scanned PDF simply produces less local evidence. Inspect `pdf_evidence_report.json` for per-paper evidence samples.",
+        "These are coverage diagnostics, not Zotero-ingestion acceptance requirements. In deterministic v3, implicit reference sections are intentionally reported separately from literal References/Bibliography headings.",
         "",
     ]
     return "\n".join(lines)
@@ -327,7 +336,9 @@ def main() -> int:
     print(f"  selected PDFs: {report['selected_pdf_records']}")
     print(f"  parse errors: {report['counts']['parse_errors']}")
     print(f"  text status: {report['counts']['text_status']}")
-    print(f"  reference headings: {report['counts']['with_reference_heading']}")
+    print(f"  reference sections: {report['counts']['with_reference_section']}")
+    print(f"  explicit headings: {report['counts']['with_explicit_reference_heading']}")
+    print(f"  implicit sections: {report['counts']['with_implicit_reference_section']}")
     print(f"  segmented references: {report['counts']['with_segmented_references']}")
     print(f"  report: {md_path}")
     return 0
