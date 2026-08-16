@@ -8,6 +8,12 @@ from .operations import (
     set_identity_lock,
     unlink_mention,
 )
+from .reference_operations import (
+    ReferenceResolutionError,
+    accept_reviewed_reference_match,
+    reject_reference_match,
+    resolve_reference_review_queue_item,
+)
 from .reference_resolution import LocalReferenceResolver, normalize_doi, normalize_title
 from .service import (
     IdentityResolutionError,
@@ -36,4 +42,8 @@ __all__ = [
     "LocalReferenceResolver",
     "normalize_doi",
     "normalize_title",
+    "ReferenceResolutionError",
+    "accept_reviewed_reference_match",
+    "reject_reference_match",
+    "resolve_reference_review_queue_item",
 ]
