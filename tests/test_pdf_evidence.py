@@ -60,6 +60,20 @@ class PdfEvidenceHeuristicTests(unittest.TestCase):
         self.assertEqual(entries[2].dois, ("10.1000/delta",))
         self.assertIn("2021", entries[1].years)
 
+    def test_author_year_lines_are_not_misread_as_bare_reference_ordinals(self) -> None:
+        # Regression from the first real-library validation: an old bibliography was
+        # incorrectly split at years such as 1943, 1962 and 1954.
+        text = """
+FRONTERA MARQUES, B.: Una funcion numerica. Zaragoza, 1943.
+1962 FRUCHT, R., and G.-C. ROTA: La funcion de Mobius. Scientia.
+1954 HARARY, F.: Lattice theory of partitions. Canadian J. Math.
+1937 MILES, E.: The inversion problems of Mobius. Duke Math. J.
+"""
+        entries, method, confidence = segment_reference_entries(text)
+        self.assertEqual(entries, ())
+        self.assertEqual(method, "raw-author-year-or-unsegmented")
+        self.assertEqual(confidence, "MEDIUM")
+
     def test_reference_heading_prefers_late_exact_heading(self) -> None:
         pages = [
             "Contents\nReferences\nIntroduction\nThis is only a table of contents mention.",
@@ -101,6 +115,7 @@ class PdfEvidenceIntegrationTests(unittest.TestCase):
         try:
             page1 = doc.new_page()
             page1.insert_text((50, 25), "Subscriber access provided by Example University", fontsize=8)
+            page1.insert_text((50, 38), "Articles you may be interested in: Example Center for Methods", fontsize=8)
             page1.insert_textbox(
                 PYMUPDF.Rect(50, 50, 545, 500),
                 """A Synthetic Paper for Paperazzi
@@ -111,6 +126,7 @@ Ada Lovelace1 and Grace Hopper2*
 
 Abstract
 This synthetic article exists only to exercise local PDF evidence extraction.
+The discussion may center upon a difficult scientific question without naming an affiliation.
 """,
                 fontsize=11,
             )
@@ -149,6 +165,8 @@ REFERENCES
         self.assertTrue(any("Example University" in span.text for span in evidence.affiliation_candidates))
         self.assertTrue(any("Corresponding author" in span.text for span in evidence.correspondence_candidates))
         self.assertFalse(any("Subscriber access provided" in span.text for span in evidence.affiliation_candidates))
+        self.assertFalse(any("Articles you may be interested in" in span.text for span in evidence.affiliation_candidates))
+        self.assertFalse(any("center upon" in span.text.lower() for span in evidence.affiliation_candidates))
         self.assertIsNotNone(evidence.references)
         assert evidence.references is not None
         self.assertEqual(evidence.references.confidence, "HIGH")
