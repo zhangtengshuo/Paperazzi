@@ -1,0 +1,1830 @@
+{
+  "generated_at": "2026-08-16T14:18:21+00:00",
+  "adapter": "userdata125-global42",
+  "schema_versions": {
+    "globalSchema": 42,
+    "system": 32,
+    "userdata": 125,
+    "triggers": 18,
+    "compatibility": 7,
+    "translators": 1783437194,
+    "delete": 74,
+    "styles": 1783437194,
+    "fulltext_2": 38,
+    "repository": 1784133974,
+    "lastcheck": 1784133976,
+    "fulltext_1": 12953,
+    "lastsync": 1786888677
+  },
+  "libraries": [
+    {
+      "libraryID": 1,
+      "type": "user",
+      "editable": 1,
+      "filesEditable": 1,
+      "version": 12961,
+      "storageVersion": 12953,
+      "lastSync": 1786888676,
+      "archived": 0,
+      "isAdmin": 0
+    },
+    {
+      "libraryID": 2,
+      "type": "group",
+      "editable": 1,
+      "filesEditable": 1,
+      "version": 38,
+      "storageVersion": 0,
+      "lastSync": 1786888677,
+      "archived": 0,
+      "isAdmin": 1
+    }
+  ],
+  "counts": {
+    "canonical_bibliographic_total_including_deleted": 2556,
+    "active_bibliographic_items": 2513,
+    "deleted_bibliographic_items": 43,
+    "active_items_by_type": {
+      "book": 45,
+      "bookSection": 48,
+      "computerProgram": 1,
+      "conferencePaper": 8,
+      "journalArticle": 2388,
+      "patent": 5,
+      "preprint": 10,
+      "thesis": 1,
+      "webpage": 7
+    },
+    "active_items_by_library": {
+      "1": 2494,
+      "2": 19
+    },
+    "creator_links_by_type": {
+      "author": 12207,
+      "bookAuthor": 1,
+      "editor": 85,
+      "inventor": 22,
+      "seriesEditor": 66
+    },
+    "attachments_by_link_mode": {
+      "imported_file": 1137,
+      "imported_url": 1251,
+      "linked_url": 179
+    },
+    "attachments_by_content_type": {
+      "application/epub+zip": 1,
+      "application/pdf": 2374,
+      "text/html": 192
+    },
+    "attachments_by_resolution": {
+      "missing-path": 179,
+      "zotero-storage": 2388
+    },
+    "attachment_local_state": {
+      "exists": 2175,
+      "missing": 213,
+      "unresolved_or_not_applicable": 179
+    }
+  },
+  "quality": {
+    "active_items_missing_title": 0,
+    "active_items_without_creators": 18,
+    "journal_articles": 2388,
+    "journal_articles_with_doi": 2293,
+    "journal_articles_with_creators": 2380
+  },
+  "anomalies": {
+    "missing_title_identities": [],
+    "no_creator_identities": [
+      "zotero:1:MBQ5T2F9",
+      "zotero:1:D8TSBW53",
+      "zotero:1:H5VDLHW7",
+      "zotero:1:24JWMVE8",
+      "zotero:1:ANJ7Z5BZ",
+      "zotero:1:XQDIXXKG",
+      "zotero:1:ZJ9UIW98",
+      "zotero:1:GS75B3WR",
+      "zotero:1:6HGHAN8D",
+      "zotero:1:M3LNK9AH",
+      "zotero:1:LAHSPLIG",
+      "zotero:1:R6Q2T8R5",
+      "zotero:1:YGIB8SQC",
+      "zotero:1:U3L7QB8P",
+      "zotero:1:VJFHCSEN",
+      "zotero:1:548HGCGR",
+      "zotero:1:FDEVKD4F",
+      "zotero:1:NUFA3VE5"
+    ],
+    "missing_local_files": [
+      {
+        "parent": "zotero:1:V6TGTEA2",
+        "title": "Theoretical Studies on the Excited-State Decay Mechanism of Homomenthyl Salicylate in a Gas Phase and an Acetonitrile Solution",
+        "attachment_key": "2F5WCXZX",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2022 - Theoretical Studies on the Excited-State Decay Mechanism of Homomenthyl Salicylate in a Gas Phase an.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:WYX3PSFY",
+        "title": "Quantum mechanics/molecular mechanics studies on the mechanistic photophysics of sunscreen oxybenzone in methanol solution",
+        "attachment_key": "9JDSLVZP",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2022 - Quantum mechanicsmolecular mechanics studies on the mechanistic photophysics of sunscreen oxybenzon.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:88GPG5VV",
+        "title": "Quantum mechanics/molecular mechanics studies on the excited-state decay mechanisms of cytidine aza-analogues: 5-azacytidine and 2′-deoxy-5-azacytidine in aqueous solution",
+        "attachment_key": "8GZ9V7YU",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2023 - Quantum mechanicsmolecular mechanics studies on the excited-state decay mechanisms of cytidine aza-.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:XS9CNA6G",
+        "title": "Quantum mechanics/molecular mechanics studies on mechanistic photophysics of cytosine aza-analogues: 2,4-diamino-1,3,5-triazine and 2-amino-1,3,5-triazine in aqueous solution",
+        "attachment_key": "9PJVJ533",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2023 - Quantum mechanicsmolecular mechanics studies on mechanistic photophysics of cytosine aza-analogues.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:LS6BZA62",
+        "title": "Quantum mechanics/molecular mechanics studies on excited state decay pathways of 5-azacytosine in aqueous solution",
+        "attachment_key": "S4H467UE",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2022 - Quantum mechanicsmolecular mechanics studies on excited state decay pathways of 5-azacytosine in aq.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:QXZ8WMNT",
+        "title": "MS-CASPT2 studies on the mechanistic photophysics of tellurium-substituted guanine and cytosine",
+        "attachment_key": "HIUWWLQU",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Zhu 等 - 2021 - MS-CASPT2 studies on the mechanistic photophysics of tellurium-substituted guanine and cytosine.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CKE6ZFCN",
+        "title": "Mechanistic photophysics of tellurium-substituted uracils: Insights from multistate complete-active-space second-order perturbation calculations",
+        "attachment_key": "EC65IJC8",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Zhu 等 - 2021 - Mechanistic Photophysics of Tellurium-Substituted Uracils Insights from Multistate Complete-Active-.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:XXNIGJN7",
+        "title": "High-Lying 31Ag Dark-State-Mediated Singlet Fission",
+        "attachment_key": "4TG94AXZ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Wang 等 - 2021 - High-Lying 3 1 A g Dark-State-Mediated Singlet Fission.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:XMPWQJAN",
+        "title": "CASPT2//CASSCF studies on mechanistic photophysics of 3-hydroxyflavone",
+        "attachment_key": "GP68AURR",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chang 等 - 2023 - CASPT2CASSCF studies on mechanistic photophysics of 3-hydroxyflavone.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:37SU4862",
+        "title": "Acceleration of Photoinduced Electron Transfer by Modulating Electronegativity of Substituents in Stable Zr-Metal–Organic Frameworks to Boost Photocatalytic CO<sub>2</sub> Reduction",
+        "attachment_key": "ZJQ75BPK",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Wang 等 - 2024 - Acceleration of Photoinduced Electron Transfer by Modulating Electronegativity of Substituents in St.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:NNHXYJLT",
+        "title": "Understanding the Excited-State Relaxation Mechanisms of Xanthophyll Lutein by Multi-configurational Electronic Structure Calculations",
+        "attachment_key": "UEBL5NDB",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Yin 等 - 2023 - Understanding the Excited-State Relaxation Mechanisms of Xanthophyll Lutein by Multi-configurational.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:SENTTHVD",
+        "title": "Pt–S Bond-Enabled Temperature-Dependent Phosphorescence in S-Heteroaryl Tetradentate Pt(S^C^N^O) Complexes",
+        "attachment_key": "LGEWPEP6",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Zhan 等 - 2024 - Pt–S Bond-Enabled Temperature-Dependent Phosphorescence in S-Heteroaryl Tetradentate Pt(S^C^N^O) Com.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:GIHZVWCN",
+        "title": "Structure and Electron Configuration of Imidazole-2-carboxaldehyde and Its Excited Triplet: Resonance Raman and Transient Absorption Spectroscopy and DFT Calculation Investigations",
+        "attachment_key": "M2EZ8IIK",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Huang 等 - 2023 - Structure and Electron Configuration of Imidazole-2-carboxaldehyde and Its Excited Triplet Resonanc.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:E8HVVZVT",
+        "title": "Soluble Diphenylhexatriene Dimers for Intramolecular Singlet Fission with High Triplet Energy",
+        "attachment_key": "RKTSMJRE",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Millington 等 - 2023 - Soluble Diphenylhexatriene Dimers for Intramolecular Singlet Fission with High Triplet Energy.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:MKMBPE9I",
+        "title": "Singlet Fission via an Excimer-Like Intermediate in 3,6-Bis(thiophen-2-yl)diketopyrrolopyrrole Derivatives",
+        "attachment_key": "WNLQYAUP",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_Mauck_Singlet Fission via an Excimer-Like.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:DRZ3QUH6",
+        "title": "Sensitized Singlet Fission in Rigidly Linked Axial and Peripheral Pentacene-Subphthalocyanine Conjugates",
+        "attachment_key": "B9KHS498",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Gotfredsen 等 - 2023 - Sensitized Singlet Fission in Rigidly Linked Axial and Peripheral Pentacene-Subphthalocyanine Conjug.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:2F2VIL23",
+        "title": "Quantitative Singlet Fission in Solution-Processable Dithienohexatrienes",
+        "attachment_key": "LXYF8AXI",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Fallon 等 - 2022 - Quantitative Singlet Fission in Solution-Processable Dithienohexatrienes.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:IWTERR4H",
+        "title": "Photogeneration of Spin Quintet Triplet-Triplet Excitations in DNA-Assembled Pentacene Stacks",
+        "attachment_key": "HJDBFAXA",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Orsborne 等 - 2023 - Photogeneration of Spin Quintet Triplet-Triplet Excitations in DNA-Assembled Pentacene Stacks.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:9DW29273",
+        "title": "Modulating Singlet Fission by Scanning through Vibronic Resonances in Pentacene-Based Blends",
+        "attachment_key": "VXN2ELL9",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Unger 等 - 2022 - Modulating Singlet Fission by Scanning through Vibronic Resonances in Pentacene-Based Blends.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:LN3WJGZ4",
+        "title": "Free-triplet generation with improved efficiency in tetracene oligomers through spatially separated triplet pair states",
+        "attachment_key": "SZRJPPSS",
+        "content_type": "application/pdf",
+        "stored_path": "storage:s41557-021-00665-7 (1).pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:XJC7WHQ9",
+        "title": "Framework-Topology-Controlled Singlet Fission in Metal-Organic Frameworks",
+        "attachment_key": "AYBZ6ENM",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Rajasree 等 - 2023 - Framework-Topology-Controlled Singlet Fission in Metal-Organic Frameworks.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:PT5P5YS6",
+        "title": "Evidence for Singlet Fission Driven by Vibronic Coherence in Crystalline Tetracene",
+        "attachment_key": "M6PNMBRP",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017_Morrison_Evidence for Singlet Fission Dri.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:68PYZ6PF",
+        "title": "Efficient Intramolecular Singlet Fission in Spiro-Linked Heterodimers",
+        "attachment_key": "ABV7M3M5",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Kefer 等 - 2023 - Efficient Intramolecular Singlet Fission in Spiro-Linked Heterodimers.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:R9QPVIWM",
+        "title": "Effects of the Separation Distance between Two Triplet States Produced from Intramolecular Singlet Fission on the Two-Electron-Transfer Process",
+        "attachment_key": "MA2GJRUG",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Liu 等 - 2022 - Effects of the Separation Distance between Two Triplet States Produced from Intramolecular Singlet F.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:GGG8AR2P",
+        "title": "Distinct properties of the triplet pair state from singlet fission",
+        "attachment_key": "693BSMHW",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Tuan Trinh 等 - 2017 - Distinct properties of the triplet pair state from singlet fission.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:QFFNKICK",
+        "title": "Different Rates of Singlet Fission in Monoclinic versus Orthorhombic Crystal Forms of Diphenylhexatriene",
+        "attachment_key": "HBEHNC5S",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2013_dillon2013.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:H49K43YN",
+        "title": "A Direct Mechanism of Ultrafast Intramolecular Singlet Fission in Pentacene Dimers",
+        "attachment_key": "PWMJB7G2",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Fuemmeler-2016-A Direct Mechanism of Ultrafast.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:ATNV2NAQ",
+        "title": "TD-DFT benchmarks: a review",
+        "attachment_key": "J972WBKX",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Laurent和Jacquemin - 2013 - TD-DFT benchmarks A review.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:BZNDY2T7",
+        "title": "Tetracene Dimers: A Platform for Intramolecular Down- and Up-conversion",
+        "attachment_key": "5UJAVMCD",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Bo 等 - 2023 - Tetracene Dimers A Platform for Intramolecular Down- and Up-conversion.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:NNBE28IA",
+        "title": "The M06 suite of density functionals for main group thermochemistry, thermochemical kinetics, noncovalent interactions, excited states, and transition elements: two new functionals and systematic testing of four M06-class functionals and 12 other functionals",
+        "attachment_key": "ZVHLNPCQ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Zhao和Truhlar - 2008 - The M06 suite of density functionals for main group thermochemistry, thermochemical kinetics, noncov.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:47ATDEVN",
+        "title": "Unraveling Triplet Formation Mechanisms in Acenothiophene Chromophores",
+        "attachment_key": "T4BMI7T3",
+        "content_type": "application/pdf",
+        "stored_path": "storage:He 等 - 2023 - Unraveling Triplet Formation Mechanisms in Acenothiophene Chromophores.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:WLRJMKM9",
+        "title": "Using Molecular Design to Enhance the Coherence Time of Quintet Multiexcitons Generated by Singlet Fission in Single Crystals",
+        "attachment_key": "QDMAX5VJ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Jacobberger 等 - 2022 - Using Molecular Design to Enhance the Coherence Time of Quintet Multiexcitons Generated by Singlet F.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:S4X6XBK6",
+        "title": "How Accurate Are the Minnesota Density Functionals for Noncovalent Interactions, Isomerization Energies, Thermochemistry, and Barrier Heights Involving Molecules Composed of Main-Group Elements?",
+        "attachment_key": "ZUYYYF6U",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Mardirossian和Head-Gordon - 2016 - How Accurate Are the Minnesota Density Functionals for Noncovalent Interactions, Isomerization Energ.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:KZB6AZX4",
+        "title": "Assessment of DFT Methods for Transition Metals with the TMC151 Compilation of Data Sets and Comparison with Accuracies for Main-Group Chemistry",
+        "attachment_key": "XS58PQ82",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chan 等 - 2019 - Assessment of DFT Methods for Transition Metals with the TMC151 Compilation of Data Sets and Compari.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:H4WKWXPB",
+        "title": "Thirty years of density functional theory in computational chemistry: an overview and extensive assessment of 200 density functionals",
+        "attachment_key": "JNNXF6K5",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Mardirossian和Head-Gordon - 2017 - Thirty years of density functional theory in computational chemistry an overview and extensive asse.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:4GW29VWH",
+        "title": "Good Practices in Database Generation for Benchmarking Density Functional Theory",
+        "attachment_key": "THJUU7N5",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Karton和De Oliveira - 2025 - Good Practices in Database Generation for Benchmarking Density Functional Theory.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:9ZPLVNYJ",
+        "title": "MN15: A Kohn–Sham global-hybrid exchange–correlation density functional with broad accuracy for multi-reference and single-reference systems and noncovalent interactions",
+        "attachment_key": "FNMF3KU2",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Yu 等 - 2016 - MN15 A Kohn–Sham global-hybrid exchange–correlation density functional with broad accuracy for mult.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:ZB822FKQ",
+        "title": "Unraveling Charge and Energy Transfer in a Singlet Fission Donor–Acceptor Complex: An <i>Ab Initio</i> Quantum Dynamical Study",
+        "attachment_key": "JEYJ6KCY",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Thalmann 等 - 2026 - Unraveling Charge and Energy Transfer in a Singlet Fission Donor–Acceptor Complex An Ab Initio.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:65BTQKDF",
+        "title": "Intra- and Intermolecular Singlet Fission in Covalently Linked Dimers",
+        "attachment_key": "MU6ZVY3A",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_feng2016.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:NG98FIZ4",
+        "title": "On couplings and excimers: lessons from studies of singlet fission in covalently linked tetracene dimers",
+        "attachment_key": "7PE8FZSH",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_Xintian Feng_On couplings and excimers- l.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:ZTYKF6US",
+        "title": "Singlet fission: optimization of chromophore dimer geometry",
+        "attachment_key": "3BFJYMSA",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017_Eric A. Buchanan_Singlet Fission- Optimiz.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:ASVI4ZA8",
+        "title": "Coherent singlet fission activated by symmetry breaking",
+        "attachment_key": "UEDKJ6VC",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017_Kiyoshi Miyata_Coherent singlet fission a.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:R4IB6HE5",
+        "title": "Theoretical Studies of Singlet Fission: Searching for Materials and Exploring Mechanisms",
+        "attachment_key": "XVA7WUHC",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2018_japahug_Theoretical studies of singlet fi.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CXWWVUWZ",
+        "title": "Triplet Pair States in Singlet Fission",
+        "attachment_key": "IS28Y2FF",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Miyata_2019_Triplet Pair States in Singlet Fis.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:Q95C7UT8",
+        "title": "Intermolecular vibrations mediate ultrafast singlet fission",
+        "attachment_key": "7LKD2TZ9",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Duan-2020-Intermolecular vibrations mediate ul.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:84QHBG47",
+        "title": "An ab initio exciton model for singlet fission",
+        "attachment_key": "5KU8RK3J",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Li 等 - 2020 - An ab initio exciton model for singlet fission.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:RKXBMIDD",
+        "title": "Hydrogen-Bond Network Determines the Early Photoisomerization Processes of Cph1 and AnPixJ Phytochromes",
+        "attachment_key": "MDAYJ368",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Liu 等 - 2021 - Hydrogen‐Bond Network Determines the Early Photoisomerization Processes of Cph1 and AnPixJ Phytochro.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:FUTHP6RU",
+        "title": "Nuclear dynamics of singlet exciton fission in pentacene single crystals",
+        "attachment_key": "GLXIYIP7",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Seiler-2021-Nuclear dynamics of singlet excito.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:LB4RDKTT",
+        "title": "Investigating the mapping of chromophore excitations onto the electron detachment spectrum: photodissociation spectroscopy of iodide ion–thiouracil clusters",
+        "attachment_key": "IQ9DEL2P",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Uleanya-2021-Investigating the mapping of chro.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:E44YCRUK",
+        "title": "Unconventional singlet fission materials",
+        "attachment_key": "836AN8G8",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Ullrich-2021-Unconventional singlet fission ma.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7GS4UPCF",
+        "title": "Electronic structure calculations and nonadiabatic dynamics simulations on reversible photochromic mechanism of spirooxazine",
+        "attachment_key": "S4PRP7G5",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Wang 等 - 2022 - Electronic structure calculations and nonadiabatic dynamics simulations on reversible photochromic m.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:VNFXC88X",
+        "title": "Unraveling the Geometrical Effects on Singlet Fission of Carotenoids: A Model Perspective",
+        "attachment_key": "TECYN7M8",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Santra和Ghosh - 2025 - Unraveling the Geometrical Effects on Singlet Fission of Carotenoids A Model Perspective.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7WV28DXP",
+        "title": "Singlet Fission in a Binary System: Effect of Structural Changes and Temperature",
+        "attachment_key": "3SPE7UB9",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Gerhard 等 - 2024 - Singlet Fission in a Binary System Effect of Structural Changes and Temperature.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:RMQ6CRD6",
+        "title": "Aromaticity Concerto in Polycyclic Conjugated Hydrocarbons: Fusion Pattern on Combined Aromaticity Strategy Leads to Distinctive Excited State Photophysics of Dinaphthopentalenes",
+        "attachment_key": "6PFSBM7U",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Wang 等 - 2023 - Aromaticity Concerto in Polycyclic Conjugated Hydrocarbons Fusion Pattern on Combined Aromaticity S.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:DK5N9U7U",
+        "title": "Topology of quantum coherence in singlet fission: Mapping out spin micro-states in quasi-classical nonadiabatic simulations",
+        "attachment_key": "6Y9HIUHF",
+        "content_type": "application/pdf",
+        "stored_path": "storage:1.5139538.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:GNDGKR6I",
+        "title": "Singlet fission in carotenoid aggregates: insights from transient absorption spectroscopy",
+        "attachment_key": "IQBRPAFK",
+        "content_type": "application/pdf",
+        "stored_path": "storage:_1578018767296857_wang2012.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:UINFU6UZ",
+        "title": "Excited-state properties of the 16 kDa red carotenoid protein from Arthrospira maxima",
+        "attachment_key": "TU6D7MAS",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chábera-2011-Excited-state properties of the 1.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:R9GDBX5Q",
+        "title": "The orange carotenoid protein in photoprotection of photosystem II in cyanobacteria",
+        "attachment_key": "RZVKV6FT",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Kirilovsky-2012-The orange carotenoid protein.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:8W7CFFXQ",
+        "title": "UV Excitation of Carotenoid Binding Proteins OCP and HCP: Excited‐State Dynamics and Product Formation",
+        "attachment_key": "Z6N9UQBA",
+        "content_type": "application/pdf",
+        "stored_path": "storage:ChemPhotoChem - 2021 - Khan - UV Excitation of.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:DD8IX39N",
+        "title": "Echinenone vibrational properties: from solvents to the orange carotenoid protein",
+        "attachment_key": "HIKLDFJF",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Kish-2015-Echinenone vibrational properties_ f.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:BWWGMJND",
+        "title": "Singlet-triplet fission of carotenoid excitation in light-harvesting LH2 complexes of purple phototrophic bacteria",
+        "attachment_key": "MR7CS25I",
+        "content_type": "application/pdf",
+        "stored_path": "storage:_1578019996201408_klenina2014.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:GT8EP239",
+        "title": "Fluorescent labeling preserving OCP photoactivity reveals its reorganization during the photocycle",
+        "attachment_key": "UKJDYYKJ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Maksimov-2017-Fluorescent labeling preserving.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:FSVB2398",
+        "title": "Hybrid coupling of R-phycoerythrin and the orange carotenoid protein supports the FRET-based mechanism of cyanobacterial photoprotection",
+        "attachment_key": "HPN8BURL",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Maksimov-2019-Hybrid coupling of R-phycoerythr.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:DMBAI696",
+        "title": "Quantifying charge resonance and multiexciton character in coupled chromophores by charge and spin cumulant analysis",
+        "attachment_key": "K345RA3B",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2015_luzanov_Quantifying charge resonance and.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:D4BILXUE",
+        "title": "Conical Intersection and Potential Energy Surface Features of a Model Retinal Chromophore: Comparison of EOM-CC and Multireference Methods",
+        "attachment_key": "CUXKIL48",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2013_gozem2013.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:D5RGA2T4",
+        "title": "Biradicaloid Character of Thiophene-Based Heterophenoquinones: The Role of Electron-Phonon Coupling",
+        "attachment_key": "3FBVVF2U",
+        "content_type": "application/pdf",
+        "stored_path": "storage:_1576593840732525_fazzi2010.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CZC645DS",
+        "title": "Quantifying local exciton, charge resonance, and multiexciton character in correlated wave functions of multichromophoric systems",
+        "attachment_key": "9IA2FNUS",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_casanova_Quantifying local exciton, charg.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CVSU3J5D",
+        "title": "Synchrotron X-ray footprinting as a method to visualize water in proteins",
+        "attachment_key": "ATMSLRAU",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016-Gupta-Journal of Synchrotron Radiation.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CT3UR8SS",
+        "title": "Stimulus-responsive light-harvesting complexes based on the pillararene-induced co-assembly of beta-carotene and chlorophyll",
+        "attachment_key": "HF9IRJS7",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016-Sun-Nature Communications.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CQ8PF5TT",
+        "title": "Singlet fission in chiral carbon nanotubes: Density functional theory based computation",
+        "attachment_key": "RK3GQXXQ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017_kryjevski_Singlet fission in chiral carbo.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CMLD3VIK",
+        "title": "Diradical Character View of Singlet Fission",
+        "attachment_key": "D8ZTX7KS",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2012_minami_Diradical Character View of Single.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:CF444LQL",
+        "title": "Solution Structure and Conformational Flexibility in the Active State of the Orange Carotenoid Protein: Part I. Small-Angle Scattering",
+        "attachment_key": "F4A4W5TZ",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2019-Golub-Journal of Physical Chemistry B.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:BVLSWMQV",
+        "title": "Substituent Effect on Vibrationally Resolved Absorption Spectra and Exciton Dynamics of Dipyrrolonaphthyridinedione Aggregates",
+        "attachment_key": "QVTYMV3L",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Feng 等 - 2022 - Substituent Effect on Vibrationally Resolved Absorption Spectra and Exciton Dynamics of Dipyrrolonap.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:BKM66EJH",
+        "title": "The Dynamics of Energy Dissipation and Xanthophyll Conversion in Arabidopsis Indicate an Indirect Photoprotective Role of Zeaxanthin in Slowly Inducible and Relaxing Components of Non-photochemical Quenching of Excitation Energy",
+        "attachment_key": "LGK2QA75",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017-Kress-Frontiers in Plant Science.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:A8IET3NY",
+        "title": "Double excitations within time-dependent density functional theory linear response",
+        "attachment_key": "KRGZP7YY",
+        "content_type": "application/pdf",
+        "stored_path": "storage:_1576594065613438_maitra2004.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:9TRHPCYZ",
+        "title": "A new energy transfer channel from carotenoids to chlorophylls in purple bacteria",
+        "attachment_key": "MBA2RF9T",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Feng-2017-A new energy transfer channel from c.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:9B2L3VAN",
+        "title": "Maximizing Singlet Fission in Organic Dimers Theoretical Investigation of Triplet Yield in the Regime of Localized Excitation and Fast Coherent Electron Transter",
+        "attachment_key": "FDW8GTWH",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2010_greyson2010.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:9BQQG2UF",
+        "title": "A Qualitative Index of Spatial Extent in Charge-Transfer Excitations",
+        "attachment_key": "AY9E77GV",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2011_lebahers_A Qualitative Index of Spatial E.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:8Q2QVH6X",
+        "title": "Singlet-triplet excitation fission in light-harvesting complexes of photosynthetic bacteria and in isolated carotenoids",
+        "attachment_key": "PRC4XHGM",
+        "content_type": "application/pdf",
+        "stored_path": "storage:_1578020089051151_klenina2013.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7WJU8AJ4",
+        "title": "Dramatic Domain Rearrangements of the Cyanobacterial Orange Carotenoid Protein upon Photoactivation",
+        "attachment_key": "4BFEKETM",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016-Liu-Biochemistry.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7SRXDQJQ",
+        "title": "Vibrationally Resolved Absorption Spectra and Exciton Dynamics in Zinc Phthalocyanine Aggregates: Effects of Aggregation Lengths and Remote Exciton Transfer",
+        "attachment_key": "B2KID625",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Feng 等 - 2021 - Vibrationally Resolved Absorption Spectra and Exciton Dynamics in Zinc Phthalocyanine Aggregates Ef.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7PUG8DJV",
+        "title": "Ultrafast Singlet Fission in a Push-Pull Low-Bandgap Polymer Film",
+        "attachment_key": "7D3F5RJM",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2015_kasai_Ultrafast Singlet Fission in a Push.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7EKUGD24",
+        "title": "Diradical Character Based Design for Singlet Fission of Condensed-Ring Systems with 4n pi Electrons",
+        "attachment_key": "37ZTP9DR",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2012_ito2012.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:7BEI9RGS",
+        "title": "The energy barrier in singlet fission can be overcome through coherent coupling and entropic gain",
+        "attachment_key": "4T6JDP3Z",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2012_Wai-Lun Chan_The energy barrier in single.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:72I9RKUT",
+        "title": "GMars-Q Enables Long-Term Live-Cell Parallelized Reversible Saturable Optical Fluorescence Transitions Nanoscopy",
+        "attachment_key": "293DYW9M",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Wang 等 - 2016 - GMars-Q Enables Long-Term Live-Cell Parallelized Reversible Saturable Optical Fluorescence Transitio.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:6U4X4QQC",
+        "title": "From Model Hamiltonians to ab Initio Hamiltonians and Back Again: Using Single Excitation Quantum Chemistry Methods To Find Multiexciton States in Singlet Fission Materials",
+        "attachment_key": "ZSSGVLX2",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_mayhall_From Model Hamiltonians to ab Ini.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:6PIETYER",
+        "title": "Diagrammatic Exciton Basis Theory of the Photophysics of Pentacene Dimers",
+        "attachment_key": "569IDQSG",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017_Souratosh Khan and Sumit Mazumdar_Diagram.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:6CYGWJ49",
+        "title": "Excited-State Properties of Canthaxanthin in Cyanobacterial Carotenoid-Binding Proteins HCP2 and HCP3",
+        "attachment_key": "ZEZY6BPM",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2020-Khan-Journal of Physical Chemistry B.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:66SFFRBR",
+        "title": "Ultrafast internal conversion in a low band gap polymer for photovoltaics: experimental and theoretical study",
+        "attachment_key": "CYX2RZBX",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2012_fazzi2012.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:5XSJF4VS",
+        "title": "Binding of red form of Orange Carotenoid Protein (OCP) to phycobilisome is not sufficient for quenching",
+        "attachment_key": "J96CBW5D",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Lou-2020-Binding of red form of Orange Caroten.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:5TXN8I9M",
+        "title": "Open questions on the photophysics of ultrafast singlet fission",
+        "attachment_key": "QZ7BFIP3",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Johnson-2021-Open questions on the photophysic.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:4Y6AGFXP",
+        "title": "Computational study on the color change of 3′-hydroxyechinenone in the orange carotenoid protein",
+        "attachment_key": "YZV5Y86H",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2016_Yukie Mori_Computational study on the col.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:4T58CXBR",
+        "title": "QM/MM: what have we learned, where are we, and where do we go from here?",
+        "attachment_key": "LUUZL6E7",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Lin和Truhlar - 2007 - QMMM what have we learned, where are we, and where do we go from here.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:4SBW4CWB",
+        "title": "Super-resolving Microscopy in Neuroscience",
+        "attachment_key": "MN68RMXP",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Werner 等 - 2021 - Super-resolving Microscopy in Neuroscience.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:3XBFR6H4",
+        "title": "Electronic and vibrational properties of carotenoids: from in vitro to in vivo",
+        "attachment_key": "NJHJ5FVG",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Llansola-Portol-2017-Electronic and vibrationa.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:3EEM6IWT",
+        "title": "Synthetic OCP heterodimers are photoactive and recapitulate the fusion of two primitive carotenoproteins in the evolution of cyanobacterial photoprotection",
+        "attachment_key": "FIXXQCP9",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017-Lechno-Yossef-Plant Journal.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:3CAENZT6",
+        "title": "Fission of Entangled Spins: An Electronic Structure Perspective",
+        "attachment_key": "9GAZQUHG",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2013_feng2013.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:2VXD4XST",
+        "title": "Raman Optical Activity Reveals Carotenoid Photoactivation Events in the Orange Carotenoid Protein in Solution",
+        "attachment_key": "5X59C9EK",
+        "content_type": "application/pdf",
+        "stored_path": "storage:2017-Fujisawa-Journal of the American Chemical.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:PTNA6DJI",
+        "title": "Higher-energy triplet-pair states in polyenes and their role in intramolecular singlet fission",
+        "attachment_key": "QA27MAGV",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Valentine-2020-Higher-energy triplet-pair stat.pdf",
+        "resolution": "zotero-storage"
+      },
+      {
+        "parent": "zotero:1:PNDV22RM",
+        "title": "The ONIOM Method and Its Applications",
+        "attachment_key": "4ELSYGN3",
+        "content_type": "application/pdf",
+        "stored_path": "storage:Chung 等 - 2015 - The ONIOM Method and Its Applications.pdf",
+        "resolution": "zotero-storage"
+      }
+    ],
+    "anomaly_lists_truncated_at": 100
+  },
+  "recent_samples": [
+    {
+      "identity": "zotero:1:UHLLBSJQ",
+      "item_id": 5712,
+      "item_type": "preprint",
+      "title": "Bridging the Gap Between Molecules and Materials in Quantum Chemistry with Localized Active Spaces",
+      "doi": "10.26434/chemrxiv-2024-rhgvg",
+      "date_modified": "2026-08-15 07:09:19",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Daniel King"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Bhavnesh Jangid"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Matthew Hermes"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "Laura Gagliardi"
+        }
+      ],
+      "collections": [
+        {
+          "key": "6TSJEYVA",
+          "name": "0A_TheoryPaper",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "2NAE2YMV",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:41467_2025_65846_MOESM1_ESM.pdf",
+          "local_exists": false,
+          "resolution": "zotero-storage"
+        },
+        {
+          "key": "6AZ63FBU",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:King 等 - 2024 - Bridging the Gap Between Molecules and Materials in Quantum Chemistry with Localized Active Spaces.pdf",
+          "local_exists": false,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "7bc739e6d10cda548118f2d89aba67509999cc57c480b4bf047ada627536c77a"
+    },
+    {
+      "identity": "zotero:1:WJ24ZRL5",
+      "item_id": 5698,
+      "item_type": "journalArticle",
+      "title": "On the Foundations of Combinatorial Theory I. Theory of Miibius Functions",
+      "doi": null,
+      "date_modified": "2026-08-03 03:43:24",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Z Wahrseheinlichkeitstheorie"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [
+        "⛔ No DOI found"
+      ],
+      "attachments": [
+        {
+          "key": "MD8N7CDD",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Wahrseheinlichkeitstheorie - On the Foundations of Combinatorial Theory I. Theory of Miibius Functions.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "d7c9e200f93f74b9cc1203cfef3cc50dea66a8d30a98156042164665191c90f0"
+    },
+    {
+      "identity": "zotero:1:ISXE3SQW",
+      "item_id": 5697,
+      "item_type": "journalArticle",
+      "title": "Theory of projections with nonorthogonal basis sets: Partitioning techniques and effective Hamiltonians",
+      "doi": "10.1103/PhysRevB.90.075128",
+      "date_modified": "2026-08-01 12:10:40",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "M. Soriano"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "J. J. Palacios"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "QRV8DDP9",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Soriano和Palacios - 2014 - Theory of projections with nonorthogonal basis sets Partitioning techniques and effective Hamiltoni.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "019e2e03070c31c2875d18e22af939467bc83e917611a5c907b24726143c5d21"
+    },
+    {
+      "identity": "zotero:1:DPYWY6NC",
+      "item_id": 5699,
+      "item_type": "journalArticle",
+      "title": "Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics",
+      "doi": "10.1063/1.1712221",
+      "date_modified": "2026-08-01 12:10:32",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Harry F. King"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Richard E. Stanton"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Hojing Kim"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "Robert E. Wyatt"
+        },
+        {
+          "type": "author",
+          "order": 4,
+          "name": "Robert G. Parr"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "F8BGV3IM",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:King 等 - 1967 - Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "de573926f2b5f34865f99a67e278fbc6c55a366c084e957be8191970c8a46bbf"
+    },
+    {
+      "identity": "zotero:1:6WAAIXPY",
+      "item_id": 5700,
+      "item_type": "journalArticle",
+      "title": "The generalized Slater–Condon rules",
+      "doi": "10.1002/qua.560400204",
+      "date_modified": "2026-08-01 12:10:28",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Jacob Verbeek"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Joop H. Van Lenthe"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "AVQHTZD2",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Verbeek和Van Lenthe - 1991 - The generalized Slater–Condon rules.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "5d77fdf8f62b429eba5a8f01729b8b8a787f7ceec20b854d04f7e23666894f9f"
+    },
+    {
+      "identity": "zotero:1:AYWJ9L7Q",
+      "item_id": 5701,
+      "item_type": "journalArticle",
+      "title": "Efficient and Flexible Computation of Many-Electron Wave Function Overlaps",
+      "doi": "10.1021/acs.jctc.5b01148",
+      "date_modified": "2026-08-01 12:10:26",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Felix Plasser"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Matthias Ruckenbauer"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Sebastian Mai"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "Markus Oppel"
+        },
+        {
+          "type": "author",
+          "order": 4,
+          "name": "Philipp Marquetand"
+        },
+        {
+          "type": "author",
+          "order": 5,
+          "name": "Leticia González"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "3TNJIQ5H",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Plasser 等 - 2016 - Efficient and Flexible Computation of Many-Electron Wave Function Overlaps.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "6b917dd54ce74ac4fe477cd451023b91dddb500bce2147b68f589fdbab6d8ce1"
+    },
+    {
+      "identity": "zotero:1:SSWLIWPW",
+      "item_id": 5702,
+      "item_type": "journalArticle",
+      "title": "Symmetrical Windowing for Quantum States in Quasi-Classical Trajectory Simulations",
+      "doi": "10.1021/jp401078u",
+      "date_modified": "2026-08-01 12:10:22",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Stephen J. Cotton"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "William H. Miller"
+        }
+      ],
+      "collections": [
+        {
+          "key": "XPWSBIHY",
+          "name": "Middle_Level",
+          "parent_key": "YAUWNGFP"
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "ILQUL7WC",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Cotton和Miller - 2013 - Symmetrical Windowing for Quantum States in Quasi-Classical Trajectory Simulations.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "bd5f3fc70c23df9c79cac0003275d2f3e6189199651c14f8f03035d66f41c522"
+    },
+    {
+      "identity": "zotero:1:4VLY4CX3",
+      "item_id": 5655,
+      "item_type": "journalArticle",
+      "title": "On the Theory of Relaxation Processes",
+      "doi": "10.1147/rd.11.0019",
+      "date_modified": "2026-08-01 08:08:10",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "A. G. Redfield"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "T92I39KH",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Redfield - 1957 - On the Theory of Relaxation Processes.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "6c54d1acce1bb3cc3b0c9b35befb7debf2fa4476993cc7d1e84ec8efd3ef350e"
+    },
+    {
+      "identity": "zotero:1:AKYWUBHN",
+      "item_id": 5656,
+      "item_type": "journalArticle",
+      "title": "QuTiP-BoFiN: A bosonic and fermionic numerical hierarchical-equations-of-motion library with applications in light-harvesting, quantum control, and single-molecule electronics",
+      "doi": "10.1103/PhysRevResearch.5.013181",
+      "date_modified": "2026-08-01 08:08:06",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Neill Lambert"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Tarun Raheja"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Simon Cross"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "Paul Menczel"
+        },
+        {
+          "type": "author",
+          "order": 4,
+          "name": "Shahnawaz Ahmed"
+        },
+        {
+          "type": "author",
+          "order": 5,
+          "name": "Alexander Pitchford"
+        },
+        {
+          "type": "author",
+          "order": 6,
+          "name": "Daniel Burgarth"
+        },
+        {
+          "type": "author",
+          "order": 7,
+          "name": "Franco Nori"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "I97Q72KK",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Lambert 等 - 2023 - QuTiP-BoFiN A bosonic and fermionic numerical hierarchical-equations-of-motion library with applica.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "49d51a1b84a3ff3efd9549855d61d7580049d17a52d2c27e69054edd3f14495d"
+    },
+    {
+      "identity": "zotero:1:CJJW9AMT",
+      "item_id": 5657,
+      "item_type": "journalArticle",
+      "title": "Semiclassical Description of Nonadiabatic Quantum Dynamics",
+      "doi": "10.1103/PhysRevLett.78.578",
+      "date_modified": "2026-08-01 08:08:03",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Gerhard Stock"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Michael Thoss"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "JCDUEGTH",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Stock和Thoss - 1997 - Semiclassical Description of Nonadiabatic Quantum Dynamics.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "e21a80799ba6da0f24d953fb4ffd2732ed006d83de22082fe157d0a8514f45f3"
+    },
+    {
+      "identity": "zotero:1:F2Y2ISIU",
+      "item_id": 5658,
+      "item_type": "journalArticle",
+      "title": "Multimode vibronic coupling effects in molecules",
+      "doi": "10.1002/qua.560200828",
+      "date_modified": "2026-08-01 08:07:56",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "L. S. Cederbaum"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "H. Köppel"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "W. Domcke"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "CZP5K9H8",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Cederbaum 等 - 2009 - Multimode vibronic coupling effects in molecules.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "062b30bbb8ec77cc69910fb681e15cd5b0ca0fd55d18afeb6e7414d3dde4d327"
+    },
+    {
+      "identity": "zotero:1:J4E3KHDV",
+      "item_id": 5659,
+      "item_type": "journalArticle",
+      "title": "Implementation of quasiclassical mapping approaches for nonadiabatic molecular dynamics in the PySurf package",
+      "doi": "10.1039/D5CP01194A",
+      "date_modified": "2026-08-01 08:07:54",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "David Picconi"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Maximilian F. S. J. Menger"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Elisa Palacino-González"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "Edison X. Salazar"
+        },
+        {
+          "type": "author",
+          "order": 4,
+          "name": "Shirin Faraji"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "GDPZH7QX",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:d5cp01194a1_suppl.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        },
+        {
+          "key": "6BVFXRSC",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Picconi 等 - 2025 - Implementation of quasiclassical mapping approaches for nonadiabatic molecular dynamics in the PySur.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "89d12ab7025e0e58c3c7159d295b5e2807cbcbce2d73d6dd11c2ba8d03794042"
+    },
+    {
+      "identity": "zotero:1:UM7A3LFP",
+      "item_id": 5660,
+      "item_type": "journalArticle",
+      "title": "A generalized stochastic liouville equation. Non-Markovian versus memoryless master equations",
+      "doi": "10.1007/BF01040100",
+      "date_modified": "2026-08-01 08:07:50",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Fumiaki Shibata"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "Yoshinori Takahashi"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "Natsuki Hashitsume"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "JJNXEH8B",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Shibata 等 - 1977 - A generalized stochastic liouville equation. Non-Markovian versus memoryless master equations.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "8f389846419a5e16c67738dc1cc7501b908b0e02d0664e59f3c0224334c4247b"
+    },
+    {
+      "identity": "zotero:1:LHMGWUJ6",
+      "item_id": 5661,
+      "item_type": "bookSection",
+      "title": "Multimode Molecular Dynamics Beyond the Born‐Oppenheimer Approximation",
+      "doi": null,
+      "date_modified": "2026-08-01 08:07:47",
+      "creators": [
+        {
+          "type": "editor",
+          "order": 0,
+          "name": "I. Prigogine"
+        },
+        {
+          "type": "editor",
+          "order": 1,
+          "name": "Stuart A. Rice"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "H. Köuppel"
+        },
+        {
+          "type": "author",
+          "order": 3,
+          "name": "W. Domcke"
+        },
+        {
+          "type": "author",
+          "order": 4,
+          "name": "L. S. Cederbaum"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "ZS3EZYMM",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Köuppel 等 - 1984 - Multimode Molecular Dynamics Beyond the Born‐Oppenheimer Approximation.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "c90516d5a9428c64052b67ffae03856728cef5a54770d5e0826baf4303e2751d"
+    },
+    {
+      "identity": "zotero:1:E5V93WI5",
+      "item_id": 5662,
+      "item_type": "journalArticle",
+      "title": "Communication: Partial linearized density matrix dynamics for dissipative, non-adiabatic quantum evolution",
+      "doi": "10.1063/1.3664763",
+      "date_modified": "2026-08-01 08:07:43",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Pengfei Huo"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "David F. Coker"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "6AWJ6288",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Huo和Coker - 2011 - Communication Partial linearized density matrix dynamics for dissipative, non-adiabatic quantum evo.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "cdee4485750ab7d41ee8b35a76867872c6846488711af61c0ecb507624f7c139"
+    },
+    {
+      "identity": "zotero:1:GWHXDZ4B",
+      "item_id": 5663,
+      "item_type": "journalArticle",
+      "title": "The multi-configurational time-dependent Hartree approach",
+      "doi": "10.1016/0009-2614(90)87014-I",
+      "date_modified": "2026-08-01 08:07:39",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "H.-D. Meyer"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "U. Manthe"
+        },
+        {
+          "type": "author",
+          "order": 2,
+          "name": "L.S. Cederbaum"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "MFJT7MYQ",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Meyer 等 - 1990 - The multi-configurational time-dependent Hartree approach.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "162f1aaa4ef96ed28f448291551534b1518efb5317b865d289cc6ffc8d6864d2"
+    },
+    {
+      "identity": "zotero:1:UIM6P8QT",
+      "item_id": 5664,
+      "item_type": "journalArticle",
+      "title": "Numerically “exact” approach to open quantum dynamics: The hierarchical equations of motion (HEOM)",
+      "doi": "10.1063/5.0011599",
+      "date_modified": "2026-08-01 08:07:36",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Yoshitaka Tanimura"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "7FZ5WR4U",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Tanimura - 2020 - Numerically “exact” approach to open quantum dynamics The hierarchical equations of motion (HEOM).pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "c2b392e81d69c675added661b7ef1e5d66e7fc4081f765976ae79b19d3c8293b"
+    },
+    {
+      "identity": "zotero:1:LS7MN5GZ",
+      "item_id": 5665,
+      "item_type": "journalArticle",
+      "title": "A symmetrical quasi-classical windowing model for the molecular dynamics treatment of non-adiabatic processes involving many electronic states",
+      "doi": "10.1063/1.5087160",
+      "date_modified": "2026-08-01 08:07:33",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Stephen J. Cotton"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "William H. Miller"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "DL7XSTGF",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Cotton和Miller - 2019 - A symmetrical quasi-classical windowing model for the molecular dynamics treatment of non-adiabatic.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "7f45675db6034b8ebf0a4ffb8e9f16f0fa2e0e80f56d5c220aeb49edb098bf1e"
+    },
+    {
+      "identity": "zotero:1:9VGI8WE2",
+      "item_id": 5666,
+      "item_type": "journalArticle",
+      "title": "A new symmetrical quasi-classical model for electronically non-adiabatic processes: Application to the case of weak non-adiabatic coupling",
+      "doi": "10.1063/1.4963914",
+      "date_modified": "2026-08-01 08:07:30",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Stephen J. Cotton"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "William H. Miller"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "UWPSNA6J",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Cotton和Miller - 2016 - A new symmetrical quasi-classical model for electronically non-adiabatic processes Application to t.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "1c006b269bfebc14cf1285ae4d89d1033ac3851d36e24e10652a69a55e2200e2"
+    },
+    {
+      "identity": "zotero:1:2WZC3TWY",
+      "item_id": 5667,
+      "item_type": "journalArticle",
+      "title": "Symmetrical windowing for quantum states in quasi-classical trajectory simulations: Application to electronically non-adiabatic processes",
+      "doi": "10.1063/1.4845235",
+      "date_modified": "2026-08-01 08:07:26",
+      "creators": [
+        {
+          "type": "author",
+          "order": 0,
+          "name": "Stephen J. Cotton"
+        },
+        {
+          "type": "author",
+          "order": 1,
+          "name": "William H. Miller"
+        }
+      ],
+      "collections": [
+        {
+          "key": "FAE3C3PF",
+          "name": "0M_SF_Dynamic",
+          "parent_key": null
+        }
+      ],
+      "tags": [],
+      "attachments": [
+        {
+          "key": "EDV76SYL",
+          "mode": "imported_file",
+          "content_type": "application/pdf",
+          "stored_path": "storage:Cotton和Miller - 2013 - Symmetrical windowing for quantum states in quasi-classical trajectory simulations Application to e.pdf",
+          "local_exists": true,
+          "resolution": "zotero-storage"
+        }
+      ],
+      "content_hash": "ea8e3fa390e008187843cfe8fad71701a8cf2fbee21d23bdc81a4e04c9031472"
+    }
+  ],
+  "source": "/mnt/d/zotero/zotero.sqlite",
+  "data_dir": "/mnt/d/zotero",
+  "snapshot": "phase2-output/20260816-221818-real-library/zotero_snapshot.sqlite"
+}
