@@ -1,7 +1,8 @@
 """Conservative, reversible author identity resolution for Phase 4.
 
 The resolver may create a new identity for an unresolved source mention. It never
-merges two existing people from normalized name alone.
+merges two existing people from normalized name alone. Explicit NOT_SAME_PERSON and
+identity locks are authoritative negative guards.
 """
 
 from __future__ import annotations
@@ -26,9 +27,15 @@ from .models import (
     Authorship,
 )
 from .normalization import compatible_initials, name_features, normalize_name
+from .policy import (
+    IDENTITY_AUTO_ACCEPT_MARGIN,
+    IDENTITY_AUTO_ACCEPT_SCORE,
+    IDENTITY_MIN_COAUTHOR_OVERLAP,
+    POLICY_VERSION,
+)
 from .review import enqueue_review
 
-RESOLVER_VERSION = "phase4-identity-v1"
+RESOLVER_VERSION = f"phase4-identity-v2+{POLICY_VERSION}"
 _CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 
@@ -48,9 +55,9 @@ class IdentityScore:
         # Name never closes the decision. Automatic linking requires an independent
         # source-local signal plus a strong collaboration-neighborhood signal.
         return (
-            self.score >= 0.85
+            self.score >= IDENTITY_AUTO_ACCEPT_SCORE
             and self.source_creator_exact
-            and self.coauthor_overlap >= 2
+            and self.coauthor_overlap >= IDENTITY_MIN_COAUTHOR_OVERLAP
         )
 
 
@@ -72,11 +79,27 @@ def _mention_features(mention: PaperCreatorMention):
     return name_features(mention.first_name, mention.last_name, mention.display_name)
 
 
-def _accepted_membership(session: Any, creator_mention_id: int) -> AuthorIdentityMembership | None:
+def _accepted_membership(
+    session: Any, creator_mention_id: int
+) -> AuthorIdentityMembership | None:
     return (
         session.query(AuthorIdentityMembership)
         .filter_by(creator_mention_id=creator_mention_id, status="ACCEPTED")
         .one_or_none()
+    )
+
+
+def _not_same_blocked(session: Any, creator_mention_id: int, author_id: str) -> bool:
+    return (
+        session.query(AuthorIdentityMembership)
+        .filter_by(
+            creator_mention_id=creator_mention_id,
+            author_id=author_id,
+            status="REJECTED",
+            reason_code="NOT_SAME_PERSON",
+        )
+        .first()
+        is not None
     )
 
 
@@ -102,7 +125,8 @@ def _author_mentions(session: Any, author_id: str) -> list[PaperCreatorMention]:
         session.query(PaperCreatorMention)
         .join(
             AuthorIdentityMembership,
-            AuthorIdentityMembership.creator_mention_id == PaperCreatorMention.creator_mention_id,
+            AuthorIdentityMembership.creator_mention_id
+            == PaperCreatorMention.creator_mention_id,
         )
         .filter(
             AuthorIdentityMembership.author_id == author_id,
@@ -140,11 +164,7 @@ def score_mention_against_author(
     author: Author,
 ) -> IdentityScore:
     target = _mention_features(mention)
-    variants = (
-        session.query(AuthorNameVariant)
-        .filter_by(author_id=author.author_id)
-        .all()
-    )
+    variants = session.query(AuthorNameVariant).filter_by(author_id=author.author_id).all()
     components: dict[str, float] = {}
 
     exact_name = any(v.normalized_name == target.normalized_name for v in variants)
@@ -276,7 +296,10 @@ def create_author_for_mention(
 ) -> tuple[Author, AuthorIdentityMembership]:
     existing = _accepted_membership(session, mention.creator_mention_id)
     if existing is not None:
-        return session.get(Author, existing.author_id), existing
+        author = session.get(Author, existing.author_id)
+        if author is None:
+            raise IdentityResolutionError("accepted membership points to missing author")
+        return author, existing
 
     features = _mention_features(mention)
     author = Author(
@@ -333,6 +356,8 @@ def _candidate_membership(
     author: Author,
     score: IdentityScore,
 ) -> AuthorIdentityMembership:
+    if _not_same_blocked(session, mention.creator_mention_id, author.author_id):
+        raise IdentityResolutionError("explicit NOT_SAME_PERSON blocks this candidate")
     row = (
         session.query(AuthorIdentityMembership)
         .filter_by(
@@ -340,7 +365,8 @@ def _candidate_membership(
             author_id=author.author_id,
             status="CANDIDATE",
         )
-        .one_or_none()
+        .order_by(AuthorIdentityMembership.membership_id.desc())
+        .first()
     )
     if row is None:
         row = AuthorIdentityMembership(
@@ -362,10 +388,7 @@ def _candidate_membership(
     for evidence_type, component_score in score.components.items():
         exists = (
             session.query(AuthorIdentityEvidence)
-            .filter_by(
-                membership_id=row.membership_id,
-                evidence_type=evidence_type,
-            )
+            .filter_by(membership_id=row.membership_id, evidence_type=evidence_type)
             .first()
         )
         if exists is None:
@@ -397,14 +420,27 @@ def accept_membership(
 ) -> AuthorIdentityMembership:
     if author.status != "ACTIVE":
         raise IdentityResolutionError("cannot link a mention to a non-active author")
-    if author.locked and actor != "MANUAL":
-        raise IdentityResolutionError("locked identities may only be modified manually")
 
     current = _accepted_membership(session, mention.creator_mention_id)
     if current is not None and current.author_id == author.author_id:
         _ensure_authorship(session, mention, author.author_id)
         return current
+
+    if author.locked:
+        raise IdentityResolutionError(
+            "identity is locked; explicitly unlock it before changing membership"
+        )
+    if actor != "MANUAL" and _not_same_blocked(
+        session, mention.creator_mention_id, author.author_id
+    ):
+        raise IdentityResolutionError("explicit NOT_SAME_PERSON blocks automatic link")
+
     if current is not None:
+        old_author = session.get(Author, current.author_id)
+        if old_author is not None and old_author.locked:
+            raise IdentityResolutionError(
+                "current identity is locked; explicitly unlock before relinking mention"
+            )
         current.status = "SUPERSEDED"
         current.updated_at = utcnow()
         active_authorship = (
@@ -424,7 +460,8 @@ def accept_membership(
             author_id=author.author_id,
             status="CANDIDATE",
         )
-        .one_or_none()
+        .order_by(AuthorIdentityMembership.membership_id.desc())
+        .first()
     )
     if candidate is None:
         candidate = AuthorIdentityMembership(
@@ -469,7 +506,14 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
     if limit is not None:
         query = query.limit(limit)
 
-    counts = {"created": 0, "linked": 0, "candidate": 0, "already_resolved": 0}
+    counts = {
+        "created": 0,
+        "linked": 0,
+        "candidate": 0,
+        "already_resolved": 0,
+        "not_same_blocked": 0,
+        "locked_review": 0,
+    }
     for mention in query.all():
         if _accepted_membership(session, mention.creator_mention_id) is not None:
             counts["already_resolved"] += 1
@@ -492,7 +536,6 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 .all()
             )
         }
-        # Never collapse two same-name people who already occur on the same paper.
         same_paper_author_ids = {
             membership.author_id
             for membership in (
@@ -511,22 +554,51 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
         }
         author_ids -= same_paper_author_ids
 
+        blocked_ids = {
+            author_id
+            for author_id in author_ids
+            if _not_same_blocked(session, mention.creator_mention_id, author_id)
+        }
+        if blocked_ids:
+            counts["not_same_blocked"] += len(blocked_ids)
+        author_ids -= blocked_ids
+
         if not author_ids:
-            create_author_for_mention(session, mention)
+            create_author_for_mention(
+                session,
+                mention,
+                reason_code=(
+                    "EXPLICIT_NOT_SAME_NEW_IDENTITY"
+                    if blocked_ids
+                    else "NEW_NAME_BLOCK"
+                ),
+            )
             counts["created"] += 1
             continue
 
         scored: list[tuple[Author, IdentityScore]] = []
         for author_id in author_ids:
             author = session.get(Author, author_id)
+            if author is None:
+                continue
             score = score_mention_against_author(session, mention, author)
             _candidate_membership(session, mention, author, score)
             scored.append((author, score))
+        if not scored:
+            create_author_for_mention(session, mention, reason_code="NO_VALID_IDENTITY_CANDIDATE")
+            counts["created"] += 1
+            continue
+
         scored.sort(key=lambda item: item[1].score, reverse=True)
         best_author, best = scored[0]
         second_score = scored[1][1].score if len(scored) > 1 else 0.0
 
-        if best.auto_accept_eligible and best.score - second_score >= 0.15:
+        can_auto_accept = (
+            best.auto_accept_eligible
+            and best.score - second_score >= IDENTITY_AUTO_ACCEPT_MARGIN
+            and not best_author.locked
+        )
+        if can_auto_accept:
             accept_membership(
                 session,
                 mention,
@@ -537,13 +609,19 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
             )
             counts["linked"] += 1
         else:
+            if best_author.locked:
+                counts["locked_review"] += 1
             enqueue_review(
                 session,
                 queue_type="AMBIGUOUS_AUTHOR_IDENTITY",
                 subject_type="creator_mention",
                 subject_id=mention.creator_mention_id,
                 candidate_id=best_author.author_id,
-                reason_code="NAME_BLOCK_REQUIRES_REVIEW",
+                reason_code=(
+                    "LOCKED_IDENTITY_REQUIRES_REVIEW"
+                    if best_author.locked
+                    else "NAME_BLOCK_REQUIRES_REVIEW"
+                ),
                 payload={
                     "normalized_name": features.normalized_name,
                     "best_score": best.score,
@@ -556,6 +634,17 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
             counts["candidate"] += 1
     session.flush()
     return counts
+
+
+def _active_papers_for_author(session: Any, author_id: str) -> set[int]:
+    return {
+        paper_id
+        for (paper_id,) in (
+            session.query(Authorship.paper_id)
+            .filter_by(author_id=author_id, status="ACTIVE")
+            .all()
+        )
+    }
 
 
 def merge_authors(
@@ -574,8 +663,19 @@ def merge_authors(
         raise IdentityResolutionError("merge author does not exist")
     if source.status != "ACTIVE" or target.status != "ACTIVE":
         raise IdentityResolutionError("merge requires two active authors")
-    if (source.locked or target.locked) and actor != "MANUAL":
-        raise IdentityResolutionError("locked identities may only be merged manually")
+    if source.locked or target.locked:
+        raise IdentityResolutionError(
+            "locked identities must be explicitly unlocked before merge"
+        )
+
+    cooccurring_papers = _active_papers_for_author(
+        session, source_author_id
+    ) & _active_papers_for_author(session, target_author_id)
+    if cooccurring_papers:
+        raise IdentityResolutionError(
+            "authors co-occur on the same paper(s); merge blocked as a likely namesake conflict: "
+            + ",".join(str(value) for value in sorted(cooccurring_papers))
+        )
 
     memberships = (
         session.query(AuthorIdentityMembership)
@@ -585,6 +685,8 @@ def merge_authors(
     moved_mentions: list[int] = []
     for membership in memberships:
         mention = session.get(PaperCreatorMention, membership.creator_mention_id)
+        if mention is None:
+            raise IdentityResolutionError("identity membership points to missing mention")
         membership.status = "SUPERSEDED"
         membership.updated_at = utcnow()
         active_authorship = (
@@ -660,8 +762,12 @@ def split_mention(
     if current is None:
         raise IdentityResolutionError("creator mention has no accepted identity to split")
     old_author = session.get(Author, current.author_id)
-    if old_author.locked and actor != "MANUAL":
-        raise IdentityResolutionError("locked identities may only be split manually")
+    if old_author is None:
+        raise IdentityResolutionError("accepted membership points to missing author")
+    if old_author.locked:
+        raise IdentityResolutionError(
+            "locked identity must be explicitly unlocked before split"
+        )
 
     current.status = "SUPERSEDED"
     current.updated_at = utcnow()
