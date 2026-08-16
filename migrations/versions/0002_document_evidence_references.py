@@ -39,7 +39,6 @@ def upgrade() -> None:
     sa.CheckConstraint("status IN ('STARTED','COMPLETED','FAILED')"),
     sa.CheckConstraint("trigger IN ('FIRST_AVAILABLE','FILE_CHANGED','EXTRACTOR_CHANGED','PROMPT_CHANGED','MANUAL_REBUILD')"),
     sa.ForeignKeyConstraint(['document_id'], ['paper_documents.document_id'], ondelete='RESTRICT'),
-    sa.ForeignKeyConstraint(['accepted_attempt_id'], ['document_extraction_attempts.attempt_id'], name='fk_run_accepted_attempt'),
     sa.PrimaryKeyConstraint('extraction_run_id')
     )
     op.create_table('document_extraction_attempts',

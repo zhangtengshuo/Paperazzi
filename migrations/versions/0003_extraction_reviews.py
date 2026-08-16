@@ -1,4 +1,4 @@
-"""Phase 3.1 migration 0003: extraction review provenance
+"""Phase 3.1 migration 0003: extraction review provenance and pointer integrity
 
 Revision ID: 0003_extraction_reviews
 Revises: 0002_document_evidence_references
@@ -52,8 +52,20 @@ def upgrade() -> None:
             unique=False,
         )
 
+    # Both tables now exist, so SQLite/Alembic can safely resolve the target table.
+    # Phase 3.1 validation always rebuilds a fresh pre-production DB from migration head.
+    with op.batch_alter_table("document_extraction_runs", schema=None) as batch_op:
+        batch_op.create_foreign_key(
+            "fk_run_accepted_attempt",
+            "document_extraction_attempts",
+            ["accepted_attempt_id"],
+            ["attempt_id"],
+        )
+
 
 def downgrade() -> None:
+    with op.batch_alter_table("document_extraction_runs", schema=None) as batch_op:
+        batch_op.drop_constraint("fk_run_accepted_attempt", type_="foreignkey")
     with op.batch_alter_table("document_extraction_reviews", schema=None) as batch_op:
         batch_op.drop_index("ix_extraction_reviews_attempt")
     op.drop_table("document_extraction_reviews")
