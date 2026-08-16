@@ -100,6 +100,7 @@ class PdfEvidenceIntegrationTests(unittest.TestCase):
         doc = PYMUPDF.open()
         try:
             page1 = doc.new_page()
+            page1.insert_text((50, 25), "Subscriber access provided by Example University", fontsize=8)
             page1.insert_textbox(
                 PYMUPDF.Rect(50, 50, 545, 500),
                 """A Synthetic Paper for Paperazzi
@@ -147,6 +148,7 @@ REFERENCES
         self.assertIn("grace.hopper@example.edu", evidence.emails)
         self.assertTrue(any("Example University" in span.text for span in evidence.affiliation_candidates))
         self.assertTrue(any("Corresponding author" in span.text for span in evidence.correspondence_candidates))
+        self.assertFalse(any("Subscriber access provided" in span.text for span in evidence.affiliation_candidates))
         self.assertIsNotNone(evidence.references)
         assert evidence.references is not None
         self.assertEqual(evidence.references.confidence, "HIGH")
