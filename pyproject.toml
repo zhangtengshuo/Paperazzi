@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paperazzi"
+version = "0.1.0.dev0"
+description = "Local-first Zotero-centered scholarly author knowledge base"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Private" }
+authors = [{ name = "Paperazzi" }]
+dependencies = []
+
+[project.scripts]
+paperazzi-zotero-probe = "paperazzi.zotero_sqlite.probe:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
