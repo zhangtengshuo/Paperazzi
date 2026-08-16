@@ -53,7 +53,7 @@ def normalize_doi(value: str | None) -> str | None:
     if not value:
         return None
     value = _DOI_PREFIX_RE.sub("", value.strip()).strip().lower()
-    value = value.rstrip(".,;)"] if value else value
+    value = value.rstrip(".,;)]}") if value else value
     return value or None
 
 
