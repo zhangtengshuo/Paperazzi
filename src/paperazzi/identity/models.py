@@ -63,7 +63,13 @@ class AuthorNameVariant(Base):
 class AuthorExternalID(Base):
     __tablename__ = "author_external_ids"
     __table_args__ = (
-        sa.UniqueConstraint("namespace", "normalized_value", name="uq_author_external_id"),
+        sa.Index(
+            "uq_author_external_id_accepted",
+            "namespace",
+            "normalized_value",
+            unique=True,
+            sqlite_where=sa.text("status = 'ACCEPTED'"),
+        ),
     )
 
     external_id_id: Mapped[int] = mapped_column(primary_key=True)
@@ -86,9 +92,6 @@ class AuthorExternalID(Base):
 class AuthorIdentityMembership(Base):
     __tablename__ = "author_identity_memberships"
     __table_args__ = (
-        sa.UniqueConstraint(
-            "creator_mention_id", "author_id", "status", name="uq_identity_membership_state"
-        ),
         sa.Index("ix_identity_memberships_mention_status", "creator_mention_id", "status"),
         sa.Index(
             "uq_identity_membership_one_accepted",
