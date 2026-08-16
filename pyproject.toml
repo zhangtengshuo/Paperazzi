@@ -10,7 +10,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Private" }
 authors = [{ name = "Paperazzi" }]
-dependencies = []
+dependencies = [
+    "SQLAlchemy>=2.0",
+    "Alembic>=1.13",
+]
 
 [project.optional-dependencies]
 pdf = ["PyMuPDF>=1.24"]
