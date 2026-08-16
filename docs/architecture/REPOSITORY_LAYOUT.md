@@ -9,11 +9,17 @@ Paperazzi/
 ├── README.md
 ├── DESIGN.md
 ├── pyproject.toml
+├── prompts/
+│   └── local_ai/
+│       └── PDF_EVIDENCE_AGENT.md
+├── schemas/
+│   └── pdf_evidence_review.schema.json
 ├── docs/
 │   ├── architecture/
 │   │   ├── REPOSITORY_LAYOUT.md
 │   │   ├── ZOTERO_DATA_BOUNDARY.md
-│   │   └── LOCAL_PDF_EVIDENCE.md
+│   │   ├── LOCAL_PDF_EVIDENCE.md
+│   │   └── AI_SUPERVISED_PDF_EXTRACTION.md
 │   ├── phase1/
 │   ├── phase2/
 │   └── phase2_5/
@@ -97,7 +103,33 @@ zotero_fulltext_cache.py
 ocr.py / mineru.py
 ```
 
-All outputs are evidence with provenance. Semantic interpretation belongs in resolver/identity/graph layers.
+All outputs are evidence with provenance. The deterministic extractor is only Attempt 1 of the local PDF workflow; semantic/layout review and bounded retry control are defined separately by the local-AI prompt.
+
+### `prompts/local_ai/`
+
+Version-controlled operating instructions for local AI agents.
+
+Current prompt:
+
+```text
+PDF_EVIDENCE_AGENT.md
+```
+
+It defines mandatory review of every deterministic PDF extraction, a maximum-three-attempt state machine, allowed retry strategies, quality checks, read-only rules, and final-status semantics.
+
+Prompts are operational code for reproducibility: production runs should retain the prompt path/version/hash used for AI-reviewed extraction.
+
+### `schemas/`
+
+Machine-readable interchange and local-AI output contracts.
+
+Current schema:
+
+```text
+pdf_evidence_review.schema.json
+```
+
+The local AI may choose adaptive execution strategies, but its final review/attempt history must conform to a deterministic schema before Paperazzi persists accepted results.
 
 ### `src/paperazzi/identity/`
 
@@ -132,12 +164,15 @@ Phase 3 must include first-class persistence for:
 
 ```text
 paper_documents
+document_extraction_attempts
 document_evidence_spans
 paper_references
 paper_reference_matches
 ```
 
-rather than hiding PDF-derived evidence in opaque JSON.
+rather than hiding PDF-derived evidence or retry history in opaque JSON.
+
+`document_extraction_attempts` records attempts 1..3, actor, strategy, prompt/extractor version, decision, problem codes, and output hash. Evidence rows identify their originating attempt and acceptance status.
 
 ### `src/paperazzi/enrichment/`
 
@@ -154,6 +189,8 @@ Responsibilities:
 - deterministic merge proposals.
 
 AI output is never granted direct database write access.
+
+Local PDF adaptive review is distinct from online enrichment: it operates only on local evidence and is governed by `prompts/local_ai/PDF_EVIDENCE_AGENT.md`.
 
 ### `src/paperazzi/graph/`
 
@@ -225,9 +262,13 @@ validate_zotero_reader.py
 validate_pdf_evidence.py
 ```
 
+Document-specific retry scripts created by the local AI, when needed, are temporary runtime artifacts and must not be written into the production source tree during a batch run.
+
 ### `tests/`
 
 Mirrors backend modules. Real Zotero databases and user PDFs must never become committed test fixtures. Synthetic PDFs may be generated inside temporary directories during tests.
+
+Real-library failures that reveal a systematic deterministic-parser bug should be converted into synthetic/unit regression tests before the production parser is changed.
 
 ### `requests/`, `imports/`, `data/`
 
@@ -235,7 +276,7 @@ Local runtime working directories:
 
 - `requests/` — generated packages for online AI;
 - `imports/` — returned packages awaiting/after validation;
-- `data/` — Paperazzi database, snapshots, evidence caches, generated assets.
+- `data/` — Paperazzi database, snapshots, evidence caches, local-AI retry artifacts, generated assets.
 
 Their runtime contents are ignored by Git.
 
@@ -246,7 +287,7 @@ Preferred dependency flow:
 ```text
 zotero_sqlite ──> ingest ──────────────┐
                                         ├──> identity ──> database
-local_evidence ─────────────────────────┤
+local_evidence ──> AI review/resolver ──┤
                                         ├──> graph ─────> database
                                         └──> enrichment -> database
 
@@ -258,8 +299,9 @@ More precisely:
 
 - `zotero_sqlite` may know Zotero tables but not AI/PDF semantics;
 - `local_evidence` may know PDF/text extraction but not Zotero tables;
-- identity/graph/resolver layers are where these evidence channels meet;
-- `database` persists accepted facts and evidence provenance.
+- the local AI may review/explore PDF evidence but cannot write either source database or final facts directly;
+- identity/graph/resolver layers are where evidence channels meet;
+- `database` persists accepted facts, attempt history and evidence provenance.
 
 Domain dataclasses/interfaces may later be factored into a small `domain/` package if circular dependencies emerge. Do not create that abstraction prematurely.
 
@@ -267,10 +309,10 @@ Domain dataclasses/interfaces may later be factored into a small `domain/` packa
 
 1. **Phase 1 — SQLite reconnaissance** — complete.
 2. **Phase 2 — Zotero schema adapter + canonical reader** — complete after correctness fixes.
-3. **Phase 2.5 — Local PDF Evidence validation** — current.
-4. **Phase 3 — Paperazzi relational schema + incremental scan state + PDF evidence/reference persistence.**
+3. **Phase 2.5 — Local PDF Evidence validation + AI-supervised retry design** — current architecture fixed; parser/review workflow continues to mature.
+4. **Phase 3 — Paperazzi relational schema + incremental scan state + PDF attempt/evidence/reference persistence.**
 5. **Phase 4 — author identity + local/online semantic resolution.**
 6. **Phase 5 — minimal backend + author/paper/citation web UI + Open PDF.**
 7. **Phase 6 — enrichment protocol, advanced relationship/citation graph, monthly watch and library-gap detection.**
 
-Each phase must leave an auditable deterministic path from source evidence to stored facts.
+Each phase must leave an auditable path from source evidence through extraction/review attempts to stored accepted facts.
