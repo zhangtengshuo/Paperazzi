@@ -1,8 +1,8 @@
 """Explicit AI/manual reference-match decisions for Phase 4.
 
 These operations never consume unaccepted raw references and never write CITES edges.
-They provide the controlled path for AI_RESOLVED/manual correction decisions that the
-deterministic matcher cannot make safely.
+Reviewed decisions are appended as new accepted rows; deterministic candidate rows are
+retained and rejected rather than overwritten, preserving resolver history.
 """
 
 from __future__ import annotations
@@ -30,7 +30,9 @@ def accept_reviewed_reference_match(
     score: float | None = None,
 ) -> PaperReferenceMatch:
     if actor not in {"LOCAL_AI", "MANUAL"}:
-        raise ReferenceResolutionError("reviewed reference decisions require LOCAL_AI or MANUAL actor")
+        raise ReferenceResolutionError(
+            "reviewed reference decisions require LOCAL_AI or MANUAL actor"
+        )
     reference = session.get(PaperReference, reference_id)
     target = session.get(Paper, cited_paper_id)
     if reference is None or target is None:
@@ -49,40 +51,35 @@ def accept_reviewed_reference_match(
         return current
     if current is not None:
         current.status = "REJECTED"
+        session.add(
+            ReferenceMatchEvidence(
+                reference_match_id=current.reference_match_id,
+                component="reviewed_supersession",
+                score=0.0,
+                value=notes,
+                contradiction=True,
+            )
+        )
         session.flush()
 
-    # Reject competing candidates but preserve them as resolution history.
+    # All deterministic/earlier candidates remain as history but cease being active.
     session.query(PaperReferenceMatch).filter(
         PaperReferenceMatch.reference_id == reference_id,
         PaperReferenceMatch.status == "CANDIDATE",
-        PaperReferenceMatch.cited_paper_id != cited_paper_id,
     ).update({"status": "REJECTED"})
+    session.flush()
 
-    row = (
-        session.query(PaperReferenceMatch)
-        .filter_by(reference_id=reference_id, cited_paper_id=cited_paper_id)
-        .order_by(PaperReferenceMatch.reference_match_id.desc())
-        .first()
-    )
     resolver = f"{actor}:{resolver_version}"
-    if row is None:
-        row = PaperReferenceMatch(
-            reference_id=reference_id,
-            cited_paper_id=cited_paper_id,
-            match_type="AI_RESOLVED" if actor == "LOCAL_AI" else "AI_RESOLVED",
-            match_score=score,
-            status="ACCEPTED",
-            resolver=resolver,
-        )
-        session.add(row)
-        session.flush()
-    else:
-        row.match_type = "AI_RESOLVED"
-        row.match_score = score
-        row.status = "ACCEPTED"
-        row.resolver = resolver
-        session.flush()
-
+    row = PaperReferenceMatch(
+        reference_id=reference_id,
+        cited_paper_id=cited_paper_id,
+        match_type="AI_RESOLVED" if actor == "LOCAL_AI" else "BIBLIOGRAPHIC_COMPOSITE",
+        match_score=score,
+        status="ACCEPTED",
+        resolver=resolver,
+    )
+    session.add(row)
+    session.flush()
     session.add(
         ReferenceMatchEvidence(
             reference_match_id=row.reference_match_id,
