@@ -131,7 +131,8 @@ class ZoteroReaderTests(unittest.TestCase):
                 (2, 2, '2026-01-01', '2026-02-01', '2026-02-01', 1, 'ATTACH01', 4, 1),
                 (3, 1, '2026-01-02', '2026-02-02', '2026-02-02', 1, 'DELETED1', 3, 1),
                 (4, 1, '2026-01-03', '2026-02-03', '2026-02-03', 2, 'SAMEKEY1', 7, 1),
-                (5, 3, '2026-01-04', '2026-02-04', '2026-02-04', 1, 'NOTE0001', 1, 1);
+                (5, 3, '2026-01-04', '2026-02-04', '2026-02-04', 1, 'NOTE0001', 1, 1),
+                (6, 2, '2026-01-05', '2026-02-05', '2026-02-05', 1, 'OLDATT01', 2, 1);
 
             INSERT INTO fieldsCombined VALUES (1, 'title');
             INSERT INTO fieldsCombined VALUES (2, 'DOI');
@@ -160,9 +161,11 @@ class ZoteroReaderTests(unittest.TestCase):
             INSERT INTO itemTags VALUES (1, 20, 0);
 
             INSERT INTO itemAttachments VALUES
-                (2, 1, 1, 'application/pdf', 'storage:paper.pdf', 1, 123456, 'abc123');
+                (2, 1, 1, 'application/pdf', 'storage:paper.pdf', 1, 123456, 'abc123'),
+                (6, 1, 1, 'application/pdf', 'storage:old.pdf', 1, 123000, 'oldhash');
 
             INSERT INTO deletedItems VALUES (3, '2026-02-10');
+            INSERT INTO deletedItems VALUES (6, '2026-02-11');
 
             INSERT INTO libraries VALUES (1, 'user', 1, 1, 100, 100, 0, 0, 0);
             INSERT INTO libraries VALUES (2, 'group', 1, 1, 20, 20, 0, 0, 1);
@@ -194,6 +197,8 @@ class ZoteroReaderTests(unittest.TestCase):
             self.assertEqual(user_item.collections[0].collection_key, 'COLLCHD1')
             self.assertEqual(user_item.collections[0].parent_collection_key, 'COLLPAR1')
             self.assertEqual(user_item.tags[0].name, 'quantum chemistry')
+            self.assertEqual(len(user_item.attachments), 1)
+            self.assertEqual(user_item.attachments[0].item_key, 'ATTACH01')
             self.assertEqual(user_item.attachments[0].link_mode_name, 'imported_url')
             self.assertTrue(user_item.attachments[0].local_exists)
 
@@ -216,6 +221,21 @@ class ZoteroReaderTests(unittest.TestCase):
             self.assertEqual(len(with_deleted), 3)
             deleted = next(item for item in with_deleted if item.item_key == 'DELETED1')
             self.assertTrue(deleted.deleted)
+
+    def test_deleted_attachment_is_not_reintroduced_on_active_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            conn, data_dir = self.make_fixture(Path(tmp))
+            try:
+                reader = ZoteroSQLiteReader(conn, data_dir)
+                user_item = next(item for item in reader.read_items() if item.library_id == 1)
+                filtered_deleted_attachments = conn.execute(
+                    reader.adapter.deleted_attachments_sql
+                ).fetchone()[0]
+            finally:
+                conn.close()
+
+            self.assertEqual(filtered_deleted_attachments, 1)
+            self.assertEqual([a.item_key for a in user_item.attachments], ['ATTACH01'])
 
     def test_content_hash_ignores_sqlite_internal_item_id(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
