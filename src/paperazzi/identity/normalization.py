@@ -1,6 +1,7 @@
 """Deterministic, locale-agnostic name normalization for Phase 4 blocking.
 
 Normalization creates search/blocking features only. It never asserts identity.
+The sourced display string is retained separately from every derived blocking form.
 """
 
 from __future__ import annotations
@@ -23,6 +24,10 @@ class NameFeatures:
     search_form: str
     family_given: str
     given_family: str
+
+
+def _raw_component(value: str | None) -> str:
+    return "" if value is None else value.strip()
 
 
 def _clean_component(value: str | None) -> str:
@@ -57,13 +62,17 @@ def name_features(
     last_name: str | None,
     display_name: str | None = None,
 ) -> NameFeatures:
+    raw_given = _raw_component(first_name)
+    raw_family = _raw_component(last_name)
+    raw_display = _raw_component(display_name)
+
     given = _clean_component(first_name)
     family = _clean_component(last_name)
 
-    if given or family:
-        raw = " ".join(part for part in (given, family) if part)
+    if raw_given or raw_family:
+        raw = " ".join(part for part in (raw_given, raw_family) if part)
     else:
-        raw = _clean_component(display_name)
+        raw = raw_display
 
     normalized = normalize_name(raw)
     given_norm = normalize_name(given) or None
