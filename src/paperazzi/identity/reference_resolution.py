@@ -1,12 +1,13 @@
 """Accepted-reference-only local citation resolver for Phase 4.
 
-The resolver is intentionally conservative: unique DOI exact matches may be accepted
-immediately. Bibliographic matches require exact normalized title evidence reinforced
-by metadata and a clear score margin. Ambiguity is persisted to the review queue.
+Unique DOI matches may auto-accept. Strong title matches and unique
+journal-volume-page-year (JVPY) matches may auto-accept only under the centralized
+policy thresholds. Author-year-journal evidence remains review-only.
 """
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -17,15 +18,27 @@ from paperazzi.database.models import (
     PaperReference,
     PaperReferenceIdentifier,
     PaperReferenceMatch,
+    ZoteroItemState,
 )
 
 from .models import ReferenceMatchEvidence
 from .normalization import normalize_search_text
+from .policy import (
+    POLICY_VERSION,
+    REFERENCE_JVPY_AUTO_ACCEPT_MARGIN,
+    REFERENCE_JVPY_AUTO_ACCEPT_SCORE,
+    REFERENCE_MAX_STORED_CANDIDATES,
+    REFERENCE_MIN_CANDIDATE_SCORE,
+    REFERENCE_TITLE_AUTO_ACCEPT_MARGIN,
+    REFERENCE_TITLE_AUTO_ACCEPT_SCORE,
+)
 from .review import enqueue_review
 
-RESOLVER_VERSION = "phase4-reference-v1"
+RESOLVER_VERSION = f"phase4-reference-v1+{POLICY_VERSION}"
 _DOI_PREFIX_RE = re.compile(r"^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)", re.I)
 _TOKEN_RE = re.compile(r"[\w]+", re.UNICODE)
+_YEAR_RE = re.compile(r"\b(?:19|20)\d{2}\b")
+_NUMBER_RE = re.compile(r"\d+")
 
 
 @dataclass(frozen=True)
@@ -38,6 +51,10 @@ class IndexedPaper:
     venue: str
     normalized_venue: str
     first_author_family: str | None
+    volume: str | None
+    issue: str | None
+    pages: str | None
+    article_number: str | None
 
 
 @dataclass(frozen=True)
@@ -83,32 +100,74 @@ def _first_author_family(session: Any, paper_id: int) -> str | None:
     return normalize_search_text(mention.last_name) if mention and mention.last_name else None
 
 
+def _canonical_fields(session: Any, paper_id: int) -> dict[str, Any]:
+    state = (
+        session.query(ZoteroItemState)
+        .filter_by(paper_id=paper_id)
+        .order_by(ZoteroItemState.zotero_item_state_id)
+        .first()
+    )
+    if state is None or not state.canonical_payload_json:
+        return {}
+    try:
+        payload = json.loads(state.canonical_payload_json)
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return {}
+    fields = payload.get("fields")
+    return fields if isinstance(fields, dict) else {}
+
+
+def _field_text(fields: dict[str, Any], *names: str) -> str | None:
+    for name in names:
+        value = fields.get(name)
+        if value is not None and str(value).strip():
+            return str(value).strip()
+    return None
+
+
+def _scalar_number_tokens(value: str | None) -> set[str]:
+    if not value:
+        return set()
+    return set(_NUMBER_RE.findall(value))
+
+
+def _contains_scalar(raw_tokens: set[str], value: str | None) -> bool:
+    values = _scalar_number_tokens(value)
+    return bool(values and values.issubset(raw_tokens))
+
+
 class LocalReferenceResolver:
     def __init__(self, session: Any, *, resolver_version: str = RESOLVER_VERSION):
         self.session = session
         self.resolver_version = resolver_version
-        self.paper_index = [
-            IndexedPaper(
-                paper_id=paper.paper_id,
-                title=paper.title or "",
-                normalized_title=normalize_title(paper.title),
-                doi=normalize_doi(paper.doi),
-                year=paper.publication_year,
-                venue=paper.venue or "",
-                normalized_venue=normalize_search_text(paper.venue),
-                first_author_family=_first_author_family(session, paper.paper_id),
+        self.paper_index: list[IndexedPaper] = []
+        for paper in session.query(Paper).all():
+            fields = _canonical_fields(session, paper.paper_id)
+            self.paper_index.append(
+                IndexedPaper(
+                    paper_id=paper.paper_id,
+                    title=paper.title or "",
+                    normalized_title=normalize_title(paper.title),
+                    doi=normalize_doi(paper.doi),
+                    year=paper.publication_year,
+                    venue=paper.venue or "",
+                    normalized_venue=normalize_search_text(paper.venue),
+                    first_author_family=_first_author_family(session, paper.paper_id),
+                    volume=_field_text(fields, "volume"),
+                    issue=_field_text(fields, "issue"),
+                    pages=_field_text(fields, "pages", "page"),
+                    article_number=_field_text(fields, "articleNumber", "article-number"),
+                )
             )
-            for paper in session.query(Paper).all()
-        ]
         self.by_doi: dict[str, list[IndexedPaper]] = {}
         for paper in self.paper_index:
             if paper.doi:
                 self.by_doi.setdefault(paper.doi, []).append(paper)
 
-    def _reference_identifiers(self, reference_id: int) -> tuple[set[str], set[int]]:
+    def _reference_identifiers(self, reference: PaperReference) -> tuple[set[str], set[int]]:
         rows = (
             self.session.query(PaperReferenceIdentifier)
-            .filter_by(reference_id=reference_id)
+            .filter_by(reference_id=reference.reference_id)
             .all()
         )
         dois = {
@@ -128,6 +187,7 @@ class LocalReferenceResolver:
                 years.add(int(row.normalized_value or row.identifier_value))
             except (TypeError, ValueError):
                 pass
+        years.update(int(value) for value in _YEAR_RE.findall(reference.raw_text))
         return dois, years
 
     def _existing_accepted(self, reference_id: int) -> PaperReferenceMatch | None:
@@ -203,58 +263,102 @@ class LocalReferenceResolver:
         reference_dois: set[str],
     ) -> list[MatchCandidate]:
         raw = normalize_search_text(reference.raw_text)
+        raw_tokens = _tokens(raw)
+        raw_number_tokens = set(_NUMBER_RE.findall(reference.raw_text))
         candidates: list[MatchCandidate] = []
+
         for paper in self.paper_index:
             if paper.paper_id == reference.citing_paper_id:
                 continue
-            if years and paper.year is not None and paper.year not in years:
-                continue
-            if not paper.normalized_title or len(paper.normalized_title) < 10:
+
+            year_match = bool(paper.year is not None and paper.year in years)
+            if years and paper.year is not None and not year_match:
                 continue
 
-            components: dict[str, float] = {}
-            exact_title = paper.normalized_title in raw
-            coverage = _title_coverage(paper.normalized_title, raw)
-            if exact_title:
-                components["title_score"] = 0.72
-            elif coverage >= 0.65:
-                components["title_score"] = round(0.55 * coverage, 6)
+            venue_tokens = _tokens(paper.normalized_venue)
+            venue_coverage = (
+                len(venue_tokens & raw_tokens) / len(venue_tokens) if venue_tokens else 0.0
+            )
+            venue_match = bool(
+                paper.normalized_venue
+                and (paper.normalized_venue in raw or venue_coverage >= 0.70)
+            )
+            author_match = bool(
+                paper.first_author_family and paper.first_author_family in raw
+            )
+            volume_match = _contains_scalar(raw_number_tokens, paper.volume)
+            page_value = paper.article_number or paper.pages
+            page_match = _contains_scalar(raw_number_tokens, page_value)
+
+            exact_title = bool(
+                paper.normalized_title
+                and len(paper.normalized_title) >= 10
+                and paper.normalized_title in raw
+            )
+            coverage = (
+                _title_coverage(paper.normalized_title, raw)
+                if paper.normalized_title else 0.0
+            )
+
+            components: dict[str, float]
+            match_type: str
+            if exact_title or coverage >= 0.65:
+                components = {
+                    "title_score": 0.72 if exact_title else round(0.55 * coverage, 6)
+                }
+                if year_match:
+                    components["year_score"] = 0.12
+                if venue_match:
+                    components["venue_score"] = 0.08
+                if author_match:
+                    components["author_score"] = 0.08
+                if volume_match:
+                    components["volume_score"] = 0.05
+                if page_match:
+                    components["page_score"] = 0.05
+                match_type = (
+                    "TITLE_EXACT_NORMALIZED" if exact_title else "BIBLIOGRAPHIC_COMPOSITE"
+                )
+            elif year_match and venue_match and volume_match and page_match:
+                components = {
+                    "year_score": 0.20,
+                    "venue_score": 0.25,
+                    "volume_score": 0.20,
+                    "page_score": 0.30,
+                }
+                if author_match:
+                    components["author_score"] = 0.05
+                match_type = "JOURNAL_VOLUME_PAGE_YEAR"
+            elif author_match and year_match and venue_match:
+                components = {
+                    "author_score": 0.25,
+                    "year_score": 0.20,
+                    "venue_score": 0.25,
+                }
+                if volume_match:
+                    components["volume_score"] = 0.08
+                if page_match:
+                    components["page_score"] = 0.08
+                match_type = "AUTHOR_YEAR_JOURNAL"
             else:
                 continue
-
-            if years and paper.year in years:
-                components["year_score"] = 0.12
-            if paper.normalized_venue:
-                venue_tokens = _tokens(paper.normalized_venue)
-                raw_tokens = _tokens(raw)
-                venue_coverage = (
-                    len(venue_tokens & raw_tokens) / len(venue_tokens)
-                    if venue_tokens else 0.0
-                )
-                if paper.normalized_venue in raw or venue_coverage >= 0.7:
-                    components["venue_score"] = 0.08
-            if paper.first_author_family and paper.first_author_family in raw:
-                components["author_score"] = 0.08
 
             contradiction = bool(
                 reference_dois and paper.doi and paper.doi not in reference_dois
             )
             score = min(1.0, sum(components.values()))
-            if score < 0.55:
+            if score < REFERENCE_MIN_CANDIDATE_SCORE:
                 continue
             candidates.append(
                 MatchCandidate(
                     paper=paper,
-                    match_type=(
-                        "TITLE_EXACT_NORMALIZED"
-                        if exact_title
-                        else "BIBLIOGRAPHIC_COMPOSITE"
-                    ),
+                    match_type=match_type,
                     score=score,
                     components=components,
                     contradiction=contradiction,
                 )
             )
+
         candidates.sort(key=lambda item: item.score, reverse=True)
         return candidates
 
@@ -270,7 +374,7 @@ class LocalReferenceResolver:
                 "cited_paper_id": already.cited_paper_id,
             }
 
-        dois, years = self._reference_identifiers(reference.reference_id)
+        dois, years = self._reference_identifiers(reference)
         doi_candidates = self._doi_candidates(reference, dois)
         if len(doi_candidates) == 1:
             match = self._persist_match(reference, doi_candidates[0], "ACCEPTED")
@@ -281,7 +385,7 @@ class LocalReferenceResolver:
                 "cited_paper_id": match.cited_paper_id,
             }
         if len(doi_candidates) > 1:
-            for candidate in doi_candidates[:5]:
+            for candidate in doi_candidates[:REFERENCE_MAX_STORED_CANDIDATES]:
                 self._persist_match(reference, candidate, "CANDIDATE")
             enqueue_review(
                 self.session,
@@ -309,7 +413,7 @@ class LocalReferenceResolver:
 
         top = candidates[0]
         second = candidates[1].score if len(candidates) > 1 else 0.0
-        for candidate in candidates[:5]:
+        for candidate in candidates[:REFERENCE_MAX_STORED_CANDIDATES]:
             self._persist_match(reference, candidate, "CANDIDATE")
 
         if top.contradiction:
@@ -325,8 +429,25 @@ class LocalReferenceResolver:
             )
             return {"status": "CONTRADICTION", "candidate_count": len(candidates)}
 
-        exact_title = top.match_type == "TITLE_EXACT_NORMALIZED"
-        if exact_title and top.score >= 0.90 and top.score - second >= 0.12:
+        if (
+            top.match_type == "TITLE_EXACT_NORMALIZED"
+            and top.score >= REFERENCE_TITLE_AUTO_ACCEPT_SCORE
+            and top.score - second >= REFERENCE_TITLE_AUTO_ACCEPT_MARGIN
+        ):
+            match = self._persist_match(reference, top, "ACCEPTED")
+            return {
+                "status": "ACCEPTED",
+                "match_type": top.match_type,
+                "reference_match_id": match.reference_match_id,
+                "cited_paper_id": match.cited_paper_id,
+                "score": top.score,
+            }
+
+        if (
+            top.match_type == "JOURNAL_VOLUME_PAGE_YEAR"
+            and top.score >= REFERENCE_JVPY_AUTO_ACCEPT_SCORE
+            and top.score - second >= REFERENCE_JVPY_AUTO_ACCEPT_MARGIN
+        ):
             match = self._persist_match(reference, top, "ACCEPTED")
             return {
                 "status": "ACCEPTED",
@@ -344,6 +465,7 @@ class LocalReferenceResolver:
             candidate_id=top.paper.paper_id,
             reason_code="COMPOSITE_MATCH_REQUIRES_REVIEW",
             payload={
+                "match_type": top.match_type,
                 "top_score": top.score,
                 "second_score": second,
                 "candidate_count": len(candidates),
@@ -351,7 +473,11 @@ class LocalReferenceResolver:
             },
             priority=70 if top.score >= 0.8 else 50,
         )
-        return {"status": "AMBIGUOUS", "candidate_count": len(candidates)}
+        return {
+            "status": "AMBIGUOUS",
+            "candidate_count": len(candidates),
+            "match_type": top.match_type,
+        }
 
     def resolve_all(self, *, limit: int | None = None) -> dict[str, int]:
         query = self.session.query(PaperReference).filter_by(acceptance_status="ACCEPTED")
