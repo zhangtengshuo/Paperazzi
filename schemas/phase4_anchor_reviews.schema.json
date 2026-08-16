@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://paperazzi.local/schemas/phase4_anchor_reviews.schema.json",
+  "title": "Paperazzi Phase 4 Explicit PDF Anchor Reviews",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reviews"],
+  "properties": {
+    "reviews": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["attempt_id", "reviewer_type", "decision"],
+        "properties": {
+          "attempt_id": {"type": "integer", "minimum": 1},
+          "reviewer_type": {"enum": ["LOCAL_AI", "MANUAL"]},
+          "decision": {
+            "enum": ["PASS", "ACCEPT_PARTIAL", "UNRESOLVED", "NEEDS_OCR"]
+          },
+          "section_confidence": {
+            "type": ["string", "null"],
+            "enum": ["HIGH", "MEDIUM", "LOW", null]
+          },
+          "segmentation_confidence": {
+            "type": ["string", "null"],
+            "enum": ["HIGH", "MEDIUM", "LOW", null]
+          },
+          "entry_text_quality": {
+            "type": ["string", "null"],
+            "enum": ["GOOD", "PARTIAL", "POOR", "UNREVIEWED", null]
+          },
+          "problem_codes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "quality_notes": {"type": ["string", "null"]},
+          "reviewer_runtime": {"type": ["string", "null"]},
+          "review_output_hash": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}
