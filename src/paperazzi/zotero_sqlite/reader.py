@@ -14,7 +14,7 @@ from paperazzi.ingest.models import (
     CanonicalZoteroItem,
 )
 
-from .adapters import SchemaIdentity, select_adapter
+from .adapters import select_adapter
 
 
 LINK_MODE_NAMES = {
@@ -45,7 +45,7 @@ def resolve_attachment_path(
 ) -> tuple[str | None, bool | None, str]:
     """Resolve an attachment without asking Zotero Desktop.
 
-    Resolution is intentionally conservative.  Imported storage paths are fully
+    Resolution is intentionally conservative. Imported storage paths are fully
     deterministic. Linked-file paths using Zotero's ``attachments:`` base-directory
     placeholder remain unresolved until Paperazzi gains an explicit linked-attachment
     base-directory configuration.
@@ -143,6 +143,11 @@ class ZoteroSQLiteReader:
                         None
                         if row["parentCollectionID"] is None
                         else int(row["parentCollectionID"])
+                    ),
+                    parent_collection_key=(
+                        None
+                        if row["parentCollectionKey"] is None
+                        else str(row["parentCollectionKey"])
                     ),
                     order_index=int(row["orderIndex"]),
                 )
