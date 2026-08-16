@@ -39,7 +39,13 @@ class Userdata125Adapter:
         "creators": {"creatorID", "firstName", "lastName", "fieldMode"},
         "itemCreators": {"itemID", "creatorID", "creatorTypeID", "orderIndex"},
         "creatorTypes": {"creatorTypeID", "creatorType"},
-        "collections": {"collectionID", "collectionName", "parentCollectionID", "libraryID", "key"},
+        "collections": {
+            "collectionID",
+            "collectionName",
+            "parentCollectionID",
+            "libraryID",
+            "key",
+        },
         "collectionItems": {"collectionID", "itemID", "orderIndex"},
         "tags": {"tagID", "name"},
         "itemTags": {"itemID", "tagID", "type"},
@@ -54,7 +60,17 @@ class Userdata125Adapter:
             "storageHash",
         },
         "deletedItems": {"itemID"},
-        "libraries": {"libraryID", "type"},
+        "libraries": {
+            "libraryID",
+            "type",
+            "editable",
+            "filesEditable",
+            "version",
+            "storageVersion",
+            "lastSync",
+            "archived",
+            "isAdmin",
+        },
         "version": {"schema", "version"},
     }
 
@@ -144,9 +160,11 @@ class Userdata125Adapter:
             c.collectionID,
             c.key AS collectionKey,
             c.collectionName,
-            c.parentCollectionID
+            c.parentCollectionID,
+            pc.key AS parentCollectionKey
         FROM collectionItems AS ci
         JOIN collections AS c ON c.collectionID = ci.collectionID
+        LEFT JOIN collections AS pc ON pc.collectionID = c.parentCollectionID
         ORDER BY ci.itemID, ci.orderIndex, c.collectionID
     """
 
