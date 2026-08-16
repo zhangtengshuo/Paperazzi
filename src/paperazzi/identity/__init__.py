@@ -4,9 +4,10 @@
 # paperazzi.identity.service import path so existing callers get the source-stable
 # resolver without breaking merge/split/manual-operation APIs.
 from . import stable_bootstrap as _stable_bootstrap
-from .source_seed import seed_required_name_multiplicity
+from .source_seed import seed_no_candidate_closure, seed_required_name_multiplicity
 
 _stable_bootstrap._seed_required_name_multiplicity = seed_required_name_multiplicity
+_stable_bootstrap._seed_no_candidate_closure = seed_no_candidate_closure
 
 bootstrap_author_identities = _stable_bootstrap.bootstrap_author_identities
 score_mention_against_author = _stable_bootstrap.score_mention_against_author
