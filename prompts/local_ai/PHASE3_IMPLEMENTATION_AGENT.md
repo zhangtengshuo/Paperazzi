@@ -16,6 +16,7 @@ docs/phase2_5/runs/20260817-022324-pdf-evidence-v3/V3_REVIEW.md
 docs/phase3/PHASE3_IMPLEMENTATION.md
 prompts/local_ai/PDF_EVIDENCE_AGENT.md
 schemas/pdf_evidence_review.schema.json
+schemas/phase3_report.schema.json
 ```
 
 For Phase 3 persistence details, `docs/architecture/PERSISTENCE_MODEL.md` is normative and supersedes the older persistence sketch in `DESIGN.md` v0.4 where they conflict.
@@ -311,7 +312,13 @@ Do not require full 2161-PDF AI review to pass Phase 3. That is an operational p
 
 # 15. Required report and final state
 
-Follow the report fields in `docs/phase3/PHASE3_IMPLEMENTATION.md` and commit only compact diagnostics under:
+Follow the report fields in `docs/phase3/PHASE3_IMPLEMENTATION.md`. The JSON report must validate against:
+
+```text
+schemas/phase3_report.schema.json
+```
+
+Commit only compact diagnostics under:
 
 ```text
 docs/phase3/runs/<timestamp>-phase3/
