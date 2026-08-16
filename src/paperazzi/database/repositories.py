@@ -175,6 +175,28 @@ def add_extraction_attempt(
             "new extraction attempts must start as REVIEW_PENDING; "
             "record a review before assigning PASS/ACCEPT_PARTIAL/RETRY"
         )
+    if run.status != "STARTED":
+        raise ExtractionError("cannot add an attempt to a non-STARTED extraction run")
+    if attempt_number > 1:
+        previous = (
+            session.query(DocumentExtractionAttempt)
+            .filter_by(
+                extraction_run_id=run.extraction_run_id,
+                attempt_number=attempt_number - 1,
+            )
+            .one_or_none()
+        )
+        if previous is None:
+            raise ExtractionError(
+                f"Attempt {attempt_number} requires Attempt {attempt_number - 1}"
+            )
+        previous_review = _latest_review(session, previous)
+        if previous_review is None or previous_review.decision != "RETRY":
+            raise ExtractionError(
+                f"Attempt {attempt_number} requires Attempt {attempt_number - 1} "
+                "to have latest review decision RETRY"
+            )
+
     attempt = DocumentExtractionAttempt(
         extraction_run_id=run.extraction_run_id,
         attempt_number=attempt_number,
@@ -366,13 +388,13 @@ def accept_attempt(
     session: Any,
     run: DocumentExtractionRun,
     attempt: DocumentExtractionAttempt,
-    final_status: str,
+    final_status: str | None = None,
     *,
     evidence_status: str = "ACCEPTED",
     reference_status: str = "ACCEPTED",
     superseded_status: str = "SUPERSEDED",
 ) -> None:
-    """Accept a reviewed attempt; unreviewed deterministic output cannot be accepted."""
+    """Accept a reviewed attempt; final status is owned by the latest review."""
     review = _latest_review(session, attempt)
     if review is None:
         raise ExtractionError(
@@ -382,10 +404,14 @@ def accept_attempt(
         raise ExtractionError("a RETRY review decision cannot finalize an extraction run")
     if attempt.extraction_run_id != run.extraction_run_id:
         raise ExtractionError("attempt does not belong to extraction run")
+    if final_status is not None and final_status != review.decision:
+        raise ExtractionError(
+            f"final_status={final_status} contradicts latest review decision={review.decision}"
+        )
 
     run.status = "COMPLETED"
     run.completed_at = utcnow()
-    run.final_status = final_status
+    run.final_status = review.decision
     run.accepted_attempt_id = attempt.attempt_id
 
     if review.entry_text_quality is not None:
