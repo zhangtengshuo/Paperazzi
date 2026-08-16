@@ -123,7 +123,15 @@ Exclude local existence/resolution and volatile sync timestamps. Local availabil
 
 ## 4.4 `canonical_hash`
 
-Hash a stable object containing the three component hashes and deleted/present semantic state as appropriate for the current projection. It is a convenient whole-item checksum, not the only diff signal.
+Hash a stable object containing the three component hashes only:
+
+```text
+bibliographic_hash
+organization_hash
+attachment_hash
+```
+
+Presence/removal/deleted operational state is tracked separately and must not be folded into the semantic content hash. `canonical_hash` is a convenient whole-item checksum, not the only diff signal.
 
 ---
 
@@ -191,7 +199,7 @@ Current durable state of a Zotero bibliographic item.
 
 ```text
 zotero_item_state_id        INTEGER PK
-paper_id                    FK papers UNIQUE
+paper_id                    FK papers
 library_id                  INTEGER
 item_key                    TEXT
 zotero_item_id              INTEGER diagnostic only
@@ -218,6 +226,8 @@ Constraint:
 ```text
 UNIQUE(library_id, item_key)
 ```
+
+Do **not** make `paper_id` unique here. Phase 3 creates one paper per Zotero item, but future paper-identity consolidation may legitimately map multiple Zotero source items onto one Paperazzi paper without rewriting the source-state schema.
 
 `canonical_payload_json` is an audit/rebuild convenience; it does not replace first-class creator/tag/collection/attachment tables.
 
