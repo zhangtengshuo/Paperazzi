@@ -13,6 +13,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from paperazzi.local_evidence.pdf import (
+    ReferenceEntry,
     extract_dois,
     extract_pdf_evidence,
     find_reference_section,
@@ -172,7 +173,47 @@ I. Iota, Journal I 9, 90 (2018).
         self.assertEqual(result.page_count, 0)
 
 
-@unittest.skipUnless(PYMUPDF is not None, "PyMuPDF not installed")
+    def test_midlist_ordinal_chain_falls_back_to_raw(self) -> None:
+        # [20, 26, 27...] style chains under an explicit heading must not be
+        # reported as HIGH segmented references (Phase 2.5c IWR2QEJY regression).
+        text = (
+            "References\n"
+            "20. Schutz CN, Warshel A (2001) J. Biol. Chem. 5, 1-2.\n"
+            "26. Huyghues-Despointes BM (2006) Biochemistry 10, 3-4.\n"
+            "27. Daily MD (2007) Prot. Sci. 11, 5-6.\n"
+            "28. Thurlkill RL (2008) Prot. Sci. 12, 7-8.\n"
+            "29. Grimsley GR (2009) Biochemistry 13, 9-10.\n"
+            "31. Scholtz JM (2010) Prot. Sci. 14, 11-12.\n"
+        )
+        entries, method, confidence = segment_reference_entries(text)
+        self.assertEqual(entries, ())
+        self.assertTrue(method.startswith("raw-"))
+
+    def test_prefer_reference_section_ranks_heading_then_entries(self) -> None:
+        from paperazzi.local_evidence.pdf import prefer_reference_section, ReferenceSection
+
+        def section(heading: str, n: int) -> ReferenceSection:
+            return ReferenceSection(
+                heading=heading, start_page=0, end_page=1, method="m",
+                confidence="HIGH", raw_text="x",
+                entries=tuple(
+                    ReferenceEntry(ordinal=i + 1, raw_text=f"e{i}")
+                    for i in range(n)
+                ),
+            )
+
+        # explicit heading beats implicit even with fewer entries
+        self.assertIsNotNone(prefer_reference_section(section("References", 3), section("", 40)))
+        # same heading family: more entries win
+        self.assertEqual(
+            len(prefer_reference_section(section("References", 12), section("References", 44)).entries),
+            44,
+        )
+        # None handling
+        self.assertIsNone(prefer_reference_section(None, None))
+        self.assertEqual(len(prefer_reference_section(None, section("", 8)).entries), 8)
+
+@unittest.skipUnless(PYMUPDF is not None, "PyMuPDF is required")
 class PdfEvidenceIntegrationTests(unittest.TestCase):
     def _make_pdf(self, path: Path) -> None:
         doc = PYMUPDF.open()

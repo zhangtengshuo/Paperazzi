@@ -21,6 +21,12 @@ EMAIL_RE = re.compile(
 )
 YEAR_RE = re.compile(r"\b(?:18|19|20)\d{2}[a-z]?\b", re.IGNORECASE)
 
+JOURNAL_ABBREV_RE = re.compile(
+    r"\b(?:J\.|Jr\.|Phys\.|Chem\.|Acta|Theor\.|Appl\.|Nature|Science|Proc\.|Rev\.|"
+    r"Lett\.|Commun\.|Trans\.|Ann\.|Int\.|Ed\.|Biol\.|Med\.|Mater\.|Nano\s|Acc\.)",
+    re.IGNORECASE,
+)
+
 # Keep deterministic reference ordinals deliberately conservative. The first real-
 # library validation showed publication years (1943/1962/1954) being mistaken for
 # ordinals. Phase 2.5b additionally showed that noisy marker streams can look locally
@@ -299,6 +305,14 @@ def segment_reference_entries(text: str) -> tuple[tuple[ReferenceEntry, ...], st
             continue
         entries = _entries_from_matches(normalized, chain)
         if len(entries) >= 3:
+            numbers = [entry.ordinal for entry in entries if entry.ordinal is not None]
+            # A bracketed/dotted bibliography read under its own heading starts near 1.
+            # A consecutive chain that only begins mid-list (e.g. [20, 26, 27...])
+            # indicates interleaved two-column text, not a defensible segmentation.
+            # Parenthesized footnote numbering legitimately continues from the body,
+            # so mid-list starts stay acceptable there.
+            if method != "numbered-parenthesized" and numbers and numbers[0] > 5:
+                break
             return entries, method, "HIGH"
 
     # Author-year bibliographies are deliberately not force-split. A raw section with
@@ -307,6 +321,82 @@ def segment_reference_entries(text: str) -> tuple[tuple[ReferenceEntry, ...], st
     if len(years) >= 3:
         return (), "raw-author-year-or-unsegmented", "MEDIUM"
     return (), "raw-unsegmented", "LOW"
+
+
+_AUTHOR_LIKE_RE = re.compile(
+    r"\b[A-Z]\.\s*[A-Z][a-z]"  # dotted initials: A. Author
+    r"|\b[A-Z][a-z]+\s+[A-Z]{1,2}\b[,\s]"  # Surname AB,
+    r"|\bet\s+al\b",
+)
+
+
+def _head_entries_citation_like(entries: tuple[ReferenceEntry, ...], count: int = 3) -> bool:
+    """A bibliography's first entries should themselves be citations.
+
+    Long numbered data/figure sequences can yield strictly increasing chains
+    (Phase 2.5c 87JCS8EY regression: energy-statistics lines led the chain).
+    Rejecting chains whose head entries lack author-like patterns keeps such
+    prose out of paper_reference records.
+    """
+    for entry in entries[:count]:
+        if not _AUTHOR_LIKE_RE.search(entry.raw_text):
+            return False
+    return True
+
+
+def _citation_like_ratio(entries: tuple[ReferenceEntry, ...]) -> float:
+    """Fraction of sampled entries that look like citations, not numbered prose.
+
+    Data tables and figure sequences can produce long consecutive number chains
+    without being bibliographies (Phase 2.5c 87JCS8EY regression: energy statistics
+    lines). Require author-initial patterns, journal-style tokens, or "et al".
+    """
+    if not entries:
+        return 0.0
+    sample = entries[:50]
+    hits = 0
+    for entry in sample:
+        text = entry.raw_text
+        if (
+            re.search(r"\b[A-Z]\.\s*[A-Z][a-z]", text)  # dotted initials: A. Author
+            or re.search(r"\b[A-Z][a-z]+\s+[A-Z]{1,2}\b[,\s]", text)  # Surname AB,
+            or re.search(r"\bet\s+al\b", text, re.IGNORECASE)
+            or JOURNAL_ABBREV_RE.search(text)
+        ):
+            hits += 1
+    return hits / len(sample)
+
+
+def prefer_reference_section(
+    primary: ReferenceSection | None, alternate: ReferenceSection | None
+) -> ReferenceSection | None:
+    """Pick the more trustworthy of two reference-section extractions.
+
+    ``sort=True`` page text interleaves two-column journals and breaks ``[n]``
+    line-start markers (Phase 2.5c review: QuTiP-BoFiN, Soriano 2014, IWR2QEJY).
+    The caller therefore extracts twice — sorted (reading-order fallback) and raw
+    content-stream order — and this rule keeps the better result: chains whose
+    entries are not citation-like are rejected; an explicit heading outranks an
+    implicit recovery; then more segmented entries win.
+    """
+    if primary is None:
+        return alternate
+    if alternate is None:
+        return primary
+
+    def qualified(section: ReferenceSection) -> bool:
+        if not section.entries:
+            return True
+        return _head_entries_citation_like(section.entries) and _citation_like_ratio(section.entries) >= 0.5
+
+    def rank(section: ReferenceSection) -> tuple[int, int]:
+        return (1 if section.heading else 0, len(section.entries))
+
+    primary_ok = qualified(primary)
+    alternate_ok = qualified(alternate)
+    if primary_ok != alternate_ok:
+        return primary if primary_ok else alternate
+    return primary if rank(primary) >= rank(alternate) else alternate
 
 
 def _find_implicit_numbered_reference_section(pages: list[str]) -> ReferenceSection | None:
@@ -534,6 +624,7 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
 
     backend_version = getattr(pymupdf, "__version__", None)
     page_texts: list[str] = []
+    page_texts_plain: list[str] = []
     blocks_by_page: list[list[tuple[Any, ...]]] = []
     metadata: dict[str, Any] = {}
 
@@ -553,7 +644,9 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
 
             metadata = dict(doc.metadata or {})
             for page in doc:
-                page_texts.append(page.get_text("text", sort=True) or "")
+                sorted_text = page.get_text("text", sort=True) or ""
+                page_texts.append(sorted_text)
+                page_texts_plain.append(page.get_text("text") or "")
                 raw_blocks = page.get_text("blocks", sort=True) or []
                 text_blocks = [tuple(block) for block in raw_blocks if len(block) < 7 or block[6] == 0]
                 blocks_by_page.append(text_blocks)
@@ -578,7 +671,10 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
         max_front_pages=max_front_pages,
     )
     front_text = "\n\f\n".join(page_texts[:max_front_pages]).strip()
-    references = find_reference_section(page_texts)
+    references = prefer_reference_section(
+        find_reference_section(page_texts),
+        find_reference_section(page_texts_plain),
+    )
 
     return PdfEvidence(
         path=str(pdf_path),
