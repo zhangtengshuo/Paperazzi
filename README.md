@@ -6,7 +6,7 @@ The project treats Zotero's local `zotero.sqlite` database and `storage/` direct
 
 ## Current status
 
-**Phase 4 — Author identity and local reference resolution: ready to implement.**
+**Phase 4 — Author identity and local reference resolution: IN PROGRESS.**
 
 Completed foundations:
 
@@ -20,22 +20,47 @@ Phase 3.1 persistence hardening                                PASS
            database schema                                     PHASE3_V1
 ```
 
-Phase 4 resolves paper-local creator mentions into reversible canonical author identities, projects authorships/roles from accepted evidence, and resolves accepted local reference entries to papers already present in the Paperazzi corpus.
+Phase 4 runtime implementation has started directly on `main`.
 
-Start Phase 4 here:
+Implemented Phase 4 surface currently includes:
+
+```text
+0004_identity_resolution
+0005_identity_history_constraints
+
+canonical authors + name variants + external IDs
+creator-mention identity memberships/decisions/evidence
+conservative name/coauthor candidate resolution
+reversible link/unlink/merge/split/not-same-person/lock operations
+authorship projection and first-author status
+accepted-PDF corresponding/affiliation evidence mapping
+accepted-reference-only local paper resolution
+DOI/title/author-year-journal/journal-volume-page-year match classes
+versioned resolution thresholds
+review queues
+Phase 4 synthetic/regression tests
+staged real-library validation tooling
+```
+
+Phase 4 is **not yet declared PASS**. The new code must pass the full local test suite and staged real-library validation, including explicitly reviewed real PDF/reference anchors.
+
+Phase 4 entry points:
 
 - [`docs/phase4/README.md`](docs/phase4/README.md) — Phase 4 entry point and hard branch policy.
 - [`docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md`](docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md) — normative identity/reference semantics.
-- [`docs/phase4/PHASE4_IMPLEMENTATION.md`](docs/phase4/PHASE4_IMPLEMENTATION.md) — gated Phase 4 implementation plan.
-- [`prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`](prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md) — operating prompt for the local implementation AI.
-- [`schemas/phase4_report.schema.json`](schemas/phase4_report.schema.json) — final machine-readable validation contract.
+- [`docs/phase4/PHASE4_IMPLEMENTATION.md`](docs/phase4/PHASE4_IMPLEMENTATION.md) — implementation plan and gates.
+- [`docs/phase4/PHASE4_REAL_VALIDATION.md`](docs/phase4/PHASE4_REAL_VALIDATION.md) — staged real-library validation workflow.
+- [`prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`](prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md) — current parallel implementation/validation instructions.
+- [`prompts/local_ai/PDF_EVIDENCE_AGENT.md`](prompts/local_ai/PDF_EVIDENCE_AGENT.md) — mandatory PDF review contract.
+- [`schemas/phase4_report.schema.json`](schemas/phase4_report.schema.json) — final validation report contract.
+- [`schemas/phase4_anchor_reviews.schema.json`](schemas/phase4_anchor_reviews.schema.json) — explicit anchor-review interchange contract.
 - [`docs/architecture/PERSISTENCE_MODEL.md`](docs/architecture/PERSISTENCE_MODEL.md) — frozen Phase 3 persistence semantics that Phase 4 must preserve.
 
 ## Phase 4 branch policy
 
 **Phase 4 is developed directly on `main`. Do not create new development branches or PR branches.**
 
-All Phase 4 code, tests, documentation and validation reports are committed directly to `main` after their milestone tests pass. This project-specific rule overrides generic agent conventions that prefer feature branches.
+Independent implementation tasks may proceed in parallel when they have no real dependency, but integration correctness and final validation gates remain mandatory.
 
 ## Repository layout
 
@@ -57,8 +82,8 @@ Paperazzi/
 │   ├── zotero_sqlite/      # read-only Zotero access + schema adapters
 │   ├── ingest/             # canonical records and scan/diff semantics
 │   ├── local_evidence/     # frozen-v3 local PDF evidence extraction
-│   ├── database/           # PHASE3_V1 persistence
-│   ├── identity/           # Phase 4 identity/resolution logic
+│   ├── database/           # PHASE3_V1 persistence + extraction workflow
+│   ├── identity/           # Phase 4 identity/authorship/reference resolution
 │   ├── enrichment/         # later online enrichment protocol
 │   ├── graph/              # later derived graph
 │   └── api/                # later backend API
