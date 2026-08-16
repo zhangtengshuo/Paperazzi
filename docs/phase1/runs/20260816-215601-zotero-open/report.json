@@ -1,0 +1,4967 @@
+{
+  "probe_version": 1,
+  "metadata": {
+    "generated_at": "2026-08-16T13:56:04+00:00",
+    "run_label": "zotero-open",
+    "python_version": "3.13.9",
+    "python_implementation": "CPython",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "sqlite_library_version": "3.51.0",
+    "sqlite_python_module_version": "2.6.0",
+    "source": {
+      "path": "/mnt/d/zotero/zotero.sqlite",
+      "size_bytes": 133648384,
+      "mtime": "2026-08-13T15:47:43+00:00",
+      "sidecars": {
+        "-wal": {
+          "exists": false
+        },
+        "-shm": {
+          "exists": false
+        },
+        "-journal": {
+          "exists": true,
+          "size_bytes": 1572864,
+          "mtime": "2026-08-13T15:47:43+00:00"
+        }
+      }
+    },
+    "analysis_database": "/home/shuo/develop/Paperazzi/probe-output/20260816-215601-zotero-open/zotero_snapshot.sqlite",
+    "snapshot_created": true,
+    "read_mode": "mode=ro + PRAGMA query_only=ON"
+  },
+  "pragmas": {
+    "user_version": 0,
+    "application_id": 0,
+    "schema_version": 1,
+    "data_version": 1,
+    "journal_mode": "delete",
+    "page_count": 32629,
+    "page_size": 4096,
+    "freelist_count": 0,
+    "foreign_keys": 0,
+    "query_only": 1,
+    "quick_check": [
+      "ok"
+    ]
+  },
+  "schema": {
+    "fingerprint_sha256": "7740b572c59e3caa976528b24edf074382add503730a5898aec732de9c8ecd10",
+    "objects": [
+      {
+        "type": "table",
+        "name": "baseFieldMappings",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "baseFieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 3
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "fields",
+            "from": "fieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "fields",
+            "from": "baseFieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "itemTypes",
+            "from": "itemTypeID",
+            "to": "itemTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "baseFieldMappingsCombined",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "baseFieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 3
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "charsets",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "charsetID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "charset",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "collectionItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "collectionID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "orderIndex",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "collections",
+            "from": "collectionID",
+            "to": "collectionID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "collectionRelations",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "collectionID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "predicateID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "object",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 3
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "relationPredicates",
+            "from": "predicateID",
+            "to": "predicateID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "collections",
+            "from": "collectionID",
+            "to": "collectionID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "collections",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "collectionID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "collectionName",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "parentCollectionID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": "NULL",
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "clientDateModified",
+            "type": "TIMESTAMP",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "synced",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "collections",
+            "from": "parentCollectionID",
+            "to": "collectionID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "creatorTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "creatorTypeID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "creatorType",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "creators",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "creatorID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "firstName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "lastName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "fieldMode",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "customBaseFieldMappings",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "customItemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "baseFieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "customFieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 3
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "customFields",
+            "from": "customFieldID",
+            "to": "customFieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "fields",
+            "from": "baseFieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "customItemTypes",
+            "from": "customItemTypeID",
+            "to": "customItemTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "customFields",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "customFieldID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "label",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "customItemTypeFields",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "customItemTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "customFieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "hide",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "orderIndex",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "customFields",
+            "from": "customFieldID",
+            "to": "customFieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "fields",
+            "from": "fieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "customItemTypes",
+            "from": "customItemTypeID",
+            "to": "customItemTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "customItemTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "customItemTypeID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "typeName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "label",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "display",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": "1",
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "icon",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "dbDebug1",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "a",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "deletedCollections",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "collectionID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "dateDeleted",
+            "type": "",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "collections",
+            "from": "collectionID",
+            "to": "collectionID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "deletedItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "dateDeleted",
+            "type": "",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "deletedSearches",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "savedSearchID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "dateDeleted",
+            "type": "",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "savedSearches",
+            "from": "savedSearchID",
+            "to": "savedSearchID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "feedItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "guid",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "readTime",
+            "type": "TIMESTAMP",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "translatedTime",
+            "type": "TIMESTAMP",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "feeds",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "libraryID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "name",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "url",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "lastUpdate",
+            "type": "TIMESTAMP",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "lastCheck",
+            "type": "TIMESTAMP",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "lastCheckError",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "cleanupReadAfter",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "cleanupUnreadAfter",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 8,
+            "name": "refreshInterval",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "fieldFormats",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fieldFormatID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "regex",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "isInteger",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "fields",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fieldID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "fieldFormatID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "fieldFormats",
+            "from": "fieldFormatID",
+            "to": "fieldFormatID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "fieldsCombined",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldName",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "label",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "fieldFormatID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "custom",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "fileTypeMimeTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fileTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "mimeType",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "fileTypes",
+            "from": "fileTypeID",
+            "to": "fileTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "fileTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fileTypeID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fileType",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "fulltextItemWords",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "wordID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "fulltextWords",
+            "from": "wordID",
+            "to": "wordID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "fulltextItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "indexedPages",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "totalPages",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "indexedChars",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "totalChars",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "synced",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "fulltextWords",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "wordID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "word",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "groupItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "createdByUserID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "lastModifiedByUserID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "users",
+            "from": "lastModifiedByUserID",
+            "to": "userID",
+            "on_update": "NO ACTION",
+            "on_delete": "SET NULL",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "users",
+            "from": "createdByUserID",
+            "to": "userID",
+            "on_update": "NO ACTION",
+            "on_delete": "SET NULL",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "groups",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "groupID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "name",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "description",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemAnnotations",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "parentItemID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "type",
+            "type": "INTEGER",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "authorName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "text",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "comment",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "color",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "pageLabel",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 8,
+            "name": "sortIndex",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 9,
+            "name": "position",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 10,
+            "name": "isExternal",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "itemAttachments",
+            "from": "parentItemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemAttachments",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "parentItemID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "linkMode",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "contentType",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "charsetID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "path",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "syncState",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "storageModTime",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 8,
+            "name": "storageHash",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 9,
+            "name": "lastProcessedModificationTime",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 10,
+            "name": "lastRead",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "charsets",
+            "from": "charsetID",
+            "to": "charsetID",
+            "on_update": "NO ACTION",
+            "on_delete": "SET NULL",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "items",
+            "from": "parentItemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemCreators",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "creatorID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "creatorTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "1",
+            "pk": 3
+          },
+          {
+            "cid": 3,
+            "name": "orderIndex",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 4
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "creatorTypes",
+            "from": "creatorTypeID",
+            "to": "creatorTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "creators",
+            "from": "creatorID",
+            "to": "creatorID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemData",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "valueID",
+            "type": "",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "itemDataValues",
+            "from": "valueID",
+            "to": "valueID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "fieldsCombined",
+            "from": "fieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 2,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemDataValues",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "valueID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "value",
+            "type": "",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "itemNotes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "parentItemID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "note",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "title",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "parentItemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemRelations",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "predicateID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "object",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 3
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "relationPredicates",
+            "from": "predicateID",
+            "to": "predicateID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemTags",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "tagID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "type",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "tags",
+            "from": "tagID",
+            "to": "tagID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemTypeCreatorTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "creatorTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "primaryField",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "creatorTypes",
+            "from": "creatorTypeID",
+            "to": "creatorTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "itemTypes",
+            "from": "itemTypeID",
+            "to": "itemTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemTypeFields",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "hide",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "orderIndex",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "fields",
+            "from": "fieldID",
+            "to": "fieldID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "itemTypes",
+            "from": "itemTypeID",
+            "to": "itemTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "itemTypeFieldsCombined",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "fieldID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "hide",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "orderIndex",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "itemTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "typeName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "templateItemTypeID",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "display",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": "1",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "itemTypesCombined",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "typeName",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "display",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "1",
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "custom",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "items",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "itemTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "dateAdded",
+            "type": "TIMESTAMP",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "dateModified",
+            "type": "TIMESTAMP",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "clientDateModified",
+            "type": "TIMESTAMP",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 8,
+            "name": "synced",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "libraries",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "libraryID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "type",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "editable",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "filesEditable",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "storageVersion",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "lastSync",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 7,
+            "name": "archived",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 8,
+            "name": "isAdmin",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "proxies",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "proxyID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "multiHost",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "autoAssociate",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "scheme",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "proxyHosts",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "hostID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "proxyID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "hostname",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "proxies",
+            "from": "proxyID",
+            "to": "proxyID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "publicationsItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "relationPredicates",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "predicateID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "predicate",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "retractedItems",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "itemID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "data",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "flag",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "items",
+            "from": "itemID",
+            "to": "itemID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "savedSearchConditions",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "savedSearchID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "searchConditionID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "condition",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "operator",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "value",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "required",
+            "type": "NONE",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "savedSearches",
+            "from": "savedSearchID",
+            "to": "savedSearchID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "savedSearches",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "savedSearchID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "savedSearchName",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "clientDateModified",
+            "type": "TIMESTAMP",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 5,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 6,
+            "name": "synced",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "settings",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "setting",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "value",
+            "type": "",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "storageDeleteLog",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "dateDeleted",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "syncCache",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "syncObjectTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 3
+          },
+          {
+            "cid": 3,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 4
+          },
+          {
+            "cid": 4,
+            "name": "data",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "syncObjectTypes",
+            "from": "syncObjectTypeID",
+            "to": "syncObjectTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "syncDeleteLog",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "syncObjectTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 1,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "dateDeleted",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": "CURRENT_TIMESTAMP",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "syncObjectTypes",
+            "from": "syncObjectTypeID",
+            "to": "syncObjectTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "NO ACTION",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "syncObjectTypes",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "syncObjectTypeID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "name",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "syncQueue",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "syncObjectTypeID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 3
+          },
+          {
+            "cid": 3,
+            "name": "lastCheck",
+            "type": "TIMESTAMP",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "tries",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "syncObjectTypes",
+            "from": "syncObjectTypeID",
+            "to": "syncObjectTypeID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          },
+          {
+            "id": 1,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "syncedSettings",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "setting",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "libraryID",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 2
+          },
+          {
+            "cid": 2,
+            "name": "value",
+            "type": "",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 3,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          },
+          {
+            "cid": 4,
+            "name": "synced",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": "0",
+            "pk": 0
+          }
+        ],
+        "foreign_keys": [
+          {
+            "id": 0,
+            "seq": 0,
+            "table": "libraries",
+            "from": "libraryID",
+            "to": "libraryID",
+            "on_update": "NO ACTION",
+            "on_delete": "CASCADE",
+            "match": "NONE"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "name": "tags",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "tagID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "name",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "translatorCache",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "fileName",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "metadataJSON",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          },
+          {
+            "cid": 2,
+            "name": "lastModifiedTime",
+            "type": "INT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "users",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "userID",
+            "type": "INTEGER",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "name",
+            "type": "TEXT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      },
+      {
+        "type": "table",
+        "name": "version",
+        "columns": [
+          {
+            "cid": 0,
+            "name": "schema",
+            "type": "TEXT",
+            "notnull": 0,
+            "dflt_value": null,
+            "pk": 1
+          },
+          {
+            "cid": 1,
+            "name": "version",
+            "type": "INT",
+            "notnull": 1,
+            "dflt_value": null,
+            "pk": 0
+          }
+        ],
+        "foreign_keys": []
+      }
+    ]
+  },
+  "key_object_counts": {
+    "items": 5711,
+    "itemTypes": 40,
+    "itemData": 35959,
+    "itemDataValues": 20816,
+    "fields": 123,
+    "fieldsCombined": 123,
+    "creators": 7619,
+    "itemCreators": 12518,
+    "creatorTypes": 37,
+    "itemAttachments": 2628,
+    "collections": 121,
+    "collectionItems": 3119,
+    "tags": 727,
+    "itemTags": 3326,
+    "deletedItems": 51,
+    "libraries": 2,
+    "version": 13,
+    "fulltextItems": 2413
+  },
+  "key_object_columns": {
+    "items": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "itemTypeID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "dateAdded",
+        "type": "TIMESTAMP",
+        "notnull": 1,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "dateModified",
+        "type": "TIMESTAMP",
+        "notnull": 1,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "clientDateModified",
+        "type": "TIMESTAMP",
+        "notnull": 1,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "libraryID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "version",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "synced",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ],
+    "itemTypes": [
+      {
+        "cid": 0,
+        "name": "itemTypeID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "typeName",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "templateItemTypeID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "display",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": "1",
+        "pk": 0
+      }
+    ],
+    "itemData": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "fieldID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "cid": 2,
+        "name": "valueID",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "itemDataValues": [
+      {
+        "cid": 0,
+        "name": "valueID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "value",
+        "type": "",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "fields": [
+      {
+        "cid": 0,
+        "name": "fieldID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "fieldName",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "fieldFormatID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "fieldsCombined": [
+      {
+        "cid": 0,
+        "name": "fieldID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "fieldName",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "label",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "fieldFormatID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "custom",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "creators": [
+      {
+        "cid": 0,
+        "name": "creatorID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "firstName",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "lastName",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "fieldMode",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "itemCreators": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "creatorID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "cid": 2,
+        "name": "creatorTypeID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "1",
+        "pk": 3
+      },
+      {
+        "cid": 3,
+        "name": "orderIndex",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 4
+      }
+    ],
+    "creatorTypes": [
+      {
+        "cid": 0,
+        "name": "creatorTypeID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "creatorType",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "itemAttachments": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "parentItemID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "linkMode",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "contentType",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "charsetID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "path",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "syncState",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "storageModTime",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "storageHash",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 9,
+        "name": "lastProcessedModificationTime",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 10,
+        "name": "lastRead",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "collections": [
+      {
+        "cid": 0,
+        "name": "collectionID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "collectionName",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "parentCollectionID",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": "NULL",
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "clientDateModified",
+        "type": "TIMESTAMP",
+        "notnull": 1,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "libraryID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "key",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "version",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "synced",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ],
+    "collectionItems": [
+      {
+        "cid": 0,
+        "name": "collectionID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "itemID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "cid": 2,
+        "name": "orderIndex",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ],
+    "tags": [
+      {
+        "cid": 0,
+        "name": "tagID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "itemTags": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "tagID",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 2
+      },
+      {
+        "cid": 2,
+        "name": "type",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "deletedItems": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "dateDeleted",
+        "type": "",
+        "notnull": 1,
+        "dflt_value": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ],
+    "libraries": [
+      {
+        "cid": 0,
+        "name": "libraryID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "type",
+        "type": "TEXT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "editable",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "filesEditable",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "version",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "storageVersion",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "lastSync",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 7,
+        "name": "archived",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 8,
+        "name": "isAdmin",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ],
+    "version": [
+      {
+        "cid": 0,
+        "name": "schema",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "version",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "fulltextItems": [
+      {
+        "cid": 0,
+        "name": "itemID",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "indexedPages",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 2,
+        "name": "totalPages",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 3,
+        "name": "indexedChars",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 4,
+        "name": "totalChars",
+        "type": "INT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      },
+      {
+        "cid": 5,
+        "name": "version",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      },
+      {
+        "cid": 6,
+        "name": "synced",
+        "type": "INT",
+        "notnull": 1,
+        "dflt_value": "0",
+        "pk": 0
+      }
+    ]
+  },
+  "reference_data": {
+    "version": [
+      {
+        "schema": "globalSchema",
+        "version": 42
+      },
+      {
+        "schema": "system",
+        "version": 32
+      },
+      {
+        "schema": "userdata",
+        "version": 125
+      },
+      {
+        "schema": "triggers",
+        "version": 18
+      },
+      {
+        "schema": "compatibility",
+        "version": 7
+      },
+      {
+        "schema": "translators",
+        "version": 1783437194
+      },
+      {
+        "schema": "delete",
+        "version": 74
+      },
+      {
+        "schema": "styles",
+        "version": 1783437194
+      },
+      {
+        "schema": "fulltext_2",
+        "version": 38
+      },
+      {
+        "schema": "repository",
+        "version": 1784133974
+      },
+      {
+        "schema": "lastcheck",
+        "version": 1784133976
+      },
+      {
+        "schema": "fulltext_1",
+        "version": 12953
+      },
+      {
+        "schema": "lastsync",
+        "version": 1786636064
+      }
+    ],
+    "libraries": [
+      {
+        "libraryID": 1,
+        "type": "user",
+        "editable": 1,
+        "filesEditable": 1,
+        "version": 12953,
+        "storageVersion": 12953,
+        "lastSync": 1786636063,
+        "archived": 0,
+        "isAdmin": 0
+      },
+      {
+        "libraryID": 2,
+        "type": "group",
+        "editable": 1,
+        "filesEditable": 1,
+        "version": 38,
+        "storageVersion": 0,
+        "lastSync": 1786636037,
+        "archived": 0,
+        "isAdmin": 1
+      }
+    ],
+    "itemTypes": [
+      {
+        "itemTypeID": 1,
+        "typeName": "annotation",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 2,
+        "typeName": "artwork",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 3,
+        "typeName": "attachment",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 4,
+        "typeName": "audioRecording",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 5,
+        "typeName": "bill",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 6,
+        "typeName": "blogPost",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 7,
+        "typeName": "book",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 8,
+        "typeName": "bookSection",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 9,
+        "typeName": "case",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 10,
+        "typeName": "computerProgram",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 11,
+        "typeName": "conferencePaper",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 12,
+        "typeName": "dataset",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 13,
+        "typeName": "dictionaryEntry",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 14,
+        "typeName": "document",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 15,
+        "typeName": "email",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 16,
+        "typeName": "encyclopediaArticle",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 17,
+        "typeName": "film",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 18,
+        "typeName": "forumPost",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 19,
+        "typeName": "hearing",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 20,
+        "typeName": "instantMessage",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 21,
+        "typeName": "interview",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 22,
+        "typeName": "journalArticle",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 23,
+        "typeName": "letter",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 24,
+        "typeName": "magazineArticle",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 25,
+        "typeName": "manuscript",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 26,
+        "typeName": "map",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 27,
+        "typeName": "newspaperArticle",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 28,
+        "typeName": "note",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 29,
+        "typeName": "patent",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 30,
+        "typeName": "podcast",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 31,
+        "typeName": "preprint",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 32,
+        "typeName": "presentation",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 33,
+        "typeName": "radioBroadcast",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 34,
+        "typeName": "report",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 35,
+        "typeName": "standard",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 36,
+        "typeName": "statute",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 37,
+        "typeName": "thesis",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 38,
+        "typeName": "tvBroadcast",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 39,
+        "typeName": "videoRecording",
+        "templateItemTypeID": null,
+        "display": 1
+      },
+      {
+        "itemTypeID": 40,
+        "typeName": "webpage",
+        "templateItemTypeID": null,
+        "display": 1
+      }
+    ],
+    "creatorTypes": [
+      {
+        "creatorTypeID": 1,
+        "creatorType": "artist"
+      },
+      {
+        "creatorTypeID": 2,
+        "creatorType": "contributor"
+      },
+      {
+        "creatorTypeID": 3,
+        "creatorType": "performer"
+      },
+      {
+        "creatorTypeID": 4,
+        "creatorType": "originalCreator"
+      },
+      {
+        "creatorTypeID": 5,
+        "creatorType": "composer"
+      },
+      {
+        "creatorTypeID": 6,
+        "creatorType": "wordsBy"
+      },
+      {
+        "creatorTypeID": 7,
+        "creatorType": "translator"
+      },
+      {
+        "creatorTypeID": 8,
+        "creatorType": "sponsor"
+      },
+      {
+        "creatorTypeID": 9,
+        "creatorType": "cosponsor"
+      },
+      {
+        "creatorTypeID": 10,
+        "creatorType": "author"
+      },
+      {
+        "creatorTypeID": 11,
+        "creatorType": "commenter"
+      },
+      {
+        "creatorTypeID": 12,
+        "creatorType": "editor"
+      },
+      {
+        "creatorTypeID": 13,
+        "creatorType": "seriesEditor"
+      },
+      {
+        "creatorTypeID": 14,
+        "creatorType": "bookAuthor"
+      },
+      {
+        "creatorTypeID": 15,
+        "creatorType": "counsel"
+      },
+      {
+        "creatorTypeID": 16,
+        "creatorType": "programmer"
+      },
+      {
+        "creatorTypeID": 17,
+        "creatorType": "reviewedAuthor"
+      },
+      {
+        "creatorTypeID": 18,
+        "creatorType": "recipient"
+      },
+      {
+        "creatorTypeID": 19,
+        "creatorType": "director"
+      },
+      {
+        "creatorTypeID": 20,
+        "creatorType": "producer"
+      },
+      {
+        "creatorTypeID": 21,
+        "creatorType": "scriptwriter"
+      },
+      {
+        "creatorTypeID": 22,
+        "creatorType": "castMember"
+      },
+      {
+        "creatorTypeID": 23,
+        "creatorType": "host"
+      },
+      {
+        "creatorTypeID": 24,
+        "creatorType": "guest"
+      },
+      {
+        "creatorTypeID": 25,
+        "creatorType": "narrator"
+      },
+      {
+        "creatorTypeID": 26,
+        "creatorType": "interviewee"
+      },
+      {
+        "creatorTypeID": 27,
+        "creatorType": "interviewer"
+      },
+      {
+        "creatorTypeID": 28,
+        "creatorType": "cartographer"
+      },
+      {
+        "creatorTypeID": 29,
+        "creatorType": "inventor"
+      },
+      {
+        "creatorTypeID": 30,
+        "creatorType": "attorneyAgent"
+      },
+      {
+        "creatorTypeID": 31,
+        "creatorType": "podcaster"
+      },
+      {
+        "creatorTypeID": 32,
+        "creatorType": "executiveProducer"
+      },
+      {
+        "creatorTypeID": 33,
+        "creatorType": "seriesCreator"
+      },
+      {
+        "creatorTypeID": 34,
+        "creatorType": "presenter"
+      },
+      {
+        "creatorTypeID": 35,
+        "creatorType": "chair"
+      },
+      {
+        "creatorTypeID": 36,
+        "creatorType": "organizer"
+      },
+      {
+        "creatorTypeID": 37,
+        "creatorType": "creator"
+      }
+    ]
+  },
+  "stats": {
+    "items_by_type": [
+      {
+        "item_type": "attachment",
+        "n": 2628
+      },
+      {
+        "item_type": "journalArticle",
+        "n": 2430
+      },
+      {
+        "item_type": "note",
+        "n": 427
+      },
+      {
+        "item_type": "annotation",
+        "n": 101
+      },
+      {
+        "item_type": "bookSection",
+        "n": 48
+      },
+      {
+        "item_type": "book",
+        "n": 45
+      },
+      {
+        "item_type": "preprint",
+        "n": 10
+      },
+      {
+        "item_type": "conferencePaper",
+        "n": 8
+      },
+      {
+        "item_type": "webpage",
+        "n": 7
+      },
+      {
+        "item_type": "patent",
+        "n": 5
+      },
+      {
+        "item_type": "computerProgram",
+        "n": 1
+      },
+      {
+        "item_type": "thesis",
+        "n": 1
+      }
+    ],
+    "creator_links_by_type": [
+      {
+        "creator_type": "author",
+        "n": 12344
+      },
+      {
+        "creator_type": "editor",
+        "n": 85
+      },
+      {
+        "creator_type": "seriesEditor",
+        "n": 66
+      },
+      {
+        "creator_type": "inventor",
+        "n": 22
+      },
+      {
+        "creator_type": "bookAuthor",
+        "n": 1
+      }
+    ],
+    "attachments_by_mode_and_type": [
+      {
+        "linkMode": 1,
+        "contentType": "application/pdf",
+        "n": 1238
+      },
+      {
+        "linkMode": 0,
+        "contentType": "application/pdf",
+        "n": 1189
+      },
+      {
+        "linkMode": 3,
+        "contentType": "text/html",
+        "n": 179
+      },
+      {
+        "linkMode": 1,
+        "contentType": "text/html",
+        "n": 13
+      },
+      {
+        "linkMode": 4,
+        "contentType": "image/png",
+        "n": 3
+      },
+      {
+        "linkMode": 0,
+        "contentType": "application/x-Research-Info-Systems",
+        "n": 2
+      },
+      {
+        "linkMode": 0,
+        "contentType": "image/png",
+        "n": 2
+      },
+      {
+        "linkMode": 0,
+        "contentType": "application/epub+zip",
+        "n": 1
+      },
+      {
+        "linkMode": 0,
+        "contentType": "application/octet-stream",
+        "n": 1
+      }
+    ],
+    "items_by_library": [
+      {
+        "libraryID": 1,
+        "n": 5673
+      },
+      {
+        "libraryID": 2,
+        "n": 38
+      }
+    ]
+  },
+  "content_samples_enabled": true,
+  "recent_items": [
+    {
+      "itemID": 5698,
+      "key": "WJ24ZRL5",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "On the Foundations of Combinatorial Theory I. Theory of Miibius Functions",
+      "dateAdded": "2026-08-01 12:10:33",
+      "dateModified": "2026-08-03 03:43:24",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7612,
+          "firstName": "Z",
+          "lastName": "Wahrseheinlichkeitstheorie",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5697,
+      "key": "ISXE3SQW",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Theory of projections with nonorthogonal basis sets: Partitioning techniques and effective Hamiltonians",
+      "dateAdded": "2026-08-01 12:10:39",
+      "dateModified": "2026-08-01 12:10:40",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7610,
+          "firstName": "M.",
+          "lastName": "Soriano",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 7611,
+          "firstName": "J. J.",
+          "lastName": "Palacios",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5699,
+      "key": "DPYWY6NC",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics",
+      "dateAdded": "2026-08-01 12:10:32",
+      "dateModified": "2026-08-01 12:10:32",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7613,
+          "firstName": "Harry F.",
+          "lastName": "King",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 7614,
+          "firstName": "Richard E.",
+          "lastName": "Stanton",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 2,
+          "creator_type": "author",
+          "creatorID": 7615,
+          "firstName": "Hojing",
+          "lastName": "Kim",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 3,
+          "creator_type": "author",
+          "creatorID": 7616,
+          "firstName": "Robert E.",
+          "lastName": "Wyatt",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 4,
+          "creator_type": "author",
+          "creatorID": 1400,
+          "firstName": "Robert G.",
+          "lastName": "Parr",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5700,
+      "key": "6WAAIXPY",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "The generalized Slater–Condon rules",
+      "dateAdded": "2026-08-01 12:10:28",
+      "dateModified": "2026-08-01 12:10:28",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7617,
+          "firstName": "Jacob",
+          "lastName": "Verbeek",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 7618,
+          "firstName": "Joop H.",
+          "lastName": "Van Lenthe",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5701,
+      "key": "AYWJ9L7Q",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Efficient and Flexible Computation of Many-Electron Wave Function Overlaps",
+      "dateAdded": "2026-08-01 12:10:26",
+      "dateModified": "2026-08-01 12:10:26",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 852,
+          "firstName": "Felix",
+          "lastName": "Plasser",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 6302,
+          "firstName": "Matthias",
+          "lastName": "Ruckenbauer",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 2,
+          "creator_type": "author",
+          "creatorID": 2681,
+          "firstName": "Sebastian",
+          "lastName": "Mai",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 3,
+          "creator_type": "author",
+          "creatorID": 7619,
+          "firstName": "Markus",
+          "lastName": "Oppel",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 4,
+          "creator_type": "author",
+          "creatorID": 2684,
+          "firstName": "Philipp",
+          "lastName": "Marquetand",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 5,
+          "creator_type": "author",
+          "creatorID": 1686,
+          "firstName": "Leticia",
+          "lastName": "González",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5702,
+      "key": "SSWLIWPW",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Symmetrical Windowing for Quantum States in Quasi-Classical Trajectory Simulations",
+      "dateAdded": "2026-08-01 12:10:22",
+      "dateModified": "2026-08-01 12:10:22",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 5923,
+          "firstName": "Stephen J.",
+          "lastName": "Cotton",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 1551,
+          "firstName": "William H.",
+          "lastName": "Miller",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5655,
+      "key": "4VLY4CX3",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "On the Theory of Relaxation Processes",
+      "dateAdded": "2026-08-01 08:08:10",
+      "dateModified": "2026-08-01 08:08:10",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7577,
+          "firstName": "A. G.",
+          "lastName": "Redfield",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5656,
+      "key": "AKYWUBHN",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "QuTiP-BoFiN: A bosonic and fermionic numerical hierarchical-equations-of-motion library with applications in light-harvesting, quantum control, and single-molecule electronics",
+      "dateAdded": "2026-08-01 08:08:06",
+      "dateModified": "2026-08-01 08:08:06",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7578,
+          "firstName": "Neill",
+          "lastName": "Lambert",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 7579,
+          "firstName": "Tarun",
+          "lastName": "Raheja",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 2,
+          "creator_type": "author",
+          "creatorID": 7580,
+          "firstName": "Simon",
+          "lastName": "Cross",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 3,
+          "creator_type": "author",
+          "creatorID": 7581,
+          "firstName": "Paul",
+          "lastName": "Menczel",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 4,
+          "creator_type": "author",
+          "creatorID": 7582,
+          "firstName": "Shahnawaz",
+          "lastName": "Ahmed",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 5,
+          "creator_type": "author",
+          "creatorID": 7583,
+          "firstName": "Alexander",
+          "lastName": "Pitchford",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 6,
+          "creator_type": "author",
+          "creatorID": 7584,
+          "firstName": "Daniel",
+          "lastName": "Burgarth",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 7,
+          "creator_type": "author",
+          "creatorID": 7585,
+          "firstName": "Franco",
+          "lastName": "Nori",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5657,
+      "key": "CJJW9AMT",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Semiclassical Description of Nonadiabatic Quantum Dynamics",
+      "dateAdded": "2026-08-01 08:08:03",
+      "dateModified": "2026-08-01 08:08:03",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7586,
+          "firstName": "Gerhard",
+          "lastName": "Stock",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 888,
+          "firstName": "Michael",
+          "lastName": "Thoss",
+          "fieldMode": 0
+        }
+      ]
+    },
+    {
+      "itemID": 5658,
+      "key": "F2Y2ISIU",
+      "libraryID": 1,
+      "item_type": "journalArticle",
+      "title": "Multimode vibronic coupling effects in molecules",
+      "dateAdded": "2026-08-01 08:07:56",
+      "dateModified": "2026-08-01 08:07:56",
+      "creators": [
+        {
+          "orderIndex": 0,
+          "creator_type": "author",
+          "creatorID": 7587,
+          "firstName": "L. S.",
+          "lastName": "Cederbaum",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 1,
+          "creator_type": "author",
+          "creatorID": 7588,
+          "firstName": "H.",
+          "lastName": "Köppel",
+          "fieldMode": 0
+        },
+        {
+          "orderIndex": 2,
+          "creator_type": "author",
+          "creatorID": 7589,
+          "firstName": "W.",
+          "lastName": "Domcke",
+          "fieldMode": 0
+        }
+      ]
+    }
+  ],
+  "pdf_samples": [
+    {
+      "attachment_key": "ILQUL7WC",
+      "itemID": 5711,
+      "path": "storage:Cotton和Miller - 2013 - Symmetrical Windowing for Quantum States in Quasi-Classical Trajectory Simulations.pdf",
+      "parentItemID": 5702,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/ILQUL7WC/Cotton和Miller - 2013 - Symmetrical Windowing for Quantum States in Quasi-Classical Trajectory Simulations.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "3TNJIQ5H",
+      "itemID": 5710,
+      "path": "storage:Plasser 等 - 2016 - Efficient and Flexible Computation of Many-Electron Wave Function Overlaps.pdf",
+      "parentItemID": 5701,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/3TNJIQ5H/Plasser 等 - 2016 - Efficient and Flexible Computation of Many-Electron Wave Function Overlaps.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "AVQHTZD2",
+      "itemID": 5709,
+      "path": "storage:Verbeek和Van Lenthe - 1991 - The generalized Slater–Condon rules.pdf",
+      "parentItemID": 5700,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/AVQHTZD2/Verbeek和Van Lenthe - 1991 - The generalized Slater–Condon rules.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "F8BGV3IM",
+      "itemID": 5708,
+      "path": "storage:King 等 - 1967 - Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics.pdf",
+      "parentItemID": 5699,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/F8BGV3IM/King 等 - 1967 - Corresponding Orbitals and the Nonorthogonality Problem in Molecular Quantum Mechanics.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "MD8N7CDD",
+      "itemID": 5707,
+      "path": "storage:Wahrseheinlichkeitstheorie - On the Foundations of Combinatorial Theory I. Theory of Miibius Functions.pdf",
+      "parentItemID": 5698,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/MD8N7CDD/Wahrseheinlichkeitstheorie - On the Foundations of Combinatorial Theory I. Theory of Miibius Functions.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "QRV8DDP9",
+      "itemID": 5706,
+      "path": "storage:Soriano和Palacios - 2014 - Theory of projections with nonorthogonal basis sets Partitioning techniques and effective Hamiltoni.pdf",
+      "parentItemID": 5697,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/QRV8DDP9/Soriano和Palacios - 2014 - Theory of projections with nonorthogonal basis sets Partitioning techniques and effective Hamiltoni.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "CXYJUJA3",
+      "itemID": 5705,
+      "path": "storage:amos1961.pdf",
+      "parentItemID": null,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/CXYJUJA3/amos1961.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "AEFN24ZF",
+      "itemID": 5704,
+      "path": "storage:S0025-5718-1973-0348991-3.pdf",
+      "parentItemID": null,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/AEFN24ZF/S0025-5718-1973-0348991-3.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "4IVZX4E2",
+      "itemID": 5703,
+      "path": "storage:shapley1953.pdf",
+      "parentItemID": null,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/4IVZX4E2/shapley1953.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "4WY8T4VS",
+      "itemID": 5696,
+      "path": "storage:Vester和Olsen - 2024 - Assessing the Partial Hessian Approximation in QMMM-Based Vibrational Analysis.pdf",
+      "parentItemID": 5674,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/4WY8T4VS/Vester和Olsen - 2024 - Assessing the Partial Hessian Approximation in QMMM-Based Vibrational Analysis.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "BA2AU68Z",
+      "itemID": 5695,
+      "path": "storage:Bjornsson和Bühl - 2012 - Modeling Molecular Crystals by QMMM Self-Consistent Electrostatic Embedding for Geometry Optimizat.pdf",
+      "parentItemID": 5673,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/BA2AU68Z/Bjornsson和Bühl - 2012 - Modeling Molecular Crystals by QMMM Self-Consistent Electrostatic Embedding for Geometry Optimizat.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "I2E3VQ6U",
+      "itemID": 5694,
+      "path": "storage:Renaud和Grozema - 2015 - Intermolecular Vibrational Modes Speed Up Singlet Fission in Perylenediimide Crystals.pdf",
+      "parentItemID": 5672,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/I2E3VQ6U/Renaud和Grozema - 2015 - Intermolecular Vibrational Modes Speed Up Singlet Fission in Perylenediimide Crystals.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "SUJNEQ35",
+      "itemID": 5693,
+      "path": "storage:jz5023575_si_001.pdf",
+      "parentItemID": 5672,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/SUJNEQ35/jz5023575_si_001.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "HKK53H24",
+      "itemID": 5692,
+      "path": "storage:jz5023575_si_001.pdf",
+      "parentItemID": 5673,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/HKK53H24/jz5023575_si_001.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "YLD2IW9U",
+      "itemID": 5691,
+      "path": "storage:Meyera)和Miller - 1979 - A classical analog for electronic degrees of freedom in nonadiabatic collision processes.pdf",
+      "parentItemID": 5671,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/YLD2IW9U/Meyera)和Miller - 1979 - A classical analog for electronic degrees of freedom in nonadiabatic collision processes.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "CAH8YC9R",
+      "itemID": 5690,
+      "path": "storage:Schuurman和Yarkony - 2007 - On the vibronic coupling approximation A generally applicable approach for determining fully quadra.pdf",
+      "parentItemID": 5670,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/CAH8YC9R/Schuurman和Yarkony - 2007 - On the vibronic coupling approximation A generally applicable approach for determining fully quadra.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "79RCEF92",
+      "itemID": 5689,
+      "path": "storage:Hu 等 - 2011 - Padé spectrum decompositions of quantum distribution functions and optimal hierarchical equations of.pdf",
+      "parentItemID": 5668,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/79RCEF92/Hu 等 - 2011 - Padé spectrum decompositions of quantum distribution functions and optimal hierarchical equations of.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "EDV76SYL",
+      "itemID": 5688,
+      "path": "storage:Cotton和Miller - 2013 - Symmetrical windowing for quantum states in quasi-classical trajectory simulations Application to e.pdf",
+      "parentItemID": 5667,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/EDV76SYL/Cotton和Miller - 2013 - Symmetrical windowing for quantum states in quasi-classical trajectory simulations Application to e.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "UWPSNA6J",
+      "itemID": 5687,
+      "path": "storage:Cotton和Miller - 2016 - A new symmetrical quasi-classical model for electronically non-adiabatic processes Application to t.pdf",
+      "parentItemID": 5666,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/UWPSNA6J/Cotton和Miller - 2016 - A new symmetrical quasi-classical model for electronically non-adiabatic processes Application to t.pdf",
+      "exists": true
+    },
+    {
+      "attachment_key": "DL7XSTGF",
+      "itemID": 5686,
+      "path": "storage:Cotton和Miller - 2019 - A symmetrical quasi-classical windowing model for the molecular dynamics treatment of non-adiabatic.pdf",
+      "parentItemID": 5665,
+      "linkMode": 0,
+      "contentType": "application/pdf",
+      "resolution": "zotero-storage",
+      "resolved_path": "/mnt/d/zotero/storage/DL7XSTGF/Cotton和Miller - 2019 - A symmetrical quasi-classical windowing model for the molecular dynamics treatment of non-adiabatic.pdf",
+      "exists": true
+    }
+  ],
+  "errors": []
+}
