@@ -8,7 +8,7 @@ from typing import Any
 from paperazzi.database.models import PaperCreatorMention
 
 from . import service as _legacy_service
-from .models import Author, AuthorNameVariant
+from .models import Author, AuthorIdentityMembership, AuthorNameVariant
 from .normalization import name_features
 
 
@@ -29,6 +29,26 @@ def _active_author_ids_for_name(session: Any, normalized_name: str) -> set[str]:
             .all()
         )
     }
+
+
+def _same_paper_accepted_author_ids(session: Any) -> dict[int, set[str]]:
+    rows = (
+        session.query(PaperCreatorMention.paper_id, AuthorIdentityMembership.author_id)
+        .join(
+            AuthorIdentityMembership,
+            AuthorIdentityMembership.creator_mention_id
+            == PaperCreatorMention.creator_mention_id,
+        )
+        .filter(
+            PaperCreatorMention.creator_type == "author",
+            AuthorIdentityMembership.status == "ACCEPTED",
+        )
+        .all()
+    )
+    result: dict[int, set[str]] = defaultdict(set)
+    for paper_id, author_id in rows:
+        result[int(paper_id)].add(author_id)
+    return result
 
 
 def seed_required_name_multiplicity(
@@ -68,7 +88,8 @@ def seed_required_name_multiplicity(
             continue
 
         exemplar_paper = min(
-            paper_id for paper_id, number in per_paper.items()
+            paper_id
+            for paper_id, number in per_paper.items()
             if number == max_multiplicity
         )
         preferred = sorted(
@@ -100,3 +121,87 @@ def seed_required_name_multiplicity(
             )
             counts["created"] += 1
             needed -= 1
+
+
+def seed_no_candidate_closure(
+    session: Any,
+    mentions: list[PaperCreatorMention],
+    counts: dict[str, int],
+) -> None:
+    """Create deterministic seeds for negative/capacity holes before scoring.
+
+    Explicit NOT_SAME_PERSON constraints remain observable in `not_same_blocked` even
+    when they force immediate creation of a separate identity.
+    """
+    counted_blocks: set[tuple[int, str]] = set()
+    while True:
+        same_paper = _same_paper_accepted_author_ids(session)
+        unresolved_names = {
+            _features(mention).normalized_name
+            for mention in mentions
+            if _legacy_service._accepted_membership(
+                session, mention.creator_mention_id
+            ) is None
+            and _features(mention).normalized_name
+        }
+        active_by_name = {
+            name: _active_author_ids_for_name(session, name)
+            for name in unresolved_names
+        }
+        seed_by_name: dict[str, PaperCreatorMention] = {}
+
+        for mention in mentions:
+            if _legacy_service._accepted_membership(
+                session, mention.creator_mention_id
+            ) is not None:
+                continue
+            normalized = _features(mention).normalized_name
+            if not normalized:
+                continue
+            candidate_ids = set(active_by_name.get(normalized, set()))
+            candidate_ids -= same_paper.get(mention.paper_id, set())
+            blocked_ids = {
+                author_id
+                for author_id in candidate_ids
+                if _legacy_service._not_same_blocked(
+                    session, mention.creator_mention_id, author_id
+                )
+            }
+            for author_id in blocked_ids:
+                key = (mention.creator_mention_id, author_id)
+                if key not in counted_blocks:
+                    counted_blocks.add(key)
+                    counts["not_same_blocked"] += 1
+            candidate_ids -= blocked_ids
+            if candidate_ids:
+                continue
+
+            current = seed_by_name.get(normalized)
+            mention_key = (
+                mention.paper_id,
+                mention.order_index,
+                mention.creator_mention_id,
+            )
+            if current is None or mention_key < (
+                current.paper_id,
+                current.order_index,
+                current.creator_mention_id,
+            ):
+                seed_by_name[normalized] = mention
+
+        if not seed_by_name:
+            return
+
+        for normalized in sorted(seed_by_name):
+            mention = seed_by_name[normalized]
+            if _legacy_service._accepted_membership(
+                session, mention.creator_mention_id
+            ) is not None:
+                continue
+            _legacy_service.create_author_for_mention(
+                session,
+                mention,
+                reason_code="STABLE_NO_CANDIDATE_SEED",
+            )
+            counts["created"] += 1
+        session.flush()
