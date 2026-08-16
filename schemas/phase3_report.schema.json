@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://paperazzi.local/schemas/phase3_report.schema.json",
+  "title": "Paperazzi Phase 3 Validation Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "phase",
+    "status",
+    "migration_head",
+    "tests",
+    "database",
+    "first_scan",
+    "second_scan",
+    "pdf_sample",
+    "integrity",
+    "idempotency",
+    "rollback_injection"
+  ],
+  "properties": {
+    "generated_at": {"type": "string"},
+    "phase": {"const": "PHASE_3"},
+    "status": {"enum": ["PASS", "FAIL"]},
+    "migration_head": {"type": "string", "minLength": 1},
+    "tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "failed", "skipped"],
+      "properties": {
+        "passed": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "skipped": {"type": "integer", "minimum": 0}
+      }
+    },
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_zotero_item_count",
+        "paper_count",
+        "creator_mention_count",
+        "pdf_document_count",
+        "local_pdf_available_count",
+        "item_version_rows_after_first_scan",
+        "item_version_rows_after_second_scan"
+      ],
+      "properties": {
+        "full_zotero_item_count": {"type": "integer", "minimum": 0},
+        "paper_count": {"type": "integer", "minimum": 0},
+        "creator_mention_count": {"type": "integer", "minimum": 0},
+        "pdf_document_count": {"type": "integer", "minimum": 0},
+        "local_pdf_available_count": {"type": "integer", "minimum": 0},
+        "item_version_rows_after_first_scan": {"type": "integer", "minimum": 0},
+        "item_version_rows_after_second_scan": {"type": "integer", "minimum": 0}
+      }
+    },
+    "first_scan": {"$ref": "#/$defs/scanCounts"},
+    "second_scan": {"$ref": "#/$defs/scanCounts"},
+    "pdf_sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selected_documents",
+        "extraction_run_count",
+        "attempt_count",
+        "evidence_span_count",
+        "reference_section_count",
+        "reference_entry_count",
+        "reference_identifier_count"
+      ],
+      "properties": {
+        "selected_documents": {"type": "integer", "minimum": 0},
+        "extraction_run_count": {"type": "integer", "minimum": 0},
+        "attempt_count": {"type": "integer", "minimum": 0},
+        "evidence_span_count": {"type": "integer", "minimum": 0},
+        "reference_section_count": {"type": "integer", "minimum": 0},
+        "reference_entry_count": {"type": "integer", "minimum": 0},
+        "reference_identifier_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["foreign_keys_enabled", "foreign_key_check_rows"],
+      "properties": {
+        "foreign_keys_enabled": {"type": "boolean"},
+        "foreign_key_check_rows": {"type": "integer", "minimum": 0}
+      }
+    },
+    "idempotency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "notes"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "notes": {"type": "string"}
+      }
+    },
+    "rollback_injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "notes"],
+      "properties": {
+        "passed": {"type": "boolean"},
+        "notes": {"type": "string"}
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "commits": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "scanCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["NEW", "MODIFIED", "UNCHANGED", "REMOVED", "RESTORED"],
+      "properties": {
+        "NEW": {"type": "integer", "minimum": 0},
+        "MODIFIED": {"type": "integer", "minimum": 0},
+        "UNCHANGED": {"type": "integer", "minimum": 0},
+        "REMOVED": {"type": "integer", "minimum": 0},
+        "RESTORED": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
