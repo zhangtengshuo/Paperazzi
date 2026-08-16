@@ -55,8 +55,12 @@ unchanged, confirming structure-only stability.
 1. **`journal_mode = delete`, not WAL.** Snapshots succeed against the live database
    with no `-wal`/`-shm` handling required. The Backup API approach is validated for
    both Zotero-open and Zotero-closed states on this machine.
-2. **`annotations` table is absent** (count reported as missing, not an error) —
-   schema adaptation must treat it as optional.
+2. **Annotation-table naming correction.** The probe's key-object list checked for an
+   `annotations` table, which does not exist, but the real schema does contain Zotero's
+   `itemAnnotations` table. The earlier "annotations absent" wording was therefore a
+   probe naming oversight, not a schema limitation. It does not affect Phase 1
+   acceptance because annotation contents were outside the bibliographic reconstruction
+   test.
 3. **Two PDF attachments report `exists=false`** — both belong to the freshly imported
    item 5712 (metadata synced, attachment files not yet downloaded to `storage/`).
    Preserved as evidence per procedure; importer design must tolerate attachments
