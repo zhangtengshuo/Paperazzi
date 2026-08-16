@@ -189,8 +189,18 @@ class Userdata125Adapter:
             a.storageHash
         FROM itemAttachments AS a
         JOIN items AS ai ON ai.itemID = a.itemID
+        LEFT JOIN deletedItems AS adi ON adi.itemID = ai.itemID
         WHERE a.parentItemID IS NOT NULL
+          AND adi.itemID IS NULL
         ORDER BY a.parentItemID, ai.itemID
+    """
+
+    deleted_attachments_sql = """
+        SELECT COUNT(*)
+        FROM itemAttachments AS a
+        JOIN items AS ai ON ai.itemID = a.itemID
+        JOIN deletedItems AS adi ON adi.itemID = ai.itemID
+        WHERE a.parentItemID IS NOT NULL
     """
 
     libraries_sql = """
