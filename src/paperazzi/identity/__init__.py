@@ -3,7 +3,14 @@
 # Import the stable bootstrap first.  It compatibility-patches the historical
 # paperazzi.identity.service import path so existing callers get the source-stable
 # resolver without breaking merge/split/manual-operation APIs.
-from .stable_bootstrap import bootstrap_author_identities, score_mention_against_author
+from . import stable_bootstrap as _stable_bootstrap
+from .source_seed import seed_required_name_multiplicity
+
+_stable_bootstrap._seed_required_name_multiplicity = seed_required_name_multiplicity
+
+bootstrap_author_identities = _stable_bootstrap.bootstrap_author_identities
+score_mention_against_author = _stable_bootstrap.score_mention_against_author
+
 from .authorship_evidence import accept_authorship_evidence, propose_authorship_evidence
 from .normalization import NameFeatures, name_features, normalize_name, normalize_search_text
 from .operations import (
