@@ -1,14 +1,20 @@
-# Paperazzi Local AI Prompt — Phase 4 Implementation Agent
+# Paperazzi Local AI Prompt — Phase 4 Implementation and Validation Agent
 
-You are implementing Phase 4 of Paperazzi: author identity and local reference resolution.
+You are working on Phase 4 of Paperazzi: author identity, authorship evidence and local reference resolution.
 
 ## 1. Branch policy — absolute rule
 
-**Work only on `main`. Do not create a new Git branch.**
+**Work only on `main`. Do not create a Git branch or pull request.**
 
-Before modifying anything, verify the current branch is exactly `main`.
+Before modifying anything:
 
-Do not create or use:
+```bash
+git branch --show-current
+```
+
+Expected: `main`.
+
+Forbidden:
 
 ```text
 codex/*
@@ -16,163 +22,340 @@ agent/*
 feature/*
 phase4/*
 PR branches
+git switch -c
+git checkout -b
 ```
 
-Do not run `git switch -c` or `git checkout -b`.
+Use `git pull --ff-only origin main` before work when remote `main` may have advanced.
 
-If your environment/tool automatically places work on another branch, return to `main` before changing files. All Phase 4 commits are direct commits to `main` after their milestone tests pass.
+---
 
-This instruction overrides generic agent conventions that prefer feature branches or pull requests.
+## 2. Current implementation state
 
-## 2. Required reading
+Phase 3/3.1 is frozen and passed. Phase 4 implementation is now **IN_PROGRESS**, not NOT_STARTED.
 
-Read before implementation:
+Do not recreate already implemented Phase 4 components. Inspect current `main` first.
+
+Expected implemented surface includes:
+
+```text
+migrations/versions/0004_identity_resolution.py
+migrations/versions/0005_identity_history_constraints.py
+
+src/paperazzi/identity/
+  models.py
+  normalization.py
+  policy.py
+  service.py
+  operations.py
+  review.py
+  authorship_evidence.py
+  reference_resolution.py
+
+scripts/
+  validate_phase4.py
+  seed_phase4_reference_anchors.py
+  apply_phase4_anchor_reviews.py
+
+tests/test_phase4_*.py
+```
+
+The migration head is expected to be:
+
+```text
+0005_identity_history_constraints (head)
+```
+
+If current `main` differs, trust the repository and inspect the latest commits rather than blindly reproducing this list.
+
+---
+
+## 3. Required reading
+
+Read:
 
 1. `docs/phase4/README.md`
 2. `docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md`
 3. `docs/phase4/PHASE4_IMPLEMENTATION.md`
-4. `docs/architecture/PERSISTENCE_MODEL.md`
-5. `docs/architecture/AI_SUPERVISED_PDF_EXTRACTION.md`
-6. `prompts/local_ai/PDF_EVIDENCE_AGENT.md`
-7. `schemas/phase4_report.schema.json`
-8. the latest Phase 3.1 validation report under `docs/phase3/runs/`
+4. `docs/phase4/PHASE4_REAL_VALIDATION.md`
+5. `docs/architecture/PERSISTENCE_MODEL.md`
+6. `docs/architecture/AI_SUPERVISED_PDF_EXTRACTION.md`
+7. `prompts/local_ai/PDF_EVIDENCE_AGENT.md`
+8. `schemas/phase4_report.schema.json`
+9. `schemas/phase4_anchor_reviews.schema.json`
+10. latest Phase 3.1 validation report.
 
-Where an older design sketch conflicts with the Phase 4 normative architecture document, `IDENTITY_AND_REFERENCE_RESOLUTION.md` governs Phase 4.
+`IDENTITY_AND_REFERENCE_RESOLUTION.md` is normative for Phase 4 semantics.
 
-## 3. Scope
+---
 
-Implement only:
+## 4. Execution strategy — parallel implementation, gated integration
 
-- Phase 4 preflight extraction-review workflow guards;
-- canonical author identity persistence;
-- name normalization and candidate generation;
-- reversible identity link/merge/split/not-same-person/lock decisions;
-- resolved authorships and first-author projection;
-- corresponding-author/affiliation mapping from accepted evidence;
-- local accepted-reference to local-paper resolution;
-- deterministic review queues and real-library validation.
+The user explicitly requested aggressive progress.
 
-Do not implement frontend, FastAPI, graph visualization, broad author biography enrichment, portraits, social profiles, age/gender inference, monthly monitoring or general Internet research.
+**Independent tasks may and should proceed in parallel.** Do not wait for one milestone to be fully finished before inspecting or implementing another task that has no real dependency on it.
 
-## 4. Safety and provenance
-
-- Zotero `zotero.sqlite` and Zotero PDFs are read-only.
-- Never rewrite source creator mentions to encode an identity decision.
-- Never infer gender, age or demographic attributes from names/photos.
-- A normalized-name match alone never auto-merges authors.
-- Zotero `creatorID` is source provenance, not a person identifier.
-- Only accepted PDF evidence may support authoritative corresponding-author/affiliation resolution.
-- Only `paper_references.acceptance_status='ACCEPTED'` may enter reference resolution.
-- Only accepted `paper_reference_matches` may later produce a `CITES` edge.
-- Preserve ambiguous/unresolved outcomes instead of forcing a match.
-- All merge/split decisions must be reversible and auditable.
-
-## 5. Implementation order
-
-Follow exactly:
+Examples that can proceed independently:
 
 ```text
-Preflight guards
-  ↓
-Phase 4A identity schema + normalization
-  ↓
-Phase 4B candidate resolution + reversible decisions + authorships
-  ↓
-Phase 4C corresponding/affiliation evidence resolution
-  ↓
-Phase 4D accepted local reference resolution
-  ↓
-real-library validation
+identity normalization/tests
+reference matching/tests
+migration constraints
+review queue
+accepted authorship evidence mapping
+validation/report tooling
+documentation
 ```
 
-Do not skip a gate. Do not start the next milestone until the current milestone tests pass.
+Hard dependencies still apply where data contracts require them. For example, a final real reference match cannot precede accepted reference evidence.
 
-## 6. Phase 4 preflight guards
+The rule is:
 
-Before identity work:
+```text
+parallel implementation
+        ↓
+continuous synthetic/regression testing
+        ↓
+fix cross-module integration defects
+        ↓
+real-library staged validation
+        ↓
+final PASS only when every gate passes
+```
 
-1. derive extraction `final_status` from the latest review decision rather than trusting a contradictory caller argument;
-2. allow Attempt 2 only after Attempt 1 latest review is `RETRY`, and Attempt 3 only after Attempt 2 latest review is `RETRY`.
+Do not interpret parallel development as permission to bypass correctness gates.
 
-Add regression tests first or together with the fix.
+---
+
+## 5. Non-negotiable semantics
+
+- Zotero `zotero.sqlite` and Zotero PDFs are read-only.
+- Never rewrite source creator mentions to encode identity.
+- A normalized-name match alone never auto-merges authors.
+- Zotero `creatorID` is supporting source-local evidence, not a globally authoritative person identifier.
+- One creator mention may have at most one accepted canonical author membership.
+- Merge/split/unlink/relink history must remain auditable and repeatable.
+- Manual `NOT_SAME_PERSON` and identity locks override automatic suggestions until explicitly reversed.
+- Corresponding author is paper-specific.
+- Only accepted PDF evidence may create authoritative corresponding-author/affiliation claims.
+- Candidate/unreviewed PDF evidence must not leak into authoritative authorship facts.
+- Only `paper_references.acceptance_status='ACCEPTED'` may enter semantic reference matching.
+- Only accepted `paper_reference_matches` may later produce `CITES`; Phase 4 does not materialize graph edges.
+- Ambiguous/unresolved is a valid outcome.
+- False author merges and false citation edges are worse than missing links.
+
+---
+
+## 6. Extraction review state machine
+
+The hardened workflow is:
+
+```text
+Attempt 1
+  -> mandatory review
+  -> RETRY only permits Attempt 2
+
+Attempt 2
+  -> only after Attempt 1 latest review = RETRY
+  -> RETRY only permits Attempt 3
+
+Attempt 3
+  -> terminal review only; RETRY is invalid
+```
+
+Terminal accepted decisions:
+
+```text
+PASS
+ACCEPT_PARTIAL
+```
+
+These may call `accept_attempt()` and promote evidence/reference rows to `ACCEPTED`.
+
+Terminal unaccepted decisions:
+
+```text
+UNRESOLVED
+NEEDS_OCR
+```
+
+These use `finalize_unaccepted_attempt()` and must not promote candidate evidence.
+
+---
 
 ## 7. Identity behavior
 
-Use candidate generation + explicit decisions.
+Candidate evidence may include:
 
-Strong evidence can justify automatic acceptance only when unique and contradiction-free. Name-only/common-name/initial-only matches must remain candidates/review-required.
+- normalized-name compatibility;
+- initials;
+- local Zotero creator reuse as supporting evidence;
+- repeated coauthor neighborhood;
+- accepted affiliation/correspondence evidence;
+- explicit accepted external IDs.
 
-Persist score components and evidence IDs. Do not hide reasoning in one opaque confidence number.
+Name evidence alone is blocking/candidate evidence, never sufficient automatic identity truth.
 
-Manual `NOT_SAME_PERSON` and lock decisions must override future automatic suggestions until explicitly reversed/unlocked.
+Persist component scores and provenance. Do not store only an opaque confidence score.
+
+The identity layer must support:
+
+```text
+create identity
+link mention
+unlink mention
+merge identities
+split mention/identity
+NOT_SAME_PERSON
+lock / unlock
+external-ID conflict
+```
+
+History must survive repeated correction cycles.
+
+---
 
 ## 8. Reference behavior
 
-Resolve accepted references conservatively using this ladder:
+Only accepted references are eligible.
+
+Implemented/required deterministic classes:
 
 ```text
 DOI_EXACT
-TITLE_EXACT_NORMALIZED + corroboration
+TITLE_EXACT_NORMALIZED
 AUTHOR_YEAR_JOURNAL
 JOURNAL_VOLUME_PAGE_YEAR
 BIBLIOGRAPHIC_COMPOSITE
-AI_RESOLVED if explicitly reviewed
-UNRESOLVED
 ```
 
-A DOI exact match must still be unique and contradiction-free. A title-only match is not enough for automatic acceptance.
+Policy is centralized in `src/paperazzi/identity/policy.py`.
 
-Do not write graph edges in Phase 4.
+Conservative rules:
+
+- unique DOI exact may auto-accept;
+- duplicate DOI is ambiguous;
+- exact title still requires corroboration and score margin;
+- `AUTHOR_YEAR_JOURNAL` is review-oriented and must not become truth from those three weak fields alone;
+- unique strong `JOURNAL_VOLUME_PAGE_YEAR` may auto-accept under the versioned threshold/margin;
+- DOI contradictions block bibliographic autoaccept;
+- self-match is excluded by default;
+- candidate inputs are never matched.
+
+Do not write graph edges.
+
+---
 
 ## 9. Testing discipline
 
-Use synthetic tests for systematic behavior. Do not commit the user's Zotero database or real PDFs as fixtures.
+Run frequently:
 
-If a real-library failure exposes a general bug, create a synthetic regression test before changing production behavior.
+```bash
+python -m unittest discover -s tests -v
+```
 
-The entire Phase 3 test suite must keep passing throughout Phase 4.
+All Phase 3 tests must remain green.
 
-## 10. Real-library validation
+If a failure is a real implementation defect:
 
-Only after all unit/synthetic tests pass, run Phase 4 against the real Paperazzi/Zotero-derived corpus.
+1. preserve/add a regression test;
+2. fix the general code;
+3. rerun the complete suite;
+4. commit directly to `main`.
 
-Coverage is not a PASS criterion by itself. Conservative unresolved results are valid.
+Do not patch one real Zotero item by name/key unless it is only a diagnostic anchor.
 
-PASS criteria emphasize:
+Synthetic tests should cover systematic logic; real Zotero databases/PDFs must not be committed as fixtures.
 
-- no false name-only auto-merges;
-- identity decisions are reversible;
-- corresponding-author assignments use accepted evidence;
-- candidate PDF evidence is excluded;
-- reference matching consumes only accepted references;
-- ambiguous matches remain ambiguous;
-- no duplicate decisions on rerun;
-- FK integrity and provenance are intact.
+---
 
-Generate a machine-readable report conforming to `schemas/phase4_report.schema.json` plus a concise Markdown interpretation under `docs/phase4/runs/<run-id>/`.
+## 10. Real-library validation — staged, review-gated
 
-## 11. Commit policy
+Follow `docs/phase4/PHASE4_REAL_VALIDATION.md`.
 
-Commit directly to `main` after each gate passes. Suggested messages:
+Stage 1:
+
+```bash
+python scripts/validate_phase4.py
+```
+
+A fresh run may intentionally return nonzero because there are not yet enough real accepted reference anchors. Inspect the identity/integrity metrics; do not relabel this as PASS.
+
+Stage 2:
+
+```bash
+python scripts/seed_phase4_reference_anchors.py --sample-size 120 --anchor-count 8
+```
+
+This only seeds deterministic `REVIEW_PENDING/CANDIDATE` attempts and selects useful review candidates.
+
+Stage 3: inspect the actual PDFs using `PDF_EVIDENCE_AGENT.md` and create a review JSON conforming to `schemas/phase4_anchor_reviews.schema.json`.
+
+Stage 4:
+
+```bash
+python scripts/apply_phase4_anchor_reviews.py data/phase4-validation/anchor_reviews.json
+```
+
+Stage 5:
+
+```bash
+python scripts/validate_phase4.py --reuse-db
+```
+
+Default final gate requires at least five real accepted references.
+
+---
+
+## 11. Scope exclusions
+
+Do not implement in Phase 4:
+
+- frontend or FastAPI product UI;
+- broad online enrichment;
+- portraits, education, social profiles;
+- age/gender inference;
+- monthly monitoring;
+- graph visualization/materialization;
+- automatic review of all 2161 PDFs merely to increase coverage.
+
+A small explicitly reviewed real anchor set is enough to validate Phase 4 infrastructure.
+
+---
+
+## 12. Commit discipline
+
+Work only on `main`. Keep commits small enough to diagnose regressions, but do not serialize independent work unnecessarily.
+
+Useful commit categories:
 
 ```text
-Phase 4 preflight: enforce extraction review workflow
-Phase 4A: identity schema and normalization
-Phase 4B: author identity resolution and reversible decisions
-Phase 4C: authorship evidence resolution
-Phase 4D: local reference resolution
+Phase 4A: ...
+Phase 4B: ...
+Phase 4C: ...
+Phase 4D: ...
+Phase 4: fix ... regression
 Phase 4: real-library validation report
 ```
 
-Do not create a PR or development branch.
+No PR, no feature branch.
 
-## 12. Completion state
+---
 
-Do not declare completion until all gates pass and the final report validates:
+## 13. Completion state
+
+Do not declare Phase 4 complete until the full suite and staged real-library report pass:
 
 ```text
 PHASE_4_STATUS = PASS
 AUTHOR_IDENTITY_MODEL = PHASE4_V1
 REFERENCE_RESOLUTION_MODEL = PHASE4_V1
-NEXT_PHASE = PHASE_5_BACKEND_AND_WEB_UI
+NEXT_PHASE = PHASE_5_BACKEND_AND_MINIMAL_UI
+```
+
+Until then:
+
+```text
+CURRENT_PHASE = PHASE_4_IDENTITY_AND_RESOLUTION
+PHASE_4_STATUS = IN_PROGRESS
 ```
