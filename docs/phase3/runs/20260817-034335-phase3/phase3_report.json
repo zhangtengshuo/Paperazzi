@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-08-16T19:04:43+00:00",
+  "phase": "PHASE_3",
+  "status": "PASS",
+  "migration_head": "0002_document_evidence_references (head)",
+  "tests": {
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0
+  },
+  "database": {
+    "full_zotero_item_count": 2513,
+    "paper_count": 2513,
+    "creator_mention_count": 12381,
+    "pdf_document_count": 2567,
+    "local_pdf_available_count": 2175,
+    "item_version_rows_after_first_scan": 2513,
+    "item_version_rows_after_second_scan": 2513
+  },
+  "first_scan": {
+    "NEW": 2513,
+    "MODIFIED": 0,
+    "UNCHANGED": 0,
+    "REMOVED": 0,
+    "RESTORED": 0
+  },
+  "second_scan": {
+    "NEW": 0,
+    "MODIFIED": 0,
+    "UNCHANGED": 2513,
+    "REMOVED": 0,
+    "RESTORED": 0
+  },
+  "pdf_sample": {
+    "selected_documents": 200,
+    "extraction_run_count": 200,
+    "attempt_count": 200,
+    "evidence_span_count": 393,
+    "reference_section_count": 153,
+    "reference_entry_count": 7363,
+    "reference_identifier_count": 8518
+  },
+  "integrity": {
+    "foreign_keys_enabled": true,
+    "foreign_key_check_rows": 0
+  },
+  "idempotency": {
+    "passed": true,
+    "notes": "Re-running decide_extraction_trigger on 20 sampled documents created no new extraction runs; second full Zotero scan was entirely UNCHANGED with no duplicate papers or item-version rows."
+  },
+  "rollback_injection": {
+    "passed": true,
+    "notes": "Injected duplicate-identity scan on a fresh temporary DB: scan FAILED, run row FAILED, zero papers rows persisted (projection rolled back)."
+  }
+}
