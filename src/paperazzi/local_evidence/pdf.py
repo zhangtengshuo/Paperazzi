@@ -118,6 +118,7 @@ class ReferenceSection:
     confidence: str
     raw_text: str
     entries: tuple[ReferenceEntry, ...] = ()
+    text_channel: str | None = None  # PYMUPDF_SORTED / PYMUPDF_CONTENT_STREAM provenance
 
 
 @dataclass(frozen=True, slots=True)
@@ -671,10 +672,26 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
         max_front_pages=max_front_pages,
     )
     front_text = "\n\f\n".join(page_texts[:max_front_pages]).strip()
-    references = prefer_reference_section(
-        find_reference_section(page_texts),
-        find_reference_section(page_texts_plain),
-    )
+    primary = find_reference_section(page_texts)
+    alternate = find_reference_section(page_texts_plain)
+    references = prefer_reference_section(primary, alternate)
+    if references is not None:
+        # Provenance only: record which text channel produced the accepted result.
+        # Parser heuristics are unchanged (frozen v3 baseline).
+        references = ReferenceSection(
+            heading=references.heading,
+            start_page=references.start_page,
+            end_page=references.end_page,
+            method=references.method,
+            confidence=references.confidence,
+            raw_text=references.raw_text,
+            entries=references.entries,
+            text_channel=(
+                "PYMUPDF_SORTED"
+                if references is primary
+                else "PYMUPDF_CONTENT_STREAM"
+            ),
+        )
 
     return PdfEvidence(
         path=str(pdf_path),
