@@ -21,11 +21,15 @@ EMAIL_RE = re.compile(
 )
 YEAR_RE = re.compile(r"\b(?:18|19|20)\d{2}[a-z]?\b", re.IGNORECASE)
 
+# Reference ordinals above 999 are not useful for the scholarly corpus we target and
+# are much more likely to be publication years/OCR artefacts.  The first real-library
+# validation showed author-year bibliographies being misread as ordinals such as
+# 1943/1962/1954, so keep the deterministic baseline deliberately conservative.
 NUMBERED_REFERENCE_START_RE = re.compile(
-    r"(?m)^\s*(?:\[(\d{1,4})\]|(\d{1,4})[.)])\s+"
+    r"(?m)^\s*(?:\[(\d{1,3})\]|(\d{1,3})[.)])\s+"
 )
 BARE_NUMBERED_REFERENCE_START_RE = re.compile(
-    r"(?m)^\s*(\d{1,4})\s+(?=[A-ZÀ-ÖØ-Þ])"
+    r"(?m)^\s*(\d{1,3})\s+(?=[A-ZÀ-ÖØ-Þ])"
 )
 
 AFFILIATION_TERMS = (
@@ -40,14 +44,18 @@ AFFILIATION_TERMS = (
     "departamento",
     "laboratory",
     "laboratoire",
-    "centre",
-    "center",
     "school of",
     "college of",
     "faculty of",
     "academy of",
     "national laboratory",
     "national lab",
+    "research center",
+    "research centre",
+    "center for",
+    "centre for",
+    "center of",
+    "centre de",
     "riken",
     "cnrs",
     "max planck",
@@ -67,6 +75,9 @@ BOILERPLATE_TERMS = (
     "subscriber access provided by",
     "downloaded via",
     "downloaded from",
+    "this article was downloaded by",
+    "downloaded by:",
+    "articles you may be interested in",
     "publication history",
     "copyright ©",
     "copyright (c)",
@@ -173,19 +184,34 @@ def _reference_marker_number(match: re.Match[str]) -> int | None:
     for group in match.groups():
         if group is not None:
             try:
-                return int(group)
+                number = int(group)
             except ValueError:
                 return None
+            # Defensive even if a future regex becomes wider again.
+            if number > 999 or 1800 <= number <= 2099:
+                return None
+            return number
     return None
 
 
 def _markers_are_plausible(markers: list[tuple[int, int]]) -> bool:
-    """Require enough mostly increasing markers before trusting numbered splitting."""
+    """Require enough locally near-sequential markers before trusting splitting."""
     if len(markers) < 3:
         return False
     numbers = [number for _, number in markers]
-    increasing = sum(1 for a, b in zip(numbers, numbers[1:]) if b > a)
-    return increasing >= max(2, len(numbers) - 2)
+    if any(number < 1 or number > 999 for number in numbers):
+        return False
+
+    deltas = [b - a for a, b in zip(numbers, numbers[1:])]
+    if not deltas:
+        return False
+
+    # Extraction may skip a few markers, especially across columns/pages, but real
+    # bibliography numbering should not look like a sequence of publication years or
+    # make huge arbitrary jumps.  Require at least ~70% small forward moves.
+    plausible_forward = sum(1 for delta in deltas if 1 <= delta <= 50)
+    required = max(2, (len(deltas) * 7 + 9) // 10)
+    return plausible_forward >= required
 
 
 def segment_reference_entries(text: str) -> tuple[tuple[ReferenceEntry, ...], str, str]:
@@ -315,14 +341,24 @@ def _candidate_spans(
 
             if any(term in lowered for term in AFFILIATION_TERMS):
                 affiliations.append(
-                    EvidenceSpan(page_index=span.page_index, text=span.text, kind="affiliation-candidate", bbox=span.bbox)
+                    EvidenceSpan(
+                        page_index=span.page_index,
+                        text=span.text,
+                        kind="affiliation-candidate",
+                        bbox=span.bbox,
+                    )
                 )
 
             found_emails = [m.group(1).lower() for m in EMAIL_RE.finditer(span.text)]
             has_correspondence_term = any(term in lowered for term in CORRESPONDENCE_TERMS)
             if found_emails or has_correspondence_term:
                 correspondence.append(
-                    EvidenceSpan(page_index=span.page_index, text=span.text, kind="correspondence-candidate", bbox=span.bbox)
+                    EvidenceSpan(
+                        page_index=span.page_index,
+                        text=span.text,
+                        kind="correspondence-candidate",
+                        bbox=span.bbox,
+                    )
                 )
             for email in found_emails:
                 if email not in seen_email:
