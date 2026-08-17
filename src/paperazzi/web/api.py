@@ -1,5 +1,4 @@
-"""FastAPI adapter for the Phase 5 Paperazzi query service."""
-
+"""FastAPI adapter for the Paperazzi local web application."""
 from __future__ import annotations
 
 import os
@@ -10,12 +9,44 @@ from typing import Iterator
 import sqlalchemy as sa
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, HTMLResponse
+from pydantic import BaseModel
 
 from paperazzi.database.engine import create_paperazzi_engine
+from paperazzi.identity.manual_review import (
+    create_identity_from_review,
+    identity_review_detail,
+    link_review_mention,
+    merge_identity_review_pair,
+    refresh_similar_identity_reviews,
+    reject_review_candidate,
+    sync_author_name_variants,
+)
+from paperazzi.identity.service import IdentityResolutionError
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 
 DEFAULT_DB = Path("data/paperazzi.sqlite3")
+
+
+class IdentityTargetRequest(BaseModel):
+    target_author_id: str
+    notes: str | None = None
+
+
+class IdentityCandidateRequest(BaseModel):
+    candidate_author_id: str
+    notes: str | None = None
+
+
+class MergeAuthorsRequest(BaseModel):
+    source_author_id: str
+    target_author_id: str
+    review_item_id: int | None = None
+    notes: str | None = None
+
+
+class ReviewNotesRequest(BaseModel):
+    notes: str | None = None
 
 
 def _database_path(db_path: str | Path | None = None) -> Path:
@@ -39,8 +70,20 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     app.state.session_factory = session_factory
 
     @contextmanager
-    def service() -> Iterator[PaperazziQueryService]:
+    def session_scope(*, write: bool = False):
         with session_factory() as session:
+            try:
+                yield session
+                if write:
+                    session.commit()
+            except Exception:
+                if write:
+                    session.rollback()
+                raise
+
+    @contextmanager
+    def service() -> Iterator[PaperazziQueryService]:
+        with session_scope() as session:
             yield PaperazziQueryService(session)
 
     @app.get("/", response_class=HTMLResponse, include_in_schema=False)
@@ -55,7 +98,7 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             with engine.connect() as connection:
                 connection.execute(sa.text("SELECT 1"))
             return {"status": "OK", "database": str(path)}
-        except Exception as exc:  # pragma: no cover - operational diagnostic
+        except Exception as exc:  # pragma: no cover
             return {"status": "ERROR", "database": str(path), "error": type(exc).__name__}
 
     @app.get("/api/papers")
@@ -69,12 +112,8 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     ) -> dict[str, object]:
         with service() as query_service:
             return query_service.list_papers(
-                q=q,
-                year=year,
-                venue=venue,
-                pdf_available=pdf_available,
-                limit=limit,
-                offset=offset,
+                q=q, year=year, venue=venue, pdf_available=pdf_available,
+                limit=limit, offset=offset,
             )
 
     @app.get("/api/papers/{paper_id}")
@@ -93,9 +132,7 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         except PdfUnavailableError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         return FileResponse(
-            path=pdf_path,
-            media_type="application/pdf",
-            filename=pdf_path.name,
+            path=pdf_path, media_type="application/pdf", filename=pdf_path.name,
             content_disposition_type="inline",
         )
 
@@ -137,11 +174,70 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
     @app.get("/api/reviews/identity")
-    def identity_reviews(
-        limit: int = Query(default=100, ge=1, le=500)
-    ) -> list[dict[str, object]]:
+    def identity_reviews(limit: int = Query(default=100, ge=1, le=500)) -> list[dict[str, object]]:
         with service() as query_service:
             return query_service.list_identity_review_queue(limit=limit)
+
+    @app.get("/api/reviews/identity/{review_item_id}")
+    def identity_review(review_item_id: int) -> dict[str, object]:
+        try:
+            with session_scope() as session:
+                return identity_review_detail(session, review_item_id)
+        except (KeyError, IdentityResolutionError) as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @app.post("/api/reviews/identity/refresh-similar")
+    def refresh_similar_identity_candidates() -> dict[str, int]:
+        """Refresh human-review suggestions; never auto-merge names."""
+        with session_scope(write=True) as session:
+            return refresh_similar_identity_reviews(session)
+
+    @app.post("/api/reviews/identity/sync-name-variants")
+    def sync_name_variants() -> dict[str, int]:
+        with session_scope(write=True) as session:
+            return sync_author_name_variants(session)
+
+    @app.post("/api/reviews/identity/{review_item_id}/link")
+    def link_identity_review(review_item_id: int, request: IdentityTargetRequest) -> dict[str, object]:
+        try:
+            with session_scope(write=True) as session:
+                return link_review_mention(
+                    session, review_item_id, request.target_author_id, notes=request.notes
+                )
+        except IdentityResolutionError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.post("/api/reviews/identity/{review_item_id}/not-same")
+    def not_same_identity_review(review_item_id: int, request: IdentityCandidateRequest) -> dict[str, object]:
+        try:
+            with session_scope(write=True) as session:
+                return reject_review_candidate(
+                    session, review_item_id, request.candidate_author_id, notes=request.notes
+                )
+        except IdentityResolutionError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.post("/api/reviews/identity/{review_item_id}/create-identity")
+    def create_identity_review(review_item_id: int, request: ReviewNotesRequest) -> dict[str, object]:
+        try:
+            with session_scope(write=True) as session:
+                return create_identity_from_review(session, review_item_id, notes=request.notes)
+        except IdentityResolutionError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.post("/api/authors/merge")
+    def merge_author_identities(request: MergeAuthorsRequest) -> dict[str, object]:
+        try:
+            with session_scope(write=True) as session:
+                return merge_identity_review_pair(
+                    session,
+                    request.source_author_id,
+                    request.target_author_id,
+                    review_item_id=request.review_item_id,
+                    notes=request.notes,
+                )
+        except IdentityResolutionError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
 
     @app.get("/api/search")
     def search(
@@ -159,7 +255,6 @@ app = create_app()
 
 def main() -> None:
     import uvicorn
-
     uvicorn.run(
         "paperazzi.web.api:app",
         host=os.environ.get("PAPERAZZI_HOST", "127.0.0.1"),
