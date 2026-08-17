@@ -16,7 +16,7 @@ REFERENCE_HEADING_RE = re.compile(
 
 DOI_RE = re.compile(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.IGNORECASE)
 EMAIL_RE = re.compile(
-    r"(?<![\w.+-])([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})(?![\w.-])",
+    r"(?<![\w.+-])([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})",
     re.IGNORECASE,
 )
 YEAR_RE = re.compile(r"\b(?:18|19|20)\d{2}[a-z]?\b", re.IGNORECASE)
@@ -174,7 +174,7 @@ def _normalized_lines(text: str) -> list[str]:
 
 def _clean_reference_doi(value: str) -> str:
     value = value.strip()
-    while value and value[-1] in ".,;:)]}>":
+    while value and value[-1] in ".,;:)]}>\"":
         value = value[:-1]
     return value.lower()
 
@@ -560,7 +560,7 @@ def _candidate_spans(
                     )
                 )
 
-            found_emails = [m.group(1).lower() for m in EMAIL_RE.finditer(span.text)]
+            found_emails = [m.group(1).lower().rstrip(".,;:)]}>\"") for m in EMAIL_RE.finditer(span.text)]
             has_correspondence_term = any(term in lowered for term in CORRESPONDENCE_TERMS)
             if found_emails or has_correspondence_term:
                 correspondence.append(
