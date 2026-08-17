@@ -1,0 +1,12 @@
+# Canonical Paperazzi Phase 5 test stack.
+# CI and local-AI validation should install with:
+#   python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
+SQLAlchemy==2.0.52
+Alembic==1.19.1
+PyMuPDF==1.28.2
+FastAPI==0.141.1
+Starlette==1.6.0
+httpx==0.28.1
+anyio==4.14.2
+uvicorn==0.52.3
+pydantic==2.13.4
