@@ -200,6 +200,13 @@ class Phase5WebTests(unittest.TestCase):
             self.assertEqual(rows[2]["source_name"], "Alice Smith")
             self.assertEqual(rows[3]["source_name"], "Alex Wang")
 
+            bob.display_name = None
+            bob.first_name = None
+            bob.last_name = None
+            session.commit()
+            unnamed = PaperazziQueryService(session).list_identity_review_queue(limit=1)
+            self.assertEqual(unnamed[0]["source_name"], "Unknown author")
+
     def test_http_mvp_routes_via_asgi_transport(self) -> None:
         with self.sf() as session:
             alpha = session.query(Paper).filter_by(title="Alpha paper").one()
