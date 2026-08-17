@@ -1,0 +1,41 @@
+{
+  "schema_version": "full-library-local-ai-v1",
+  "database": "/home/shuo/develop/Paperazzi/data/phase5-validation/phase5_5/paperazzi-phase5_5.sqlite3",
+  "papers_scanned": 2513,
+  "pdfs_queued_for_ai_review": 2060,
+  "papers_without_reviewable_primary_pdf": 453,
+  "severity_counts": {
+    "P0": 780,
+    "P1": 388,
+    "P2": 806,
+    "P3": 539
+  },
+  "flag_counts": {
+    "AUTHOR_MARKER_WITHOUT_ROLE_SIGNAL": 1107,
+    "CONTACT_WITHOUT_ROLE_SIGNAL": 577,
+    "FRONT_MATTER_DOI_CONFLICT": 30,
+    "LOW_SOURCE_AUTHOR_HEADER_COVERAGE": 166,
+    "LOW_TITLE_FRONT_MATTER_OVERLAP": 20,
+    "MULTIPLE_PRIMARY_CANDIDATES": 65,
+    "NO_AVAILABLE_PRIMARY_PDF": 453,
+    "NO_REFERENCE_SECTION": 224,
+    "NO_USABLE_FRONT_MATTER_TEXT": 20,
+    "ROLE_EMAIL_AUTHOR_COUNT_MISMATCH": 147,
+    "ROLE_SIGNAL_UNMAPPED_TO_SOURCE_AUTHOR": 149,
+    "ROLE_SIGNAL_WITHOUT_EMAIL": 90,
+    "SELECTED_SUPPLEMENTARY_DOCUMENT": 1
+  },
+  "role_signal_papers": 490,
+  "contact_only_papers": 577,
+  "machine_correspondence_nonempty": 552,
+  "outputs": {
+    "all_papers": "data/phase5-validation/full-library-local-ai-audit/all_papers.jsonl",
+    "ai_review_queue": "data/phase5-validation/full-library-local-ai-audit/ai_review_queue.jsonl",
+    "summary": "data/phase5-validation/full-library-local-ai-audit/summary.json"
+  },
+  "safety": {
+    "database_open_mode": "read-only",
+    "paperazzi_writes": false,
+    "zotero_writes": false
+  }
+}
