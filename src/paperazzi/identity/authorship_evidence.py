@@ -64,9 +64,15 @@ def _email_author_matches(
     """
     matched: dict[int, tuple[Authorship, PaperCreatorMention]] = {}
     for email in _EMAIL_RE.findall(raw_text):
-        local = _compact(email.split("@", 1)[0])
+        local_raw = email.split("@", 1)[0]
+        local = _compact(local_raw)
         if not local:
             continue
+        local_parts = tuple(
+            _compact(part)
+            for part in re.split(r"[^A-Za-z0-9]+", local_raw)
+            if _compact(part)
+        )
         candidates: list[tuple[Authorship, PaperCreatorMention]] = []
         for authorship, mention in rows:
             given = _compact(mention.first_name)
@@ -74,7 +80,18 @@ def _email_author_matches(
             if not given or not family:
                 continue
             forms = (given + family, family + given, given[:1] + family, family + given[:1])
-            if any(len(form) >= 3 and local.startswith(form) for form in forms):
+            compact_match = any(len(form) >= 3 and local.startswith(form) for form in forms)
+            token_match = len(local_parts) >= 2 and (
+                (
+                    local_parts[0].startswith(given)
+                    and local_parts[1].startswith(family)
+                )
+                or (
+                    local_parts[1].startswith(given)
+                    and local_parts[0].startswith(family)
+                )
+            )
+            if compact_match or token_match:
                 candidates.append((authorship, mention))
         if len(candidates) == 1:
             row = candidates[0]

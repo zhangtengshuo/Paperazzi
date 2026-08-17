@@ -19,6 +19,7 @@ from paperazzi.database.engine import create_paperazzi_engine  # noqa: E402
 from paperazzi.database.models import (  # noqa: E402
     DocumentEvidenceSpan,
     DocumentExtractionRun,
+    PaperCreatorMention,
     Paper,
     PaperDocument,
 )
@@ -316,6 +317,31 @@ class ProvenanceRetractionTests(unittest.TestCase):
                 session,
                 main,
                 "Corresponding authors: rishab.dutta@pnnl.gov and marc.illasubina@pnnl.gov.",
+            )
+            result = propose_authorship_evidence(session, main.paper_id)
+            session.flush()
+            self.assertEqual(result["corresponding_accepted"], 2)
+            rows = session.query(Authorship).filter_by(status="ACTIVE").order_by(Authorship.order_index).all()
+            self.assertEqual([row.is_corresponding_author for row in rows], [True, True])
+
+    def test_correspondence_email_local_parts_map_initial_authors(self) -> None:
+        with self.sf() as session:
+            main, _si = self._documents(session)
+            mentions = (
+                session.query(PaperCreatorMention)
+                .filter_by(paper_id=main.paper_id)
+                .order_by(PaperCreatorMention.order_index)
+                .all()
+            )
+            mentions[0].first_name = "R"
+            mentions[0].display_name = "R Dutta"
+            mentions[1].first_name = "M"
+            mentions[1].display_name = "M Illa"
+            self._accepted_span(
+                session,
+                main,
+                "*Authors to whom correspondence should be addressed: "
+                "rishab.dutta@pnnl.gov, marc.illasubina@pnnl.gov.",
             )
             result = propose_authorship_evidence(session, main.paper_id)
             session.flush()
