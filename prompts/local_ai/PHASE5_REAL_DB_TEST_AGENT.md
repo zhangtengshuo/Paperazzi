@@ -1,402 +1,514 @@
-# Paperazzi Phase 5 — Local AI Real-Database Test Agent
+# Paperazzi Phase 5 — Local AI Real-Database Validation Agent v2
 
-## Role
+## Mission
 
-You are the **local validation agent** for Paperazzi Phase 5. You have access to the user's real local Paperazzi database and Zotero-backed filesystem paths that GitHub Actions cannot access.
+You are the local validation agent for Paperazzi Phase 5. You have access to the user's real Paperazzi SQLite database and local Zotero/PDF filesystem that GitHub Actions cannot see.
 
-Your job is to validate the already-implemented Phase 5 query/service layer, FastAPI backend, minimal browser UI, search behavior, and local-PDF access **against the real database**.
+Your job is to validate the current `main` implementation, preserve useful evidence when something fails, and return enough structured information for a remote reviewer to decide whether the problem is:
 
-This is a validation task first. Do not redesign Phase 5, do not broaden scope, and do not manufacture data merely to make a test pass.
+```text
+Paperazzi semantic/query defect
+ASGI in-process test-environment defect
+real Uvicorn/product-path defect
+local filesystem/PDF state
+performance limitation
+dependency/environment mismatch
+```
+
+Do not manufacture data and do not weaken Phase 4 identity safety to make Phase 5 green.
 
 ---
 
-## Repository and source-of-truth rules
-
-Repository:
-
-```text
-zhangtengshuo/Paperazzi
-```
-
-Work from the current `main` branch. For this validation run, do not create a feature/agent/PR branch.
-
-The source-of-truth hierarchy remains:
-
-```text
-Zotero sqlite + storage          read-only source
-Paperazzi SQLite                 owned semantic/persistence state
-paper_creator_mentions           complete source author record
-canonical authors/authorships    conservative semantic projection
-```
-
-Critical invariant:
-
-> Every Zotero paper author must remain visible in Paperazzi even when canonical identity resolution is unresolved.
-
-Do not treat an unresolved canonical identity as missing source-author data.
-
-Do not write to `zotero.sqlite`, Zotero `storage/`, or PDF files.
-
----
-
-## Tested baseline
-
-Before beginning, read:
+## Read first
 
 ```text
 docs/phase4/PHASE4_CLOSEOUT.md
 docs/phase5/README.md
+docs/phase5/PHASE5_TESTING.md
+constraints/phase5-test.txt
 scripts/validate_phase5.py
+src/paperazzi/web/validation.py
 src/paperazzi/web/queries.py
 src/paperazzi/web/api.py
 ```
 
-Expected phase state:
+Expected state:
 
 ```text
 PHASE_4_STATUS = PASS
 CURRENT_PHASE = PHASE_5_BACKEND_AND_WEB_UI
 ```
 
-GitHub CI already covers synthetic/regression behavior. This local run exists specifically to test behavior that requires the user's real Paperazzi database and real local PDF paths.
+Work on `main`. Do not create a branch or PR for this validation task unless the user explicitly changes that policy.
 
 ---
 
-# Test policy
+# Non-negotiable data rules
 
-## Mandatory principles
-
-1. **Test before fixing.** Record the failure and isolate the violated invariant before editing source code.
-2. **Do not weaken a test to make it green.**
-3. **Do not hide unresolved authors.**
-4. **Do not merge author identities merely to improve coverage.**
-5. **Do not create fake ACCEPTED references or fake corresponding-author evidence.**
-6. **Do not treat unavailable PDFs as a database error.** Missing files are valid data states; incorrect `PDF_AVAILABLE` claims are errors.
-7. **Do not write semantic state during the Phase 5 smoke test.** The validation itself is read-only with respect to Paperazzi semantic tables.
-8. If a real defect is found and repaired, add/extend a regression test that reproduces it before declaring the defect closed.
+- Zotero `zotero.sqlite`, `storage/`, and PDFs are read-only.
+- Paperazzi source author truth comes from `paper_creator_mentions`.
+- Every Zotero paper author must remain visible even when canonical identity is unresolved.
+- `FIRST` and `CORRESPONDING` are additive authorship roles, not inclusion filters.
+- Do not force-resolve identities to increase coverage.
+- Do not create fake `ACCEPTED` references or correspondence evidence.
+- Missing/unreachable PDFs may be valid data states.
+- `PDF_AVAILABLE` pointing to a missing file should be reported as stale/inconsistent state, not silently repaired.
+- Validation must not mutate semantic tables.
 
 ---
 
-# Stage 0 — Environment and repository sanity
+# Important change from the previous test contract
 
-Confirm all of the following before running the real-database test:
+Do **not** use Starlette/FastAPI synchronous `TestClient` as the authoritative Phase 5 HTTP test.
+
+The new stack is:
 
 ```text
-current branch = main
-working tree understood; do not overwrite unrelated local work
-current main contains Phase 5 web/query implementation
-Python environment can import paperazzi, FastAPI, SQLAlchemy
+Layer 1: PaperazziQueryService against real DB
+Layer 2: httpx.ASGITransport + AsyncClient
+Layer 3: real Uvicorn subprocess + localhost HTTP
+Layer 4: manual browser check
 ```
 
-Install the web/PDF extras if needed:
+The validator persists every stage before and after execution. If a process hangs or is killed, keep the existing JSON file; its last `RUNNING` stage identifies where execution stopped.
+
+Localhost HTTP validation disables inherited HTTP proxy routing with `trust_env=False`.
+
+---
+
+# Stage 0 — Repository and environment capture
+
+Before installing or changing anything, record the current native environment:
+
+```text
+branch
+commit SHA
+working-tree state
+Python version
+Python executable
+sys.prefix
+CONDA_DEFAULT_ENV if present
+SQLite runtime
+FastAPI
+Starlette
+HTTPX
+AnyIO
+SQLAlchemy
+Alembic
+PyMuPDF
+Uvicorn
+Pydantic
+```
+
+Also record only the Boolean presence of:
+
+```text
+HTTP_PROXY
+HTTPS_PROXY
+ALL_PROXY
+NO_PROXY
+```
+
+Never write proxy URLs, usernames, passwords, tokens, cookies, API keys, or credentials into Git-tracked reports.
+
+Run `python -m pip check` and record whether dependency consistency passes.
+
+## Native-vs-canonical comparison
+
+First, if practical, run the revised validator once in the user's existing environment **without changing package versions**. This tells us whether removing `TestClient` already fixes the original Anaconda/Python 3.13 failure.
+
+Then inspect:
+
+```text
+canonical_test_environment.matches
+```
+
+inside the validator report.
+
+If `false`, also run the mandatory final validation in a dedicated environment installed with:
 
 ```bash
-python -m pip install -e ".[pdf,web]"
+python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
 ```
 
-The default real-validation DB path expected by the current repository is:
+Do not destructively downgrade the user's general-purpose Anaconda base environment merely to match Paperazzi. Prefer a dedicated venv/Conda env.
 
-```text
-data/phase4-validation/paperazzi.sqlite3
-```
-
-If that file does not exist, locate the actual existing Paperazzi validation/production DB. Do **not** create an empty replacement and call that a test.
-
-Record the exact DB path used in the final report.
+A final PASS claim must identify which environment produced it.
 
 ---
 
 # Stage 1 — Full regression suite
 
-Run the complete test suite on the exact checked-out commit:
+Run:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Expected baseline at the time this contract was written:
+The revised suite must include at least:
 
 ```text
-99 tests
-0 failures
+source-author completeness test
+author profile/search test
+ASGITransport HTTP test
+real Uvicorn localhost smoke test
+failure-isolated report infrastructure tests
 ```
-
-A larger test count is fine if new tests were added later. Any real failure is a blocker until understood.
 
 Record:
 
 ```text
-commit SHA
 test count
+passes
 failures
 errors
 skips
+total runtime
 ```
+
+If a test fails, classify whether the failure reproduces in the canonical constrained environment before editing Paperazzi code.
 
 ---
 
-# Stage 2 — Real-database automated smoke validation
+# Stage 2 — Real DB smoke, failure-isolated
 
-Run:
+Run against the actual existing DB:
 
 ```bash
-python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3
+python scripts/validate_phase5.py --db-path <REAL_DB_PATH>
 ```
 
-If the real DB is elsewhere, pass that exact path explicitly.
+Do not create an empty DB if the expected path is missing.
 
-The validator writes:
+The report is:
 
 ```text
 data/phase5-validation/phase5_report.json
 ```
 
-This runtime JSON is local validation state and should normally remain outside Git-tracked source unless repository policy explicitly changes.
+Immediately inspect and preserve it even if the command exits nonzero.
 
-## Required PASS conditions
-
-The automated validator must report:
+Required stages:
 
 ```text
-status = PASS
-paper_count > 0
-active_canonical_authors > 0
-source_author_projection_mismatches = []
-search_smoke_passed = true
-HTTP / = 200
-HTTP /health = 200
-HTTP /api/papers = 200
-HTTP /api/authors = 200
-HTTP /api/search = 200
+REAL_DATABASE_QUERY
+ASGI_IN_PROCESS
+UVICORN_LOCALHOST_HTTP
 ```
 
-### Most important invariant
-
-For every sampled paper:
+For each stage report:
 
 ```text
-count(paper_creator_mentions WHERE creator_type='author')
-==
-count(authors returned by PaperazziQueryService.get_paper())
+status
+elapsed_ms
+failure/exception if any
 ```
 
-If this fails for even one sampled paper, Phase 5 real-DB validation is **FAIL**.
+The automated final status is PASS only when all three pass.
 
-Do not "repair" the mismatch by filtering source mentions or by force-resolving identities.
+Also report separately:
+
+```text
+product_path_status
+in_process_harness_status
+```
+
+If `product_path_status=PASS` but ASGI fails, do not call the Paperazzi web product broken. Report an in-process environment/harness defect and compare dependency/module origins.
 
 ---
 
-# Stage 3 — Increase source-author coverage check
+# Stage 3 — Full-corpus source-author projection
 
-The default validator samples 200 papers. If Stage 2 passes, run a full-corpus author-projection check by setting `--sample-papers` comfortably above the actual active paper count, for example:
+After the 200-paper smoke passes, run:
 
 ```bash
-python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3 --sample-papers 100000
+python scripts/validate_phase5.py --db-path <REAL_DB_PATH> --sample-papers 0
 ```
 
-This is intended to verify the complete real corpus, not just a sample.
+`0` means all active papers.
 
 Required:
 
 ```text
-source_author_projection_mismatches = []
+full_corpus_projection_check = true
+source_author_projection_mismatch_count = 0
 ```
 
-Record the actual number of papers checked.
+If any mismatch exists, preserve every available example paper ID and compare:
 
-If runtime is unexpectedly excessive, investigate query complexity rather than silently falling back to a tiny sample.
+```text
+paper_creator_mentions(author)
+vs
+PaperazziQueryService.get_paper()["authors"]
+```
+
+Do not repair by filtering unresolved source authors.
 
 ---
 
-# Stage 4 — Unresolved-author visibility audit
+# Stage 4 — Information that MUST be returned to the remote reviewer
 
-The real corpus is known to contain unresolved source-author mentions. Phase 5 must expose them rather than dropping them.
+This section is mandatory. The purpose is not merely to say PASS/FAIL; return information useful for the next design decision.
 
-Use the validator output and direct query/API inspection to verify at least several papers containing unresolved authors.
+## A. Environment reproducibility
 
-For each inspected paper confirm:
+Return:
 
 ```text
-source display name is present
-identity_status = UNRESOLVED
-canonical author ID may be null
-paper author order is preserved
-FIRST role is still represented when the unresolved mention is the first source author
+native environment:
+  Python executable/version
+  Conda/venv identity
+  canonical constraints match true/false
+  pip check pass/fail
+
+canonical validation environment:
+  Python executable/version
+  canonical constraints match true/false
+  pip check pass/fail
 ```
 
-This check is a **semantic requirement**, not cosmetic UI behavior.
+For every mismatch against `constraints/phase5-test.txt`, list:
 
-If unresolved authors disappear from paper detail, stop and report FAIL.
+```text
+package
+expected version
+installed version
+module origin
+```
+
+Module origin is important: two environments can report similar versions while importing different installations.
+
+If the native environment still fails but canonical passes, preserve both reports.
+
+## B. Real database scale and identity coverage
+
+Return:
+
+```text
+active papers
+active canonical authors
+source author mentions
+accepted author mentions
+unresolved author mentions
+full-corpus papers checked
+source-author projection mismatch count
+unresolved source authors visible in checked paper details
+foreign-key check rows
+```
+
+Do not interpret unresolved identities as missing author records.
+
+## C. HTTP layer separation
+
+Return route status and elapsed time for both:
+
+```text
+ASGI_IN_PROCESS
+UVICORN_LOCALHOST_HTTP
+```
+
+At minimum:
+
+```text
+/
+/health
+/api/papers
+/api/authors
+/api/search
+/api/reviews/identity
+one real paper detail
+one real author detail
+one author publications route
+one coauthors route
+one PDF route when a reachable PDF exists
+```
+
+If Uvicorn fails, include its `server_log_tail`.
+
+If ASGI fails while Uvicorn passes, include the ASGI exception/timeout and do not alter business logic without evidence.
+
+## D. Search behavior using REAL corpus values
+
+Test and return the exact scholarly queries used:
+
+```text
+one full or distinctive paper title
+one DOI
+one journal/venue fragment
+one canonical author name
+one non-ASCII author name if available
+one punctuation-heavy title or DOI if available
+```
+
+For each return:
+
+```text
+query
+expected object
+found true/false
+elapsed_ms
+unexpected results if material
+```
+
+If no suitable non-ASCII/punctuation case exists, state `NOT_AVAILABLE_IN_CORPUS`; do not invent one.
+
+## E. PDF state
+
+Return:
+
+```text
+PDF_AVAILABLE rows
+actually reachable PDF rows
+number of stale PDF_AVAILABLE rows
+up to 20 stale example paper IDs
+successful PDF HTTP paper ID(s)
+controlled unavailable-PDF example paper ID
+```
+
+Do **not** commit full local filesystem paths unless needed to diagnose a path-mapping defect. Paper IDs are preferred.
+
+If many PDFs are stale, determine whether the DB simply needs a normal Zotero/Paperazzi rescan or whether path projection is wrong.
+
+## F. Measured performance
+
+Return at minimum:
+
+```text
+list_papers(20) elapsed_ms
+list_authors(20) elapsed_ms
+paper detail mean
+paper detail p50
+paper detail p95
+paper detail max
+ASGI route timings
+Uvicorn route timings
+```
+
+Also manually measure:
+
+```text
+common author search
+distinctive title search
+author profile for a high-publication-count author
+coauthor list for a high-degree author
+```
+
+Do not add FTS5 simply because it was previously planned. Report measurements first.
+
+If one path is disproportionately slow, identify query type and relevant author/paper ID so the remote reviewer can decide whether indexing, batching, or query refactoring is justified.
+
+## G. Original hang comparison
+
+The previous local environment was approximately:
+
+```text
+Python 3.13.9 Anaconda
+FastAPI 0.136.1
+Starlette 1.0.0
+HTTPX 0.28.1
+AnyIO 4.10.0
+```
+
+and synchronous Starlette `TestClient` hung in `AnyIO BlockingPortal`.
+
+After pulling the fix, explicitly answer:
+
+```text
+Does the revised ASGITransport test pass in the original/native environment?
+Does real Uvicorn localhost HTTP pass in that environment?
+Does the canonical constrained environment pass?
+```
+
+This comparison is especially important. It tells us whether the defect was solely the old test adapter or a broader Python 3.13/Conda incompatibility.
 
 ---
 
-# Stage 5 — Author profile correctness
+# Stage 5 — Manual semantic spot checks
 
-Inspect a representative set of resolved canonical authors. Include at minimum:
+Inspect real papers containing unresolved source authors.
+
+For several cases confirm:
 
 ```text
-an author with one paper
-an author with multiple papers
-an author appearing as first author on at least one paper
-an author with multiple coauthors
+source display name visible
+author order preserved
+identity_status=UNRESOLVED when appropriate
+FIRST survives unresolved canonical identity
+CORRESPONDING appears only with accepted semantic evidence
 ```
 
-For each author compare service/API output against direct database facts.
+Inspect canonical authors including:
+
+```text
+single-paper author
+multi-paper author
+first author
+corresponding author if available
+high-publication-count author
+high-coauthor-degree author
+```
+
+Check publication counts and coauthors against direct DB facts.
+
+Preserve paper IDs/author IDs for any discrepancy.
+
+---
+
+# Stage 6 — Browser/product smoke
+
+Start the product against the tested DB and inspect in a real browser.
 
 Verify:
 
 ```text
-preferred name / known variants are coherent
-publication count is correct
-paper roles are paper-specific
-first-author flag is correct
-corresponding-author flag is only shown when accepted semantic state exists
-coauthor list does not include the author themself
-coauthor counts are plausible and derive from active authorships
+home loads
+paper list loads
+real search works
+paper detail opens
+all source authors appear
+resolved author link opens profile
+publication list/coauthors load
+identity review loads
+reachable PDF opens
+unavailable PDF fails in a controlled way
 ```
 
-Do not infer corresponding-author status from author order, email guesswork, or candidate PDF evidence.
+Do not fail Phase 5 for visual polish alone.
+
+Report browser and operating context:
+
+```text
+browser name/version if easily available
+WSL/native Linux/Windows context
+URL used
+whether browser and server were on the same host
+```
+
+If browser behavior differs from automated localhost HTTP, that difference is important and must be reported.
 
 ---
 
-# Stage 6 — Search validation
+# Stage 7 — Optional but strongly recommended identity precision audit
 
-Test searches drawn from the actual corpus, not synthetic words only.
-
-Include:
-
-```text
-exact paper-title fragment
-DOI fragment or full DOI
-venue/journal fragment
-canonical author preferred-name fragment
-known author name variant when available
-```
-
-Expected behavior:
-
-- relevant records are returned;
-- search does not crash on punctuation or non-ASCII names;
-- an unresolved source author is not required to appear in canonical-author search unless/until a search surface explicitly supports source mentions;
-- no result should imply identity certainty that the database does not contain.
-
-Record any query that is unexpectedly slow on the real corpus. Do not add FTS5 solely because it was planned; add it only if measured real-database behavior justifies it.
-
----
-
-# Stage 7 — Local PDF validation
-
-Paperazzi must open local PDFs without requiring Zotero Desktop to be running.
-
-For a representative set of papers with persisted:
-
-```text
-availability_status = PDF_AVAILABLE
-present_in_last_scan = true
-```
-
-verify:
-
-```text
-PaperazziQueryService.get_pdf_path(paper_id) returns an existing file
-GET /api/papers/{paper_id}/pdf returns success for a reachable PDF
-content served is the persisted PDF for that paper
-client cannot supply an arbitrary filesystem path
-```
-
-Also inspect at least one paper without a reachable PDF and confirm the API reports a controlled not-found/unavailable condition rather than crashing or exposing another file.
-
-Important distinction:
-
-```text
-FILE_UNAVAILABLE / PDF_RECORD_ONLY / UNRESOLVED_PATH = valid data state
-PDF_AVAILABLE pointing to a nonexistent file             = stale/inconsistent state to report
-```
-
-Do not edit or copy PDF files to make this test pass.
-
----
-
-# Stage 8 — HTTP and minimal browser UI smoke test
-
-Start the local server against the exact tested DB:
-
-```bash
-PAPERAZZI_DB=data/phase4-validation/paperazzi.sqlite3 paperazzi-web
-```
-
-Use the actual DB path if different.
-
-Default address:
-
-```text
-http://127.0.0.1:8765
-```
-
-Verify the browser workflow:
-
-```text
-home page opens
-→ paper list loads
-→ search returns real records
-→ paper detail opens
-→ ALL source authors are shown
-→ resolved author link opens profile
-→ author publications/coauthors load
-→ PDF action works when local PDF exists
-→ identity-review view loads without mutating data
-```
-
-The first UI is intentionally minimal. Do not fail it merely for visual polish. Fail it for incorrect data, missing source authors, broken navigation, unsafe PDF handling, or unusable latency.
-
----
-
-# Stage 9 — Real-data performance observations
-
-Measure enough to answer whether the current SQLAlchemy/SQLite search implementation is acceptable for the current real corpus.
-
-At minimum observe:
-
-```text
-paper list initial load
-common author search
-paper-title search
-author profile with many publications/coauthors
-```
-
-Do not introduce FTS5 or caching speculatively. Report measured slow cases first.
-
-Suggested interpretation:
-
-```text
-interactive and comfortably sub-second / low single-digit second → keep current implementation
-repeatedly slow enough to impair normal use                → profile query, then propose targeted index/FTS5 work
-```
-
-Exact performance thresholds are not a correctness gate at this phase; pathological behavior is.
-
----
-
-# Stage 10 — Optional identity precision audit
-
-This is quality control and is **not** a Phase 5 PASS gate.
-
-Generate the deterministic stratified sample with:
+After Phase 5 smoke is stable, run:
 
 ```bash
 python scripts/export_identity_precision_audit.py
 ```
 
-Review selected auto-accepted identity links, especially:
+This does not gate Phase 5, but it is important quality information because stable/idempotent identity resolution does not prove precision.
+
+Review the deterministic stratified sample, emphasizing:
 
 ```text
 SAME_NORMALIZED_NAME_MULTIPLE_IDENTITIES
 THRESHOLD_EDGE
 FIRST_AUTHOR
 HIGH_PUBLICATION_DEGREE
+East-Asian/common names when represented
 ```
 
-For each reviewed row use only:
+Return summary counts:
 
 ```text
 CORRECT
@@ -404,9 +516,18 @@ FALSE_MERGE
 UNCERTAIN
 ```
 
-Do not change automatic thresholds merely because unresolved coverage exists.
+For every convincing `FALSE_MERGE`, return:
 
-If a convincing false merge is found, report it as a Phase 4 identity-quality defect and preserve all evidence needed to reproduce it.
+```text
+author_id
+creator_mention_id
+paper_id
+source name
+why the merge appears false
+independent evidence used
+```
+
+Do not lower/raise thresholds solely from a tiny sample; use false merges to construct reproducible regression cases first.
 
 ---
 
@@ -414,129 +535,82 @@ If a convincing false merge is found, report it as a Phase 4 identity-quality de
 
 If any mandatory stage fails:
 
-1. Preserve the exact failing paper/author IDs and observed output.
-2. Identify whether the defect is in:
-   - persistence/source data;
-   - query/service projection;
-   - HTTP adapter;
-   - UI presentation;
-   - stale local filesystem state.
-3. Add a minimal regression test if the problem is code behavior.
-4. Fix only the responsible layer.
-5. Run the full regression suite again.
-6. Rerun the real-database validator.
+1. Preserve `phase5_report.json` immediately.
+2. Preserve exact paper/author IDs and route.
+3. Identify the layer:
+   - real DB/query;
+   - ASGI in-process;
+   - Uvicorn/product;
+   - browser;
+   - filesystem/PDF;
+   - environment/dependency.
+4. Compare native vs canonical environment.
+5. Add a regression test before fixing application behavior.
+6. Fix only the responsible layer.
+7. Rerun the full regression suite.
+8. Rerun 200-paper smoke.
+9. Rerun full-corpus projection if smoke passes.
 
-Never solve a Phase 5 display/query problem by weakening Phase 4 identity safety.
+Never solve a web/display failure by weakening Phase 4 identity resolution.
 
 ---
 
 # Required tracked report
 
-After validation, create a tracked Markdown report at:
+Create:
 
 ```text
-docs/phase5/runs/YYYYMMDD-HHMMSS-real-db/PHASE5_REAL_DB_TEST_RESULTS.md
+docs/phase5/runs/YYYYMMDD-HHMMSS-real-db-v2/PHASE5_REAL_DB_TEST_RESULTS.md
 ```
 
-The report must contain:
+It must include:
 
-## 1. Tested repository state
+1. tested commit/branch;
+2. native environment and canonical environment comparison;
+3. regression-suite result;
+4. full `REAL_DATABASE_QUERY` summary;
+5. ASGI and Uvicorn status/timings;
+6. real search cases;
+7. PDF reachability/stale-state summary;
+8. manual semantic spot checks;
+9. browser smoke result;
+10. measured performance;
+11. defects/fixes;
+12. optional identity precision audit summary;
+13. explicit information requested for remote review.
 
-```text
-branch
-commit SHA
-Python version
-Paperazzi DB path
-```
+Do not commit `phase5_report.json` if it contains machine-local paths; quote the useful non-sensitive fields in the Markdown report instead.
 
-## 2. Regression suite
+---
 
-```text
-tests passed / failed / skipped
-```
+# Final status vocabulary
 
-## 3. Real database summary
-
-```text
-active papers
-active canonical authors
-sampled/full-corpus papers checked
-source-author projection mismatch count
-unresolved source authors observed
-PDF_AVAILABLE rows
-reachable PDFs checked
-```
-
-## 4. API/UI results
-
-```text
-home
-health
-papers
-authors
-search
-paper detail
-author detail
-coauthors
-PDF route
-identity review
-```
-
-## 5. Search observations
-
-List actual real-corpus queries used and whether the result was correct.
-
-## 6. Manual semantic spot checks
-
-List paper IDs / author IDs checked and concise findings. Do not include sensitive filesystem data beyond what is needed for reproducibility.
-
-## 7. Performance observations
-
-Record slow paths if any.
-
-## 8. Defects found and fixes
-
-If none:
-
-```text
-NONE
-```
-
-If fixes were made, identify regression tests and commits.
-
-## 9. Final status
-
-Use exactly one of:
+Use exactly one automated state:
 
 ```text
 PHASE_5_REAL_DB_SMOKE = PASS
 PHASE_5_REAL_DB_SMOKE = FAIL
 ```
 
-A PASS requires all mandatory correctness stages above to pass. Optional identity precision audit does not determine this status.
-
----
-
-# Completion criterion
-
-The Phase 5 MVP can be considered validated on the real library when all of the following are true:
+Also report:
 
 ```text
-full regression suite passes
-real DB opens successfully
-all checked source authors remain visible
-full-corpus author projection has zero mismatches
-resolved author profiles are semantically consistent
-real-corpus search works
-HTTP routes work
-local PDF routing works safely for reachable PDFs
-missing/unreachable PDFs are handled as valid controlled states
-no source/Zotero data is modified
+PRODUCT_PATH_STATUS = PASS|FAIL
+ASGI_HARNESS_STATUS = PASS|FAIL|ERROR
+CANONICAL_ENVIRONMENT_MATCH = true|false
+FULL_CORPUS_AUTHOR_PROJECTION = PASS|FAIL
 ```
 
-At that point report:
+A final PASS requires:
 
 ```text
-PHASE_5_REAL_DB_SMOKE = PASS
-NEXT = Phase 5 usability/performance refinement, then Phase 6 priority-author enrichment
+full regression suite PASS in canonical environment
+REAL_DATABASE_QUERY PASS
+ASGI_IN_PROCESS PASS in canonical environment
+UVICORN_LOCALHOST_HTTP PASS
+full-corpus source-author projection mismatch count = 0
+manual browser semantic smoke PASS
+no source/Zotero data modified
 ```
+
+The optional identity precision audit does not determine Phase 5 PASS, but its findings must be surfaced if performed.
