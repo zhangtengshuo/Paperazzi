@@ -16,6 +16,7 @@ from .manual_review import (
     sync_author_name_variants,
 )
 from .models import Authorship, AuthorNameVariant
+from .pair_decisions import canonical_not_same_pairs
 from .review import enqueue_review
 
 
@@ -72,7 +73,8 @@ def similar_author_candidates(
 
     Unlike the queue refresh (one strongest queue entry per source identity), the detail
     view lets a human compare several plausible people. Same-paper candidates are retained
-    but flagged because merge itself will be blocked by the Phase 4 guard.
+    but flagged because merge itself will be blocked by the Phase 4 guard. Pairs manually
+    recorded as different people are omitted from future suggestions.
     """
     variants = _author_variant_map(session)
     target = variants.get(author_id, [])
@@ -82,9 +84,12 @@ def similar_author_candidates(
     if not target_keys:
         return []
     papers = _papers_by_author(session)
+    excluded_pairs = canonical_not_same_pairs(session)
     scored: list[tuple[float, bool, str, dict[str, float], tuple[str, str] | None]] = []
     for candidate_id, candidate_variants in variants.items():
         if candidate_id == author_id:
+            continue
+        if frozenset((author_id, candidate_id)) in excluded_pairs:
             continue
         candidate_keys = set().union(*(_variant_block_keys(row) for row in candidate_variants))
         if target_keys.isdisjoint(candidate_keys):
@@ -131,10 +136,12 @@ def refresh_similar_identity_reviews(
                 blocks[key].add(author_id)
 
     papers_by_author = _papers_by_author(session)
+    excluded_pairs = canonical_not_same_pairs(session)
     best_for_source: dict[str, tuple[float, str, dict[str, float], tuple[str, str] | None]] = {}
     pair_count = 0
     scored_pair_count = 0
     same_paper_blocked = 0
+    manual_pair_blocked = 0
     seen_pairs: set[tuple[str, str]] = set()
     for ids in blocks.values():
         ordered = sorted(ids)
@@ -145,6 +152,9 @@ def refresh_similar_identity_reviews(
                     continue
                 seen_pairs.add(pair)
                 pair_count += 1
+                if frozenset(pair) in excluded_pairs:
+                    manual_pair_blocked += 1
+                    continue
                 if papers_by_author[left_id] & papers_by_author[right_id]:
                     same_paper_blocked += 1
                     continue
@@ -187,6 +197,7 @@ def refresh_similar_identity_reviews(
     return {
         "blocked_pairs_examined": pair_count,
         "same_paper_pairs_blocked": same_paper_blocked,
+        "manual_different_pairs_blocked": manual_pair_blocked,
         "pairs_similarity_scored": scored_pair_count,
         "candidate_sources": len(best_for_source),
         "reviews_created_or_updated": created_or_updated,
