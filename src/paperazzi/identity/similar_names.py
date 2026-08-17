@@ -9,6 +9,7 @@ from collections import defaultdict
 from typing import Any
 
 from .manual_review import (
+    _author_summary,
     _author_variant_map,
     _best_author_pair_score,
     _compact,
@@ -67,11 +68,11 @@ def similar_author_candidates(
     minimum_score: float = 0.25,
     limit: int = 12,
 ) -> list[dict[str, Any]]:
-    """Return several review candidates for one canonical author.
+    """Return several richly described review candidates for one canonical author.
 
     Unlike the queue refresh (one strongest queue entry per source identity), the detail
-    view should let a human compare several plausible people. Same-paper candidates are
-    retained but flagged because merge itself will be blocked by the Phase 4 guard.
+    view lets a human compare several plausible people. Same-paper candidates are retained
+    but flagged because merge itself will be blocked by the Phase 4 guard.
     """
     variants = _author_variant_map(session)
     target = variants.get(author_id, [])
@@ -81,7 +82,7 @@ def similar_author_candidates(
     if not target_keys:
         return []
     papers = _papers_by_author(session)
-    rows: list[dict[str, Any]] = []
+    scored: list[tuple[float, bool, str, dict[str, float], tuple[str, str] | None]] = []
     for candidate_id, candidate_variants in variants.items():
         if candidate_id == author_id:
             continue
@@ -91,23 +92,27 @@ def similar_author_candidates(
         score, components, names = _best_review_score(target, candidate_variants)
         if score < minimum_score:
             continue
-        rows.append(
-            {
-                "author_id": candidate_id,
-                "similarity_score": score,
-                "similarity_components": components,
-                "representative_names": names,
-                "same_paper_conflict": bool(papers[author_id] & papers[candidate_id]),
-            }
+        scored.append(
+            (
+                score,
+                bool(papers[author_id] & papers[candidate_id]),
+                candidate_id,
+                components,
+                names,
+            )
         )
-    rows.sort(
-        key=lambda row: (
-            row["same_paper_conflict"],
-            -row["similarity_score"],
-            row["author_id"],
+    scored.sort(key=lambda row: (row[1], -row[0], row[2]))
+    result: list[dict[str, Any]] = []
+    for score, same_paper, candidate_id, components, names in scored[: min(max(1, limit), 50)]:
+        summary = _author_summary(session, candidate_id, max_papers=8)
+        summary.update(
+            similarity_score=score,
+            similarity_components=components,
+            representative_names=names,
+            same_paper_conflict=same_paper,
         )
-    )
-    return rows[: min(max(1, limit), 50)]
+        result.append(summary)
+    return result
 
 
 def refresh_similar_identity_reviews(
