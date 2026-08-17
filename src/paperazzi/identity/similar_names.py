@@ -36,7 +36,6 @@ def refresh_similar_identity_reviews(
             if family and initial:
                 blocks[(family, initial)].add(author_id)
 
-    # One query builds the same-paper negative guard for every identity.
     papers_by_author: dict[str, set[int]] = defaultdict(set)
     for author_id, paper_id in (
         session.query(Authorship.author_id, Authorship.paper_id)
@@ -79,7 +78,7 @@ def refresh_similar_identity_reviews(
     )[:max_new_reviews]:
         enqueue_review(
             session,
-            queue_type="IDENTITY_CONFLICT",
+            queue_type="SIMILAR_AUTHOR_IDENTITY",
             subject_type="author",
             subject_id=source_id,
             candidate_id=candidate_id,
