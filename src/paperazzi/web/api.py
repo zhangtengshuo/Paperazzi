@@ -1,6 +1,7 @@
 """FastAPI adapter for the Paperazzi local web application."""
 from __future__ import annotations
 
+import atexit
 import os
 from contextlib import contextmanager
 from pathlib import Path
@@ -60,6 +61,10 @@ def _database_path(db_path: str | Path | None = None) -> Path:
 def create_app(db_path: str | Path | None = None) -> FastAPI:
     path = _database_path(db_path)
     engine = create_paperazzi_engine(path)
+    # SQLAlchemy's pool intentionally keeps SQLite connections open for reuse. Register
+    # process-exit disposal so short-lived CLI/test processes do not leave Python 3.13
+    # sqlite ResourceWarnings while normal server reuse remains unchanged.
+    atexit.register(engine.dispose)
     session_factory = sa.orm.sessionmaker(bind=engine)
 
     app = FastAPI(
