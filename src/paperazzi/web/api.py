@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import atexit
+import json
 import os
 from contextlib import contextmanager
 from pathlib import Path
@@ -63,8 +64,38 @@ def _database_path(db_path: str | Path | None = None) -> Path:
     return Path(os.environ.get("PAPERAZZI_DB", DEFAULT_DB))
 
 
+def _load_local_ai_audit(audit_dir: str | Path | None) -> dict[str, object]:
+    """Load external audit evidence without importing it into Paperazzi state."""
+    if not audit_dir:
+        return {"available": False, "reviews": {}, "papers": {}, "summary": {}, "score": {}}
+    root = Path(audit_dir)
+    try:
+        reviews = {
+            int(row["paper_id"]): row
+            for row in (
+                json.loads(line)
+                for line in (root / "ai_reviews.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            )
+        }
+        papers = {
+            int(row["paper_id"]): row
+            for row in (
+                json.loads(line)
+                for line in (root / "all_papers.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            )
+        }
+        summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
+        score = json.loads((root / "score.json").read_text(encoding="utf-8"))
+    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        return {"available": False, "reviews": {}, "papers": {}, "summary": {}, "score": {}}
+    return {"available": True, "reviews": reviews, "papers": papers, "summary": summary, "score": score}
+
+
 def create_app(db_path: str | Path | None = None) -> FastAPI:
     path = _database_path(db_path)
+    audit = _load_local_ai_audit(os.environ.get("PAPERAZZI_AUDIT_DIR"))
     engine = create_paperazzi_engine(path)
     atexit.register(engine.dispose)
     session_factory = sa.orm.sessionmaker(bind=engine)
@@ -77,6 +108,7 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     app.state.db_path = path
     app.state.engine = engine
     app.state.session_factory = session_factory
+    app.state.local_ai_audit = audit
 
     @contextmanager
     def session_scope(*, write: bool = False):
@@ -111,6 +143,12 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         except Exception as exc:  # pragma: no cover
             return {"status": "ERROR", "database": str(path), "error": type(exc).__name__}
 
+    @app.get("/api/audit/summary")
+    def audit_summary() -> dict[str, object]:
+        if not audit["available"]:
+            raise HTTPException(status_code=404, detail="local-AI audit overlay is not configured")
+        return {"summary": audit["summary"], "score": audit["score"]}
+
     @app.get("/api/papers")
     def papers(
         q: str | None = None,
@@ -133,6 +171,26 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
                 return query_service.get_paper(paper_id)
         except NotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @app.get("/api/papers/{paper_id}/audit")
+    def paper_audit(paper_id: int) -> dict[str, object]:
+        if not audit["available"]:
+            raise HTTPException(status_code=404, detail="local-AI audit overlay is not configured")
+        review = audit["reviews"].get(paper_id)
+        if review is None:
+            raise HTTPException(status_code=404, detail=f"paper {paper_id} is not in the audit review queue")
+        paper_row = audit["papers"].get(paper_id, {})
+        return {
+            "paper_id": paper_id,
+            "review": review,
+            "deterministic": {
+                "machine_predicted_corresponding_authors": paper_row.get("machine_predicted_corresponding_authors", []),
+                "flags": paper_row.get("flags", []),
+                "risk_score": paper_row.get("risk_score"),
+                "severity": paper_row.get("severity"),
+                "selected_pdf_path": paper_row.get("selected_pdf_path"),
+            },
+        }
 
     @app.get("/api/papers/{paper_id}/pdf", response_class=FileResponse)
     def paper_pdf(paper_id: int):

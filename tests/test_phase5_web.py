@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import sqlalchemy as sa
 
@@ -234,6 +236,59 @@ class Phase5WebTests(unittest.TestCase):
         self.assertEqual(requests["search"]["status_code"], 200)
         self.assertEqual(requests["author"]["status_code"], 200)
         self.assertEqual(requests["reviews"]["status_code"], 200)
+
+    def test_local_ai_audit_overlay_is_read_only_and_visible(self) -> None:
+        with self.sf() as session:
+            alpha = session.query(Paper).filter_by(title="Alpha paper").one()
+
+        audit_dir = Path(self.tmp.name) / "audit"
+        audit_dir.mkdir()
+        review = {
+            "paper_id": alpha.paper_id,
+            "review_status": "REVIEWED",
+            "ground_truth_correspondence_status": "EXPLICIT",
+            "ground_truth_corresponding_authors": ["Bob Jones"],
+            "primary_document_status": "OK",
+            "text_extraction_status": "OK",
+            "author_header_status": "OK",
+            "reference_section_status": "OK",
+            "issues": [],
+            "notes": "Test-only external evidence",
+        }
+        paper_row = {
+            "paper_id": alpha.paper_id,
+            "machine_predicted_corresponding_authors": ["Bob Jones"],
+            "flags": [],
+            "risk_score": 1,
+            "severity": "P3",
+            "selected_pdf_path": "/tmp/test.pdf",
+        }
+        (audit_dir / "ai_reviews.jsonl").write_text(json.dumps(review) + "\n", encoding="utf-8")
+        (audit_dir / "all_papers.jsonl").write_text(json.dumps(paper_row) + "\n", encoding="utf-8")
+        (audit_dir / "summary.json").write_text(
+            json.dumps({"papers_scanned": 1, "pdfs_queued_for_ai_review": 1,
+                        "papers_without_reviewable_primary_pdf": 0}),
+            encoding="utf-8",
+        )
+        (audit_dir / "score.json").write_text(
+            json.dumps({"correspondence": {"tp": 1, "fp": 0, "fn": 0,
+                                            "precision": 1.0, "recall": 1.0,
+                                            "false_positive_zero": True}}),
+            encoding="utf-8",
+        )
+
+        with patch.dict(os.environ, {"PAPERAZZI_AUDIT_DIR": str(audit_dir)}):
+            result = run_asgi_smoke(
+                create_app(self.db),
+                {
+                    "summary": "/api/audit/summary",
+                    "paper_audit": f"/api/papers/{alpha.paper_id}/audit",
+                },
+                request_timeout=5.0,
+            )
+        self.assertEqual(result["status"], "PASS", result)
+        self.assertEqual(result["requests"]["summary"]["status_code"], 200)
+        self.assertEqual(result["requests"]["paper_audit"]["status_code"], 200)
 
     def test_real_uvicorn_localhost_smoke(self) -> None:
         routes = {
