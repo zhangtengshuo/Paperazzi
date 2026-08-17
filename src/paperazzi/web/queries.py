@@ -196,7 +196,10 @@ class PaperazziQueryService:
         )
         out=[]
         for r in rows:
-            name=r.display_name or " ".join(x for x in (r.first_name,r.last_name) if x) or None
+            if r.paper_id is None:
+                name=None
+            else:
+                name=r.display_name or " ".join(x for x in (r.first_name,r.last_name) if x) or "Unknown author"
             out.append({
                 "review_item_id":r.review_item_id,
                 "queue_type":r.queue_type,
