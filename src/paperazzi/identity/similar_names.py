@@ -14,8 +14,25 @@ from .manual_review import (
     _compact,
     sync_author_name_variants,
 )
-from .models import Authorship
+from .models import Authorship, AuthorNameVariant
 from .review import enqueue_review
+
+
+def _best_review_score(
+    left: list[AuthorNameVariant], right: list[AuthorNameVariant]
+) -> tuple[float, dict[str, float], tuple[str, str] | None]:
+    score, components, names = _best_author_pair_score(left, right)
+    # Review-only East-Asian/order guard: some sources swap structured given/family fields.
+    # This never becomes an auto-merge condition.
+    for lv in left:
+        for rv in right:
+            lf, lg = _compact(lv.family_name), _compact(lv.given_name)
+            rf, rg = _compact(rv.family_name), _compact(rv.given_name)
+            if lf and lg and rf and rg and lf == rg and lg == rf and 0.95 > score:
+                score = 0.95
+                components = {"given_family_order_swapped": 0.95}
+                names = (lv.raw_name, rv.raw_name)
+    return score, components, names
 
 
 def refresh_similar_identity_reviews(
@@ -32,9 +49,13 @@ def refresh_similar_identity_reviews(
         for row in rows:
             family = _compact(row.family_name)
             given = _compact(row.given_name)
-            initial = given[:1] if given else (row.initials or "")[:1]
-            if family and initial:
-                blocks[(family, initial)].add(author_id)
+            given_initial = given[:1] if given else (row.initials or "")[:1]
+            family_initial = family[:1]
+            if family and given_initial:
+                blocks[(family, given_initial)].add(author_id)
+            # Alternate review-only block catches structured name-order reversal.
+            if given and family_initial:
+                blocks[(given, family_initial)].add(author_id)
 
     papers_by_author: dict[str, set[int]] = defaultdict(set)
     for author_id, paper_id in (
@@ -48,15 +69,20 @@ def refresh_similar_identity_reviews(
     pair_count = 0
     scored_pair_count = 0
     same_paper_blocked = 0
+    seen_pairs: set[tuple[str, str]] = set()
     for ids in blocks.values():
         ordered = sorted(ids)
         for index, left_id in enumerate(ordered):
             for right_id in ordered[index + 1 :]:
+                pair = (left_id, right_id)
+                if pair in seen_pairs:
+                    continue
+                seen_pairs.add(pair)
                 pair_count += 1
                 if papers_by_author[left_id] & papers_by_author[right_id]:
                     same_paper_blocked += 1
                     continue
-                score, components, names = _best_author_pair_score(
+                score, components, names = _best_review_score(
                     variants[left_id], variants[right_id]
                 )
                 scored_pair_count += 1
