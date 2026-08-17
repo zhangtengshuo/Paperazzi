@@ -40,7 +40,7 @@ The AI must process **one paper at a time**. It must open/read that paper's real
 
 A review record without direct-PDF evidence is invalid even if its final answer happens to be correct.
 
-## 4. Blind review is mandatory
+## 4. Blind review and mechanical evidence validation are mandatory
 
 For correspondence ground-truth creation, use a blind review queue produced by:
 
@@ -50,9 +50,15 @@ The local AI must not inspect parser predictions until its independent PDF decis
 
 After review, validate the evidence contract with:
 
-`python scripts/validate_forensic_correspondence_reviews.py ...`
+`python scripts/validate_forensic_correspondence_reviews.py ... --require-all`
 
 If this validator fails, the audit is incomplete. Do not weaken the validator or edit review truth merely to make it pass.
+
+After and only after the forensic validator passes, score the frozen ground truth directly with:
+
+`python scripts/score_forensic_correspondence_reviews.py ...`
+
+**Do not manually convert, regenerate, normalize, summarize, or rewrite the frozen forensic ground-truth rows before scoring.** Any older instruction suggesting manual conversion to the legacy `ai_reviews.jsonl` schema is superseded by this rule.
 
 ## 5. Audit and repair are separate tasks
 
