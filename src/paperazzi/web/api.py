@@ -17,12 +17,12 @@ from paperazzi.identity.manual_review import (
     identity_review_detail,
     link_review_mention,
     merge_identity_review_pair,
-    refresh_similar_identity_reviews,
     reject_review_candidate,
     sync_author_name_variants,
 )
 from paperazzi.identity.profile_evidence import author_sourced_evidence
 from paperazzi.identity.service import IdentityResolutionError
+from paperazzi.identity.similar_names import refresh_similar_identity_reviews
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 
@@ -180,7 +180,6 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     ) -> list[dict[str, object]]:
         try:
             with session_scope() as session:
-                # Reuse the canonical-author existence contract from the query service.
                 PaperazziQueryService(session).get_author(author_id)
                 return author_sourced_evidence(session, author_id, limit=limit)
         except NotFoundError as exc:
