@@ -103,7 +103,12 @@ class IdentityReviewActionTests(unittest.TestCase):
                 author_rows=[row for row in rows if row['subject_type']=='author']
                 self.assertTrue(author_rows,rows)
                 self.assertFalse(author_rows[0]['source_name'].startswith('01'),author_rows[0])
-                detail=await client.get(f"/api/reviews/identity/{rows[0]['review_item_id']}");self.assertEqual(detail.status_code,200,detail.text)
+                detail=await client.get(f"/api/reviews/identity/{author_rows[0]['review_item_id']}")
+                self.assertEqual(detail.status_code,200,detail.text)
+                self.assertGreaterEqual(len(detail.json()['candidates']),2,detail.text)
+                home=await client.get('/')
+                self.assertEqual(home.status_code,200)
+                self.assertIn('Similar identities (',home.text)
         try:
             asyncio.run(run())
         finally:
