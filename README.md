@@ -6,7 +6,7 @@ The project treats Zotero's local `zotero.sqlite` database and `storage/` direct
 
 ## Current status
 
-**Phase 4 — Author identity and local reference resolution: IN PROGRESS.**
+**Phase 5 — Backend and minimal web UI: IN PROGRESS.**
 
 Completed foundations:
 
@@ -18,49 +18,64 @@ Phase 2.5 local PDF evidence + AI-supervised adaptive parsing  PASS
 Phase 3   relational persistence + incremental scan state      PASS
 Phase 3.1 persistence hardening                                PASS
            database schema                                     PHASE3_V1
+Phase 4   author identity + authorship/reference resolution    PASS
+           author identity model                               PHASE4_V1
+           reference resolution model                          PHASE4_V1
 ```
 
-Phase 4 runtime implementation has started directly on `main`.
+Phase 4 closeout is documented in [`docs/phase4/PHASE4_CLOSEOUT.md`](docs/phase4/PHASE4_CLOSEOUT.md). Zero accepted references is a valid corpus state; Paperazzi does not manufacture reviewed references to satisfy a quota.
 
-Implemented Phase 4 surface currently includes:
+## Phase 5 MVP
+
+The first usable browser product is now being implemented directly on `main`.
+
+Current Phase 5 surface:
 
 ```text
-0004_identity_resolution
-0005_identity_history_constraints
-
-canonical authors + name variants + external IDs
-creator-mention identity memberships/decisions/evidence
-conservative name/coauthor candidate resolution
-reversible link/unlink/merge/split/not-same-person/lock operations
-authorship projection and first-author status
-accepted-PDF corresponding/affiliation evidence mapping
-accepted-reference-only local paper resolution
-DOI/title/author-year-journal/journal-volume-page-year match classes
-versioned resolution thresholds
-review queues
-Phase 4 synthetic/regression tests
-staged real-library validation tooling
+PaperazziQueryService
+FastAPI backend
+paper list + paper detail
+ALL source authors displayed, including unresolved identity
+FIRST / CORRESPONDING additive role labels
+author profile + publication chronology
+coauthor listing
+identity review queue
+paper/author/DOI/journal search
+local PDF open endpoint
+minimal dependency-free browser UI
 ```
 
-Phase 4 is **not yet declared PASS**. The new code must pass the full local test suite and staged real-library validation, including explicitly reviewed real PDF/reference anchors.
+Install the web extra:
 
-Phase 4 entry points:
+```bash
+python -m pip install -e ".[pdf,web]"
+```
 
-- [`docs/phase4/README.md`](docs/phase4/README.md) — Phase 4 entry point and hard branch policy.
-- [`docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md`](docs/architecture/IDENTITY_AND_REFERENCE_RESOLUTION.md) — normative identity/reference semantics.
-- [`docs/phase4/PHASE4_IMPLEMENTATION.md`](docs/phase4/PHASE4_IMPLEMENTATION.md) — implementation plan and gates.
-- [`docs/phase4/PHASE4_REAL_VALIDATION.md`](docs/phase4/PHASE4_REAL_VALIDATION.md) — staged real-library validation workflow.
-- [`prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md`](prompts/local_ai/PHASE4_IMPLEMENTATION_AGENT.md) — current parallel implementation/validation instructions.
-- [`prompts/local_ai/PDF_EVIDENCE_AGENT.md`](prompts/local_ai/PDF_EVIDENCE_AGENT.md) — mandatory PDF review contract.
-- [`schemas/phase4_report.schema.json`](schemas/phase4_report.schema.json) — final validation report contract.
-- [`schemas/phase4_anchor_reviews.schema.json`](schemas/phase4_anchor_reviews.schema.json) — explicit anchor-review interchange contract.
-- [`docs/architecture/PERSISTENCE_MODEL.md`](docs/architecture/PERSISTENCE_MODEL.md) — frozen Phase 3 persistence semantics that Phase 4 must preserve.
+Start Paperazzi:
 
-## Phase 4 branch policy
+```bash
+paperazzi-web
+```
 
-**Phase 4 is developed directly on `main`. Do not create new development branches or PR branches.**
+Default address:
 
-Independent implementation tasks may proceed in parallel when they have no real dependency, but integration correctness and final validation gates remain mandatory.
+```text
+http://127.0.0.1:8765
+```
+
+Default database:
+
+```text
+data/paperazzi.sqlite3
+```
+
+Override it with `PAPERAZZI_DB=/path/to/paperazzi.sqlite3`.
+
+Phase 5 entry point:
+
+- [`docs/phase5/README.md`](docs/phase5/README.md) — backend/UI architecture, API surface and run instructions.
+- [`docs/architecture/AUTHOR_RECORDING_AND_ENRICHMENT_SCOPE.md`](docs/architecture/AUTHOR_RECORDING_AND_ENRICHMENT_SCOPE.md) — all-author recording vs priority enrichment semantics.
+- [`docs/phase4/PHASE4_CLOSEOUT.md`](docs/phase4/PHASE4_CLOSEOUT.md) — frozen Phase 4 completion state.
 
 ## Repository layout
 
@@ -75,20 +90,18 @@ Paperazzi/
 │   ├── phase2/
 │   ├── phase2_5/
 │   ├── phase3/
-│   └── phase4/
+│   ├── phase4/
+│   └── phase5/
 ├── prompts/local_ai/
 ├── schemas/
 ├── src/paperazzi/
 │   ├── zotero_sqlite/      # read-only Zotero access + schema adapters
 │   ├── ingest/             # canonical records and scan/diff semantics
 │   ├── local_evidence/     # frozen-v3 local PDF evidence extraction
-│   ├── database/           # PHASE3_V1 persistence + extraction workflow
-│   ├── identity/           # Phase 4 identity/authorship/reference resolution
-│   ├── enrichment/         # later online enrichment protocol
-│   ├── graph/              # later derived graph
-│   └── api/                # later backend API
+│   ├── database/           # Paperazzi persistence + extraction workflow
+│   ├── identity/           # identity/authorship/reference resolution
+│   └── web/                # Phase 5 query service, FastAPI and minimal UI
 ├── migrations/
-├── frontend/               # later React/TypeScript web UI
 ├── scripts/
 ├── tests/
 ├── requests/
@@ -96,20 +109,18 @@ Paperazzi/
 └── data/                   # local runtime state; ignored by Git
 ```
 
-Zotero-specific SQL remains isolated inside `zotero_sqlite`; PDF parsing remains isolated inside `local_evidence`; Paperazzi-owned persistence belongs in `database`; identity and semantic resolution belong in `identity`/resolver services.
+Zotero-specific SQL remains isolated inside `zotero_sqlite`; PDF parsing remains isolated inside `local_evidence`; Paperazzi-owned persistence belongs in `database`; identity and semantic resolution belong in `identity`; product read semantics belong in the Phase 5 query/service layer.
 
-## Phase 4 boundary
-
-Phase 4 deliberately separates source records from semantic decisions:
+## Core semantic boundaries
 
 ```text
 paper_creator_mention != canonical author
 paper_reference       != cited paper
 ```
 
-Normalized names may generate identity candidates but may not by themselves auto-merge authors. Only accepted PDF/reference evidence may participate as authoritative semantic evidence. Only accepted reference matches may later produce derived `CITES` edges.
+Every Zotero paper author is retained and shown even when canonical identity is unresolved. First/corresponding status is additive role metadata, not an author-inclusion filter. Normalized names may generate identity candidates but may not by themselves auto-merge authors. Only accepted PDF/reference evidence may participate as authoritative semantic evidence. Only accepted reference matches may later produce derived `CITES` edges.
 
-Broad author profile enrichment (photos, education, social profiles, age/gender, monthly monitoring), graph visualization, API and frontend are later phases.
+Broad public-profile enrichment is a later phase and defaults to first and corresponding authors; ordinary coauthors remain fully recorded in paper/author/network relations without proactive biographical enrichment.
 
 ## Safety rule
 
