@@ -14,6 +14,7 @@ if str(SRC) not in sys.path:
 
 from paperazzi.database.base import Base  # noqa: E402
 import paperazzi.database.models  # noqa: E402,F401  (register tables on Base)
+import paperazzi.provenance.models  # noqa: E402,F401  (register provenance tables)
 
 config = context.config
 if config.config_file_name is not None:
