@@ -93,14 +93,18 @@ class IdentityReviewActionTests(unittest.TestCase):
             self.assertEqual(s.query(Authorship).filter_by(creator_mention_id=alex2.creator_mention_id,status='ACTIVE').one().author_id,target)
 
     def test_api_exposes_review_detail_and_write_actions(self):
+        app=create_app(self.db)
         async def run():
-            transport=httpx.ASGITransport(app=create_app(self.db))
+            transport=httpx.ASGITransport(app=app)
             async with httpx.AsyncClient(transport=transport,base_url='http://test',trust_env=False) as client:
                 r=await client.post('/api/reviews/identity/sync-name-variants');self.assertEqual(r.status_code,200,r.text)
                 r=await client.post('/api/reviews/identity/refresh-similar');self.assertEqual(r.status_code,200,r.text)
                 rows=(await client.get('/api/reviews/identity?limit=100')).json();self.assertTrue(rows)
                 detail=await client.get(f"/api/reviews/identity/{rows[0]['review_item_id']}");self.assertEqual(detail.status_code,200,detail.text)
-        asyncio.run(run())
+        try:
+            asyncio.run(run())
+        finally:
+            app.state.engine.dispose()
 
     def test_ui_explains_identity_and_has_persistent_jump_pagination(self):
         self.assertIn('IDENTITY UNRESOLVED',APP_HTML)
