@@ -28,6 +28,7 @@ IDENTITY_REVIEW_PERFORMANCE_RECHECK = PASS
 MEANINGFUL_WARNINGS_REVIEWED = PASS
 ZOTERO_SOURCE_MODIFIED = NO
 IDENTITY_PRECISION_AUDIT = NOT_RUN_OPTIONAL
+IDENTITY_REVIEW_PERFORMANCE_CLASS = IMPROVED
 """
 
 
@@ -57,6 +58,14 @@ class Phase5CloseoutReportTests(unittest.TestCase):
         )
         errors = self.validate(text)
         self.assertTrue(any("EXISTING_ANACONDA_ENV_MODIFIED" in error for error in errors))
+
+    def test_performance_regression_is_rejected(self) -> None:
+        text = VALID.replace(
+            "IDENTITY_REVIEW_PERFORMANCE_CLASS = IMPROVED",
+            "IDENTITY_REVIEW_PERFORMANCE_CLASS = REGRESSED",
+        )
+        errors = self.validate(text)
+        self.assertTrue(any("IDENTITY_REVIEW_PERFORMANCE_CLASS" in error for error in errors))
 
 
 if __name__ == "__main__":
