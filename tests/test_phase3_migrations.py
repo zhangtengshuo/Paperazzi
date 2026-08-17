@@ -60,6 +60,7 @@ class Phase3MigrationGateTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr[-800:])
 
         engine = create_paperazzi_engine(self.db)
+        self.addCleanup(engine.dispose)
         with engine.connect() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             all_indexes = set()
@@ -86,6 +87,7 @@ class Phase3MigrationGateTests(unittest.TestCase):
         down = alembic("downgrade", "0001", db_path=self.db)
         self.assertEqual(down.returncode, 0, down.stderr[-500:])
         engine = create_paperazzi_engine(self.db)
+        self.addCleanup(engine.dispose)
         with engine.connect() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             self.assertNotIn("document_extraction_runs", tables)
@@ -96,6 +98,7 @@ class Phase3MigrationGateTests(unittest.TestCase):
     def test_unique_foreign_and_check_constraints(self) -> None:
         alembic("upgrade", "head", db_path=self.db)
         engine = create_paperazzi_engine(self.db)
+        self.addCleanup(engine.dispose)
         with engine.begin() as conn:
             conn.exec_driver_sql(
                 "INSERT INTO papers (paper_id, active_in_zotero, created_at, updated_at) "
