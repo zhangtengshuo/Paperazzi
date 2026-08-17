@@ -25,7 +25,7 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[pdf]"
+          python -m pip install -e ".[pdf,web]"
 
       - name: Unit and regression suite
         run: python -m unittest discover -s tests -v

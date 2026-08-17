@@ -17,12 +17,18 @@ dependencies = [
 
 [project.optional-dependencies]
 pdf = ["PyMuPDF>=1.24"]
+web = [
+    "FastAPI>=0.115",
+    "uvicorn>=0.30",
+    "httpx>=0.27",
+]
 
 [project.scripts]
 paperazzi-zotero-probe = "paperazzi.zotero_sqlite.probe:main"
+paperazzi-web = "paperazzi.web.api:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
