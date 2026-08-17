@@ -31,7 +31,7 @@ def list_identity_review_queue(session:Any,*,limit:int=100)->list[dict[str,Any]]
         mention.display_name,mention.first_name,mention.last_name,mention.paper_id,
         author.preferred_name.label('canonical_name'),
     ).outerjoin(mention,creator_subject).outerjoin(first_orders,first_orders.c.paper_id==mention.paper_id).outerjoin(author,author_subject)
-      .filter(ResolutionReviewQueue.status=='OPEN',ResolutionReviewQueue.queue_type.in_(['AMBIGUOUS_AUTHOR_IDENTITY','IDENTITY_CONFLICT','UNRESOLVED_CORRESPONDING_AUTHOR']))
+      .filter(ResolutionReviewQueue.status=='OPEN',ResolutionReviewQueue.queue_type.in_(['AMBIGUOUS_AUTHOR_IDENTITY','IDENTITY_CONFLICT','SIMILAR_AUTHOR_IDENTITY','UNRESOLVED_CORRESPONDING_AUTHOR']))
       .order_by(effective.desc(),ResolutionReviewQueue.review_item_id).limit(capped).all())
     out=[]
     for r in rows:
