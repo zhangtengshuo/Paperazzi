@@ -577,6 +577,44 @@ Interpretation: the production resolver is materially over-inclusive for contact
 | PRIMARY_SELECTION_OR_TITLE_MISMATCH | 23 | Selected PDF title/front matter did not match cleanly or looked supplementary. |
 | IMAGE_ONLY_OR_EMPTY_FRONT_MATTER | 16 | OCR-needed or empty text layer; no speculative role truth recorded. |
 
+## User-reported browser findings (2026-08-17)
+
+The following findings were reported during browser verification after the audit overlay was made visible. They are recorded as defects and observations, not as repaired production behavior.
+
+### 1. Audit result is not the Paperazzi record
+
+- The browser overlay is intentionally read-only. `PDF audit ground truth` is an external audit conclusion and is not written into the paper's `CORRESPONDING` roles or the author identity links.
+- Consequently, a paper can show confirmed PDF correspondence in the overlay while the normal paper view still shows no corresponding authors.
+- The labels `EXPLICIT`, `NONE_EXPLICIT`, `ground truth`, and `machine prediction` were not sufficiently understandable in the UI. They need plain-language explanations such as “PDF核对结果：已确认通讯作者” and “当前数据库记录：尚未写入通讯作者”。
+
+### 2. Paperazzi ID 2360: confirmed PDF correspondence but missing identity links
+
+Paper `2360`, *Dynamics of Singlet Fission in the TIPS-Pn Cluster: Endothermic or Exothermic?*, has PDF author markers for `Xianfeng Qiao` and `Dongge Ma`. The local-AI review recorded both names as explicit correspondence ground truth. However, the Paperazzi record still reports no corresponding authors, and both paper-author mentions have `author_id = null`, `identity_status = UNRESOLVED`, and `roles = [ORDINARY]`.
+
+Both canonical author profiles already exist and are linked on paper `1557`; therefore this is an identity-membership propagation/linking defect in addition to the read-only audit-overlay limitation. Because the paper-author mentions have no `author_id`, the browser correctly cannot render profile links for those two names.
+
+### 3. Paperazzi ID 1156: three marked authors, only two parser predictions
+
+Paper `1156`, *Torsional Motion Effect on the Quintet Multiexciton Formation through Intramolecular Singlet Fission in Ferrocene-Bridged Pentacene Dimers*, shows `Nikolai V. Tkachenko*`, `Yasuhiro Kobori*`, and `Taku Hasobe*`, with three corresponding contact blocks. The deterministic parser predicted only `Yasuhiro Kobori` and `Taku Hasobe`; it missed `Nikolai V. Tkachenko`. The formal Paperazzi record currently has no corresponding-author role for any of the three.
+
+The audit row was incorrectly classified as `NONE_EXPLICIT` because the layout uses publisher star/email convention rather than a literal “corresponding author” sentence. The source spelling `Nikolai V Tkachenko` also differs from the PDF spelling `Nikolai V. Tkachenko`, exposing a punctuation/author-mapping weakness.
+
+### 4. Paperazzi ID 886: three contact authors, zero correspondence predictions
+
+Paper `886`, *Accessing sulfonamides via formal SO2 insertion into C–N bonds*, contains three contact emails for `Christopher B. Kelly`, `Christopher A. Reiher`, and `Mark D. Levin`. The current Paperazzi record has all seven author identities resolved, but `corresponding_authors` is empty. The deterministic parser predicted zero authors and the local-AI row was classified as `NONE_EXPLICIT` with `CONTACT_ONLY_NO_EXPLICIT_ROLE`.
+
+This is a complete `0/3` correspondence miss, not an identity-link problem. The extracted text retained the contact block but lost or failed to interpret the author-side icons/markers. The Zotero item is also recorded as a ChemRxiv preprint while the selected PDF front matter carries the published Nature Chemistry DOI, so document/version identity must be reviewed before promotion.
+
+### 5. Full-library audit methodology limitation
+
+The batch did read and review all 2,060 PDFs in the queue, but the review was primarily text-extraction-based and did not provide reliable page-image inspection of small author-side icons, stars, envelopes, or publisher-specific correspondence layouts. The audit therefore detected warning signals in cases such as `886` without converting them into correct correspondence truth. The final score already records the consequence: recall `0.2089`, with `1,030` false negatives, and the gate remains `FAIL / BLOCKED`. “Batch completed” must not be represented as “correspondence correctness validated.”
+
+### 6. Identity Review merge queue disappearance bug (user reproduction)
+
+Reported reproduction: when Identity Review contains three or more similar names, merging one selected name into another causes the remaining similar-name entries to disappear from the page. After a refresh they may reappear, but the remaining unmerged candidate is no longer shown as similar.
+
+Expected behavior: one merge should modify only the selected pair; every other open candidate and its similarity relationship must remain visible. Current impact is high because the review queue can hide unresolved identity decisions and make it appear that no further review is required. This report records the behavior as `P1 / pending independent reproduction`; no data deletion has been proven from the browser symptom alone.
+
 ## Required deliverables
 
 - `summary.json`, `all_papers.jsonl`, `ai_review_queue.jsonl`, `ai_reviews.jsonl`, `score.json`, and this report are stored together in this run directory.
