@@ -24,9 +24,9 @@ from paperazzi.identity.manual_review import (  # noqa:E402
     identity_review_detail,
     link_review_mention,
     merge_identity_review_pair,
-    refresh_similar_identity_reviews,
     sync_author_name_variants,
 )
+from paperazzi.identity.similar_names import refresh_similar_identity_reviews  # noqa:E402
 from paperazzi.ingest.models import CanonicalCreator, CanonicalZoteroItem  # noqa:E402
 from paperazzi.web.api import create_app  # noqa:E402
 from paperazzi.web.ui import APP_HTML  # noqa:E402
@@ -100,6 +100,9 @@ class IdentityReviewActionTests(unittest.TestCase):
                 r=await client.post('/api/reviews/identity/sync-name-variants');self.assertEqual(r.status_code,200,r.text)
                 r=await client.post('/api/reviews/identity/refresh-similar');self.assertEqual(r.status_code,200,r.text)
                 rows=(await client.get('/api/reviews/identity?limit=100')).json();self.assertTrue(rows)
+                author_rows=[row for row in rows if row['subject_type']=='author']
+                self.assertTrue(author_rows,rows)
+                self.assertFalse(author_rows[0]['source_name'].startswith('01'),author_rows[0])
                 detail=await client.get(f"/api/reviews/identity/{rows[0]['review_item_id']}");self.assertEqual(detail.status_code,200,detail.text)
         try:
             asyncio.run(run())
