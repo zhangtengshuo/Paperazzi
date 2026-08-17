@@ -2,8 +2,13 @@
 """Preview or explicitly rebuild one Paperazzi document's local-PDF evidence.
 
 Preview is read-only. Applying a rebuild requires an explicit review decision and
-``--apply``.  The script writes only the Paperazzi-owned database; it never writes the
+``--apply``. The script writes only the Paperazzi-owned database; it never writes the
 PDF or Zotero source.
+
+For an accepted reviewed rebuild, the previously current accepted attempt for the same
+document is retracted in the same transaction before the new attempt is promoted. This
+prevents old parser output and new parser output from remaining simultaneously current.
+If the new rebuild is not accepted, the previous current attempt is left untouched.
 """
 from __future__ import annotations
 
@@ -21,7 +26,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from paperazzi.database.engine import create_paperazzi_engine  # noqa: E402
-from paperazzi.database.models import PaperDocument  # noqa: E402
+from paperazzi.database.models import DocumentExtractionRun, PaperDocument  # noqa: E402
 from paperazzi.database.repositories import (  # noqa: E402
     EXTRACTOR_VERSION,
     PROMPT_HASH,
@@ -36,7 +41,10 @@ from paperazzi.database.repositories import (  # noqa: E402
 )
 from paperazzi.identity.authorship_evidence import propose_authorship_evidence  # noqa: E402
 from paperazzi.local_evidence.pdf import extract_pdf_evidence  # noqa: E402
-from paperazzi.provenance.service import effective_document_role  # noqa: E402
+from paperazzi.provenance.service import (  # noqa: E402
+    effective_document_role,
+    retract_extraction_attempt,
+)
 
 
 def _preview(evidence, role) -> dict:
@@ -66,6 +74,16 @@ def _preview(evidence, role) -> dict:
             "text_channel": evidence.references.text_channel,
         },
     }
+
+
+def _current_accepted_attempt_id(session, document: PaperDocument) -> int | None:
+    """Return the accepted attempt of the document's current run, if one exists."""
+    if document.current_extraction_run_id is None:
+        return None
+    current_run = session.get(DocumentExtractionRun, document.current_extraction_run_id)
+    if current_run is None:
+        return None
+    return current_run.accepted_attempt_id
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -100,9 +118,11 @@ def main() -> int:
                 return 2
             role = effective_document_role(session, document)
             evidence = extract_pdf_evidence(document.local_path)
+            previous_accepted_attempt_id = _current_accepted_attempt_id(session, document)
             payload = _preview(evidence, role)
             payload["document_id"] = document.document_id
             payload["paper_id"] = document.paper_id
+            payload["previous_accepted_attempt_id"] = previous_accepted_attempt_id
             payload["apply_requested"] = bool(args.apply)
 
             if not args.apply:
@@ -116,7 +136,12 @@ def main() -> int:
                 print(json.dumps({"error": "refusing paper-level evidence rebuild from SUPPLEMENTARY document"}))
                 return 3
             if evidence.error:
-                print(json.dumps({"error": f"PDF extraction failed: {evidence.error}", "preview": payload}, ensure_ascii=False))
+                print(
+                    json.dumps(
+                        {"error": f"PDF extraction failed: {evidence.error}", "preview": payload},
+                        ensure_ascii=False,
+                    )
+                )
                 return 3
 
             run = create_extraction_run(
@@ -174,7 +199,21 @@ def main() -> int:
                 quality_notes=args.quality_notes,
                 reviewer_runtime="Paperazzi-rebuild-document-evidence",
             )
+
+            replacement_retraction_id = None
             if args.review_decision in ("PASS", "ACCEPT_PARTIAL"):
+                if previous_accepted_attempt_id is not None:
+                    replacement_event = retract_extraction_attempt(
+                        session,
+                        previous_accepted_attempt_id,
+                        reason_code="REPLACED_BY_REVIEWED_REBUILD",
+                        reason_text=(
+                            f"Superseded by reviewed rebuild attempt_id={attempt.attempt_id} "
+                            f"for document_id={document.document_id}"
+                        ),
+                        actor=args.reviewer,
+                    )
+                    replacement_retraction_id = replacement_event.retraction_id
                 accept_attempt(session, run, attempt, args.review_decision)
                 authorship_result = propose_authorship_evidence(session, document.paper_id)
             else:
@@ -193,6 +232,7 @@ def main() -> int:
                     "attempt_id": attempt.attempt_id,
                     "review_decision": args.review_decision,
                     "persisted_front_matter_spans": persisted_spans,
+                    "replacement_retraction_id": replacement_retraction_id,
                     "authorship_projection": authorship_result,
                 }
             )
