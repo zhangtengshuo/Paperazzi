@@ -17,10 +17,10 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from paperazzi.database.engine import create_paperazzi_engine  # noqa: E402
-from paperazzi.database.models import Paper  # noqa: E402
+from paperazzi.database.models import Paper, PaperCreatorMention  # noqa: E402
 from paperazzi.database.persistence import persist_zotero_scan  # noqa: E402
 from paperazzi.identity import bootstrap_author_identities  # noqa: E402
-from paperazzi.identity.models import Authorship  # noqa: E402
+from paperazzi.identity.models import Authorship, ResolutionReviewQueue  # noqa: E402
 from paperazzi.ingest.models import CanonicalCreator, CanonicalZoteroItem  # noqa: E402
 from paperazzi.web.api import create_app  # noqa: E402
 from paperazzi.web.queries import PaperazziQueryService  # noqa: E402
@@ -141,6 +141,64 @@ class Phase5WebTests(unittest.TestCase):
 
             papers = service.search("Alpha")
             self.assertEqual(papers["papers"][0]["title"], "Alpha paper")
+
+    def test_identity_review_queue_is_ranked_with_one_select(self) -> None:
+        with self.sf() as session:
+            session.query(ResolutionReviewQueue).delete()
+            alpha = session.query(Paper).filter_by(title="Alpha paper").one()
+            alice = (
+                session.query(PaperCreatorMention)
+                .filter_by(paper_id=alpha.paper_id, order_index=0)
+                .one()
+            )
+            bob = (
+                session.query(PaperCreatorMention)
+                .filter_by(paper_id=alpha.paper_id, order_index=1)
+                .one()
+            )
+            alex = (
+                session.query(PaperCreatorMention)
+                .join(Paper, Paper.paper_id == PaperCreatorMention.paper_id)
+                .filter(Paper.title == "First Alex paper")
+                .one()
+            )
+            session.add_all([
+                ResolutionReviewQueue(
+                    queue_type="UNRESOLVED_CORRESPONDING_AUTHOR", subject_type="creator_mention",
+                    subject_id=str(bob.creator_mention_id), priority=20, status="OPEN",
+                ),
+                ResolutionReviewQueue(
+                    queue_type="IDENTITY_CONFLICT", subject_type="external", subject_id="X",
+                    priority=99, status="OPEN",
+                ),
+                ResolutionReviewQueue(
+                    queue_type="IDENTITY_CONFLICT", subject_type="creator_mention",
+                    subject_id=str(alice.creator_mention_id), priority=95, status="OPEN",
+                ),
+                ResolutionReviewQueue(
+                    queue_type="AMBIGUOUS_AUTHOR_IDENTITY", subject_type="creator_mention",
+                    subject_id=str(alex.creator_mention_id), priority=10, status="OPEN",
+                ),
+            ])
+            session.commit()
+
+            statements: list[str] = []
+            def capture(_conn, _cursor, statement, _parameters, _context, _executemany):
+                if statement.lstrip().upper().startswith("SELECT"):
+                    statements.append(statement)
+
+            sa.event.listen(self.engine, "before_cursor_execute", capture)
+            try:
+                rows = PaperazziQueryService(session).list_identity_review_queue(limit=4)
+            finally:
+                sa.event.remove(self.engine, "before_cursor_execute", capture)
+
+            self.assertEqual(len(statements), 1, statements)
+            self.assertEqual([row["effective_priority"] for row in rows], [100, 99, 95, 90])
+            self.assertEqual(rows[0]["source_name"], "Bob Jones")
+            self.assertEqual(rows[1]["source_name"], None)
+            self.assertEqual(rows[2]["source_name"], "Alice Smith")
+            self.assertEqual(rows[3]["source_name"], "Alex Wang")
 
     def test_http_mvp_routes_via_asgi_transport(self) -> None:
         with self.sf() as session:
