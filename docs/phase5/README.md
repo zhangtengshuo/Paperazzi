@@ -4,8 +4,6 @@
 
 Turn the validated Paperazzi database into a usable local research tool without changing the source/provenance semantics established in Phases 1–4.
 
-The Phase 5 MVP must support this end-to-end workflow:
-
 ```text
 open browser
   ↓
@@ -34,20 +32,38 @@ FastAPI
 minimal browser UI
 ```
 
-The query/service layer is authoritative for read semantics. HTTP handlers must stay thin.
+The query/service layer is authoritative for read semantics. HTTP handlers stay thin.
+
+## Mandatory local environment
+
+All local Phase 5 development and real-database validation must run in a dedicated micromamba environment named `Paperazzi`.
+
+```text
+environment manager = micromamba
+environment name    = Paperazzi
+Python              = 3.13
+dependency baseline = constraints/phase5-test.txt
+```
+
+Never install Paperazzi's pinned dependencies into the user's Anaconda `base` or another existing general-purpose environment.
+
+From the repository root:
+
+```bash
+micromamba create -y -f environment/Paperazzi.yml
+micromamba run -n Paperazzi python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
+micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
+```
+
+The environment checker must pass before authoritative local testing. If `Paperazzi` already exists, modify only that environment.
+
+GitHub Actions is separately isolated and does not need micromamba.
 
 ## Author inclusion rule
 
 Paper detail pages start from `paper_creator_mentions`, not `authorships`.
 
-This is mandatory because:
-
-- every Zotero paper author must be displayed;
-- unresolved canonical identity must never hide a source author;
-- first-author status can exist even when identity is unresolved;
-- corresponding-author status remains accepted evidence attached to the author-paper relationship.
-
-The UI therefore distinguishes:
+This is mandatory because every Zotero paper author must be displayed, unresolved canonical identity must never hide a source author, first-author status can exist even when identity is unresolved, and corresponding-author status remains accepted evidence attached to the author-paper relationship.
 
 ```text
 source author mention           always visible
@@ -56,8 +72,6 @@ FIRST / CORRESPONDING roles     additive
 ```
 
 ## MVP query surface
-
-`PaperazziQueryService` provides:
 
 ```text
 list_papers
@@ -89,18 +103,11 @@ GET /api/search?q=...
 
 ## PDF security boundary
 
-The API never accepts an arbitrary path from the client. A PDF is served only when:
-
-1. the requested paper exists in Paperazzi;
-2. a persisted `paper_documents` row belongs to that paper;
-3. `availability_status='PDF_AVAILABLE'`;
-4. the persisted local path still exists as a file.
+The API never accepts an arbitrary path from the client. A PDF is served only when the requested paper exists, a persisted `paper_documents` row belongs to it, the row says `PDF_AVAILABLE`, and the persisted local path still exists as a file.
 
 The endpoint is read-only and does not require Zotero Desktop.
 
 ## Identity review priority
-
-The first UI ranking is:
 
 ```text
 unresolved corresponding author   highest
@@ -113,41 +120,34 @@ This ranking affects review presentation only. It does not weaken automatic iden
 
 ## Search
 
-The first usable implementation searches paper title/DOI/venue and canonical author names/name variants through SQLAlchemy/SQLite. FTS5 is a later performance/indexing enhancement once the product query contract is stable.
+The first usable implementation searches paper title/DOI/venue and canonical author names/name variants through SQLAlchemy/SQLite. FTS5 remains a later optimization that requires measured real-corpus evidence.
 
 ## Run
 
-Install:
-
 ```bash
-python -m pip install -e ".[pdf,web]"
+micromamba run -n Paperazzi paperazzi-web
 ```
 
-Start:
+Default address: `http://127.0.0.1:8765`
 
-```bash
-paperazzi-web
-```
+Default database: `data/paperazzi.sqlite3`
 
-Default address:
-
-```text
-http://127.0.0.1:8765
-```
-
-Default database:
-
-```text
-data/paperazzi.sqlite3
-```
-
-Override with:
+Overrides:
 
 ```text
 PAPERAZZI_DB=/path/to/paperazzi.sqlite3
 PAPERAZZI_HOST=127.0.0.1
 PAPERAZZI_PORT=8765
 ```
+
+## Validate
+
+```bash
+micromamba run -n Paperazzi python -m unittest discover -s tests -v
+micromamba run -n Paperazzi python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3
+```
+
+See `docs/phase5/PHASE5_TESTING.md` for the failure-isolated ASGI/Uvicorn validation model.
 
 ## Phase 5 status
 
@@ -156,9 +156,9 @@ CURRENT_PHASE = PHASE_5_BACKEND_AND_WEB_UI
 PHASE_5_STATUS = IN_PROGRESS
 ```
 
-Next milestones after the MVP is green on CI:
+Next milestones:
 
-1. validate against the real Paperazzi database;
-2. add pagination/filter controls and FTS5 if needed;
+1. complete real-library validation in the `Paperazzi` micromamba environment;
+2. add pagination/filter controls and FTS5 only if measurements justify it;
 3. add explicit review actions rather than read-only review display;
 4. begin Phase 6 priority-author enrichment package generation.

@@ -1,8 +1,35 @@
 # Phase 5 Validation Architecture
 
+## Environment contract
+
+Authoritative local Phase 5 work has one required Python environment:
+
+```text
+environment manager = micromamba
+environment name    = Paperazzi
+Python              = 3.13
+pinned dependencies = constraints/phase5-test.txt
+```
+
+The user's existing Anaconda `base` and other pre-existing Python environments are diagnostic context only. They must not be upgraded, downgraded, or otherwise changed for Paperazzi.
+
+Create the isolated environment from the repository root:
+
+```bash
+micromamba create -y -f environment/Paperazzi.yml
+micromamba run -n Paperazzi python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
+micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
+```
+
+The checker must return `"pass": true` before authoritative local tests or real-library validation run. If `Paperazzi` already exists, only that environment may be repaired/updated.
+
+All local commands in this document are conceptually executed through `micromamba run -n Paperazzi ...`; shell activation is optional and must not be relied upon for correctness.
+
+GitHub Actions is already an ephemeral isolated environment and therefore remains free to use `actions/setup-python`; it validates the same dependency constraints on Python 3.11 and 3.13.
+
 ## Purpose
 
-Phase 5 validation must distinguish three independent layers:
+Phase 5 validation distinguishes three independent layers:
 
 ```text
 real Paperazzi DB/query semantics
@@ -12,17 +39,15 @@ in-process ASGI adapter
 real localhost Uvicorn server
 ```
 
-A failure in a later layer must not erase evidence already collected from an earlier layer.
+A later-layer failure must not erase evidence already collected from an earlier layer.
 
-## Why the previous validator was changed
+## Why synchronous TestClient was removed
 
-The first Phase 5 real-DB validator accumulated all results in memory and wrote its JSON report only after synchronous Starlette `TestClient` requests completed. On the user's Anaconda/Python 3.13 environment, `TestClient` hung inside the AnyIO blocking portal before an application handler ran. The process timed out and the already-completed real-DB observations were lost.
+The first real-DB validator accumulated results in memory and wrote its report only after Starlette `TestClient` requests completed. In the user's former Anaconda/Python 3.13 environment, the request hung inside the AnyIO blocking portal before a Paperazzi handler ran. The timeout also discarded earlier real-DB observations.
 
-The revised design removes `TestClient` from Phase 5 validation.
+The revised design removes synchronous Starlette/FastAPI `TestClient` from authoritative Phase 5 validation.
 
 ### In-process HTTP
-
-Use:
 
 ```text
 httpx.ASGITransport
@@ -30,31 +55,15 @@ httpx.ASGITransport
 httpx.AsyncClient
 ```
 
-This tests the ASGI application directly without Starlette's synchronous blocking-portal wrapper.
-
 ### Product-path HTTP
 
-Start a real Uvicorn subprocess on a temporary localhost port and query it with a normal `httpx.Client`.
+A real Uvicorn subprocess is started on a temporary localhost port and queried with a normal `httpx.Client`.
 
-The localhost client always uses:
-
-```text
-trust_env = false
-```
-
-so `HTTP_PROXY`, `HTTPS_PROXY`, or `ALL_PROXY` in the user's shell cannot silently redirect the Paperazzi localhost smoke test. The report records only whether proxy variables are present, never their values.
+The localhost client uses `trust_env=false`, preventing `HTTP_PROXY`, `HTTPS_PROXY`, or `ALL_PROXY` from silently redirecting the smoke test. Reports record only whether proxy variables exist, never their values.
 
 ## Failure-isolated report
 
-`scripts/validate_phase5.py` writes:
-
-```text
-data/phase5-validation/phase5_report.json
-```
-
-before testing starts, then atomically rewrites it at every stage transition.
-
-Stages:
+`scripts/validate_phase5.py` writes `data/phase5-validation/phase5_report.json` before testing starts and atomically rewrites it at each stage transition.
 
 ```text
 REAL_DATABASE_QUERY
@@ -62,55 +71,25 @@ ASGI_IN_PROCESS
 UVICORN_LOCALHOST_HTTP
 ```
 
-A hard timeout during `ASGI_IN_PROCESS`, for example, leaves:
+A hard failure during a later stage therefore preserves earlier evidence.
 
-```json
-{
-  "REAL_DATABASE_QUERY": {"status": "PASS"},
-  "ASGI_IN_PROCESS": {"status": "RUNNING"},
-  "UVICORN_LOCALHOST_HTTP": {"status": "NOT_RUN"}
-}
-```
+## Canonical dependency baseline
 
-instead of losing the real-database result.
+`constraints/phase5-test.txt` defines the reproducible dependency set. `pyproject.toml` still expresses supported lower bounds; the constraints file defines the authoritative local/CI validation baseline.
 
-## Canonical test environment
-
-Runtime compatibility remains broader than one Python minor release, but Paperazzi now has a reproducible Phase 5 validation stack:
+Before running the validator, `scripts/check_paperazzi_environment.py` verifies:
 
 ```text
-constraints/phase5-test.txt
+active environment name = Paperazzi
+Python = 3.13
+installed package versions match constraints/phase5-test.txt
 ```
 
-Install with:
-
-```bash
-python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
-```
-
-The canonical CI matrix currently validates Python 3.11 and Python 3.13 with the same pinned dependency set.
-
-`pyproject.toml` continues to express supported lower bounds. The constraints file defines the reproducible test baseline; the two serve different purposes.
-
-The validator records:
-
-```text
-Python executable and prefix
-platform
-SQLite runtime
-package versions
-module origins
-Conda environment name
-event-loop policy
-proxy-variable presence
-canonical-constraint match/mismatch
-```
-
-This is important because "same package requirements" is not equivalent to "same resolved environment."
+The environment contract records whether micromamba context markers are visible, but it does not rely solely on those markers because `micromamba run` implementations may expose them differently. Creation with micromamba remains a documented project rule.
 
 ## Automated PASS semantics
 
-The JSON report exposes both:
+The validation JSON exposes:
 
 ```text
 status
@@ -118,75 +97,97 @@ product_path_status
 in_process_harness_status
 ```
 
-`product_path_status=PASS` means:
+`product_path_status=PASS` requires:
 
 ```text
 REAL_DATABASE_QUERY = PASS
 UVICORN_LOCALHOST_HTTP = PASS
 ```
 
-The final automated `status=PASS` additionally requires `ASGI_IN_PROCESS=PASS`.
-
-This distinction prevents an in-process harness problem from being misreported as a product HTTP failure while still requiring the canonical test environment to make all automated layers green.
+Final automated `status=PASS` additionally requires `ASGI_IN_PROCESS=PASS`.
 
 ## Real-database information collected
 
 The validator records:
 
-- active paper count;
-- active canonical author count;
-- source author mentions;
-- accepted and unresolved author mentions;
+- active papers and canonical authors;
+- source/accepted/unresolved author mentions;
 - source-author projection mismatches;
-- unresolved authors still visible in sampled paper details;
+- unresolved authors visible in paper details;
 - `PRAGMA foreign_key_check`;
 - real title/author/DOI search checks;
-- `PDF_AVAILABLE` rows;
-- actually reachable PDF rows;
-- stale `PDF_AVAILABLE` row count and example paper IDs;
-- list and paper-detail timing statistics;
+- `PDF_AVAILABLE`, reachable, and stale PDF counts;
+- list/detail timing statistics;
 - ASGI route statuses/timings;
 - Uvicorn route statuses/timings and server log tail.
 
-Filesystem paths are not included in the stale-PDF examples.
+## Required local execution
 
-## Recommended execution
-
-A normal smoke run:
+First verify the environment:
 
 ```bash
-python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3
+micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
 ```
 
-A complete paper-projection pass:
+Then run the suite and real DB smoke:
 
 ```bash
-python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3 --sample-papers 0
+micromamba run -n Paperazzi python -m unittest discover -s tests -v
+micromamba run -n Paperazzi python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3
 ```
 
-`--sample-papers 0` explicitly means all active papers.
+For full-corpus author projection:
+
+```bash
+micromamba run -n Paperazzi python scripts/validate_phase5.py --db-path data/phase4-validation/paperazzi.sqlite3 --sample-papers 0
+```
+
+`--sample-papers 0` means all active papers.
 
 ## Interpretation
 
 ### Query PASS + ASGI PASS + Uvicorn PASS
 
-The automated Phase 5 real-database stack is healthy. Continue with browser/manual semantic inspection.
+Automated Phase 5 real-database validation is healthy. Continue with manual browser semantic inspection.
 
 ### Query PASS + ASGI FAIL + Uvicorn PASS
 
-The product path is working. Investigate the in-process Python/ASGI environment. Compare the validator's installed package versions and module origins with `constraints/phase5-test.txt`; do not rewrite Paperazzi query logic merely to make a test adapter work.
+The product path is working. Investigate the in-process harness/dependency state; do not rewrite Paperazzi query semantics merely to satisfy an adapter.
 
 ### Query PASS + ASGI PASS + Uvicorn FAIL
 
-This is a real deployment-path defect or localhost environment problem. Uvicorn log tail, route status, Python executable, proxy-presence flags, and exact tested DB must be retained.
+Treat as a deployment-path or localhost environment defect. Preserve server log tail, routes, environment checker result, and DB identity.
 
 ### Query FAIL
 
-Treat this as the highest-priority Phase 5 defect. Preserve paper/author IDs and mismatch examples. Do not solve it by force-merging identities or filtering unresolved source authors.
+Treat as the highest-priority Phase 5 defect. Preserve paper/author IDs and mismatch examples. Never solve it by force-merging identities or hiding unresolved source authors.
+
+## Local AI evidence required for remote review
+
+The local AI must return more than PASS/FAIL. The tracked report should include:
+
+```text
+micromamba version
+confirmation that Paperazzi is a separate environment
+environment checker PASS/FAIL
+Python version
+pip check result
+constraint mismatches if any
+full regression count/result
+real DB scale and full-corpus projection result
+ASGI and Uvicorn route timings
+real search examples and timings
+PDF reachability/stale counts
+browser smoke result
+high-publication/high-degree author performance observations
+warnings/exceptions that may matter later
+```
+
+For environment differences, report package names/versions and module origins when useful, but do not commit proxy credentials, tokens, cookies, or unnecessary machine-local filesystem paths.
 
 ## Manual browser validation
 
-Automated localhost HTTP is not a substitute for one final browser check. The local AI should verify:
+Verify:
 
 ```text
 paper list
@@ -199,4 +200,4 @@ identity review
 PDF opening
 ```
 
-Visual polish is not a correctness gate at this stage; semantic loss, broken navigation, unsafe file access, or pathological latency is.
+Visual polish is not a correctness gate; semantic loss, unsafe file access, broken navigation, or pathological latency is.

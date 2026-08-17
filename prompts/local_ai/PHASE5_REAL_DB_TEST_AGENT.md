@@ -1,32 +1,90 @@
-# Paperazzi Phase 5 — Local AI Real-Database Validation Agent v2
+# Paperazzi Phase 5 — Local AI Real-Database Validation Agent v3
 
 ## Mission
 
-You are the local validation agent for Paperazzi Phase 5. You have access to the user's real Paperazzi SQLite database and local Zotero/PDF filesystem that GitHub Actions cannot see.
+You are the local validation agent for Paperazzi Phase 5. Validate the current `main` against the user's real Paperazzi database and local Zotero/PDF filesystem, preserve evidence on failure, and return enough structured information for remote analysis.
 
-Your job is to validate the current `main` implementation, preserve useful evidence when something fails, and return enough structured information for a remote reviewer to decide whether the problem is:
+Do not manufacture data. Do not weaken Phase 4 identity safety. Do not modify Zotero source data.
+
+---
+
+# NON-NEGOTIABLE LOCAL ENVIRONMENT CONTRACT
+
+Paperazzi local development and real-data validation now **must use a dedicated micromamba environment named exactly `Paperazzi`**.
 
 ```text
-Paperazzi semantic/query defect
-ASGI in-process test-environment defect
-real Uvicorn/product-path defect
-local filesystem/PDF state
-performance limitation
-dependency/environment mismatch
+environment manager = micromamba
+environment name    = Paperazzi
+Python              = 3.13
+dependency baseline = constraints/phase5-test.txt
 ```
 
-Do not manufacture data and do not weaken Phase 4 identity safety to make Phase 5 green.
+## Absolute prohibition
+
+Do **not** install, upgrade, downgrade, uninstall, or otherwise change packages in:
+
+```text
+Anaconda base
+Miniconda base
+any user's existing Conda environment
+system Python
+any unrelated virtual environment
+```
+
+The user's pre-existing Anaconda environment is diagnostic context only. It is not a Paperazzi dependency target.
+
+Do not run a command such as the following against the currently active arbitrary Python environment:
+
+```text
+python -m pip install -c constraints/phase5-test.txt ...
+```
+
+unless you have first established that this Python belongs to the dedicated `Paperazzi` micromamba environment.
+
+## Required creation procedure
+
+From the repository root, create the dedicated environment with micromamba:
+
+```bash
+micromamba create -y -f environment/Paperazzi.yml
+micromamba run -n Paperazzi python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
+micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
+```
+
+The third command must report:
+
+```json
+"pass": true
+```
+
+before authoritative testing begins.
+
+If an environment named `Paperazzi` already exists, inspect it first. Repair/update only that environment. Do not delete or modify unrelated environments.
+
+For all subsequent local commands, prefer explicit execution through:
+
+```text
+micromamba run -n Paperazzi ...
+```
+
+rather than relying on whichever environment happens to be activated in the shell.
+
+GitHub Actions is an exception because it is already an ephemeral isolated environment. Do not redesign CI merely to force micromamba there.
 
 ---
 
 ## Read first
 
 ```text
+README.md
 docs/phase4/PHASE4_CLOSEOUT.md
 docs/phase5/README.md
 docs/phase5/PHASE5_TESTING.md
+environment/Paperazzi.yml
 constraints/phase5-test.txt
+scripts/check_paperazzi_environment.py
 scripts/validate_phase5.py
+src/paperazzi/environment_contract.py
 src/paperazzi/web/validation.py
 src/paperazzi/web/queries.py
 src/paperazzi/web/api.py
@@ -39,120 +97,83 @@ PHASE_4_STATUS = PASS
 CURRENT_PHASE = PHASE_5_BACKEND_AND_WEB_UI
 ```
 
-Work on `main`. Do not create a branch or PR for this validation task unless the user explicitly changes that policy.
+Work on `main`. Do not create a branch or PR unless explicitly requested.
 
 ---
 
-# Non-negotiable data rules
+# Source/data rules
 
 - Zotero `zotero.sqlite`, `storage/`, and PDFs are read-only.
-- Paperazzi source author truth comes from `paper_creator_mentions`.
-- Every Zotero paper author must remain visible even when canonical identity is unresolved.
-- `FIRST` and `CORRESPONDING` are additive authorship roles, not inclusion filters.
-- Do not force-resolve identities to increase coverage.
+- Paperazzi source-author truth starts from `paper_creator_mentions`.
+- Every Zotero paper author remains visible even when canonical identity is unresolved.
+- `FIRST` and `CORRESPONDING` are additive roles, not author filters.
+- Do not force-resolve identities merely to increase coverage.
 - Do not create fake `ACCEPTED` references or correspondence evidence.
-- Missing/unreachable PDFs may be valid data states.
-- `PDF_AVAILABLE` pointing to a missing file should be reported as stale/inconsistent state, not silently repaired.
+- Missing/unreachable PDFs may be valid states.
+- `PDF_AVAILABLE` pointing to a missing file is stale/inconsistent state to report.
 - Validation must not mutate semantic tables.
 
 ---
 
-# Important change from the previous test contract
+# Stage 0 — Capture native environment WITHOUT modifying it
 
-Do **not** use Starlette/FastAPI synchronous `TestClient` as the authoritative Phase 5 HTTP test.
-
-The new stack is:
+Before creating/updating `Paperazzi`, capture only diagnostic facts about the currently active environment:
 
 ```text
-Layer 1: PaperazziQueryService against real DB
-Layer 2: httpx.ASGITransport + AsyncClient
-Layer 3: real Uvicorn subprocess + localhost HTTP
-Layer 4: manual browser check
-```
-
-The validator persists every stage before and after execution. If a process hangs or is killed, keep the existing JSON file; its last `RUNNING` stage identifies where execution stopped.
-
-Localhost HTTP validation disables inherited HTTP proxy routing with `trust_env=False`.
-
----
-
-# Stage 0 — Repository and environment capture
-
-Before installing or changing anything, record the current native environment:
-
-```text
-branch
-commit SHA
-working-tree state
 Python version
 Python executable
-sys.prefix
 CONDA_DEFAULT_ENV if present
-SQLite runtime
-FastAPI
-Starlette
-HTTPX
-AnyIO
-SQLAlchemy
-Alembic
-PyMuPDF
-Uvicorn
-Pydantic
+micromamba version
+whether an environment named Paperazzi already exists
+FastAPI/Starlette/HTTPX/AnyIO versions if already installed
 ```
 
-Also record only the Boolean presence of:
+Do not install anything into this native environment. Do not try to "repair" it.
 
-```text
-HTTP_PROXY
-HTTPS_PROXY
-ALL_PROXY
-NO_PROXY
-```
+Do not repeat the old Starlette synchronous `TestClient` experiment unless specifically requested. The old failure has already been isolated to the blocking-portal test path and is no longer authoritative.
 
-Never write proxy URLs, usernames, passwords, tokens, cookies, API keys, or credentials into Git-tracked reports.
-
-Run `python -m pip check` and record whether dependency consistency passes.
-
-## Native-vs-canonical comparison
-
-First, if practical, run the revised validator once in the user's existing environment **without changing package versions**. This tells us whether removing `TestClient` already fixes the original Anaconda/Python 3.13 failure.
-
-Then inspect:
-
-```text
-canonical_test_environment.matches
-```
-
-inside the validator report.
-
-If `false`, also run the mandatory final validation in a dedicated environment installed with:
-
-```bash
-python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
-```
-
-Do not destructively downgrade the user's general-purpose Anaconda base environment merely to match Paperazzi. Prefer a dedicated venv/Conda env.
-
-A final PASS claim must identify which environment produced it.
+In the tracked report, avoid unnecessary full environment paths. Never record proxy URLs, credentials, cookies, tokens, API keys, or secrets.
 
 ---
 
-# Stage 1 — Full regression suite
+# Stage 1 — Establish and prove the Paperazzi environment
 
-Run:
+Create or update only the dedicated micromamba environment `Paperazzi`, then run:
 
 ```bash
-python -m unittest discover -s tests -v
+micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
+micromamba run -n Paperazzi python -m pip check
 ```
 
-The revised suite must include at least:
+Required:
 
 ```text
-source-author completeness test
-author profile/search test
-ASGITransport HTTP test
-real Uvicorn localhost smoke test
-failure-isolated report infrastructure tests
+environment name = Paperazzi
+Python = 3.13
+constraint match = true
+pip check = PASS
+```
+
+If the checker fails, stop authoritative testing and report exactly:
+
+```text
+active environment name
+actual Python version
+which constrained packages differ
+expected version
+installed version
+```
+
+Repair only `Paperazzi`, rerun the checker, then continue.
+
+---
+
+# Stage 2 — Full regression suite
+
+Run only through the dedicated environment:
+
+```bash
+micromamba run -n Paperazzi python -m unittest discover -s tests -v
 ```
 
 Record:
@@ -166,27 +187,29 @@ skips
 total runtime
 ```
 
-If a test fails, classify whether the failure reproduces in the canonical constrained environment before editing Paperazzi code.
+The suite must include the environment-contract tests, ASGITransport HTTP test, real Uvicorn localhost smoke, source-author completeness, author profile/search, and failure-isolated validation infrastructure.
+
+If a regression fails, preserve the exact test and traceback before editing code.
 
 ---
 
-# Stage 2 — Real DB smoke, failure-isolated
+# Stage 3 — Real DB smoke
 
-Run against the actual existing DB:
+Locate the actual existing Paperazzi database. Do not create an empty replacement.
+
+Run:
 
 ```bash
-python scripts/validate_phase5.py --db-path <REAL_DB_PATH>
+micromamba run -n Paperazzi python scripts/validate_phase5.py --db-path <REAL_DB_PATH>
 ```
 
-Do not create an empty DB if the expected path is missing.
-
-The report is:
+Preserve:
 
 ```text
 data/phase5-validation/phase5_report.json
 ```
 
-Immediately inspect and preserve it even if the command exits nonzero.
+even if the command exits nonzero.
 
 Required stages:
 
@@ -196,36 +219,17 @@ ASGI_IN_PROCESS
 UVICORN_LOCALHOST_HTTP
 ```
 
-For each stage report:
-
-```text
-status
-elapsed_ms
-failure/exception if any
-```
-
-The automated final status is PASS only when all three pass.
-
-Also report separately:
-
-```text
-product_path_status
-in_process_harness_status
-```
-
-If `product_path_status=PASS` but ASGI fails, do not call the Paperazzi web product broken. Report an in-process environment/harness defect and compare dependency/module origins.
+Return status and elapsed time for each.
 
 ---
 
-# Stage 3 — Full-corpus source-author projection
+# Stage 4 — Full-corpus author projection
 
-After the 200-paper smoke passes, run:
+If the smoke passes, run:
 
 ```bash
-python scripts/validate_phase5.py --db-path <REAL_DB_PATH> --sample-papers 0
+micromamba run -n Paperazzi python scripts/validate_phase5.py --db-path <REAL_DB_PATH> --sample-papers 0
 ```
-
-`0` means all active papers.
 
 Required:
 
@@ -234,55 +238,36 @@ full_corpus_projection_check = true
 source_author_projection_mismatch_count = 0
 ```
 
-If any mismatch exists, preserve every available example paper ID and compare:
+If any mismatch exists, preserve the paper IDs and compare source `paper_creator_mentions(author)` with `PaperazziQueryService.get_paper()["authors"]`.
 
-```text
-paper_creator_mentions(author)
-vs
-PaperazziQueryService.get_paper()["authors"]
-```
-
-Do not repair by filtering unresolved source authors.
+Never hide unresolved source authors to make this pass.
 
 ---
 
-# Stage 4 — Information that MUST be returned to the remote reviewer
+# Stage 5 — Information you MUST return for remote analysis
 
-This section is mandatory. The purpose is not merely to say PASS/FAIL; return information useful for the next design decision.
+Do not report only PASS/FAIL. Collect the following.
 
-## A. Environment reproducibility
-
-Return:
+## A. Environment facts
 
 ```text
-native environment:
-  Python executable/version
-  Conda/venv identity
-  canonical constraints match true/false
-  pip check pass/fail
-
-canonical validation environment:
-  Python executable/version
-  canonical constraints match true/false
-  pip check pass/fail
+micromamba version
+Paperazzi environment exists = true/false
+environment checker PASS/FAIL
+Python version inside Paperazzi
+pip check PASS/FAIL
+constraint mismatch list if any
 ```
 
-For every mismatch against `constraints/phase5-test.txt`, list:
+Also state explicitly:
 
 ```text
-package
-expected version
-installed version
-module origin
+Existing Anaconda/base environment modified = NO
 ```
 
-Module origin is important: two environments can report similar versions while importing different installations.
+If this cannot be stated truthfully, stop and report what changed.
 
-If the native environment still fails but canonical passes, preserve both reports.
-
-## B. Real database scale and identity coverage
-
-Return:
+## B. Real database scale
 
 ```text
 active papers
@@ -292,22 +277,13 @@ accepted author mentions
 unresolved author mentions
 full-corpus papers checked
 source-author projection mismatch count
-unresolved source authors visible in checked paper details
+unresolved source authors visible in paper details
 foreign-key check rows
 ```
 
-Do not interpret unresolved identities as missing author records.
+## C. HTTP separation
 
-## C. HTTP layer separation
-
-Return route status and elapsed time for both:
-
-```text
-ASGI_IN_PROCESS
-UVICORN_LOCALHOST_HTTP
-```
-
-At minimum:
+For both `ASGI_IN_PROCESS` and `UVICORN_LOCALHOST_HTTP`, return status and timing for:
 
 ```text
 /
@@ -318,187 +294,143 @@ At minimum:
 /api/reviews/identity
 one real paper detail
 one real author detail
-one author publications route
-one coauthors route
-one PDF route when a reachable PDF exists
+author publications
+coauthors
+one PDF route when reachable
 ```
 
-If Uvicorn fails, include its `server_log_tail`.
+If Uvicorn fails, include `server_log_tail`.
 
-If ASGI fails while Uvicorn passes, include the ASGI exception/timeout and do not alter business logic without evidence.
+## D. Search using real corpus values
 
-## D. Search behavior using REAL corpus values
-
-Test and return the exact scholarly queries used:
+Test and report exact queries for:
 
 ```text
-one full or distinctive paper title
+one distinctive paper title
 one DOI
 one journal/venue fragment
 one canonical author name
 one non-ASCII author name if available
-one punctuation-heavy title or DOI if available
+one punctuation-heavy title/DOI if available
 ```
 
-For each return:
+For each:
 
 ```text
 query
-expected object
+expected record
 found true/false
 elapsed_ms
-unexpected results if material
 ```
 
-If no suitable non-ASCII/punctuation case exists, state `NOT_AVAILABLE_IN_CORPUS`; do not invent one.
+Do not invent unavailable corpus cases.
 
 ## E. PDF state
 
-Return:
-
 ```text
 PDF_AVAILABLE rows
-actually reachable PDF rows
-number of stale PDF_AVAILABLE rows
+reachable PDF rows
+stale PDF_AVAILABLE rows
 up to 20 stale example paper IDs
 successful PDF HTTP paper ID(s)
-controlled unavailable-PDF example paper ID
+controlled unavailable-PDF paper ID
 ```
 
-Do **not** commit full local filesystem paths unless needed to diagnose a path-mapping defect. Paper IDs are preferred.
+Prefer paper IDs over full local paths in the tracked report.
 
-If many PDFs are stale, determine whether the DB simply needs a normal Zotero/Paperazzi rescan or whether path projection is wrong.
+## F. Performance
 
-## F. Measured performance
-
-Return at minimum:
+Return at least:
 
 ```text
 list_papers(20) elapsed_ms
 list_authors(20) elapsed_ms
-paper detail mean
-paper detail p50
-paper detail p95
-paper detail max
+paper detail mean/p50/p95/max
 ASGI route timings
 Uvicorn route timings
+common author search timing
+distinctive title search timing
+high-publication author profile timing
+high-degree coauthor-list timing
 ```
 
-Also manually measure:
+Do not add FTS5/caching without measured evidence.
+
+## G. Warnings that may matter later
+
+Report meaningful warnings separately even if tests pass, for example:
 
 ```text
-common author search
-distinctive title search
-author profile for a high-publication-count author
-coauthor list for a high-degree author
+ResourceWarning / leaked SQLite connection
+DeprecationWarning affecting Python 3.14+
+syntax warnings
+unexpected package/module origin
+stale PDF concentration
+path-mapping anomalies
+very slow query outliers
 ```
 
-Do not add FTS5 simply because it was previously planned. Report measurements first.
-
-If one path is disproportionately slow, identify query type and relevant author/paper ID so the remote reviewer can decide whether indexing, batching, or query refactoring is justified.
-
-## G. Original hang comparison
-
-The previous local environment was approximately:
-
-```text
-Python 3.13.9 Anaconda
-FastAPI 0.136.1
-Starlette 1.0.0
-HTTPX 0.28.1
-AnyIO 4.10.0
-```
-
-and synchronous Starlette `TestClient` hung in `AnyIO BlockingPortal`.
-
-After pulling the fix, explicitly answer:
-
-```text
-Does the revised ASGITransport test pass in the original/native environment?
-Does real Uvicorn localhost HTTP pass in that environment?
-Does the canonical constrained environment pass?
-```
-
-This comparison is especially important. It tells us whether the defect was solely the old test adapter or a broader Python 3.13/Conda incompatibility.
+Do not treat harmless runner/cache warnings as product failures, but preserve warnings that imply future code maintenance.
 
 ---
 
-# Stage 5 — Manual semantic spot checks
+# Stage 6 — Manual semantic/browser checks
 
-Inspect real papers containing unresolved source authors.
-
-For several cases confirm:
+Inspect several real papers with unresolved authors and confirm:
 
 ```text
-source display name visible
+source name visible
 author order preserved
 identity_status=UNRESOLVED when appropriate
-FIRST survives unresolved canonical identity
-CORRESPONDING appears only with accepted semantic evidence
+FIRST survives unresolved identity
+CORRESPONDING only appears with accepted semantic evidence
 ```
 
-Inspect canonical authors including:
+Inspect representative canonical authors:
 
 ```text
 single-paper author
 multi-paper author
 first author
 corresponding author if available
-high-publication-count author
-high-coauthor-degree author
+high-publication author
+high-degree coauthor
 ```
 
-Check publication counts and coauthors against direct DB facts.
-
-Preserve paper IDs/author IDs for any discrepancy.
-
----
-
-# Stage 6 — Browser/product smoke
-
-Start the product against the tested DB and inspect in a real browser.
-
-Verify:
-
-```text
-home loads
-paper list loads
-real search works
-paper detail opens
-all source authors appear
-resolved author link opens profile
-publication list/coauthors load
-identity review loads
-reachable PDF opens
-unavailable PDF fails in a controlled way
-```
-
-Do not fail Phase 5 for visual polish alone.
-
-Report browser and operating context:
-
-```text
-browser name/version if easily available
-WSL/native Linux/Windows context
-URL used
-whether browser and server were on the same host
-```
-
-If browser behavior differs from automated localhost HTTP, that difference is important and must be reported.
-
----
-
-# Stage 7 — Optional but strongly recommended identity precision audit
-
-After Phase 5 smoke is stable, run:
+Then run the product from the dedicated environment:
 
 ```bash
-python scripts/export_identity_precision_audit.py
+micromamba run -n Paperazzi paperazzi-web
 ```
 
-This does not gate Phase 5, but it is important quality information because stable/idempotent identity resolution does not prove precision.
+Verify in a browser:
 
-Review the deterministic stratified sample, emphasizing:
+```text
+home
+paper list
+search
+paper detail
+all source authors
+author profile
+publications/coauthors
+identity review
+reachable PDF
+controlled unavailable PDF
+```
+
+Do not fail for visual polish alone.
+
+---
+
+# Stage 7 — Identity precision audit
+
+After Phase 5 smoke is stable, strongly prefer running:
+
+```bash
+micromamba run -n Paperazzi python scripts/export_identity_precision_audit.py
+```
+
+Review especially:
 
 ```text
 SAME_NORMALIZED_NAME_MULTIPLE_IDENTITIES
@@ -508,7 +440,7 @@ HIGH_PUBLICATION_DEGREE
 East-Asian/common names when represented
 ```
 
-Return summary counts:
+Return counts:
 
 ```text
 CORRECT
@@ -516,42 +448,21 @@ FALSE_MERGE
 UNCERTAIN
 ```
 
-For every convincing `FALSE_MERGE`, return:
-
-```text
-author_id
-creator_mention_id
-paper_id
-source name
-why the merge appears false
-independent evidence used
-```
-
-Do not lower/raise thresholds solely from a tiny sample; use false merges to construct reproducible regression cases first.
+A convincing false merge is a Phase 4 identity-quality defect. Preserve reproducible evidence rather than changing thresholds from a tiny sample.
 
 ---
 
 # Failure handling
 
-If any mandatory stage fails:
+If a mandatory stage fails:
 
-1. Preserve `phase5_report.json` immediately.
-2. Preserve exact paper/author IDs and route.
-3. Identify the layer:
-   - real DB/query;
-   - ASGI in-process;
-   - Uvicorn/product;
-   - browser;
-   - filesystem/PDF;
-   - environment/dependency.
-4. Compare native vs canonical environment.
-5. Add a regression test before fixing application behavior.
+1. Preserve the exact failure before fixing anything.
+2. Preserve `phase5_report.json` if produced.
+3. Classify the responsible layer: environment, query/DB, ASGI, Uvicorn, browser, filesystem/PDF.
+4. Never repair by changing the user's Anaconda/base environment.
+5. If code behavior is wrong, add a regression test first.
 6. Fix only the responsible layer.
-7. Rerun the full regression suite.
-8. Rerun 200-paper smoke.
-9. Rerun full-corpus projection if smoke passes.
-
-Never solve a web/display failure by weakening Phase 4 identity resolution.
+7. Rerun environment checker, full regression suite, 200-paper smoke, then full-corpus projection.
 
 ---
 
@@ -560,57 +471,53 @@ Never solve a web/display failure by weakening Phase 4 identity resolution.
 Create:
 
 ```text
-docs/phase5/runs/YYYYMMDD-HHMMSS-real-db-v2/PHASE5_REAL_DB_TEST_RESULTS.md
+docs/phase5/runs/YYYYMMDD-HHMMSS-real-db-v3/PHASE5_REAL_DB_TEST_RESULTS.md
 ```
 
-It must include:
+It must contain:
 
-1. tested commit/branch;
-2. native environment and canonical environment comparison;
-3. regression-suite result;
-4. full `REAL_DATABASE_QUERY` summary;
-5. ASGI and Uvicorn status/timings;
-6. real search cases;
-7. PDF reachability/stale-state summary;
-8. manual semantic spot checks;
-9. browser smoke result;
+1. tested branch/commit;
+2. micromamba/Paperazzi environment proof;
+3. explicit confirmation that existing Anaconda/base was not modified;
+4. regression-suite result;
+5. real DB scale/full-corpus projection;
+6. ASGI and Uvicorn results/timings;
+7. real search cases;
+8. PDF state;
+9. manual semantic/browser checks;
 10. measured performance;
-11. defects/fixes;
-12. optional identity precision audit summary;
-13. explicit information requested for remote review.
+11. meaningful warnings;
+12. defects and fixes;
+13. identity precision audit if performed;
+14. explicit information requested above for remote analysis.
 
-Do not commit `phase5_report.json` if it contains machine-local paths; quote the useful non-sensitive fields in the Markdown report instead.
+Do not commit machine-local secrets or unnecessary full filesystem paths.
 
 ---
 
 # Final status vocabulary
 
-Use exactly one automated state:
+Report:
 
 ```text
-PHASE_5_REAL_DB_SMOKE = PASS
-PHASE_5_REAL_DB_SMOKE = FAIL
-```
-
-Also report:
-
-```text
+PAPERAZZI_MICROMAMBA_ENV = PASS|FAIL
+EXISTING_ANACONDA_ENV_MODIFIED = NO|YES
+PHASE_5_REAL_DB_SMOKE = PASS|FAIL
 PRODUCT_PATH_STATUS = PASS|FAIL
 ASGI_HARNESS_STATUS = PASS|FAIL|ERROR
-CANONICAL_ENVIRONMENT_MATCH = true|false
 FULL_CORPUS_AUTHOR_PROJECTION = PASS|FAIL
 ```
 
-A final PASS requires:
+A final Phase 5 PASS requires:
 
 ```text
-full regression suite PASS in canonical environment
+Paperazzi micromamba environment contract PASS
+existing Anaconda/base environment untouched
+full regression suite PASS
 REAL_DATABASE_QUERY PASS
-ASGI_IN_PROCESS PASS in canonical environment
+ASGI_IN_PROCESS PASS
 UVICORN_LOCALHOST_HTTP PASS
 full-corpus source-author projection mismatch count = 0
 manual browser semantic smoke PASS
-no source/Zotero data modified
+no Zotero/source data modified
 ```
-
-The optional identity precision audit does not determine Phase 5 PASS, but its findings must be surfaced if performed.

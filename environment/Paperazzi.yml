@@ -1,0 +1,6 @@
+name: Paperazzi
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip>=25
