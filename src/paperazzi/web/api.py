@@ -24,7 +24,10 @@ from paperazzi.identity.manual_review import (
 from paperazzi.identity.profile_evidence import author_sourced_evidence
 from paperazzi.identity.review_queries import list_identity_review_queue
 from paperazzi.identity.service import IdentityResolutionError
-from paperazzi.identity.similar_names import refresh_similar_identity_reviews
+from paperazzi.identity.similar_names import (
+    refresh_similar_identity_reviews,
+    similar_author_candidates,
+)
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 
@@ -61,9 +64,6 @@ def _database_path(db_path: str | Path | None = None) -> Path:
 def create_app(db_path: str | Path | None = None) -> FastAPI:
     path = _database_path(db_path)
     engine = create_paperazzi_engine(path)
-    # SQLAlchemy's pool intentionally keeps SQLite connections open for reuse. Register
-    # process-exit disposal so short-lived CLI/test processes do not leave Python 3.13
-    # sqlite ResourceWarnings while normal server reuse remains unchanged.
     atexit.register(engine.dispose)
     session_factory = sa.orm.sessionmaker(bind=engine)
 
@@ -200,7 +200,12 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     def identity_review(review_item_id: int) -> dict[str, object]:
         try:
             with session_scope() as session:
-                return identity_review_detail(session, review_item_id)
+                detail = identity_review_detail(session, review_item_id)
+                if detail.get("subject_type") == "author":
+                    detail["candidates"] = similar_author_candidates(
+                        session, str(detail["subject_id"]), limit=12
+                    )
+                return detail
         except (KeyError, IdentityResolutionError) as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
