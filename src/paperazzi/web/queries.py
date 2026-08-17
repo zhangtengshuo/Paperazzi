@@ -14,6 +14,7 @@ from paperazzi.identity.models import (
     Author, AuthorExternalID, AuthorIdentityMembership, AuthorNameVariant,
     Authorship, ResolutionReviewQueue,
 )
+from paperazzi.provenance.service import effective_document_role, select_primary_document
 
 class NotFoundError(LookupError): pass
 class PdfUnavailableError(LookupError): pass
@@ -53,11 +54,17 @@ class PaperazziQueryService:
         return out
 
     def _pdf_state(self, paper_id:int)->dict[str,Any]:
+        selected=select_primary_document(self.session,paper_id)
+        if selected is not None:
+            role=effective_document_role(self.session,selected)
+            return {"status":selected.availability_status or "UNKNOWN","document_id":selected.document_id,
+                    "available":True,"role":role.role,"role_source":role.source}
         r=(self.session.query(PaperDocument).filter(PaperDocument.paper_id==paper_id,PaperDocument.present_in_last_scan.is_(True))
            .order_by(sa.case((PaperDocument.availability_status=="PDF_AVAILABLE",0),else_=1),PaperDocument.document_id).first())
-        if r is None:return {"status":"NONE","document_id":None,"available":False}
+        if r is None:return {"status":"NONE","document_id":None,"available":False,"role":None,"role_source":None}
+        role=effective_document_role(self.session,r)
         return {"status":r.availability_status or "UNKNOWN","document_id":r.document_id,
-                "available":r.availability_status=="PDF_AVAILABLE" and bool(r.local_path)}
+                "available":False,"role":role.role,"role_source":role.source}
 
     def _paper_summary(self,p:Paper)->dict[str,Any]:
         aa=self._paper_authors(p.paper_id); first=next((a for a in aa if "FIRST" in a["roles"]),None)
@@ -218,9 +225,7 @@ class PaperazziQueryService:
         q=q.strip();return {"query":q,"papers":[] if not q else self.list_papers(q=q,limit=limit)["items"],"authors":[] if not q else self.list_authors(q=q,limit=limit)["items"]}
 
     def get_pdf_path(self,paper_id:int)->Path:
-        rows=(self.session.query(PaperDocument).filter(PaperDocument.paper_id==paper_id,PaperDocument.present_in_last_scan.is_(True),
-              PaperDocument.availability_status=="PDF_AVAILABLE",PaperDocument.local_path.is_not(None)).order_by(PaperDocument.document_id).all())
-        for r in rows:
-            p=Path(r.local_path)
-            if p.is_file():return p
+        selected=select_primary_document(self.session,paper_id)
+        if selected is not None and selected.local_path:
+            return Path(selected.local_path)
         raise PdfUnavailableError(f"paper {paper_id} has no available local PDF")
