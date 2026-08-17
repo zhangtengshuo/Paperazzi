@@ -21,6 +21,7 @@ from paperazzi.identity.manual_review import (
     reject_review_candidate,
     sync_author_name_variants,
 )
+from paperazzi.identity.profile_evidence import author_sourced_evidence
 from paperazzi.identity.service import IdentityResolutionError
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
@@ -170,6 +171,18 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             with service() as query_service:
                 query_service.get_author(author_id)
                 return query_service.get_coauthors(author_id, limit=limit)
+        except NotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @app.get("/api/authors/{author_id}/evidence")
+    def author_evidence(
+        author_id: str, limit: int = Query(default=100, ge=1, le=500)
+    ) -> list[dict[str, object]]:
+        try:
+            with session_scope() as session:
+                # Reuse the canonical-author existence contract from the query service.
+                PaperazziQueryService(session).get_author(author_id)
+                return author_sourced_evidence(session, author_id, limit=limit)
         except NotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
