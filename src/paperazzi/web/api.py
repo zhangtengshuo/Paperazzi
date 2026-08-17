@@ -21,6 +21,7 @@ from paperazzi.identity.manual_review import (
     reject_review_candidate,
     sync_author_name_variants,
 )
+from paperazzi.identity.pair_decisions import mark_canonical_authors_not_same
 from paperazzi.identity.profile_evidence import author_sourced_evidence
 from paperazzi.identity.review_queries import list_identity_review_queue
 from paperazzi.identity.service import IdentityResolutionError
@@ -255,6 +256,20 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         try:
             with session_scope(write=True) as session:
                 return merge_identity_review_pair(
+                    session,
+                    request.source_author_id,
+                    request.target_author_id,
+                    review_item_id=request.review_item_id,
+                    notes=request.notes,
+                )
+        except IdentityResolutionError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.post("/api/authors/not-same")
+    def mark_author_identities_different(request: MergeAuthorsRequest) -> dict[str, object]:
+        try:
+            with session_scope(write=True) as session:
+                return mark_canonical_authors_not_same(
                     session,
                     request.source_author_id,
                     request.target_author_id,
