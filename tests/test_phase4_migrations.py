@@ -31,6 +31,7 @@ PHASE4_TABLES = {
     "resolution_review_queue",
 }
 PROVENANCE_TABLES = {"document_roles", "retraction_events", "retraction_impacts"}
+MIGRATION_HEAD = "0007_similar_author_review_queue"
 
 
 def alembic(*args: str, db_path: Path) -> subprocess.CompletedProcess:
@@ -53,15 +54,15 @@ class Phase4MigrationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tmp.cleanup()
 
-    def test_fresh_upgrade_reaches_0006_and_has_phase4_plus_provenance_schema(self) -> None:
+    def test_fresh_upgrade_reaches_0007_and_has_phase4_plus_provenance_schema(self) -> None:
         proc = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(proc.returncode, 0, proc.stderr[-1800:])
         current = alembic("current", db_path=self.db)
         self.assertEqual(current.returncode, 0, current.stderr[-800:])
-        self.assertIn("0006_document_roles_retractions", current.stdout)
+        self.assertIn(MIGRATION_HEAD, current.stdout)
 
         engine = create_paperazzi_engine(self.db)
-        with engine.connect() as conn:
+        with engine.begin() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             self.assertTrue(PHASE4_TABLES.issubset(tables), PHASE4_TABLES - tables)
             self.assertTrue(PROVENANCE_TABLES.issubset(tables), PROVENANCE_TABLES - tables)
@@ -78,7 +79,56 @@ class Phase4MigrationTests(unittest.TestCase):
             self.assertIn("WHERE status = 'ACCEPTED'", indexes["uq_author_external_id_accepted"])
             self.assertNotIn("uq_identity_membership_state", indexes)
             self.assertIn("ix_retraction_events_root", indexes)
+            self.assertIn("uq_resolution_review_open_subject", indexes)
+            # The new dedicated queue type must be representable by the actual DB CHECK,
+            # not just by Python-level validation.
+            conn.exec_driver_sql(
+                "INSERT INTO resolution_review_queue "
+                "(queue_type,subject_type,subject_id,candidate_id,priority,status,reason_code,payload_json,created_at) "
+                "VALUES ('SIMILAR_AUTHOR_IDENTITY','author','A','B',70,'OPEN','TEST','{}',CURRENT_TIMESTAMP)"
+            )
+            count = conn.exec_driver_sql(
+                "SELECT COUNT(*) FROM resolution_review_queue WHERE queue_type='SIMILAR_AUTHOR_IDENTITY'"
+            ).scalar_one()
+            self.assertEqual(count, 1)
         engine.dispose()
+
+    def test_downgrade_to_0006_discards_only_reproducible_similar_review_rows(self) -> None:
+        self.assertEqual(alembic("upgrade", "head", db_path=self.db).returncode, 0)
+        engine = create_paperazzi_engine(self.db)
+        with engine.begin() as conn:
+            conn.exec_driver_sql(
+                "INSERT INTO resolution_review_queue "
+                "(queue_type,subject_type,subject_id,candidate_id,priority,status,reason_code,payload_json,created_at) "
+                "VALUES ('SIMILAR_AUTHOR_IDENTITY','author','A','B',70,'OPEN','TEST','{}',CURRENT_TIMESTAMP)"
+            )
+            conn.exec_driver_sql(
+                "INSERT INTO resolution_review_queue "
+                "(queue_type,subject_type,subject_id,candidate_id,priority,status,reason_code,payload_json,created_at) "
+                "VALUES ('IDENTITY_CONFLICT','author','C','D',70,'OPEN','TEST','{}',CURRENT_TIMESTAMP)"
+            )
+        engine.dispose()
+
+        down = alembic("downgrade", "0006_document_roles_retractions", db_path=self.db)
+        self.assertEqual(down.returncode, 0, down.stderr[-1800:])
+        engine = create_paperazzi_engine(self.db)
+        with engine.connect() as conn:
+            self.assertEqual(
+                conn.exec_driver_sql(
+                    "SELECT COUNT(*) FROM resolution_review_queue WHERE queue_type='SIMILAR_AUTHOR_IDENTITY'"
+                ).scalar_one(),
+                0,
+            )
+            self.assertEqual(
+                conn.exec_driver_sql(
+                    "SELECT COUNT(*) FROM resolution_review_queue WHERE queue_type='IDENTITY_CONFLICT'"
+                ).scalar_one(),
+                1,
+            )
+            self.assertEqual(conn.exec_driver_sql("PRAGMA foreign_key_check").fetchall(), [])
+        engine.dispose()
+        up = alembic("upgrade", "head", db_path=self.db)
+        self.assertEqual(up.returncode, 0, up.stderr[-1800:])
 
     def test_downgrade_to_phase3_then_upgrade_head_roundtrip(self) -> None:
         self.assertEqual(alembic("upgrade", "head", db_path=self.db).returncode, 0)
@@ -108,7 +158,7 @@ class Phase4MigrationTests(unittest.TestCase):
         second = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(second.returncode, 0, second.stderr[-800:])
         current = alembic("current", db_path=self.db)
-        self.assertIn("0006_document_roles_retractions", current.stdout)
+        self.assertIn(MIGRATION_HEAD, current.stdout)
 
 
 if __name__ == "__main__":
