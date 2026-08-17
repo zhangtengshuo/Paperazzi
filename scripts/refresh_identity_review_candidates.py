@@ -7,7 +7,7 @@ import sqlalchemy as sa
 REPO_ROOT=Path(__file__).resolve().parents[1];SRC=REPO_ROOT/'src'
 if str(SRC) not in sys.path:sys.path.insert(0,str(SRC))
 from paperazzi.database.engine import create_paperazzi_engine  # noqa:E402
-from paperazzi.identity.manual_review import refresh_similar_identity_reviews  # noqa:E402
+from paperazzi.identity.similar_names import refresh_similar_identity_reviews  # noqa:E402
 
 def main()->int:
     p=argparse.ArgumentParser();p.add_argument('--db-path',type=Path,required=True);p.add_argument('--minimum-score',type=float,default=0.50);p.add_argument('--max-new-reviews',type=int,default=500);p.add_argument('--apply',action='store_true');a=p.parse_args()
@@ -16,7 +16,6 @@ def main()->int:
     try:
         with sf() as s:
             if not a.apply:
-                # Run inside a transaction and roll it back to provide an exact preview.
                 result=refresh_similar_identity_reviews(s,minimum_score=a.minimum_score,max_new_reviews=a.max_new_reviews);s.rollback();print(json.dumps({'dry_run':True,**result},indent=2));return 0
             result=refresh_similar_identity_reviews(s,minimum_score=a.minimum_score,max_new_reviews=a.max_new_reviews);s.commit();print(json.dumps({'applied':True,**result},indent=2));return 0
     finally:engine.dispose()
