@@ -30,8 +30,16 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from paperazzi.database.models import Paper, PaperCreatorMention, PaperDocument  # noqa: E402
-from paperazzi.identity.authorship_evidence import _find_mentions_in_text  # noqa: E402
-from paperazzi.local_evidence.correspondence import classify_correspondence_text  # noqa: E402
+from paperazzi.identity.authorship_evidence import (  # noqa: E402
+    _STRONG_AUTHOR_MARKERS,
+    _email_mention_matches,
+    _find_mentions_in_text,
+    _mention_has_marker,
+)
+from paperazzi.local_evidence.correspondence import (  # noqa: E402
+    classify_correspondence_text,
+    extract_leading_marker,
+)
 from paperazzi.local_evidence.pdf import extract_dois, extract_pdf_evidence  # noqa: E402
 from paperazzi.provenance.service import effective_document_role, select_primary_document  # noqa: E402
 
@@ -71,6 +79,14 @@ def _source_name(mention: PaperCreatorMention) -> str:
 
 def _normalize(value: str | None) -> str:
     return " ".join(_WORD_RE.findall((value or "").casefold()))
+
+
+def _normalize_doi(value: str | None) -> str:
+    doi = (value or "").strip().casefold()
+    for prefix in ("https://doi.org/", "http://doi.org/", "doi:"):
+        if doi.startswith(prefix):
+            doi = doi[len(prefix):].strip()
+    return doi.rstrip(".,;:)]}")
 
 
 def _title_overlap(title: str | None, front_matter: str) -> float | None:
@@ -289,17 +305,52 @@ def _audit_paper(session: Any, paper: Paper) -> dict[str, Any]:
 
     front_dois = list(extract_dois(evidence.front_matter_text))
     base["front_matter_dois"] = front_dois
-    metadata_doi = (paper.doi or "").strip().casefold()
-    if metadata_doi and front_dois and metadata_doi not in {row.casefold() for row in front_dois}:
+    metadata_doi = _normalize_doi(paper.doi)
+    normalized_front_dois = {_normalize_doi(row) for row in front_dois}
+    if metadata_doi and normalized_front_dois and metadata_doi not in normalized_front_dois:
         flags.append("FRONT_MATTER_DOI_CONFLICT")
 
+    # Reproduce the production resolver's person mapping without persisting evidence.
+    # This includes explicit role spans, marker fallback, and the RSC/Angew-style
+    # conjunction of a starred author header with a contact-only e-mail block.
     predicted: dict[int, str] = {}
     role_email_count = 0
+    has_explicit_role = False
     for span in evidence.correspondence_candidates:
         classified = classify_correspondence_text(span.text)
         role_email_count += len(classified.emails)
-        for mention in _find_mentions_in_text(session, paper.paper_id, span.text):
+        has_explicit_role = has_explicit_role or classified.is_role_signal
+        matches = _find_mentions_in_text(session, paper.paper_id, span.text)
+        marker = classified.marker or extract_leading_marker(span.text)
+        if not matches and marker:
+            matches = [
+                mention
+                for mention in mentions
+                if any(
+                    _mention_has_marker(mention, marker_span.text, marker)
+                    for marker_span in evidence.author_marker_candidates
+                )
+            ]
+        for mention in matches:
             predicted[mention.creator_mention_id] = _source_name(mention)
+
+    if not has_explicit_role and evidence.author_marker_candidates:
+        strongly_marked = {
+            mention.creator_mention_id: mention
+            for marker in _STRONG_AUTHOR_MARKERS
+            for mention in mentions
+            if any(
+                _mention_has_marker(mention, marker_span.text, marker)
+                for marker_span in evidence.author_marker_candidates
+            )
+        }
+        for span in evidence.contact_candidates:
+            classified = classify_correspondence_text(span.text)
+            if classified.kind != "CONTACT_ONLY":
+                continue
+            for mention in _email_mention_matches(mentions, span.text):
+                if mention.creator_mention_id in strongly_marked:
+                    predicted[mention.creator_mention_id] = _source_name(mention)
 
     base["machine_predicted_corresponding_authors"] = list(predicted.values())
     if evidence.correspondence_candidates and not predicted:
