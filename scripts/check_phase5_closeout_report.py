@@ -24,8 +24,9 @@ REQUIRED = {
     "ZOTERO_SOURCE_MODIFIED": "NO",
 }
 
-OPTIONAL_ALLOWED = {
+ALLOWED = {
     "IDENTITY_PRECISION_AUDIT": {"PASS", "NOT_RUN_OPTIONAL"},
+    "IDENTITY_REVIEW_PERFORMANCE_CLASS": {"IMPROVED", "NO_REGRESSION"},
 }
 
 
@@ -46,7 +47,7 @@ def validate_report(path: Path) -> list[str]:
         actual = statuses.get(key)
         if actual != expected:
             errors.append(f"{key}: expected {expected}, found {actual or 'MISSING'}")
-    for key, allowed in OPTIONAL_ALLOWED.items():
+    for key, allowed in ALLOWED.items():
         actual = statuses.get(key)
         if actual not in allowed:
             errors.append(
