@@ -1,4 +1,4 @@
-"""Phase 4 author identity and authorship models."""
+"""Phase 4 ORM models for author identity, authorship and resolution review."""
 
 from __future__ import annotations
 
@@ -12,20 +12,21 @@ from paperazzi.database.base import Base, utcnow
 
 class Author(Base):
     __tablename__ = "authors"
-    __table_args__ = (
-        sa.Index("ix_authors_normalized_name", "normalized_preferred_name"),
-        sa.CheckConstraint("status IN ('ACTIVE','MERGED','SUPERSEDED')"),
-    )
+    __table_args__ = (sa.Index("ix_authors_normalized_name", "normalized_name"),)
 
-    author_id: Mapped[str] = mapped_column(sa.String(26), primary_key=True)
+    author_id: Mapped[str] = mapped_column(sa.Text, primary_key=True)
     preferred_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
-    normalized_preferred_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
-    status: Mapped[str] = mapped_column(sa.Text, nullable=False, default="ACTIVE")
+    normalized_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('ACTIVE','MERGED','RETIRED')"),
+        nullable=False,
+        default="ACTIVE",
+    )
     merged_into_author_id: Mapped[str | None] = mapped_column(
         sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=True
     )
     locked: Mapped[bool] = mapped_column(sa.Boolean(), nullable=False, default=False)
-    lock_reason: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
     updated_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow, onupdate=utcnow)
 
@@ -39,13 +40,13 @@ class AuthorNameVariant(Base):
 
     name_variant_id: Mapped[int] = mapped_column(primary_key=True)
     author_id: Mapped[str] = mapped_column(
-        sa.ForeignKey("authors.author_id", ondelete="CASCADE"), nullable=False
+        sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=False
     )
     source_creator_mention_id: Mapped[int | None] = mapped_column(
         sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"), nullable=True
     )
     raw_name: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    normalized_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    normalized_name: Mapped[str] = mapped_column(sa.Text, nullable=False)
     family_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     given_name: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     initials: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
@@ -54,7 +55,6 @@ class AuthorNameVariant(Base):
         sa.Text,
         sa.CheckConstraint("variant_type IN ('SOURCE','DERIVED','MANUAL')"),
         nullable=False,
-        default="SOURCE",
     )
     provenance: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
@@ -63,7 +63,6 @@ class AuthorNameVariant(Base):
 class AuthorExternalID(Base):
     __tablename__ = "author_external_ids"
     __table_args__ = (
-        sa.Index("ix_author_external_ids_author", "author_id"),
         sa.Index(
             "uq_author_external_id_accepted",
             "namespace",
@@ -71,18 +70,22 @@ class AuthorExternalID(Base):
             unique=True,
             sqlite_where=sa.text("status = 'ACCEPTED'"),
         ),
-        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
     )
 
     external_id_id: Mapped[int] = mapped_column(primary_key=True)
     author_id: Mapped[str] = mapped_column(
-        sa.ForeignKey("authors.author_id", ondelete="CASCADE"), nullable=False
+        sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=False
     )
     namespace: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    value: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    raw_value: Mapped[str] = mapped_column(sa.Text, nullable=False)
     normalized_value: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    status: Mapped[str] = mapped_column(sa.Text, nullable=False, default="CANDIDATE")
-    provenance: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    source: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('ACCEPTED','REJECTED','SUPERSEDED')"),
+        nullable=False,
+        default="ACCEPTED",
+    )
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
 
 
@@ -96,7 +99,6 @@ class AuthorIdentityMembership(Base):
             unique=True,
             sqlite_where=sa.text("status = 'ACCEPTED'"),
         ),
-        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
     )
 
     membership_id: Mapped[int] = mapped_column(primary_key=True)
@@ -106,13 +108,14 @@ class AuthorIdentityMembership(Base):
     author_id: Mapped[str] = mapped_column(
         sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=False
     )
-    status: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
+        nullable=False,
+    )
     resolver: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     score: Mapped[float | None] = mapped_column(sa.Float, nullable=True)
-    margin: Mapped[float | None] = mapped_column(sa.Float, nullable=True)
-    decision_id: Mapped[int | None] = mapped_column(
-        sa.ForeignKey("author_identity_decisions.decision_id", ondelete="SET NULL"), nullable=True
-    )
+    score_components_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     reason_code: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
     updated_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow, onupdate=utcnow)
@@ -122,20 +125,35 @@ class AuthorIdentityDecision(Base):
     __tablename__ = "author_identity_decisions"
 
     decision_id: Mapped[int] = mapped_column(primary_key=True)
-    operation: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    actor: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    operation: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint(
+            "operation IN ('CREATE_IDENTITY','LINK_MENTION','UNLINK_MENTION','MERGE_IDENTITY','SPLIT_IDENTITY','NOT_SAME_PERSON','LOCK_IDENTITY','UNLOCK_IDENTITY')"
+        ),
+        nullable=False,
+    )
+    actor: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("actor IN ('DETERMINISTIC','LOCAL_AI','MANUAL')"),
+        nullable=False,
+    )
+    creator_mention_id: Mapped[int | None] = mapped_column(
+        sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"), nullable=True
+    )
+    membership_id: Mapped[int | None] = mapped_column(
+        sa.ForeignKey("author_identity_memberships.membership_id", ondelete="RESTRICT"), nullable=True
+    )
     source_author_id: Mapped[str | None] = mapped_column(
         sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=True
     )
     target_author_id: Mapped[str | None] = mapped_column(
         sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=True
     )
-    creator_mention_id: Mapped[int | None] = mapped_column(
-        sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"), nullable=True
-    )
-    reason_code: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    algorithm_version: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    evidence_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     previous_state_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     resulting_state_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    reason_code: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     notes: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
 
@@ -145,13 +163,24 @@ class AuthorIdentityEvidence(Base):
 
     identity_evidence_id: Mapped[int] = mapped_column(primary_key=True)
     membership_id: Mapped[int | None] = mapped_column(
-        sa.ForeignKey("author_identity_memberships.membership_id", ondelete="CASCADE"), nullable=True
+        sa.ForeignKey("author_identity_memberships.membership_id", ondelete="RESTRICT"), nullable=True
+    )
+    creator_mention_id: Mapped[int] = mapped_column(
+        sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"), nullable=False
+    )
+    candidate_author_id: Mapped[str] = mapped_column(
+        sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=False
     )
     evidence_type: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    component: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
-    value: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    polarity: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("polarity IN ('POSITIVE','NEGATIVE','CONFLICT')"),
+        nullable=False,
+    )
     score: Mapped[float | None] = mapped_column(sa.Float, nullable=True)
-    provenance: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    source_kind: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    source_id: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    payload_json: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
 
 
@@ -165,37 +194,40 @@ class Authorship(Base):
             unique=True,
             sqlite_where=sa.text("status = 'ACTIVE'"),
         ),
-        sa.CheckConstraint("status IN ('ACTIVE','SUPERSEDED')"),
-        sa.CheckConstraint("corresponding_status IN ('UNKNOWN','CANDIDATE','ACCEPTED','REJECTED')"),
     )
 
     authorship_id: Mapped[int] = mapped_column(primary_key=True)
-    paper_id: Mapped[int] = mapped_column(
-        sa.ForeignKey("papers.paper_id", ondelete="CASCADE"), nullable=False
-    )
     author_id: Mapped[str] = mapped_column(
         sa.ForeignKey("authors.author_id", ondelete="RESTRICT"), nullable=False
+    )
+    paper_id: Mapped[int] = mapped_column(
+        sa.ForeignKey("papers.paper_id", ondelete="RESTRICT"), nullable=False
     )
     creator_mention_id: Mapped[int] = mapped_column(
         sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"), nullable=False
     )
     order_index: Mapped[int] = mapped_column(sa.Integer, nullable=False)
+    creator_type: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     is_first_author: Mapped[bool] = mapped_column(sa.Boolean(), nullable=False, default=False)
     is_corresponding_author: Mapped[bool] = mapped_column(sa.Boolean(), nullable=False, default=False)
-    corresponding_status: Mapped[str] = mapped_column(sa.Text, nullable=False, default="UNKNOWN")
-    status: Mapped[str] = mapped_column(sa.Text, nullable=False, default="ACTIVE")
+    corresponding_status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("corresponding_status IN ('UNKNOWN','CANDIDATE','ACCEPTED','REJECTED')"),
+        nullable=False,
+        default="UNKNOWN",
+    )
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('ACTIVE','SUPERSEDED')"),
+        nullable=False,
+        default="ACTIVE",
+    )
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
     updated_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow, onupdate=utcnow)
 
 
 class AuthorshipEvidence(Base):
     __tablename__ = "authorship_evidence"
-    __table_args__ = (
-        sa.CheckConstraint(
-            "evidence_type IN ('AFFILIATION','CORRESPONDING_AUTHOR','EMAIL','STRUCTURED','MANUAL')"
-        ),
-        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
-    )
 
     authorship_evidence_id: Mapped[int] = mapped_column(primary_key=True)
     authorship_id: Mapped[int] = mapped_column(
@@ -204,8 +236,18 @@ class AuthorshipEvidence(Base):
     evidence_span_id: Mapped[int | None] = mapped_column(
         sa.ForeignKey("document_evidence_spans.evidence_span_id", ondelete="RESTRICT"), nullable=True
     )
-    evidence_type: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    status: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    evidence_type: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint(
+            "evidence_type IN ('AFFILIATION','CORRESPONDING_AUTHOR','EMAIL','STRUCTURED','MANUAL')"
+        ),
+        nullable=False,
+    )
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
+        nullable=False,
+    )
     raw_value: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     normalized_value: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     resolver: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
