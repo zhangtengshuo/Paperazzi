@@ -7,7 +7,7 @@ name = "paperazzi"
 version = "0.1.0.dev0"
 description = "Local-first Zotero-centered scholarly author knowledge base"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13,<3.14"
 license = { text = "Private" }
 authors = [{ name = "Paperazzi" }]
 dependencies = [
