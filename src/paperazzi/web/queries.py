@@ -130,18 +130,86 @@ class PaperazziQueryService:
                 "publications":pubs,"coauthors":self.get_coauthors(author_id)}
 
     def list_identity_review_queue(self,*,limit:int=100)->list[dict[str,Any]]:
-        rows=self.session.query(ResolutionReviewQueue).filter(ResolutionReviewQueue.status=="OPEN",ResolutionReviewQueue.queue_type.in_(["AMBIGUOUS_AUTHOR_IDENTITY","IDENTITY_CONFLICT","UNRESOLVED_CORRESPONDING_AUTHOR"])).all(); out=[]
+        """Return the ranked identity-review queue in one bounded SQL query.
+
+        The previous implementation loaded every open identity-review row and then
+        executed up to two additional SELECTs per creator mention before sorting in
+        Python.  On the real corpus that N+1 path took about 450 ms even for
+        ``limit=5``.  Priority calculation is deterministic and SQL-expressible, so
+        compute it in the database and apply LIMIT before materializing rows.
+        """
+        capped_limit=min(max(1,limit),500)
+        first_orders=(
+            sa.select(
+                PaperCreatorMention.paper_id.label("paper_id"),
+                sa.func.min(PaperCreatorMention.order_index).label("first_order"),
+            )
+            .where(PaperCreatorMention.creator_type=="author")
+            .group_by(PaperCreatorMention.paper_id)
+            .subquery()
+        )
+        mention=sa.orm.aliased(PaperCreatorMention)
+        creator_subject=sa.and_(
+            ResolutionReviewQueue.subject_type=="creator_mention",
+            sa.cast(ResolutionReviewQueue.subject_id,sa.Integer)==mention.creator_mention_id,
+        )
+        role_priority=sa.case(
+            (ResolutionReviewQueue.queue_type=="UNRESOLVED_CORRESPONDING_AUTHOR",100),
+            (
+                sa.and_(
+                    mention.creator_mention_id.is_not(None),
+                    mention.order_index==first_orders.c.first_order,
+                ),
+                90,
+            ),
+            else_=0,
+        )
+        effective_priority=sa.func.max(ResolutionReviewQueue.priority,role_priority)
+        rows=(
+            self.session.query(
+                ResolutionReviewQueue.review_item_id,
+                ResolutionReviewQueue.queue_type,
+                ResolutionReviewQueue.subject_type,
+                ResolutionReviewQueue.subject_id,
+                ResolutionReviewQueue.candidate_id,
+                ResolutionReviewQueue.reason_code,
+                ResolutionReviewQueue.priority,
+                effective_priority.label("effective_priority"),
+                mention.display_name,
+                mention.first_name,
+                mention.last_name,
+                mention.paper_id,
+            )
+            .outerjoin(mention,creator_subject)
+            .outerjoin(first_orders,first_orders.c.paper_id==mention.paper_id)
+            .filter(
+                ResolutionReviewQueue.status=="OPEN",
+                ResolutionReviewQueue.queue_type.in_([
+                    "AMBIGUOUS_AUTHOR_IDENTITY",
+                    "IDENTITY_CONFLICT",
+                    "UNRESOLVED_CORRESPONDING_AUTHOR",
+                ]),
+            )
+            .order_by(effective_priority.desc(),ResolutionReviewQueue.review_item_id)
+            .limit(capped_limit)
+            .all()
+        )
+        out=[]
         for r in rows:
-            role=100 if r.queue_type=="UNRESOLVED_CORRESPONDING_AUTHOR" else 0; name=None; pid=None
-            if r.subject_type=="creator_mention":
-                try:m=self.session.get(PaperCreatorMention,int(r.subject_id))
-                except (TypeError,ValueError):m=None
-                if m is not None:
-                    name=self._name(m);pid=m.paper_id; first=self.session.query(sa.func.min(PaperCreatorMention.order_index)).filter_by(paper_id=m.paper_id,creator_type="author").scalar()
-                    if first==m.order_index:role=max(role,90)
-            out.append({"review_item_id":r.review_item_id,"queue_type":r.queue_type,"subject_type":r.subject_type,"subject_id":r.subject_id,
-                        "candidate_id":r.candidate_id,"reason_code":r.reason_code,"stored_priority":r.priority,"effective_priority":max(int(r.priority),role),"source_name":name,"paper_id":pid})
-        out.sort(key=lambda z:(-z["effective_priority"],z["review_item_id"]));return out[:min(max(1,limit),500)]
+            name=r.display_name or " ".join(x for x in (r.first_name,r.last_name) if x) or None
+            out.append({
+                "review_item_id":r.review_item_id,
+                "queue_type":r.queue_type,
+                "subject_type":r.subject_type,
+                "subject_id":r.subject_id,
+                "candidate_id":r.candidate_id,
+                "reason_code":r.reason_code,
+                "stored_priority":r.priority,
+                "effective_priority":int(r.effective_priority),
+                "source_name":name,
+                "paper_id":r.paper_id,
+            })
+        return out
 
     def search(self,q:str,*,limit:int=20)->dict[str,Any]:
         q=q.strip();return {"query":q,"papers":[] if not q else self.list_papers(q=q,limit=limit)["items"],"authors":[] if not q else self.list_authors(q=q,limit=limit)["items"]}
