@@ -11,7 +11,12 @@ permissions:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,13 +24,26 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
           cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            constraints/phase5-test.txt
 
-      - name: Install
+      - name: Install canonical test stack
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[pdf,web]"
+          python -m pip install -c constraints/phase5-test.txt -e ".[pdf,web]"
+          python -m pip check
+
+      - name: Show canonical environment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from paperazzi.web.validation import compare_constraints, environment_snapshot
+          print(environment_snapshot())
+          print(compare_constraints(Path("constraints/phase5-test.txt")))
+          PY
 
       - name: Unit and regression suite
         run: python -m unittest discover -s tests -v
