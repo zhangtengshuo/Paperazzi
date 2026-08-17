@@ -327,3 +327,95 @@ the report truthfully uses `INCOMPLETE` for the mandatory browser stage, the
 strict PASS-only checker rejects it; this is expected and prevents an omitted
 browser test from being mislabeled as a formal Phase 5 PASS. The report must
 remain `INCOMPLETE` until a real browser semantic smoke is performed.
+
+## 14. Findings recorded from the user-facing review
+
+The web service was made available at `http://127.0.0.1:8765` for the user's
+browser inspection. The following findings were then reproduced against the
+real Phase 4 validation database and are recorded as open product/test issues.
+No implementation change was made in this closeout follow-up.
+
+### 14.1 Canonical-author list starts with A-names
+
+The real database contains `7,398` active canonical authors. The Authors API
+and page currently request/display only the first `100` rows, while the query
+sorts by `lower(preferred_name), author_id`. Therefore names such as `A Abate`
+and `A. Jung` at the top of the page are the expected first alphabetic page;
+the number `7,398` is the total count, not the number of rows currently shown.
+This is a pagination/discoverability finding, not evidence that all other
+initials were dropped from the database. The accepted design decision is to
+keep Identity Review and Authors as separate views: Authors is the canonical
+directory, while Identity Review is the review queue for unresolved or
+ambiguous source-name mappings. No merge of those views was made.
+
+```text
+FINDING_CANONICAL_AUTHOR_FIRST_PAGE = CONFIRMED
+DATABASE_CANONICAL_AUTHOR_TOTAL = 7398
+AUTHORS_PAGE_LIMIT = 100
+```
+
+### 14.2 Paper 2468 selects Supporting Information as its PDF
+
+For `Automated Active Space Selection with CASCI Dipole Moments` (paper
+`2468`), the database has two reachable PDF documents:
+
+```text
+document 2324: ct6c00473_si_001.pdf; 56 pages; 14,341,800 bytes; Supporting Information
+document 2325: Kaufold和Dong - 2026 - Automated Active Space Selection with CASCI Dipole Moments.pdf;
+               18 pages; 4,424,956 bytes; main article
+```
+
+`get_pdf_path()` currently orders available documents by `document_id` and
+returns the first existing path. Consequently `/api/papers/2468/pdf` returns
+document `2324`, whose first page begins with `Supporting Information`, rather
+than the article in document `2325`. This is a confirmed primary-document
+selection issue, not a browser-only rendering issue.
+
+```text
+FINDING_PRIMARY_PDF_SELECTION = CONFIRMED
+PAPER_2468_SERVED_DOCUMENT = 2324
+PAPER_2468_EXPECTED_MAIN_DOCUMENT = 2325
+```
+
+### 14.3 Paper 2467 does not mark either corresponding author
+
+For `Fermionic mean-field dynamics for spin systems beyond free fermions`
+(paper `2467`, document `2323`), the PDF identifies `Rishab Dutta` and
+`Marc Illa` with the correspondence markers and states that both should be
+addressed at `rishab.dutta@pnnl.gov` and `marc.illasubina@pnnl.gov`. The real
+database currently has no accepted correspondence evidence and no active
+`is_corresponding_author=1` authorship for this paper, so the UI falls back to
+`ORDINARY` for both rather than displaying `CORRESPONDING`.
+
+The asterisk is not interpreted as a wildcard by the current correspondence
+code. The parser did detect the correspondence candidate, but its email
+extraction retained only the first address because the second address ended in
+a period; the author-name matcher also matched `Dutta` but not `Illa` inside
+`marc.illasubina`. This explains why the identity records themselves can look
+normal while the corresponding-author role is absent. `ORDINARY` and
+`UNRESOLVED` are separate dimensions: the former is a role fallback and the
+latter is identity-resolution status.
+
+```text
+FINDING_CORRESPONDING_AUTHOR_EVIDENCE = CONFIRMED
+PAPER_2467_EXPECTED_CORRESPONDING_AUTHORS = Rishab Dutta; Marc Illa
+PAPER_2467_ACCEPTED_CORRESPONDING_AUTHOR_COUNT = 0
+PAPER_2467_DOCUMENT_EVIDENCE_SPANS = 0
+PAPER_2467_AUTHORSHIP_EVIDENCE_ROWS = 0
+```
+
+### 14.4 Reproduction fixtures
+
+The three PDFs used for this investigation are committed beside this report
+under `evidence/pdfs/`, with provenance, license notes, sizes, and SHA-256
+checksums in its README. They are included so a remote AI or a later local
+test can compare the main article against its SI and inspect the correspondence
+front matter directly. Their inclusion is evidence packaging only; it does not
+change `BROWSER_SEMANTIC_SMOKE` or the overall `PHASE_5_STATUS`.
+
+```text
+EVIDENCE_FIXTURES = 3 PDFs
+IMPLEMENTATION_FIX_FOR_FINDINGS = NOT MADE
+BROWSER_SEMANTIC_SMOKE = INCOMPLETE
+PHASE_5_STATUS = INCOMPLETE
+```
