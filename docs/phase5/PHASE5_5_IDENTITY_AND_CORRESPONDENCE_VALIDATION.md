@@ -13,6 +13,12 @@ Do not modify Zotero or the live Paperazzi database during validation.
 ## 1. Safety and database copy
 
 Create a SQLite Backup API copy of the current live Paperazzi DB. Upgrade the copy to Alembic head.
+Expected head for this validation is:
+
+```text
+0007_similar_author_review_queue
+```
+
 All manual identity actions, name-variant reconciliation, similar-name queue refresh and PDF evidence
 rebuilds in this validation must target the copy.
 
@@ -38,14 +44,18 @@ micromamba run -n Paperazzi python -W default -m unittest discover -s tests -v
 The suite must include tests for:
 
 - source spelling reconciliation into `AuthorNameVariant`;
-- `Tengshuo Zhang` / `Teng-Shuo Zhang` similar-name suggestion;
-- manual canonical merge retaining both spellings and both publication memberships;
+- `Tengshuo Zhang` / `Teng-Shuo Zhang` / abbreviated-name recording;
+- review-only structured given/family name reversal;
+- manual canonical merge retaining spellings, publications and decision history;
+- persistent canonical **Different people** decision preventing repeat suggestions;
 - unresolved mention comparison and manual link;
 - same-paper merge guard;
+- multiple canonical candidates returned on one review detail page;
 - interactive review API routes;
 - Paperazzi ID display marker;
 - `IDENTITY UNRESOLVED` explanatory UI;
 - sticky/direct-page pagination UI;
+- sourced author evidence filtering;
 - correspondence benchmark scoring where any false positive is a hard failure.
 
 Record count/runtime/failures/errors/skips and Paperazzi-originated warnings.
@@ -75,10 +85,11 @@ Required:
 - active authorship count unchanged;
 - distinct source spellings increase or remain unchanged;
 - rerunning `--apply` adds zero additional variants;
-- source variants include abbreviations/full names/hyphenated forms when they exist in the corpus.
+- source variants include abbreviations/full names/hyphenated forms when they exist in the corpus;
+- searching by a recorded variant resolves to the same canonical author profile after merge.
 
 Report at least 20 real canonical authors with more than one recorded spelling, prioritizing East
-Asian names and initial/full-name combinations.
+Asian names, hyphen/space variants, reversed structured order, and initial/full-name combinations.
 
 ---
 
@@ -97,9 +108,11 @@ Hard requirements:
 
 - no automatic author merge occurs;
 - no accepted identity membership is changed merely because names are similar;
-- same-paper co-occurring canonical authors are not offered as a merge pair;
-- each queued `SIMILAR_NAME_VARIANTS` item opens a compare view;
-- compare view exposes both identities' recorded names, recent publications and coauthors.
+- same-paper co-occurring canonical authors are not offered as an executable merge pair;
+- similar-name suggestions use the dedicated `SIMILAR_AUTHOR_IDENTITY` queue type and do not overwrite `IDENTITY_CONFLICT` rows used for stronger conflicts such as external IDs;
+- one queue item may open a compare view containing several similar canonical identities;
+- compare view exposes each candidate's recorded names, recent publications, coauthors, similarity score and same-paper conflict state;
+- canonical pairs previously marked **Different people** do not reappear after refresh.
 
 Measure runtime on the real corpus. A full refresh should be operationally reasonable for an
 interactive maintenance action. If runtime is dominated by per-pair SQL queries or exceeds 5 s on
@@ -143,12 +156,12 @@ After clicking Link:
 - exact source spelling appears as a SOURCE `AuthorNameVariant`;
 - `AuthorIdentityDecision(operation='LINK_MENTION', actor='MANUAL')` exists.
 
-### Not same person
+### Not same person — mention versus canonical author
 
-After clicking Not same:
+After clicking Not same on an unresolved mention candidate:
 
 - negative membership/evidence is recorded with `NOT_SAME_PERSON`;
-- future automatic linking to that candidate is blocked;
+- future automatic linking of that mention to that candidate is blocked;
 - other candidates remain reviewable.
 
 ### Create separate identity
@@ -166,8 +179,20 @@ Use only a pair the reviewer is confident represents one person. Confirm:
 - all accepted paper mentions/publications move to target;
 - all distinct source name variants remain visible on target;
 - merge decision history exists;
+- searching by either former spelling returns the merged canonical identity;
 - no source `PaperCreatorMention` is rewritten;
 - same-paper co-occurrence blocks merge with HTTP 409/UI error.
+
+### Different people — canonical pair
+
+For a similar-name pair that the reviewer is confident represents different people, click
+**Different people** and confirm:
+
+- a manual `AuthorIdentityDecision(operation='NOT_SAME_PERSON')` exists with both canonical author IDs and no creator mention;
+- the review item closes;
+- neither canonical identity is merged or rewritten;
+- all publications and source spellings remain unchanged;
+- rerunning **Refresh similar names** does not offer that unordered pair again.
 
 ---
 
@@ -199,6 +224,16 @@ that the source name is known but canonical-person linkage is pending.
 Author profile shows all recorded name variants and explicitly states that canonical grouping does
 not overwrite source spellings.
 
+### Multi-candidate identity comparison
+
+Open a `SIMILAR_AUTHOR_IDENTITY` item and require:
+
+- source canonical identity shown once;
+- several plausible candidates shown when available;
+- per-candidate publications/name variants/coauthors visible;
+- `Merge source → candidate` and `Merge candidate → source` available only when not same-paper blocked;
+- `Different people` available to persist a negative pair decision.
+
 ---
 
 ## 7. Sourced affiliation/contact evidence
@@ -216,7 +251,7 @@ Require:
 
 - every row includes paper ID/title, evidence type, status and raw value;
 - CANDIDATE affiliation text is visibly distinguishable from ACCEPTED facts;
-- endpoint does not create canonical affiliation/email profile fields;
+- endpoint and Author UI do not create canonical current affiliation/email fields from candidate evidence;
 - no evidence from SUPERSEDED/retracted authorship evidence is shown as current.
 
 This is an inspection bridge to Phase 6 assertions, not a claim that current affiliation is solved.
@@ -329,6 +364,7 @@ NAME_VARIANT_RECONCILIATION = PASS|FAIL
 SIMILAR_NAME_CANDIDATES = PASS|FAIL
 IDENTITY_REVIEW_ACTIONS = PASS|FAIL
 IDENTITY_REVIEW_REAL_SAMPLE = PASS|FAIL|PENDING_USER_REVIEW
+CANONICAL_DIFFERENT_PAIR_PERSISTENCE = PASS|FAIL
 PAGINATION_UX = PASS|FAIL
 PAPER_ID_TRACEABILITY = PASS|FAIL
 IDENTITY_UNRESOLVED_EXPLANATION = PASS|FAIL
