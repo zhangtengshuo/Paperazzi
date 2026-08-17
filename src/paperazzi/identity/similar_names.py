@@ -1,8 +1,8 @@
 """Optimized similar-name candidate refresh for manual identity review.
 
 The hot path is deliberately corpus-index based: active paper memberships are loaded once,
-then pair scoring is performed in memory inside family/initial blocks.  This avoids one SQL
-query per candidate pair on the ~7k-author real corpus.
+then pair scoring is performed in memory inside family/initial blocks. Similarity is only a
+human-review aid; this module never auto-merges identities.
 """
 from __future__ import annotations
 from collections import defaultdict
@@ -35,6 +35,81 @@ def _best_review_score(
     return score, components, names
 
 
+def _variant_block_keys(row: AuthorNameVariant) -> set[tuple[str, str]]:
+    """Return normal + review-only swapped-order blocking keys for one spelling."""
+    family = _compact(row.family_name)
+    given = _compact(row.given_name)
+    given_initial = given[:1] if given else (row.initials or "")[:1].casefold()
+    family_initial = family[:1]
+    keys: set[tuple[str, str]] = set()
+    if family and given_initial:
+        keys.add((family, given_initial))
+    if given and family_initial:
+        keys.add((given, family_initial))
+    return keys
+
+
+def _papers_by_author(session: Any) -> dict[str, set[int]]:
+    result: dict[str, set[int]] = defaultdict(set)
+    for author_id, paper_id in (
+        session.query(Authorship.author_id, Authorship.paper_id)
+        .filter(Authorship.status == "ACTIVE")
+        .all()
+    ):
+        result[author_id].add(int(paper_id))
+    return result
+
+
+def similar_author_candidates(
+    session: Any,
+    author_id: str,
+    *,
+    minimum_score: float = 0.25,
+    limit: int = 12,
+) -> list[dict[str, Any]]:
+    """Return several review candidates for one canonical author.
+
+    Unlike the queue refresh (one strongest queue entry per source identity), the detail
+    view should let a human compare several plausible people. Same-paper candidates are
+    retained but flagged because merge itself will be blocked by the Phase 4 guard.
+    """
+    variants = _author_variant_map(session)
+    target = variants.get(author_id, [])
+    if not target:
+        return []
+    target_keys = set().union(*(_variant_block_keys(row) for row in target))
+    if not target_keys:
+        return []
+    papers = _papers_by_author(session)
+    rows: list[dict[str, Any]] = []
+    for candidate_id, candidate_variants in variants.items():
+        if candidate_id == author_id:
+            continue
+        candidate_keys = set().union(*(_variant_block_keys(row) for row in candidate_variants))
+        if target_keys.isdisjoint(candidate_keys):
+            continue
+        score, components, names = _best_review_score(target, candidate_variants)
+        if score < minimum_score:
+            continue
+        rows.append(
+            {
+                "author_id": candidate_id,
+                "similarity_score": score,
+                "similarity_components": components,
+                "representative_names": names,
+                "same_paper_conflict": bool(papers[author_id] & papers[candidate_id]),
+            }
+        )
+    rows.sort(
+        key=lambda row: (
+            row["same_paper_conflict"],
+            -row["similarity_score"],
+            row["author_id"],
+        )
+    )
+    return rows[: min(max(1, limit), 50)]
+
+
 def refresh_similar_identity_reviews(
     session: Any,
     *,
@@ -47,24 +122,10 @@ def refresh_similar_identity_reviews(
     blocks: dict[tuple[str, str], set[str]] = defaultdict(set)
     for author_id, rows in variants.items():
         for row in rows:
-            family = _compact(row.family_name)
-            given = _compact(row.given_name)
-            given_initial = given[:1] if given else (row.initials or "")[:1]
-            family_initial = family[:1]
-            if family and given_initial:
-                blocks[(family, given_initial)].add(author_id)
-            # Alternate review-only block catches structured name-order reversal.
-            if given and family_initial:
-                blocks[(given, family_initial)].add(author_id)
+            for key in _variant_block_keys(row):
+                blocks[key].add(author_id)
 
-    papers_by_author: dict[str, set[int]] = defaultdict(set)
-    for author_id, paper_id in (
-        session.query(Authorship.author_id, Authorship.paper_id)
-        .filter(Authorship.status == "ACTIVE")
-        .all()
-    ):
-        papers_by_author[author_id].add(int(paper_id))
-
+    papers_by_author = _papers_by_author(session)
     best_for_source: dict[str, tuple[float, str, dict[str, float], tuple[str, str] | None]] = {}
     pair_count = 0
     scored_pair_count = 0
