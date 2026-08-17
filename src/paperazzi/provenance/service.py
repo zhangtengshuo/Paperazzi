@@ -23,7 +23,12 @@ from paperazzi.database.models import (
     PaperReferenceMatch,
     PaperReferenceSection,
 )
-from paperazzi.identity.models import Authorship, AuthorshipEvidence, ResolutionReviewQueue
+from paperazzi.identity.models import (
+    Authorship,
+    AuthorshipEvidence,
+    CreatorMentionRoleEvidence,
+    ResolutionReviewQueue,
+)
 
 from .models import DocumentRole, RetractionEvent, RetractionImpact
 
@@ -228,6 +233,33 @@ def _supersede_authorship_evidence(
     return affected
 
 
+def _supersede_creator_mention_role_evidence(
+    session: Any, span_ids: list[int], event: RetractionEvent
+) -> None:
+    if not span_ids:
+        return
+    rows = (
+        session.query(CreatorMentionRoleEvidence)
+        .filter(
+            CreatorMentionRoleEvidence.evidence_span_id.in_(span_ids),
+            CreatorMentionRoleEvidence.status.in_(("CANDIDATE", "ACCEPTED")),
+        )
+        .all()
+    )
+    for row in rows:
+        old = row.status
+        row.status = "SUPERSEDED"
+        _impact(
+            session,
+            event,
+            entity_type="CREATOR_MENTION_ROLE_EVIDENCE",
+            entity_id=row.role_evidence_id,
+            action="INVALIDATE",
+            previous={"status": old},
+            resulting={"status": "SUPERSEDED", "retraction_id": event.retraction_id},
+        )
+
+
 def _invalidate_reference_outputs(
     session: Any,
     *,
@@ -357,6 +389,7 @@ def retract_document_derivations(
         .all()
     ]
     affected = _supersede_authorship_evidence(session, span_ids, event)
+    _supersede_creator_mention_role_evidence(session, span_ids, event)
     _invalidate_reference_outputs(session, event=event, document_id=document_id)
     _dismiss_span_reviews(session, span_ids, event)
     _recompute_corresponding(session, affected, event)
@@ -392,6 +425,7 @@ def retract_extraction_attempt(
     )
     span_ids = [row.evidence_span_id for row in spans]
     affected = _supersede_authorship_evidence(session, span_ids, event)
+    _supersede_creator_mention_role_evidence(session, span_ids, event)
     for span in spans:
         if span.acceptance_status not in ("CANDIDATE", "ACCEPTED"):
             continue

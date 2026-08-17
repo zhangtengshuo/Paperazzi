@@ -184,6 +184,58 @@ class AuthorIdentityEvidence(Base):
     created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
 
 
+class CreatorMentionRoleEvidence(Base):
+    """Paper-scoped role evidence attached to the immutable source author mention.
+
+    This layer intentionally exists before canonical person resolution.  A PDF may
+    establish that one Zotero author mention is corresponding even when that mention
+    is still unresolved or later moves between canonical ``Author`` identities.
+    """
+
+    __tablename__ = "creator_mention_role_evidence"
+    __table_args__ = (
+        sa.UniqueConstraint(
+            "creator_mention_id",
+            "evidence_span_id",
+            "role_type",
+            name="uq_creator_mention_role_evidence",
+        ),
+        sa.Index(
+            "ix_creator_mention_role_status",
+            "creator_mention_id",
+            "role_type",
+            "status",
+        ),
+    )
+
+    role_evidence_id: Mapped[int] = mapped_column(primary_key=True)
+    creator_mention_id: Mapped[int] = mapped_column(
+        sa.ForeignKey("paper_creator_mentions.creator_mention_id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    evidence_span_id: Mapped[int] = mapped_column(
+        sa.ForeignKey("document_evidence_spans.evidence_span_id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    role_type: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("role_type IN ('CORRESPONDING_AUTHOR')"),
+        nullable=False,
+    )
+    status: Mapped[str] = mapped_column(
+        sa.Text,
+        sa.CheckConstraint("status IN ('CANDIDATE','ACCEPTED','REJECTED','SUPERSEDED')"),
+        nullable=False,
+    )
+    raw_value: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    normalized_value: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    resolver: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    reason_code: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
+    score: Mapped[float | None] = mapped_column(sa.Float, nullable=True)
+    created_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow)
+    updated_at: Mapped[Any] = mapped_column(sa.DateTime(), default=utcnow, onupdate=utcnow)
+
+
 class Authorship(Base):
     __tablename__ = "authorships"
     __table_args__ = (

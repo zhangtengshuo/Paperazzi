@@ -18,6 +18,7 @@ if str(SRC) not in sys.path:
 from paperazzi.database.engine import create_paperazzi_engine  # noqa: E402
 from paperazzi.database.models import PaperCreatorMention  # noqa: E402
 from paperazzi.database.persistence import persist_zotero_scan  # noqa: E402
+from paperazzi.identity.manual_review import merge_identity_review_pair  # noqa: E402
 from paperazzi.identity.models import (  # noqa: E402
     AuthorIdentityDecision,
     AuthorIdentityMembership,
@@ -89,11 +90,13 @@ class Phase4SourceStableIdentityTests(unittest.TestCase):
         self.engine.dispose()
         self.tmp.cleanup()
 
-    def scan(self, items: list[CanonicalZoteroItem]) -> None:
+    def scan(
+        self, items: list[CanonicalZoteroItem], *, run_token: str = "source-stable-scan"
+    ) -> None:
         result = persist_zotero_scan(
             self.sf,
             items,
-            {"run_token": "source-stable-scan", "source_db_path": "/tmp/fake"},
+            {"run_token": run_token, "source_db_path": "/tmp/fake"},
         )
         self.assertEqual(result.status, "COMPLETED", result.error)
 
@@ -261,6 +264,78 @@ class Phase4SourceStableIdentityTests(unittest.TestCase):
                 .count(),
                 0,
             )
+
+    def test_manual_merge_source_identity_is_inherited_by_later_papers(self) -> None:
+        initial = [
+            paper("ALIAS-A", 101, [author(10, "Alice", "Smith"), author(100, "Old", "One")]),
+            paper("ALIAS-B", 102, [author(20, "A", "Smith"), author(200, "Old", "Two")]),
+        ]
+        self.scan(initial, run_token="manual-alias-1")
+        with self.sf() as session:
+            bootstrap_author_identities(session)
+            mention_a = session.query(PaperCreatorMention).filter_by(source_creator_id=10).one()
+            mention_b = session.query(PaperCreatorMention).filter_by(source_creator_id=20).one()
+            membership_a = (
+                session.query(AuthorIdentityMembership)
+                .filter_by(creator_mention_id=mention_a.creator_mention_id, status="ACCEPTED")
+                .one()
+            )
+            membership_b = (
+                session.query(AuthorIdentityMembership)
+                .filter_by(creator_mention_id=mention_b.creator_mention_id, status="ACCEPTED")
+                .one()
+            )
+            self.assertNotEqual(membership_a.author_id, membership_b.author_id)
+            target_author_id = membership_a.author_id
+            merge_identity_review_pair(
+                session, membership_b.author_id, target_author_id, notes="test alias merge"
+            )
+            session.commit()
+
+        expanded = initial + [
+            # Same source creator that a human already merged; deliberately no coauthor
+            # overlap with the old A. Smith paper.
+            paper("ALIAS-C", 103, [author(20, "A", "Smith"), author(300, "New", "Three")]),
+            # Same spelling but a different source creator remains ambiguous.
+            paper("ALIAS-D", 104, [author(30, "A", "Smith"), author(400, "New", "Four")]),
+        ]
+        self.scan(expanded, run_token="manual-alias-2")
+        with self.sf() as session:
+            result = bootstrap_author_identities(session)
+            session.commit()
+            later_same_source = (
+                session.query(PaperCreatorMention)
+                .filter_by(source_creator_id=20, creator_type="author")
+                .order_by(PaperCreatorMention.creator_mention_id.desc())
+                .first()
+            )
+            inherited = (
+                session.query(AuthorIdentityMembership)
+                .filter_by(
+                    creator_mention_id=later_same_source.creator_mention_id,
+                    status="ACCEPTED",
+                )
+                .one()
+            )
+            self.assertEqual(inherited.author_id, target_author_id)
+
+            unrelated = session.query(PaperCreatorMention).filter_by(source_creator_id=30).one()
+            self.assertIsNone(
+                session.query(AuthorIdentityMembership)
+                .filter_by(creator_mention_id=unrelated.creator_mention_id, status="ACCEPTED")
+                .one_or_none()
+            )
+            review = (
+                session.query(__import__("paperazzi.identity.models", fromlist=["ResolutionReviewQueue"]).ResolutionReviewQueue)
+                .filter_by(
+                    subject_type="creator_mention",
+                    subject_id=str(unrelated.creator_mention_id),
+                    status="OPEN",
+                )
+                .one()
+            )
+            self.assertEqual(review.reason_code, "NAME_BLOCK_REQUIRES_REVIEW")
+            self.assertGreaterEqual(result["linked"], 1)
 
 
 if __name__ == "__main__":

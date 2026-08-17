@@ -6,6 +6,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
+from .correspondence import classify_correspondence_text, extract_emails
+
 
 REFERENCE_HEADING_RE = re.compile(
     r"^\s*(?:(?:\d+(?:\.\d+)*)\s+)?"
@@ -70,16 +72,6 @@ AFFILIATION_TERMS = (
     "max planck",
 )
 
-CORRESPONDENCE_TERMS = (
-    "corresponding author",
-    "correspondence",
-    "electronic address",
-    "e-mail",
-    "email:",
-    "email ",
-    "to whom correspondence",
-)
-
 BOILERPLATE_TERMS = (
     "subscriber access provided by",
     "downloaded via",
@@ -136,7 +128,9 @@ class PdfEvidence:
     front_matter_text: str = ""
     front_matter_spans: tuple[EvidenceSpan, ...] = ()
     affiliation_candidates: tuple[EvidenceSpan, ...] = ()
+    author_marker_candidates: tuple[EvidenceSpan, ...] = ()
     correspondence_candidates: tuple[EvidenceSpan, ...] = ()
+    contact_candidates: tuple[EvidenceSpan, ...] = ()
     emails: tuple[str, ...] = ()
     references: ReferenceSection | None = None
     error: str | None = None
@@ -533,22 +527,53 @@ def _candidate_spans(
     blocks_by_page: list[list[tuple[Any, ...]]],
     *,
     max_front_pages: int,
-) -> tuple[tuple[EvidenceSpan, ...], tuple[EvidenceSpan, ...], tuple[EvidenceSpan, ...], tuple[str, ...]]:
+) -> tuple[
+    tuple[EvidenceSpan, ...],
+    tuple[EvidenceSpan, ...],
+    tuple[EvidenceSpan, ...],
+    tuple[EvidenceSpan, ...],
+    tuple[EvidenceSpan, ...],
+    tuple[str, ...],
+]:
+    """Collect front-matter, affiliation, role, and contact evidence separately.
+
+    A bare e-mail address is preserved as contact evidence but is *not* promoted to a
+    correspondence candidate.  Adjacent blocks are joined only when an explicit role
+    statement is split from its immediately following e-mail/contact block.
+    """
     all_front: list[EvidenceSpan] = []
     affiliations: list[EvidenceSpan] = []
+    author_markers: list[EvidenceSpan] = []
     correspondence: list[EvidenceSpan] = []
+    contacts: list[EvidenceSpan] = []
     emails: list[str] = []
     seen_email: set[str] = set()
 
     for page_index, blocks in enumerate(blocks_by_page[:max_front_pages]):
+        page_spans: list[EvidenceSpan] = []
         for block in blocks:
             span = _span_from_block(page_index, block, "front-matter")
             if span is None:
                 continue
             all_front.append(span)
-            lowered = " ".join(span.text.lower().split())
+            page_spans.append(span)
+
+        for index, span in enumerate(page_spans):
             if _is_boilerplate(span.text):
                 continue
+            lowered = " ".join(span.text.lower().split())
+            has_author_marker = any(
+                marker in span.text for marker in ("*", "✉", "†", "‡")
+            ) or bool(re.search(r"(?:^|[\s,])(?:[a-z]\)|\([a-z]\))(?:[\s,]|$)", span.text, re.I))
+            if page_index == 0 and len(span.text) <= 1800 and has_author_marker:
+                author_markers.append(
+                    EvidenceSpan(
+                        page_index=span.page_index,
+                        text=span.text,
+                        kind="author-marker-candidate",
+                        bbox=span.bbox,
+                    )
+                )
 
             if any(term in lowered for term in AFFILIATION_TERMS):
                 affiliations.append(
@@ -560,14 +585,14 @@ def _candidate_spans(
                     )
                 )
 
-            found_emails = [m.group(1).lower().rstrip(".,;:)]}>\"") for m in EMAIL_RE.finditer(span.text)]
-            has_correspondence_term = any(term in lowered for term in CORRESPONDENCE_TERMS)
-            if found_emails or has_correspondence_term:
-                correspondence.append(
+            classification = classify_correspondence_text(span.text)
+            found_emails = classification.emails
+            if found_emails:
+                contacts.append(
                     EvidenceSpan(
                         page_index=span.page_index,
                         text=span.text,
-                        kind="correspondence-candidate",
+                        kind="contact-candidate",
                         bbox=span.bbox,
                     )
                 )
@@ -576,7 +601,48 @@ def _candidate_spans(
                     seen_email.add(email)
                     emails.append(email)
 
-    return tuple(all_front), tuple(affiliations), tuple(correspondence), tuple(emails)
+            if not classification.is_role_signal:
+                continue
+
+            role_text = span.text
+            role_bbox = span.bbox
+            # AIP/JCP and older Elsevier layouts often split the role sentence and the
+            # actual e-mail into consecutive text blocks.  Join only one immediate
+            # contact block and only when the role block itself has no e-mail.
+            if not found_emails and index + 1 < len(page_spans):
+                next_span = page_spans[index + 1]
+                next_class = classify_correspondence_text(next_span.text)
+                if next_class.emails and next_class.kind in {"CONTACT_ONLY", "ROLE_MARKER"}:
+                    role_text = f"{span.text}\n{next_span.text}"
+                    if span.bbox and next_span.bbox:
+                        role_bbox = (
+                            min(span.bbox[0], next_span.bbox[0]),
+                            min(span.bbox[1], next_span.bbox[1]),
+                            max(span.bbox[2], next_span.bbox[2]),
+                            max(span.bbox[3], next_span.bbox[3]),
+                        )
+                    for email in next_class.emails:
+                        if email not in seen_email:
+                            seen_email.add(email)
+                            emails.append(email)
+
+            correspondence.append(
+                EvidenceSpan(
+                    page_index=span.page_index,
+                    text=role_text,
+                    kind="correspondence-candidate",
+                    bbox=role_bbox,
+                )
+            )
+
+    return (
+        tuple(all_front),
+        tuple(affiliations),
+        tuple(author_markers),
+        tuple(correspondence),
+        tuple(contacts),
+        tuple(emails),
+    )
 
 
 def _text_status(normal: int, thin: int, empty: int, page_count: int) -> str:
@@ -667,7 +733,7 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
     thin = sum(1 for text in page_texts if 1 <= len(text.strip()) < 200)
     empty = sum(1 for text in page_texts if not text.strip())
 
-    front_spans, affiliations, correspondence, emails = _candidate_spans(
+    front_spans, affiliations, author_markers, correspondence, contacts, emails = _candidate_spans(
         blocks_by_page,
         max_front_pages=max_front_pages,
     )
@@ -707,7 +773,9 @@ def extract_pdf_evidence(path: str | Path, *, max_front_pages: int = 2) -> PdfEv
         front_matter_text=front_text,
         front_matter_spans=front_spans,
         affiliation_candidates=affiliations,
+        author_marker_candidates=author_markers,
         correspondence_candidates=correspondence,
+        contact_candidates=contacts,
         emails=emails,
         references=references,
         error=None,

@@ -61,6 +61,8 @@ def _preview(evidence, role) -> dict:
         "error": evidence.error,
         "emails": list(evidence.emails),
         "affiliation_candidates": [asdict(span) for span in evidence.affiliation_candidates],
+        "author_marker_candidates": [asdict(span) for span in evidence.author_marker_candidates],
+        "contact_candidates": [asdict(span) for span in evidence.contact_candidates],
         "correspondence_candidates": [asdict(span) for span in evidence.correspondence_candidates],
         "reference": None
         if evidence.references is None
@@ -170,7 +172,12 @@ def main() -> int:
             )
             spans = [
                 {"kind": span.kind, "page_index": span.page_index, "text": span.text, "bbox": span.bbox}
-                for span in (*evidence.affiliation_candidates, *evidence.correspondence_candidates)
+                for span in (
+                    *evidence.affiliation_candidates,
+                    *evidence.author_marker_candidates,
+                    *evidence.contact_candidates,
+                    *evidence.correspondence_candidates,
+                )
             ]
             persisted_spans = persist_evidence_spans(
                 session,

@@ -26,7 +26,12 @@ from paperazzi.database.repositories import (  # noqa: E402
     record_extraction_review,
 )
 from paperazzi.identity.authorship_evidence import propose_authorship_evidence  # noqa: E402
-from paperazzi.identity.models import Authorship, AuthorshipEvidence, ResolutionReviewQueue  # noqa: E402
+from paperazzi.identity.models import (  # noqa: E402
+    Authorship,
+    AuthorshipEvidence,
+    CreatorMentionRoleEvidence,
+    ResolutionReviewQueue,
+)
 from paperazzi.identity.service import bootstrap_author_identities  # noqa: E402
 from paperazzi.ingest.models import (  # noqa: E402
     CanonicalAttachment,
@@ -263,6 +268,106 @@ class Phase4AuthorshipEvidenceTests(unittest.TestCase):
             self.assertEqual(result["affiliation_candidates"], 1)
             row = session.query(AuthorshipEvidence).filter_by(evidence_type="AFFILIATION").one()
             self.assertEqual(row.status, "CANDIDATE")
+
+    def test_bare_electronic_mail_does_not_create_corresponding_role(self) -> None:
+        with self.sf() as session:
+            self._add_span(
+                session,
+                kind="correspondence",
+                text="a)Electronic mail: alice.smith@example.org",
+            )
+            paper_id = session.query(Paper).one().paper_id
+            result = propose_authorship_evidence(session, paper_id)
+            session.commit()
+            self.assertEqual(result["mention_role_accepted"], 0)
+            self.assertEqual(result["corresponding_accepted"], 0)
+            self.assertEqual(session.query(CreatorMentionRoleEvidence).count(), 0)
+            self.assertEqual(session.query(ResolutionReviewQueue).count(), 0)
+
+    def test_grouped_explicit_block_prefers_email_mapping_over_extra_name(self) -> None:
+        with self.sf() as session:
+            self._add_span(
+                session,
+                kind="correspondence",
+                text=(
+                    "Corresponding author: Alice Smith, alice.smith@example.org. "
+                    "Bob Jones assisted with correspondence formatting."
+                ),
+            )
+            paper_id = session.query(Paper).one().paper_id
+            result = propose_authorship_evidence(session, paper_id)
+            session.commit()
+            self.assertEqual(result["mention_role_accepted"], 1)
+            corresponding = (
+                session.query(Authorship)
+                .filter_by(status="ACTIVE", is_corresponding_author=True)
+                .all()
+            )
+            self.assertEqual([row.order_index for row in corresponding], [0])
+
+    def test_symbol_footnote_maps_role_to_marked_source_mention(self) -> None:
+        with self.sf() as session:
+            self._add_span(
+                session,
+                kind="author-marker-candidate",
+                text="Alice Smith and Bob Jones*",
+            )
+            self._add_span(
+                session,
+                kind="correspondence",
+                text="* Author to whom correspondence should be addressed.",
+            )
+            paper_id = session.query(Paper).one().paper_id
+            result = propose_authorship_evidence(session, paper_id)
+            session.commit()
+            self.assertEqual(result["mention_role_accepted"], 1)
+            bob = session.query(Authorship).filter_by(order_index=1, status="ACTIVE").one()
+            alice = session.query(Authorship).filter_by(order_index=0, status="ACTIVE").one()
+            self.assertTrue(bob.is_corresponding_author)
+            self.assertFalse(alice.is_corresponding_author)
+
+    def test_starred_author_plus_affiliation_contact_is_role_evidence(self) -> None:
+        with self.sf() as session:
+            self._add_span(
+                session,
+                kind="author-marker-candidate",
+                text="Alice Smith and Bob Jones*",
+            )
+            self._add_span(
+                session,
+                kind="contact-candidate",
+                text="Department of Chemistry, Example University. E-mail: bob.jones@example.org",
+            )
+            paper_id = session.query(Paper).one().paper_id
+            result = propose_authorship_evidence(session, paper_id)
+            session.commit()
+            self.assertEqual(result["mention_role_accepted"], 1)
+            role = session.query(CreatorMentionRoleEvidence).filter_by(status="ACCEPTED").one()
+            bob_mention = (
+                session.query(__import__("paperazzi.database.models", fromlist=["PaperCreatorMention"]).PaperCreatorMention)
+                .filter_by(paper_id=paper_id, order_index=1)
+                .one()
+            )
+            self.assertEqual(role.creator_mention_id, bob_mention.creator_mention_id)
+
+    def test_role_evidence_survives_without_active_canonical_authorship(self) -> None:
+        with self.sf() as session:
+            alice = session.query(Authorship).filter_by(order_index=0, status="ACTIVE").one()
+            alice.status = "SUPERSEDED"
+            self._add_span(
+                session,
+                kind="correspondence",
+                text="Corresponding author: Alice Smith, alice.smith@example.org",
+            )
+            paper_id = session.query(Paper).one().paper_id
+            result = propose_authorship_evidence(session, paper_id)
+            session.commit()
+            self.assertEqual(result["mention_role_accepted"], 1)
+            self.assertEqual(result["corresponding_accepted"], 0)
+            self.assertEqual(
+                session.query(CreatorMentionRoleEvidence).filter_by(status="ACCEPTED").count(),
+                1,
+            )
 
 
 if __name__ == "__main__":

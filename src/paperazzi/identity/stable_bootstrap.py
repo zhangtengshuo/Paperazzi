@@ -26,7 +26,7 @@ from .policy import (
 from .review import enqueue_review
 from .source_collaboration import SourceCollaborationIndex
 
-RESOLVER_VERSION = f"phase4-identity-v3-source-corpus+{POLICY_VERSION}"
+RESOLVER_VERSION = f"phase4-identity-v4-manual-source-inheritance+{POLICY_VERSION}"
 
 
 @dataclass
@@ -37,6 +37,7 @@ class _ResolutionPlan:
     second_score: float
     candidate_count: int
     auto_accept: bool
+    manual_source_inheritance: bool = False
 
 
 def _accepted_membership(session: Any, creator_mention_id: int):
@@ -85,6 +86,44 @@ def _anchor_source_creator_ids(
         if mention is not None and mention.source_creator_id is not None:
             result.add(mention.source_creator_id)
     return result
+
+
+def _manual_merge_source_creator_reuse(
+    session: Any,
+    mention: PaperCreatorMention,
+    author: Author,
+    source_index: SourceCollaborationIndex,
+) -> bool:
+    """Return True only for a source identity explicitly authorized by manual merge.
+
+    ``source_creator_id`` is not globally a person ID, so ordinary reuse remains only a
+    scoring component.  A previous manual merge is authoritative for later occurrences
+    of that *same source creator*: ``merge_authors`` records the moved source mention as
+    an accepted membership with ``resolver='manual'`` and ``reason_code='MERGE_IDENTITY'``.
+    Reading that decision record is more robust than inferring manual intent from name
+    variants, because merge bookkeeping may de-duplicate an identical spelling.
+    """
+    if mention.source_creator_id is None:
+        return False
+
+    prior_manual_merge = (
+        session.query(_legacy_service.AuthorIdentityMembership.membership_id)
+        .join(
+            PaperCreatorMention,
+            PaperCreatorMention.creator_mention_id
+            == _legacy_service.AuthorIdentityMembership.creator_mention_id,
+        )
+        .filter(
+            PaperCreatorMention.source_creator_id == mention.source_creator_id,
+            PaperCreatorMention.creator_mention_id != mention.creator_mention_id,
+            _legacy_service.AuthorIdentityMembership.author_id == author.author_id,
+            _legacy_service.AuthorIdentityMembership.status == "ACCEPTED",
+            _legacy_service.AuthorIdentityMembership.resolver == "manual",
+            _legacy_service.AuthorIdentityMembership.reason_code == "MERGE_IDENTITY",
+        )
+        .first()
+    )
+    return prior_manual_merge is not None
 
 
 def _author_stable_key(
@@ -408,7 +447,7 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 "stable seed closure left an author mention without a candidate"
             )
 
-        scored: list[tuple[Author, _legacy_service.IdentityScore]] = []
+        scored: list[tuple[Author, _legacy_service.IdentityScore, bool]] = []
         for author_id in author_ids:
             author = session.get(Author, author_id)
             if author is None:
@@ -420,20 +459,33 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 source_index=source_index,
             )
             _legacy_service._candidate_membership(session, mention, author, score)
-            scored.append((author, score))
+            manual_source_inheritance = _manual_merge_source_creator_reuse(
+                session, mention, author, source_index
+            )
+            scored.append((author, score, manual_source_inheritance))
         if not scored:
             raise _legacy_service.IdentityResolutionError(
                 "stable candidate author rows disappeared during planning"
             )
 
+        inherited_count = sum(1 for _author, _score, inherited in scored if inherited)
         scored.sort(
-            key=lambda item: (-item[1].score, _author_stable_key(session, item[0]))
+            key=lambda item: (
+                not item[2],
+                -item[1].score,
+                _author_stable_key(session, item[0]),
+            )
         )
-        best_author, best = scored[0]
+        best_author, best, manual_source_inheritance = scored[0]
         second_score = scored[1][1].score if len(scored) > 1 else 0.0
         can_auto_accept = (
-            best.auto_accept_eligible
-            and best.score - second_score >= IDENTITY_AUTO_ACCEPT_MARGIN
+            (
+                (manual_source_inheritance and inherited_count == 1)
+                or (
+                    best.auto_accept_eligible
+                    and best.score - second_score >= IDENTITY_AUTO_ACCEPT_MARGIN
+                )
+            )
             and not best_author.locked
         )
         plans.append(
@@ -444,6 +496,7 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 second_score=second_score,
                 candidate_count=len(scored),
                 auto_accept=can_auto_accept,
+                manual_source_inheritance=manual_source_inheritance,
             )
         )
 
@@ -473,7 +526,11 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 plan.best_author,
                 actor="DETERMINISTIC",
                 score=plan.best_score,
-                reason_code="STRONG_IMMUTABLE_SOURCE_IDENTITY_EVIDENCE",
+                reason_code=(
+                    "MANUAL_MERGE_SOURCE_CREATOR_INHERITANCE"
+                    if plan.manual_source_inheritance
+                    else "STRONG_IMMUTABLE_SOURCE_IDENTITY_EVIDENCE"
+                ),
             )
             counts["linked"] += 1
             continue
@@ -503,6 +560,7 @@ def bootstrap_author_identities(session: Any, *, limit: int | None = None) -> di
                 "second_score": plan.second_score,
                 "candidate_count": plan.candidate_count,
                 "components": plan.best_score.components,
+                "manual_source_inheritance": plan.manual_source_inheritance,
                 "evidence_basis": "IMMUTABLE_SOURCE_CORPUS",
             },
             priority=70 if collision else (60 if plan.best_score.score >= 0.6 else 40),

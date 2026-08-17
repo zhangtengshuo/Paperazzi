@@ -27,11 +27,12 @@ PHASE4_TABLES = {
     "author_identity_evidence",
     "authorships",
     "authorship_evidence",
+    "creator_mention_role_evidence",
     "reference_match_evidence",
     "resolution_review_queue",
 }
 PROVENANCE_TABLES = {"document_roles", "retraction_events", "retraction_impacts"}
-MIGRATION_HEAD = "0007_similar_author_review_queue"
+MIGRATION_HEAD = "0008_creator_mention_role_evidence"
 
 
 def alembic(*args: str, db_path: Path) -> subprocess.CompletedProcess:
@@ -54,7 +55,7 @@ class Phase4MigrationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tmp.cleanup()
 
-    def test_fresh_upgrade_reaches_0007_and_has_phase4_plus_provenance_schema(self) -> None:
+    def test_fresh_upgrade_reaches_0008_and_has_phase4_plus_provenance_schema(self) -> None:
         proc = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(proc.returncode, 0, proc.stderr[-1800:])
         current = alembic("current", db_path=self.db)

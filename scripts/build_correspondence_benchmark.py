@@ -8,7 +8,12 @@ REPO_ROOT=Path(__file__).resolve().parents[1];SRC=REPO_ROOT/'src'
 if str(SRC) not in sys.path:sys.path.insert(0,str(SRC))
 from paperazzi.database.engine import create_paperazzi_engine  # noqa:E402
 from paperazzi.database.models import Paper, PaperCreatorMention, PaperDocument  # noqa:E402
-from paperazzi.identity.authorship_evidence import _CORRESPONDENCE_MARKER,_PUBLISHER_NOISE,_find_authors_in_text  # noqa:E402
+from paperazzi.identity.authorship_evidence import (  # noqa:E402
+    _email_mention_matches,
+    _find_mentions_in_text,
+    _marked_mentions,
+)
+from paperazzi.local_evidence.correspondence import classify_correspondence_text, extract_leading_marker  # noqa:E402
 from paperazzi.local_evidence.pdf import extract_pdf_evidence  # noqa:E402
 from paperazzi.provenance.service import effective_document_role,select_primary_document  # noqa:E402
 
@@ -37,11 +42,26 @@ def choose_papers(session,size:int):
 def build_case(session,paper,document):
     evidence=extract_pdf_evidence(document.local_path);mentions=session.query(PaperCreatorMention).filter_by(paper_id=paper.paper_id,creator_type='author').order_by(PaperCreatorMention.order_index).all()
     predicted=[];candidate_texts=[]
+    marker_spans=[type('MarkerSpan',(),{'raw_text':span.text})() for span in evidence.author_marker_candidates]
+    has_role_signal=False
     for span in evidence.correspondence_candidates:
         raw=span.text;candidate_texts.append(raw)
-        explicit=bool(_CORRESPONDENCE_MARKER.search(raw));noisy=bool(_PUBLISHER_NOISE.search(raw))
-        if explicit and not noisy:
-            for authorship,mention in _find_authors_in_text(session,paper.paper_id,raw):
+        classification=classify_correspondence_text(raw)
+        if not classification.is_role_signal:continue
+        has_role_signal=True
+        matches=_find_mentions_in_text(session,paper.paper_id,raw)
+        marker=classification.marker or extract_leading_marker(raw)
+        if not matches and marker:matches=_marked_mentions(mentions,marker_spans,marker)
+        for mention in matches:
+            name=_source_name(mention)
+            if name not in predicted:predicted.append(name)
+    if not has_role_signal and marker_spans:
+        starred={m.creator_mention_id:m for marker in ('*','✉') for m in _marked_mentions(mentions,marker_spans,marker)}
+        for span in evidence.contact_candidates:
+            classification=classify_correspondence_text(span.text)
+            if classification.kind!='CONTACT_ONLY':continue
+            for mention in _email_mention_matches(mentions,span.text):
+                if mention.creator_mention_id not in starred:continue
                 name=_source_name(mention)
                 if name not in predicted:predicted.append(name)
     role=effective_document_role(session,document)

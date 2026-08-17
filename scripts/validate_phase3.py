@@ -242,11 +242,19 @@ def main() -> int:
                 attempt,
                 [
                     {"kind": "affiliation", "page_index": span.page_index, "text": span.text}
-                    for span in evidence.affiliation_candidates[:4]
+                    for span in evidence.affiliation_candidates[:8]
+                ]
+                + [
+                    {"kind": "author-marker-candidate", "page_index": span.page_index, "text": span.text}
+                    for span in evidence.author_marker_candidates
+                ]
+                + [
+                    {"kind": "contact-candidate", "page_index": span.page_index, "text": span.text}
+                    for span in evidence.contact_candidates
                 ]
                 + [
                     {"kind": "correspondence", "page_index": span.page_index, "text": span.text}
-                    for span in evidence.correspondence_candidates[:2]
+                    for span in evidence.correspondence_candidates
                 ],
                 text_source="PDF_NATIVE",
                 text_channel="PYMUPDF_SORTED",
