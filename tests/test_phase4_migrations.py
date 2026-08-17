@@ -1,4 +1,4 @@
-"""Phase 4 migration gates for identity/resolution schema."""
+"""Phase 4/5 migration gates for identity, provenance, and retraction schema."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ PHASE4_TABLES = {
     "reference_match_evidence",
     "resolution_review_queue",
 }
+PROVENANCE_TABLES = {"document_roles", "retraction_events", "retraction_impacts"}
 
 
 def alembic(*args: str, db_path: Path) -> subprocess.CompletedProcess:
@@ -52,17 +53,18 @@ class Phase4MigrationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tmp.cleanup()
 
-    def test_fresh_upgrade_reaches_0005_and_has_phase4_schema(self) -> None:
+    def test_fresh_upgrade_reaches_0006_and_has_phase4_plus_provenance_schema(self) -> None:
         proc = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(proc.returncode, 0, proc.stderr[-1800:])
         current = alembic("current", db_path=self.db)
         self.assertEqual(current.returncode, 0, current.stderr[-800:])
-        self.assertIn("0005_identity_history_constraints", current.stdout)
+        self.assertIn("0006_document_roles_retractions", current.stdout)
 
         engine = create_paperazzi_engine(self.db)
         with engine.connect() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             self.assertTrue(PHASE4_TABLES.issubset(tables), PHASE4_TABLES - tables)
+            self.assertTrue(PROVENANCE_TABLES.issubset(tables), PROVENANCE_TABLES - tables)
             self.assertEqual(conn.exec_driver_sql("PRAGMA foreign_key_check").fetchall(), [])
             indexes = {
                 row[0]: row[1]
@@ -75,6 +77,7 @@ class Phase4MigrationTests(unittest.TestCase):
             self.assertIn("uq_author_external_id_accepted", indexes)
             self.assertIn("WHERE status = 'ACCEPTED'", indexes["uq_author_external_id_accepted"])
             self.assertNotIn("uq_identity_membership_state", indexes)
+            self.assertIn("ix_retraction_events_root", indexes)
         engine.dispose()
 
     def test_downgrade_to_phase3_then_upgrade_head_roundtrip(self) -> None:
@@ -85,6 +88,7 @@ class Phase4MigrationTests(unittest.TestCase):
         with engine.connect() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             self.assertTrue(PHASE4_TABLES.isdisjoint(tables))
+            self.assertTrue(PROVENANCE_TABLES.isdisjoint(tables))
             self.assertIn("document_extraction_reviews", tables)
             self.assertEqual(conn.exec_driver_sql("PRAGMA foreign_key_check").fetchall(), [])
         engine.dispose()
@@ -93,9 +97,9 @@ class Phase4MigrationTests(unittest.TestCase):
         self.assertEqual(up.returncode, 0, up.stderr[-1800:])
         engine = create_paperazzi_engine(self.db)
         with engine.connect() as conn:
-            self.assertTrue(
-                PHASE4_TABLES.issubset(set(sa.inspect(conn).get_table_names()))
-            )
+            tables = set(sa.inspect(conn).get_table_names())
+            self.assertTrue(PHASE4_TABLES.issubset(tables))
+            self.assertTrue(PROVENANCE_TABLES.issubset(tables))
             self.assertEqual(conn.exec_driver_sql("PRAGMA foreign_key_check").fetchall(), [])
         engine.dispose()
 
@@ -104,7 +108,7 @@ class Phase4MigrationTests(unittest.TestCase):
         second = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(second.returncode, 0, second.stderr[-800:])
         current = alembic("current", db_path=self.db)
-        self.assertIn("0005_identity_history_constraints", current.stdout)
+        self.assertIn("0006_document_roles_retractions", current.stdout)
 
 
 if __name__ == "__main__":
