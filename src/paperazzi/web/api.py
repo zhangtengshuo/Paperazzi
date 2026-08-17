@@ -21,6 +21,7 @@ from paperazzi.identity.manual_review import (
     sync_author_name_variants,
 )
 from paperazzi.identity.profile_evidence import author_sourced_evidence
+from paperazzi.identity.review_queries import list_identity_review_queue
 from paperazzi.identity.service import IdentityResolutionError
 from paperazzi.identity.similar_names import refresh_similar_identity_reviews
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
@@ -187,8 +188,8 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
 
     @app.get("/api/reviews/identity")
     def identity_reviews(limit: int = Query(default=100, ge=1, le=500)) -> list[dict[str, object]]:
-        with service() as query_service:
-            return query_service.list_identity_review_queue(limit=limit)
+        with session_scope() as session:
+            return list_identity_review_queue(session, limit=limit)
 
     @app.get("/api/reviews/identity/{review_item_id}")
     def identity_review(review_item_id: int) -> dict[str, object]:
