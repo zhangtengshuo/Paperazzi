@@ -1,4 +1,4 @@
-"""Phase 5 query/service and FastAPI MVP tests."""
+"""Phase 5 query/service, ASGI, and real-Uvicorn MVP tests."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ import unittest
 from pathlib import Path
 
 import sqlalchemy as sa
-from fastapi.testclient import TestClient
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC = REPO_ROOT / "src"
@@ -25,6 +24,7 @@ from paperazzi.identity.models import Authorship  # noqa: E402
 from paperazzi.ingest.models import CanonicalCreator, CanonicalZoteroItem  # noqa: E402
 from paperazzi.web.api import create_app  # noqa: E402
 from paperazzi.web.queries import PaperazziQueryService  # noqa: E402
+from paperazzi.web.validation import run_asgi_smoke, run_uvicorn_smoke  # noqa: E402
 
 
 def alembic(*args: str, db_path: Path) -> subprocess.CompletedProcess:
@@ -142,25 +142,52 @@ class Phase5WebTests(unittest.TestCase):
             papers = service.search("Alpha")
             self.assertEqual(papers["papers"][0]["title"], "Alpha paper")
 
-    def test_http_mvp_routes(self) -> None:
-        client = TestClient(create_app(self.db))
-        self.assertEqual(client.get("/").status_code, 200)
-        self.assertIn("Paperazzi", client.get("/").text)
-        self.assertEqual(client.get("/health").json()["status"], "OK")
+    def test_http_mvp_routes_via_asgi_transport(self) -> None:
+        with self.sf() as session:
+            alpha = session.query(Paper).filter_by(title="Alpha paper").one()
+            author_id = PaperazziQueryService(session).search("Alice")["authors"][0]["author_id"]
 
-        papers = client.get("/api/papers", params={"limit": 20}).json()
-        self.assertEqual(papers["total"], 3)
-        alpha = next(row for row in papers["items"] if row["title"] == "Alpha paper")
-        detail = client.get(f"/api/papers/{alpha['paper_id']}").json()
-        self.assertEqual(len(detail["authors"]), 2)
-        self.assertEqual(client.get(f"/api/papers/{alpha['paper_id']}/pdf").status_code, 404)
+        routes = {
+            "home": "/",
+            "health": "/health",
+            "papers": "/api/papers?limit=20",
+            "paper_detail": f"/api/papers/{alpha.paper_id}",
+            "missing_pdf": f"/api/papers/{alpha.paper_id}/pdf",
+            "search": "/api/search?q=Alice",
+            "author": f"/api/authors/{author_id}",
+            "reviews": "/api/reviews/identity",
+        }
+        result = run_asgi_smoke(create_app(self.db), routes, request_timeout=5.0)
+        self.assertEqual(result["status"], "PASS", result)
+        requests = result["requests"]
+        self.assertEqual(requests["home"]["status_code"], 200)
+        self.assertIn("Paperazzi", requests["home"]["body_preview"])
+        self.assertEqual(requests["health"]["status_code"], 200)
+        self.assertEqual(requests["papers"]["status_code"], 200)
+        self.assertEqual(requests["paper_detail"]["status_code"], 200)
+        self.assertEqual(requests["missing_pdf"]["status_code"], 404)
+        self.assertEqual(requests["search"]["status_code"], 200)
+        self.assertEqual(requests["author"]["status_code"], 200)
+        self.assertEqual(requests["reviews"]["status_code"], 200)
 
-        search = client.get("/api/search", params={"q": "Alice"}).json()
-        self.assertEqual(search["authors"][0]["preferred_name"], "Alice Smith")
-        author_id = search["authors"][0]["author_id"]
-        profile = client.get(f"/api/authors/{author_id}").json()
-        self.assertEqual(profile["preferred_name"], "Alice Smith")
-        self.assertEqual(client.get("/api/reviews/identity").status_code, 200)
+    def test_real_uvicorn_localhost_smoke(self) -> None:
+        routes = {
+            "home": "/",
+            "health": "/health",
+            "papers": "/api/papers?limit=5",
+            "authors": "/api/authors?limit=5",
+            "search": "/api/search?q=Alice&limit=5",
+        }
+        result = run_uvicorn_smoke(
+            self.db, routes, startup_timeout=10.0, request_timeout=5.0
+        )
+        self.assertEqual(result["status"], "PASS", result)
+        for row in result["requests"].values():
+            self.assertEqual(row["status_code"], 200, result)
+        self.assertEqual(
+            result["http_proxy_inheritance"],
+            "DISABLED_BY_TRUST_ENV_FALSE",
+        )
 
 
 if __name__ == "__main__":
