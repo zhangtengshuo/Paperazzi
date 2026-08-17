@@ -28,6 +28,7 @@ from paperazzi.identity.similar_names import (
     refresh_similar_identity_reviews,
     similar_author_candidates,
 )
+from paperazzi.web.identity_review_ui import IDENTITY_REVIEW_MULTICANDIDATE_JS
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 
@@ -95,7 +96,8 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
 
     @app.get("/", response_class=HTMLResponse, include_in_schema=False)
     def home() -> str:
-        return APP_HTML
+        enhancement = f"<script>{IDENTITY_REVIEW_MULTICANDIDATE_JS}</script>"
+        return APP_HTML.replace("</body>", enhancement + "</body>")
 
     @app.get("/health")
     def health() -> dict[str, object]:
