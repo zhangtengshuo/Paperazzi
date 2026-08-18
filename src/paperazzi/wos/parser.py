@@ -104,10 +104,16 @@ class ParsedWosRecord:
     title: str | None
     normalized_title: str | None
     source_title: str | None
+    source_abbrev_29: str | None
+    source_iso_abbrev: str | None
+    publication_type_code: str | None
     document_type: str | None
     abstract: str | None
     publication_year: int | None
     publication_date: str | None
+    early_access_date: str | None
+    early_access_year: int | None
+    wos_data_date: str | None
     volume: str | None
     issue: str | None
     begin_page: str | None
@@ -183,11 +189,15 @@ def parse_correspondence_groups(value: str | None) -> list[WosCorrespondenceGrou
     """Parse RP using WoS group-level `(corresponding author)` semantics.
 
     ``A; B (corresponding author), ADDRESS`` means both A and B are corresponding
-    authors in one Corresponding Address group.  The marker does not modify only B.
+    authors in one Corresponding Address group. The marker does not modify only B.
     """
     if not value:
         return []
-    raw_groups = re.split(r"\.\s*;\s*(?=[^.;]*?\(corresponding author\))", value, flags=re.I)
+    raw_groups = re.split(
+        r"\.\s*;\s*(?=[^.;]*?\(corresponding author\))",
+        value,
+        flags=re.I,
+    )
     groups: list[WosCorrespondenceGroup] = []
     for raw in raw_groups:
         part = raw.strip().strip(";")
@@ -227,8 +237,8 @@ def parse_reference(raw: str, order_index: int) -> ParsedReference:
     if year_match:
         post = raw[year_match.end():].lstrip(" ,")
         cited_source = post.split(",", 1)[0].strip() or None
-    vm = re.search(r"(?:^|,\s*)V([^,]+)", raw)
-    pm = re.search(r"(?:^|,\s*)P([^,]+)", raw)
+    volume_match = re.search(r"(?:^|,\s*)V([^,]+)", raw)
+    page_match = re.search(r"(?:^|,\s*)P([^,]+)", raw)
     return ParsedReference(
         order_index=order_index,
         raw_text=raw,
@@ -236,8 +246,8 @@ def parse_reference(raw: str, order_index: int) -> ParsedReference:
         cited_author=cited_author,
         cited_year=year,
         cited_source=cited_source,
-        volume=vm.group(1).strip() if vm else None,
-        page=pm.group(1).strip() if pm else None,
+        volume=volume_match.group(1).strip() if volume_match else None,
+        page=page_match.group(1).strip() if page_match else None,
     )
 
 
@@ -257,7 +267,11 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
     au = raw.values("AU")
     af = raw.values("AF")
     authors = [
-        WosAuthor(i, normalize_space(name) or name, normalize_space(af[i]) if i < len(af) else None)
+        WosAuthor(
+            i,
+            normalize_space(name) or name,
+            normalize_space(af[i]) if i < len(af) else None,
+        )
         for i, name in enumerate(au)
     ]
     title = raw.text("TI")
@@ -272,10 +286,16 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
         title=title,
         normalized_title=normalize_title(title),
         source_title=raw.text("SO"),
+        source_abbrev_29=raw.text("J9"),
+        source_iso_abbrev=raw.text("JI"),
+        publication_type_code=raw.first("PT"),
         document_type=raw.text("DT") or raw.first("PT"),
         abstract=raw.text("AB"),
         publication_year=_to_int(raw.first("PY")),
         publication_date=raw.text("PD"),
+        early_access_date=raw.text("EA"),
+        early_access_year=_to_int(raw.first("EY")),
+        wos_data_date=raw.text("DA"),
         volume=raw.first("VL"),
         issue=raw.first("IS"),
         begin_page=raw.first("BP"),
@@ -296,7 +316,9 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
         classifications=classifications,
         funding_agencies=raw.text("FU"),
         funding_text=raw.text("FX"),
-        references=[parse_reference(value, i) for i, value in enumerate(raw.values("CR"))],
+        references=[
+            parse_reference(value, i) for i, value in enumerate(raw.values("CR"))
+        ],
         raw_record=raw,
     )
 
