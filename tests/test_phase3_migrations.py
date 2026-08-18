@@ -25,6 +25,7 @@ EXPECTED_TABLES = {
     "document_extraction_runs", "document_extraction_attempts",
     "document_evidence_spans", "paper_reference_sections", "paper_references",
     "paper_reference_identifiers", "paper_reference_matches",
+    "paper_wos_links", "paper_wos_match_state",
 }
 
 EXPECTED_INDEXES = {
@@ -35,6 +36,8 @@ EXPECTED_INDEXES = {
     "ix_evidence_document_kind", "ix_ref_sections_document_status",
     "ix_references_citing_paper", "ix_ref_identifiers_type_value",
     "ix_ref_matches_reference_status",
+    "ix_paper_wos_links_paper_status", "ix_paper_wos_links_ut_status",
+    "uq_paper_wos_one_accepted", "ix_paper_wos_match_state_status",
 }
 
 
