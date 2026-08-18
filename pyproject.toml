@@ -26,6 +26,7 @@ web = [
 [project.scripts]
 paperazzi-zotero-probe = "paperazzi.zotero_sqlite.probe:main"
 paperazzi-wos = "paperazzi.wos.cli:main"
+paperazzi-analytics = "paperazzi.analytics.cli:main"
 paperazzi-web = "paperazzi.web.api:main"
 
 [tool.setuptools]
