@@ -38,7 +38,8 @@ def _accepted_link(session: Any, paper_id: int) -> dict[str, Any] | None:
             "SELECT paper_wos_link_id,paper_id,wos_ut,match_method,match_score,status,matched_at,notes "
             "FROM paper_wos_links WHERE paper_id=:paper_id AND status='ACCEPTED' "
             "ORDER BY paper_wos_link_id DESC LIMIT 1"
-        ), {"paper_id": paper_id}
+        ),
+        {"paper_id": paper_id},
     ).mappings().first()
     return dict(row) if row else None
 
@@ -50,7 +51,8 @@ def _stored_match_state(session: Any, paper_id: int) -> dict[str, Any] | None:
         sa.text(
             "SELECT paper_id,status,candidate_count,reason,checked_at "
             "FROM paper_wos_match_state WHERE paper_id=:paper_id"
-        ), {"paper_id": paper_id}
+        ),
+        {"paper_id": paper_id},
     ).mappings().first()
     return dict(row) if row else None
 
@@ -67,6 +69,7 @@ def _norm_venue(value: str | None) -> str | None:
     if not value:
         return None
     import re
+
     return " ".join(re.sub(r"[^a-z0-9]+", " ", value.casefold()).split()) or None
 
 
@@ -81,7 +84,11 @@ def decide_match(paper: Paper, store: WosCorpusStore) -> MatchDecision:
         candidates = store.find_by_doi(doi)
         if len(candidates) == 1:
             return MatchDecision(
-                paper.paper_id, "WOS_MATCHED", candidates[0]["ut"], "DOI_EXACT", 1.0,
+                paper.paper_id,
+                "WOS_MATCHED",
+                candidates[0]["ut"],
+                "DOI_EXACT",
+                1.0,
                 candidate_count=1,
             )
         if len(candidates) > 1:
@@ -106,7 +113,11 @@ def decide_match(paper: Paper, store: WosCorpusStore) -> MatchDecision:
         candidates = store.find_by_exact_title(paper.title)
         if len(candidates) == 1 and _record_matches_year(candidates[0], paper):
             return MatchDecision(
-                paper.paper_id, "WOS_MATCHED", candidates[0]["ut"], "TITLE_EXACT", 0.99,
+                paper.paper_id,
+                "WOS_MATCHED",
+                candidates[0]["ut"],
+                "TITLE_EXACT",
+                0.99,
                 candidate_count=1,
             )
         if candidates:
@@ -135,7 +146,9 @@ def decide_match(paper: Paper, store: WosCorpusStore) -> MatchDecision:
 
 def _persist_match_state(session: Any, decision: MatchDecision) -> None:
     if not _has_table(session, MATCH_STATE_TABLE):
-        raise RuntimeError("paper_wos_match_state table is unavailable; run Alembic migration 0010")
+        raise RuntimeError(
+            "paper_wos_match_state table is unavailable; run Alembic migration 0010"
+        )
     session.execute(
         sa.text(
             "INSERT INTO paper_wos_match_state(paper_id,status,candidate_count,reason,checked_at) "
@@ -152,21 +165,40 @@ def _persist_match_state(session: Any, decision: MatchDecision) -> None:
     )
 
 
-def apply_match(session: Any, decision: MatchDecision) -> bool:
-    """Persist match state and, for accepted matches, the Paperazzi bridge link."""
-    _persist_match_state(session, decision)
-    if decision.status != "WOS_MATCHED" or not decision.wos_ut or not decision.match_method:
+def _supersede_accepted_link(session: Any, paper_id: int) -> bool:
+    existing = _accepted_link(session, paper_id)
+    if not existing:
         return False
+    session.execute(
+        sa.text(
+            "UPDATE paper_wos_links SET status='SUPERSEDED' "
+            "WHERE paper_wos_link_id=:id"
+        ),
+        {"id": existing["paper_wos_link_id"]},
+    )
+    return True
+
+
+def apply_match(session: Any, decision: MatchDecision) -> bool:
+    """Persist current match state and maintain at most one accepted WoS bridge.
+
+    A fresh non-match/ambiguous result supersedes an older accepted link. Otherwise
+    `WosPaperConsumer` would continue to surface stale WoS data and mask the new
+    checked state.
+    """
+    _persist_match_state(session, decision)
     if not _has_table(session, LINK_TABLE):
         raise RuntimeError("paper_wos_links table is unavailable; run Alembic migration 0009")
+
+    if decision.status != "WOS_MATCHED" or not decision.wos_ut or not decision.match_method:
+        _supersede_accepted_link(session, decision.paper_id)
+        return False
+
     existing = _accepted_link(session, decision.paper_id)
     if existing and existing["wos_ut"] == decision.wos_ut:
         return False
     if existing:
-        session.execute(
-            sa.text("UPDATE paper_wos_links SET status='SUPERSEDED' WHERE paper_wos_link_id=:id"),
-            {"id": existing["paper_wos_link_id"]},
-        )
+        _supersede_accepted_link(session, decision.paper_id)
     session.execute(
         sa.text(
             "INSERT INTO paper_wos_links(paper_id,wos_ut,match_method,match_score,status,notes) "
@@ -185,7 +217,9 @@ def apply_match(session: Any, decision: MatchDecision) -> bool:
     return True
 
 
-def match_all_papers(session: Any, wos_db_path: str | Path, *, apply: bool = False) -> dict[str, Any]:
+def match_all_papers(
+    session: Any, wos_db_path: str | Path, *, apply: bool = False
+) -> dict[str, Any]:
     store = WosCorpusStore(wos_db_path)
     papers = (
         session.query(Paper)
@@ -216,7 +250,9 @@ def match_all_papers(session: Any, wos_db_path: str | Path, *, apply: bool = Fal
         "papers": len(papers),
         "matched": sum(d.status == "WOS_MATCHED" for d in decisions),
         "ambiguous": sum(d.status == "WOS_MATCH_AMBIGUOUS" for d in decisions),
-        "not_in_local_corpus": sum(d.status == "WOS_NOT_IN_LOCAL_CORPUS" for d in decisions),
+        "not_in_local_corpus": sum(
+            d.status == "WOS_NOT_IN_LOCAL_CORPUS" for d in decisions
+        ),
         "not_checked": 0,
         "links_written": links_written,
         "states_written": states_written,
@@ -312,7 +348,8 @@ class WosPaperConsumer:
                 seen.add(key)
                 corresponding.append(
                     {
-                        "au_name": member.get("au_name") or member.get("raw_member_name"),
+                        "au_name": member.get("au_name")
+                        or member.get("raw_member_name"),
                         "full_name": member.get("full_name"),
                         "raw_member_name": member.get("raw_member_name"),
                     }
@@ -337,6 +374,8 @@ class WosPaperConsumer:
                 "classifications": record.get("classifications", []),
                 "funding": record.get("funding", {}),
                 "reference_count": record.get("reference_count", 0),
-                "resolved_reference_count": record.get("resolved_reference_count", 0),
+                "resolved_reference_count": record.get(
+                    "resolved_reference_count", 0
+                ),
             },
         }
