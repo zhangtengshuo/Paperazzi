@@ -4,6 +4,7 @@ from __future__ import annotations
 import atexit
 import json
 import os
+import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
@@ -35,6 +36,8 @@ from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnava
 from paperazzi.web.ui import APP_HTML
 from paperazzi.web.wos_api import build_wos_router
 from paperazzi.web.wos_ui import WOS_UI_JS
+from paperazzi.wos.integration import WosPaperConsumer
+from paperazzi.wos.presentation import apply_wos_effective_roles
 
 DEFAULT_DB = Path("data/paperazzi.sqlite3")
 DEFAULT_WOS_DB = Path("data/wos.sqlite3")
@@ -175,8 +178,17 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     @app.get("/api/papers/{paper_id}")
     def paper(paper_id: int) -> dict[str, object]:
         try:
-            with service() as query_service:
-                return query_service.get_paper(paper_id)
+            with session_scope() as session:
+                detail = PaperazziQueryService(session).get_paper(paper_id)
+                try:
+                    wos_detail = WosPaperConsumer(session, wos_path).detail(paper_id)
+                except (sqlite3.Error, OSError, ValueError) as exc:
+                    wos_detail = {
+                        "status": "WOS_NOT_CHECKED",
+                        "available": False,
+                        "reason": f"LOCAL_WOS_READ_ERROR:{type(exc).__name__}",
+                    }
+                return apply_wos_effective_roles(detail, wos_detail)
         except NotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
