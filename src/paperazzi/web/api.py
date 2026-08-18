@@ -33,8 +33,10 @@ from paperazzi.identity.similar_names import (
 from paperazzi.web.identity_review_ui import IDENTITY_REVIEW_MULTICANDIDATE_JS
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
+from paperazzi.web.wos_api import build_wos_router
 
 DEFAULT_DB = Path("data/paperazzi.sqlite3")
+DEFAULT_WOS_DB = Path("data/wos.sqlite3")
 
 
 class IdentityTargetRequest(BaseModel):
@@ -95,6 +97,7 @@ def _load_local_ai_audit(audit_dir: str | Path | None) -> dict[str, object]:
 
 def create_app(db_path: str | Path | None = None) -> FastAPI:
     path = _database_path(db_path)
+    wos_path = Path(os.environ.get("PAPERAZZI_WOS_DB", DEFAULT_WOS_DB))
     audit = _load_local_ai_audit(os.environ.get("PAPERAZZI_AUDIT_DIR"))
     engine = create_paperazzi_engine(path)
     atexit.register(engine.dispose)
@@ -103,9 +106,10 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     app = FastAPI(
         title="Paperazzi",
         version="0.1.0.dev0",
-        description="Local-first Zotero-centered scholarly author knowledge base",
+        description="Local-first scholarly knowledge system integrating Zotero and an independent WoS background corpus",
     )
     app.state.db_path = path
+    app.state.wos_db_path = wos_path
     app.state.engine = engine
     app.state.session_factory = session_factory
     app.state.local_ai_audit = audit
@@ -135,13 +139,13 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     @app.get("/health")
     def health() -> dict[str, object]:
         if not path.is_file():
-            return {"status": "NO_DATABASE", "database": str(path)}
+            return {"status": "NO_DATABASE", "database": str(path), "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
         try:
             with engine.connect() as connection:
                 connection.execute(sa.text("SELECT 1"))
-            return {"status": "OK", "database": str(path)}
+            return {"status": "OK", "database": str(path), "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
         except Exception as exc:  # pragma: no cover
-            return {"status": "ERROR", "database": str(path), "error": type(exc).__name__}
+            return {"status": "ERROR", "database": str(path), "error": type(exc).__name__, "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
 
     @app.get("/api/audit/summary")
     def audit_summary() -> dict[str, object]:
@@ -345,6 +349,7 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         with service() as query_service:
             return query_service.search(q, limit=limit)
 
+    app.include_router(build_wos_router(session_factory, wos_path))
     return app
 
 
