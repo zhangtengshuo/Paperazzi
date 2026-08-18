@@ -53,6 +53,31 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
             raise HTTPException(status_code=404, detail=f"WoS record {ut} is not in the local corpus")
         return record
 
+    @router.get("/api/wos/records/{ut}/observations")
+    def wos_observations(
+        ut: str,
+        limit: int = Query(default=100, ge=1, le=1000),
+    ) -> dict[str, object]:
+        """Show every imported observation of a stable WoS UT.
+
+        This is especially useful for diagnosing WoS exports where NR reports cited
+        references but the CR payload is absent. Repeated UT observations are expected
+        and are merged into the canonical corpus record rather than rejected.
+        """
+        if not wos_path.is_file():
+            return {"available": False, "ut": ut, "items": []}
+        record = store.get_record(ut)
+        if record is None:
+            raise HTTPException(status_code=404, detail=f"WoS record {ut} is not in the local corpus")
+        return {
+            "available": True,
+            "ut": ut,
+            "canonical_cr_status": record.get("cr_status"),
+            "canonical_reference_count": record.get("reference_count", 0),
+            "reported_reference_count": record.get("reported_reference_count"),
+            "items": store.list_observations(ut, limit=limit),
+        }
+
     @router.get("/api/wos/records/{ut}/references")
     def wos_references(
         ut: str,
@@ -92,7 +117,15 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
             item["target_paper_ids"] = sorted(target_ids)
             item["target_in_zotero"] = bool(target_ids)
             item["target_in_local_wos"] = bool(item.get("target_ut"))
-        return {"available": True, "ut": ut, "items": items}
+        record = store.get_record(ut) or {}
+        return {
+            "available": True,
+            "ut": ut,
+            "cr_status": record.get("cr_status"),
+            "reference_count": record.get("reference_count", len(items)),
+            "reported_reference_count": record.get("reported_reference_count"),
+            "items": items,
+        }
 
     @router.get("/api/wos/frontier")
     def wos_frontier(limit: int = Query(default=100, ge=1, le=1000)) -> dict[str, object]:
