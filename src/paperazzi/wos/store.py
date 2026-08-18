@@ -8,7 +8,13 @@ from pathlib import Path
 import sqlite3
 from typing import Any, Iterator
 
-from .parser import ParsedWosRecord, normalize_author_key, normalize_doi, normalize_title, parse_records
+from .parser import (
+    ParsedWosRecord,
+    normalize_author_key,
+    normalize_doi,
+    normalize_title,
+    parse_records_with_stats,
+)
 
 SCHEMA_VERSION = 2
 
@@ -192,7 +198,7 @@ class WosCorpusStore:
         search_note: str | None = None,
     ) -> dict[str, Any]:
         self.initialize()
-        records = parse_records(text)
+        records, skipped_without_ut = parse_records_with_stats(text)
         if not records:
             raise ValueError("no complete WoS records found in tagged plain-text input")
         digest = source_sha256 or _sha256_bytes(text.encode("utf-8"))
@@ -222,7 +228,9 @@ class WosCorpusStore:
             "batch_id": batch_id,
             "source_filename": source_filename,
             "source_sha256": digest,
+            "raw_record_count": len(records) + skipped_without_ut,
             "record_count": len(records),
+            "skipped_without_ut": skipped_without_ut,
             "new_count": new_count,
             "updated_count": updated_count,
         }

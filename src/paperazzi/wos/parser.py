@@ -6,7 +6,7 @@ import re
 import unicodedata
 
 _TAG_RE = re.compile(r"^([A-Z0-9]{2})(?:\s(.*))?$")
-_DOI_RE = re.compile(r"10\.\d{4,9}/[^\s;,\]\[<>]+", re.IGNORECASE)
+_DOI_RE = re.compile(r"10\.\d{4,9}/[^\s]+", re.IGNORECASE)
 _YEAR_RE = re.compile(r"\b(18|19|20|21)\d{2}\b")
 _CORRESP_MARKER = "(corresponding author)"
 
@@ -323,5 +323,24 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
     )
 
 
+def parse_records_with_stats(text: str) -> tuple[list[ParsedWosRecord], int]:
+    """Parse Full Records and skip UT-less cited-reference artifacts.
+
+    WoS exports can contain ``DT=CITED-REFERENCE`` entries without a stable
+    ``UT`` alongside Full Records.  They are useful as provenance in the
+    export, but cannot be stored in the independent corpus whose primary key
+    is UT.  Keep the strict UT requirement for stored records while exposing
+    the skipped count to the importer.
+    """
+    raw_records = parse_tagged_text(text)
+    skipped_without_ut = sum(1 for record in raw_records if not record.first("UT"))
+    records = [
+        interpret_record(record)
+        for record in raw_records
+        if record.first("UT")
+    ]
+    return records, skipped_without_ut
+
+
 def parse_records(text: str) -> list[ParsedWosRecord]:
-    return [interpret_record(record) for record in parse_tagged_text(text)]
+    return parse_records_with_stats(text)[0]

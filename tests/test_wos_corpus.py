@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 import unittest
 
-from paperazzi.wos.parser import parse_correspondence_groups, parse_records
+from paperazzi.wos.parser import normalize_doi, parse_correspondence_groups, parse_records
 from paperazzi.wos.store import WosCorpusStore
 
 
@@ -62,6 +62,13 @@ DA 2026-08-18
 ER
 """
 
+UT_LESS_ARTIFACT = """PT J
+CA Example Contributors
+SO Example cited reference
+DT CITED-REFERENCE
+ER
+"""
+
 
 class WosParserTests(unittest.TestCase):
     def test_group_level_corresponding_author_semantics(self) -> None:
@@ -81,12 +88,25 @@ class WosParserTests(unittest.TestCase):
         self.assertEqual(records[0].references[0].doi, "10.1000/test-b")
         self.assertEqual(records[0].authors[0].full_name, "Xie, Xiaoyu")
 
+    def test_legacy_wos_doi_keeps_angle_brackets_and_semicolon(self) -> None:
+        self.assertEqual(
+            normalize_doi("10.1562/0031-8655(2000)072<0632:PBOSAN>2.0.CO;2."),
+            "10.1562/0031-8655(2000)072<0632:pbosan>2.0.co;2",
+        )
+
+    def test_ut_less_cited_reference_artifacts_are_skipped(self) -> None:
+        records = parse_records(SAMPLE + UT_LESS_ARTIFACT)
+        self.assertEqual(len(records), 2)
+        self.assertTrue(all(record.ut for record in records))
+
 
 class WosStoreTests(unittest.TestCase):
     def test_import_is_idempotent_and_resolves_citation_edges(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             store = WosCorpusStore(Path(tmp) / "wos.sqlite3")
             first = store.import_text(SAMPLE, source_filename="first.txt")
+            self.assertEqual(first["raw_record_count"], 2)
+            self.assertEqual(first["skipped_without_ut"], 0)
             self.assertEqual(first["new_count"], 2)
             self.assertEqual(store.stats()["records"], 2)
             self.assertEqual(store.stats()["corresponding_members"], 3)

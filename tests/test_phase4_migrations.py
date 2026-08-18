@@ -32,7 +32,8 @@ PHASE4_TABLES = {
     "resolution_review_queue",
 }
 PROVENANCE_TABLES = {"document_roles", "retraction_events", "retraction_impacts"}
-MIGRATION_HEAD = "0008_creator_mention_role_evidence"
+WOS_TABLES = {"paper_wos_links", "paper_wos_match_state"}
+MIGRATION_HEAD = "0010_paper_wos_match_state"
 
 
 def alembic(*args: str, db_path: Path) -> subprocess.CompletedProcess:
@@ -55,7 +56,7 @@ class Phase4MigrationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tmp.cleanup()
 
-    def test_fresh_upgrade_reaches_0008_and_has_phase4_plus_provenance_schema(self) -> None:
+    def test_fresh_upgrade_reaches_current_head_and_has_phase4_wos_schema(self) -> None:
         proc = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(proc.returncode, 0, proc.stderr[-1800:])
         current = alembic("current", db_path=self.db)
@@ -67,6 +68,7 @@ class Phase4MigrationTests(unittest.TestCase):
             tables = set(sa.inspect(conn).get_table_names())
             self.assertTrue(PHASE4_TABLES.issubset(tables), PHASE4_TABLES - tables)
             self.assertTrue(PROVENANCE_TABLES.issubset(tables), PROVENANCE_TABLES - tables)
+            self.assertTrue(WOS_TABLES.issubset(tables), WOS_TABLES - tables)
             self.assertEqual(conn.exec_driver_sql("PRAGMA foreign_key_check").fetchall(), [])
             indexes = {
                 row[0]: row[1]
