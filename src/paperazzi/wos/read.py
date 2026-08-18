@@ -66,13 +66,28 @@ def rich_record(store: WosCorpusStore, ut: str) -> dict[str, Any] | None:
                 "WHERE ut=? AND wos_author_id IS NULL ORDER BY identifier_id", (ut,)
             ).fetchall()
         ]
-        metric_history = [dict(row) for row in con.execute(
-            "SELECT observed_at,times_cited_wos,times_cited_total,batch_id "
-            "FROM wos_record_metrics WHERE ut=? ORDER BY observed_at,metric_id", (ut,)
-        ).fetchall()]
-        raw_addresses = [dict(row) for row in con.execute(
-            "SELECT address_id,order_index,raw_address FROM wos_addresses WHERE ut=? ORDER BY order_index", (ut,)
-        ).fetchall()]
+        metric_columns = {
+            str(row[1]) for row in con.execute("PRAGMA table_info(wos_record_metrics)").fetchall()
+        }
+        metric_select = (
+            "SELECT observed_at,source_data_date,times_cited_wos,times_cited_total,batch_id "
+            if "source_data_date" in metric_columns
+            else "SELECT observed_at,NULL AS source_data_date,times_cited_wos,times_cited_total,batch_id "
+        )
+        metric_history = [
+            dict(row)
+            for row in con.execute(
+                metric_select + "FROM wos_record_metrics WHERE ut=? ORDER BY observed_at,metric_id",
+                (ut,),
+            ).fetchall()
+        ]
+        raw_addresses = [
+            dict(row)
+            for row in con.execute(
+                "SELECT address_id,order_index,raw_address FROM wos_addresses WHERE ut=? ORDER BY order_index",
+                (ut,),
+            ).fetchall()
+        ]
 
     authors = []
     for author in record.get("authors", []):
@@ -121,12 +136,18 @@ def search_records(store: WosCorpusStore, query: str, *, limit: int = 50) -> lis
                   OR lower(coalesce(f.funding_text_raw,'')) LIKE ?
                ORDER BY r.publication_year DESC,r.ut
                LIMIT ?""",
-            (like, like, like, like, like, like, like, like, like, like, like, max(1, min(limit, 500))),
+            (
+                like, like, like, like, like, like,
+                like, like, like, like, like,
+                max(1, min(limit, 500)),
+            ),
         ).fetchall()
     return [dict(row) for row in rows]
 
 
-def rich_references(store: WosCorpusStore, ut: str, *, limit: int = 500, offset: int = 0) -> list[dict[str, Any]]:
+def rich_references(
+    store: WosCorpusStore, ut: str, *, limit: int = 500, offset: int = 0
+) -> list[dict[str, Any]]:
     """Return CR rows with locally resolved WoS target metadata when available."""
     with store.connect() as con:
         rows = con.execute(
