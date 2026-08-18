@@ -1,0 +1,335 @@
+{
+  "schema": "paperazzi.public_web_person.sample.v0",
+  "person": {
+    "person_key": "martin-head-gordon",
+    "canonical_name": "Martin Head-Gordon",
+    "name_variants": ["Martin P. Head-Gordon", "Martin Philip Head-Gordon", "M. Head-Gordon"],
+    "primary_affiliation_observed": "University of California, Berkeley, College of Chemistry",
+    "observed_at": "2026-08-19"
+  },
+  "media": [
+    {
+      "media_id": "mhg-portrait-berkeley",
+      "media_type": "PORTRAIT",
+      "caption": "Official UC Berkeley College of Chemistry faculty portrait",
+      "source_page_url": "https://chemistry.berkeley.edu/people/martin-head-gordon",
+      "asset_url": "https://chemistry.berkeley.edu/sites/default/files/styles/openberkeley_brand_widgets_rectangle/public/martin-head-gordon-500x333.jpg?itok=wHrnqoOX&timestamp=1712681631",
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "OFFICIAL_INSTITUTION"
+    },
+    {
+      "media_id": "mhg-group-forest-outing-2024",
+      "media_type": "GROUP_PHOTO",
+      "caption": "Martin Head-Gordon Group site: June 2024 Forest Outing",
+      "source_page_url": "https://mhggroupberkeley.com/",
+      "asset_url": "https://mhggroupberkeley.com/wp-content/uploads/2024/08/1-12-1.jpeg?w=768",
+      "people_explicitly_named": [],
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "OFFICIAL_GROUP_SITE",
+      "notes": "Useful as group-culture/media evidence. The homepage caption does not identify every person in the photograph, so do not create person-presence edges from face recognition or assumption."
+    },
+    {
+      "media_id": "mhg-group-marina-picnic-2023",
+      "media_type": "GROUP_PHOTO",
+      "caption": "Martin Head-Gordon Group site: September 2023 Berkeley Marinas Picnic",
+      "source_page_url": "https://mhggroupberkeley.com/",
+      "asset_url": "https://mhggroupberkeley.com/wp-content/uploads/2024/08/sep_2023_group_photo_.webp?w=775",
+      "people_explicitly_named": [],
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "OFFICIAL_GROUP_SITE"
+    },
+    {
+      "media_id": "mhg-teresa-resolv-interview-2018",
+      "media_type": "INTERVIEW_MEDIA",
+      "caption": "RESOLV interview page contains photographs of Martin and Teresa Head-Gordon and discusses both their scientific partnership and public marital relationship.",
+      "source_page_url": "https://www.solvation.de/news/blog/detail/resolv-calsolv-a-scientific-partnership-explained",
+      "asset_url": null,
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "RESEARCH_INSTITUTE_INTERVIEW"
+    }
+  ],
+  "web_presences": [
+    {
+      "kind": "OFFICIAL_PROFILE",
+      "url": "https://chemistry.berkeley.edu/people/martin-head-gordon",
+      "host": "UC Berkeley College of Chemistry"
+    },
+    {
+      "kind": "OFFICIAL_GROUP_SITE",
+      "url": "https://mhggroupberkeley.com/",
+      "host": "Martin Head-Gordon Group"
+    },
+    {
+      "kind": "OFFICIAL_LAB_PROFILE",
+      "url": "https://commons.lbl.gov/spaces/csd/pages/102598282/Martin%2BHead-Gordon",
+      "host": "Lawrence Berkeley National Laboratory"
+    },
+    {
+      "kind": "FACULTY_MENTOR_PROFILE",
+      "url": "https://ofew.berkeley.edu/node/689",
+      "host": "UC Berkeley Office for Faculty Equity & Welfare"
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "mhg-affiliation-berkeley",
+      "predicate": "AFFILIATED_WITH",
+      "object_type": "ORGANIZATION",
+      "object_label": "University of California, Berkeley, College of Chemistry",
+      "role_detail": "Kenneth S. Pitzer Distinguished Professor of Chemistry",
+      "start_date": "1992",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chemistry.berkeley.edu/people/martin-head-gordon"
+    },
+    {
+      "assertion_id": "mhg-affiliation-lbnl",
+      "predicate": "AFFILIATED_WITH",
+      "object_type": "ORGANIZATION",
+      "object_label": "Lawrence Berkeley National Laboratory, Chemical Sciences Division",
+      "role_detail": "Faculty Chemist / senior faculty scientist in public institutional biographies",
+      "start_date": "1994",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://commons.lbl.gov/spaces/csd/pages/102598282/Martin%2BHead-Gordon"
+    },
+    {
+      "assertion_id": "mhg-advisor-pople",
+      "predicate": "ACADEMIC_ADVISOR",
+      "object_type": "PERSON",
+      "object_label": "John Pople",
+      "role_detail": "PhD advisor at Carnegie Mellon University; LBNL biography says Head-Gordon obtained his PhD in 1989 working with Professor John Pople on molecular orbital methods for large molecules",
+      "start_date": null,
+      "end_date": "1989",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://commons.lbl.gov/spaces/csd/pages/102598282/Martin%2BHead-Gordon"
+    },
+    {
+      "assertion_id": "mhg-postdoc-bell-labs",
+      "predicate": "AFFILIATED_WITH",
+      "object_type": "ORGANIZATION",
+      "object_label": "Bell Laboratories",
+      "role_detail": "Postdoctoral Fellow",
+      "start_date": "1989",
+      "end_date": "1992",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chemistry.berkeley.edu/people/martin-head-gordon"
+    },
+    {
+      "assertion_id": "mhg-spouse-teresa",
+      "predicate": "SPOUSE",
+      "object_type": "PERSON",
+      "object_label": "Teresa Head-Gordon",
+      "role_detail": "Publicly described marital relationship; the RESOLV interview explicitly discusses working as a couple in the same field",
+      "start_date": null,
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PERSONAL",
+      "source_url": "https://www.solvation.de/news/blog/detail/resolv-calsolv-a-scientific-partnership-explained",
+      "notes": "This is included because the people themselves participated in an institutional interview explicitly discussing the relationship. Do not enrich it from data-broker/family-search sites."
+    },
+    {
+      "assertion_id": "mhg-founder-calsolv",
+      "predicate": "FOUNDER_OF",
+      "object_type": "ORGANIZATION",
+      "object_label": "CalSolv",
+      "role_detail": "RESOLV interview describes Teresa and Martin Head-Gordon as founders of the Berkeley partner institute CalSolv",
+      "start_date": null,
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.98,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://www.solvation.de/news/blog/detail/resolv-calsolv-a-scientific-partnership-explained"
+    },
+    {
+      "assertion_id": "mhg-director-pitzer",
+      "predicate": "DIRECTOR_OF",
+      "object_type": "ORGANIZATION",
+      "object_label": "Pitzer Center for Theoretical Chemistry",
+      "role_detail": "Identified as director in a 2025 UC Berkeley College of Chemistry news article",
+      "start_date": null,
+      "end_date": null,
+      "as_of_date": "2025-06-16",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.98,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chemistry.berkeley.edu/news/gift-pitzer-family-foundation-supports-theoretical-chemistry-postdoctoral-fellows"
+    },
+    {
+      "assertion_id": "mhg-faculty-mentor-program",
+      "predicate": "MENTOR",
+      "object_type": "ORGANIZATION",
+      "object_label": "UC Berkeley faculty mentoring program",
+      "role_detail": "Public faculty mentor profile offering advice to younger faculty on mentoring, publishing, grants, lab management, networking and related topics",
+      "start_date": null,
+      "end_date": null,
+      "status": "SUPPORTED_CONTEXTUAL",
+      "confidence": 0.95,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://ofew.berkeley.edu/node/689",
+      "notes": "This is a program/service role, not evidence that he personally mentors any particular named researcher."
+    }
+  ],
+  "events": [
+    {
+      "event_key": "resolv-calsolv-interview-2018",
+      "title": "RESOLV-CalSolv: A scientific partnership explained",
+      "event_type": "INTERVIEW",
+      "date": "2018-09-24",
+      "role": "INTERVIEWEE_IN",
+      "co_participants": ["Teresa Head-Gordon"],
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://www.solvation.de/news/blog/detail/resolv-calsolv-a-scientific-partnership-explained",
+      "notes": "Useful unusually rich social evidence: collaboration history, repeated visits to Ruhr University Bochum, specific collaborators, and a short public discussion of working as a married scientific couple."
+    },
+    {
+      "event_key": "northern-california-theoretical-chemistry-meeting-2019",
+      "title": "Northern California Theoretical Chemistry Meeting",
+      "event_type": "REGIONAL_RESEARCH_MEETING",
+      "date": "2019-05-19",
+      "role": "ORGANIZER_OF",
+      "co_organizers": ["David Limmer", "Eran Rabani"],
+      "place": "UC Berkeley",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://pitzercenter.com/nctc/",
+      "notes": "The participant roster is valuable for a regional theoretical-chemistry social graph, but invitee co-presence should not be stored as direct collaboration."
+    },
+    {
+      "event_key": "eurchembond-seminar-2025-10-28",
+      "title": "1st European Committee for Chemical Bonding Online Seminar",
+      "event_type": "INVITED_SEMINAR",
+      "date": "2025-10-28",
+      "role": "INVITED_SPEAKER_AT",
+      "place": "Online",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://www.eurchembond.com/seminars/",
+      "notes": "Talk concerned energy decomposition analyses and chemical bonding theory."
+    },
+    {
+      "event_key": "simons-quantum-wave-2020",
+      "title": "The Quantum Wave in Computing",
+      "event_type": "VISITING_PROGRAM",
+      "date": "2020-Spring",
+      "role": "VISITING_SCIENTIST",
+      "place": "Simons Institute for the Theory of Computing",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://simons.berkeley.edu/people/martin-head-gordon"
+    },
+    {
+      "event_key": "simons-quantum-computation-2021",
+      "title": "Summer Cluster in Quantum Computation",
+      "event_type": "VISITING_PROGRAM",
+      "date": "2021-Summer",
+      "role": "VISITING_SCIENTIST",
+      "place": "Simons Institute for the Theory of Computing",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://simons.berkeley.edu/people/martin-head-gordon"
+    }
+  ],
+  "group_social_snapshot": {
+    "group": "Martin Head-Gordon Group",
+    "source_url": "https://mhggroupberkeley.com/members/",
+    "observed_at": "2026-08-19",
+    "use": "Create GROUP_MEMBER relations to the group, not automatically SUPERVISES relations to Martin Head-Gordon.",
+    "examples": [
+      {"name": "Avijit Shee", "listed_role": "Postdoc", "co_advisor_note": "K. Birgitta Whaley & Lin Lin"},
+      {"name": "Henryk Laqua", "listed_role": "Postdoc"},
+      {"name": "Etienne Palos", "listed_role": "Postdoc"},
+      {"name": "Zhenling Wang", "listed_role": "Graduate student"},
+      {"name": "Stephen Quiton", "listed_role": "Graduate student", "co_advisor_note": "Lin Lin"},
+      {"name": "Jason Yi", "listed_role": "Graduate student", "co_advisor_note": "C. William McCurdy"}
+    ],
+    "alumni_source_url": "https://mhggroupberkeley.com/alumni/",
+    "alumni_examples": [
+      {"name": "Nikolay Tkachenko", "current_position_on_page": "Professor, University of Oklahoma"},
+      {"name": "Justin Talbot", "current_position_on_page": "Professor, Clemson University"},
+      {"name": "Alistair Sterling", "current_position_on_page": "Professor, University of Texas at Dallas"},
+      {"name": "Kevin Carter-Fenk", "current_position_on_page": "Professor, University of Pittsburgh"},
+      {"name": "James Shee", "current_position_on_page": "Professor, Rice University"}
+    ]
+  },
+  "group_culture_media_timeline": [
+    {
+      "date": "2024-06",
+      "label": "Forest Outing",
+      "source_url": "https://mhggroupberkeley.com/"
+    },
+    {
+      "date": "2023-09",
+      "label": "Berkeley Marinas Picnic",
+      "source_url": "https://mhggroupberkeley.com/"
+    },
+    {
+      "date": "2022-09",
+      "label": "Oakland Picnic",
+      "source_url": "https://mhggroupberkeley.com/"
+    },
+    {
+      "date": "2021-08",
+      "label": "Berkeley Hills Picnic",
+      "source_url": "https://mhggroupberkeley.com/"
+    },
+    {
+      "date": "2019-09",
+      "label": "Gilman Stairs group photo",
+      "source_url": "https://mhggroupberkeley.com/"
+    }
+  ],
+  "source_observations": [
+    {
+      "source_url": "https://chemistry.berkeley.edu/people/martin-head-gordon",
+      "source_kind": "OFFICIAL_PROFILE",
+      "evidence_summary": "Official current faculty identity, education, Bell Labs postdoc, title, LBNL role and portrait.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://commons.lbl.gov/spaces/csd/pages/102598282/Martin%2BHead-Gordon",
+      "source_kind": "OFFICIAL_PROFILE",
+      "evidence_summary": "LBNL biography explicitly identifies John Pople as the professor with whom Head-Gordon worked for his 1989 PhD and gives career-history context.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://www.solvation.de/news/blog/detail/resolv-calsolv-a-scientific-partnership-explained",
+      "source_kind": "INTERVIEW",
+      "evidence_summary": "Institution-hosted joint interview explicitly states Martin and Teresa Head-Gordon are married, describes them as founders of CalSolv, names collaborations and visits, and discusses working as a scientific couple.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://mhggroupberkeley.com/",
+      "source_kind": "OFFICIAL_GROUP_SITE",
+      "evidence_summary": "Public lab/group culture timeline with group photographs and outings from 2016-2024.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://mhggroupberkeley.com/members/",
+      "source_kind": "OFFICIAL_GROUP_SITE",
+      "evidence_summary": "Current lab roster including role categories and several explicit co-advisor annotations.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://mhggroupberkeley.com/alumni/",
+      "source_kind": "OFFICIAL_GROUP_SITE",
+      "evidence_summary": "Alumni roster with some current positions, useful for academic-lineage and career-transition graph construction.",
+      "source_quality": "HIGH"
+    }
+  ],
+  "collection_notes": [
+    "The public spouse relationship is unusually well supported by an institutional joint interview and is appropriate for the PUBLIC_PERSONAL layer; avoid data-broker enrichment beyond that source.",
+    "A current group roster is evidence of membership in the Head-Gordon group, but co-advisor annotations mean it would be wrong to translate every listed member into an exclusive student-of-Martin relationship.",
+    "The sequence of group outing photographs is valuable for a lab-culture timeline and media presentation, but people should only be tagged as present when captions or another reliable source explicitly identify them.",
+    "Conference invitee lists and seminar circuits can generate derived co-presence/community edges, not automatic friendship or collaboration edges."
+  ]
+}
