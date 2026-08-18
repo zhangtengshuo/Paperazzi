@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from paperazzi.analytics.builder import GraphAnalyticsBuilder
+from paperazzi.analytics.revision import wos_revision
 from paperazzi.analytics.service import (
     AnalyticsNotFoundError,
     AnalyticsUnavailableError,
@@ -77,11 +78,22 @@ def build_analytics_router(
     @router.get("/api/analytics/stats")
     def analytics_stats() -> dict[str, Any]:
         payload = service().stats()
+        current_revision = wos_revision(wos_path)
+        latest = payload.get("latest_run") or {}
+        built_revision = (latest.get("corpus_definition") or {}).get("source_revision")
+        if built_revision is None or not current_revision.get("available"):
+            stale: bool | None = None
+        else:
+            stale = built_revision != current_revision
         payload.update(
             {
                 "wos_database": str(wos_path),
                 "wos_available": wos_path.is_file(),
                 "analytics_database": str(analytics_path),
+                "built_from_wos_revision": built_revision,
+                "current_wos_revision": current_revision,
+                "stale": stale,
+                "rebuild_required": stale is True,
             }
         )
         return payload
