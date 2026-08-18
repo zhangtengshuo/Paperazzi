@@ -21,6 +21,7 @@ Thumbs.db
 
 # Paperazzi local state and probe output
 /data/
+/tmp/
 /probe-output/
 /logs/
 

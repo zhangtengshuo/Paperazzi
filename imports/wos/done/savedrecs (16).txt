@@ -1,0 +1,5743 @@
+FN Clarivate Analytics Web of Science
+VR 1.0
+PT J
+AU Pedraza-González, L
+   Marín, MD
+   Jorge, AN
+   Ruck, TD
+   Yang, XC
+   Valentini, A
+   Olivucci, M
+   De Vico, L
+AF Pedraza-Gonzalez, Laura
+   Marin, Maria Del Carmen
+   Jorge, Alejandro N.
+   Ruck, Tyler D.
+   Yang, Xuchun
+   Valentini, Alessio
+   Olivucci, Massimo
+   De Vico, Luca
+TI Web-ARM: A Web-Based Interface for the Automatic Construction of QM/MM Models of Rhodopsins
+SO JOURNAL OF CHEMICAL INFORMATION AND MODELING
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM INF MODEL
+PD MAR 23 2020
+PY 2020
+IS 3
+DI 10.1021/acs.jcim.9b00615
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31909998
+UT WOS:000526390800039
+DA 2026-08-18
+ER
+
+PT J
+AU Norell, J
+   Odelius, M
+   Vacher, M
+AF Norell, Jesper
+   Odelius, Michael
+   Vacher, Morgane
+TI Ultrafast dynamics of photo-excited 2-thiopyridone: Theoretical insights into triplet state population and proton transfer pathways
+SO STRUCTURAL DYNAMICS-US
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 STRUCT DYNAM-US
+PD MAR 2020
+PY 2020
+IS 2
+DI 10.1063/1.5143228
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:32206689
+UT WOS:000521264300001
+DA 2026-08-18
+ER
+
+PT J
+AU Battaglia, S
+   Lindh, R
+AF Battaglia, Stefano
+   Lindh, Roland
+TI Extended Dynamically Weighted CASPT2: The Best of Two Worlds
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAR 2020
+PY 2020
+IS 3
+DI 10.1021/acs.jctc.9b01129
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:32027802
+UT WOS:000519337700017
+DA 2026-08-18
+ER
+
+PT J
+AU Schalk, O
+   Galiana, J
+   Geng, T
+   Larsson, TL
+   Thomas, RD
+   Galván, IF
+   Hansson, T
+   Vacher, M
+AF Schalk, Oliver
+   Galiana, Joachim
+   Geng, Ting
+   Larsson, Tobias L.
+   Thomas, Richard D.
+   Galvan, Ignacio Fdez.
+   Hansson, Tony
+   Vacher, Morgane
+TI Competition between ring-puckering and ring-opening excited state reactions exemplified on 5H-furan-2-one and derivatives
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD FEB 14 2020
+PY 2020
+IS 6
+DI 10.1063/1.5129366
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:32061211
+UT WOS:000522040400014
+DA 2026-08-18
+ER
+
+PT J
+AU Baiardi, A
+   Reiher, M
+AF Baiardi, Alberto
+   Reiher, Markus
+TI The density matrix renormalization group in chemistry and molecular physics: Recent developments and new challenges
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD JAN 31 2020
+PY 2020
+IS 4
+DI 10.1063/1.5129672
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:32007028
+UT WOS:000519967100003
+DA 2026-08-18
+ER
+
+PT J
+AU Ganguly, G
+   Sergentu, DC
+   Autschbach, J
+AF Ganguly, Gaurab
+   Sergentu, Dumitru-Claudiu
+   Autschbach, Jochen
+TI Ab Initio Analysis of Metal-Ligand Bonding in An(COT)2 with An=Th, U in Their Ground- and Core-Excited States
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD FEB 6 2020
+PY 2020
+IS 8
+DI 10.1002/chem.201904166
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31930585
+UT WOS:000506693400001
+DA 2026-08-18
+ER
+
+PT J
+AU Segatta, F
+   Nenov, A
+   Orlandi, S
+   Arcioni, A
+   Mukamel, S
+   Garavelli, M
+AF Segatta, Francesco
+   Nenov, Artur
+   Orlandi, Silvia
+   Arcioni, Alberto
+   Mukamel, Shaul
+   Garavelli, Marco
+TI Exploring the capabilities of optical pump X-ray probe NEXAFS spectroscopy to track photo-induced dynamics mediated by conical intersections
+SO FARADAY DISCUSSIONS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 FARADAY DISCUSS
+PD JAN 1 2020
+PY 2020
+DI 10.1039/c9fd00073a
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31552404
+UT WOS:000505590900012
+DA 2026-08-18
+ER
+
+PT J
+CA Wikipedia Contributors
+SO List of quantum chemistry and solid-state physics software-Wikipedia, the free encyclopedia
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 LIST QUANT CHEM SOL
+PY 2020
+DA 2026-08-18
+ER
+
+PT J
+AU Teles-Ferreira, DC
+   Conti, I
+   Borrego-Varillas, R
+   Nenov, A
+   Van Stokkum, IHM
+   Ganzer, L
+   Manzoni, C
+   de Paula, AM
+   Cerullo, G
+   Garavelli, M
+AF Teles-Ferreira, Danielle Cristina
+   Conti, Irene
+   Borrego-Varillas, Rocio
+   Nenov, Artur
+   Van Stokkum, Ivo H. M.
+   Ganzer, Lucia
+   Manzoni, Cristian
+   de Paula, Ana Maria
+   Cerullo, Giulio
+   Garavelli, Marco
+TI A Unified Experimental/Theoretical Description of the Ultrafast Photophysics of Single and Double Thionated Uracils
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD JAN 2 2020
+PY 2020
+IS 1
+DI 10.1002/chem.201904541
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31750960
+UT WOS:000501664600001
+DA 2026-08-18
+ER
+
+PT J
+AU Freitag, L
+   Ma, YJ
+   Baiardi, A
+   Knecht, S
+   Reiher, M
+AF Freitag, Leon
+   Ma, Yingjin
+   Baiardi, Alberto
+   Knecht, Stefan
+   Reiher, Markus
+TI Approximate Analytical Gradients and Nonadiabatic Couplings for the State-Average Density Matrix Renormalization Group Self-Consistent-Field Method
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD DEC 2019
+PY 2019
+IS 12
+DI 10.1021/acs.jctc.9b00969
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31670947
+UT WOS:000502688500017
+DA 2026-08-18
+ER
+
+PT J
+AU Borrego-Varillas, R
+   Nenov, A
+   Ganzer, L
+   Oriana, A
+   Manzoni, C
+   Tolomelli, A
+   Rivalta, I
+   Mukamel, S
+   Garavelli, M
+   Cerullo, G
+AF Borrego-Varillas, R.
+   Nenov, A.
+   Ganzer, L.
+   Oriana, A.
+   Manzoni, C.
+   Tolomelli, A.
+   Rivalta, I.
+   Mukamel, S.
+   Garavelli, M.
+   Cerullo, G.
+TI Two-dimensional UV spectroscopy: a new insight into the structure and dynamics of biomolecules
+SO CHEMICAL SCIENCE
+DT Review
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 CHEM SCI
+PD NOV 21 2019
+PY 2019
+IS 43
+DI 10.1039/c9sc03871j
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000496188700001
+DA 2026-08-18
+ER
+
+PT J
+AU Galván, IF
+   Vacher, M
+   Alavi, A
+   Angeli, C
+   Aquilante, F
+   Autschbach, J
+   Bao, JJ
+   Bokarev, SI
+   Bogdanov, NA
+   Carlson, RK
+   Chibotaru, LF
+   Creutzberg, J
+   Dattani, N
+   Delcey, MG
+   Dong, SJS
+   Dreuw, A
+   Freitag, L
+   Frutos, LM
+   Gagliardi, L
+   Gendron, F
+   Giussani, A
+   González, L
+   Grell, G
+   Guo, MY
+   Hoyer, CE
+   Johansson, M
+   Keller, S
+   Knecht, S
+   Kovacevic, G
+   Källman, E
+   Li Manni, G
+   Lundberg, M
+   Ma, YJ
+   Mai, S
+   Malhado, JP
+   Malmqvist, PÅ
+   Marquetand, P
+   Mewes, SA
+   Norell, J
+   Olivucci, M
+   Oppel, M
+   Phung, QM
+   Pierloot, K
+   Plasser, F
+   Reiher, M
+   Sand, AM
+   Schapiro, I
+   Sharma, P
+   Stein, CJ
+   Sorensen, LK
+   Truhlar, DG
+   Ugandi, M
+   Ungur, L
+   Valentini, A
+   Vancoillie, S
+   Veryazov, V
+   Weser, O
+   Wesolowski, TA
+   Widmark, PO
+   Wouters, S
+   Zech, A
+   Zobel, JP
+   Lindh, R
+AF Galvan, Ignacio Fdez
+   Vacher, Morgane
+   Alavi, Ali
+   Angeli, Celestino
+   Aquilante, Francesco
+   Autschbach, Jochen
+   Bao, Jie J.
+   Bokarev, Sergey I.
+   Bogdanov, Nikolay A.
+   Carlson, Rebecca K.
+   Chibotaru, Liviu F.
+   Creutzberg, Joel
+   Dattani, Nike
+   Delcey, Mickael G.
+   Dong, Sijia S.
+   Dreuw, Andreas
+   Freitag, Leon
+   Manuel Frutos, Luis
+   Gagliardi, Laura
+   Gendron, Frederic
+   Giussani, Angelo
+   Gonzalez, Leticia
+   Grell, Gilbert
+   Guo, Meiyuan
+   Hoyer, Chad E.
+   Johansson, Marcus
+   Keller, Sebastian
+   Knecht, Stefan
+   Kovacevic, Goran
+   Kallman, Erik
+   Li Manni, Giovanni
+   Lundberg, Marcus
+   Ma, Yingjin
+   Mai, Sebastian
+   Malhado, Joao Pedro
+   Malmqvist, Per Ake
+   Marquetand, Philipp
+   Mewes, Stefanie A.
+   Norell, Jesper
+   Olivucci, Massimo
+   Oppel, Markus
+   Quan Manh Phung
+   Pierloot, Kristine
+   Plasser, Felix
+   Reiher, Markus
+   Sand, Andrew M.
+   Schapiro, Igor
+   Sharma, Prachi
+   Stein, Christopher J.
+   Sorensen, Lasse Kragh
+   Truhlar, Donald G.
+   Ugandi, Mihkel
+   Ungur, Liviu
+   Valentini, Alessio
+   Vancoillie, Steven
+   Veryazov, Valera
+   Weser, Oskar
+   Wesolowski, Tomasz A.
+   Widmark, Per-Olof
+   Wouters, Sebastian
+   Zech, Alexander
+   Zobel, J. Patrick
+   Lindh, Roland
+TI OpenMolcas: From Source Code to Insight
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD NOV 2019
+PY 2019
+IS 11
+DI 10.1021/acs.jctc.9b00532
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31509407
+UT WOS:000497260300014
+DA 2026-08-18
+ER
+
+PT J
+AU Gholami, S
+   Pedraza-González, L
+   Yang, XC
+   Granovsky, AA
+   Ioffe, IN
+   Olivucci, M
+AF Gholami, Samira
+   Pedraza-Gonzalez, Laura
+   Yang, Xuchun
+   Granovsky, Alexander A.
+   Ioffe, Ilya N.
+   Olivucci, Massimo
+TI Multistate Multiconfiguration Quantum Chemical Computation of the Two-Photon Absorption Spectra of Bovine Rhodopsin
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD OCT 17 2019
+PY 2019
+IS 20
+DI 10.1021/acs.jpclett.9b02291
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31545053
+UT WOS:000492425100046
+DA 2026-08-18
+ER
+
+PT J
+AU Stein, CJ
+   Reiher, M
+AF Stein, Christopher J.
+   Reiher, Markus
+TI AUTOCAS: A Program for Fully Automated Multiconfigurational Calculations
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD SEP 30 2019
+PY 2019
+IS 25
+DI 10.1002/jcc.25869
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31173388
+UT WOS:000482149500006
+DA 2026-08-18
+ER
+
+PT J
+AU Phung, QM
+   Pierloot, K
+AF Quan Manh Phung
+   Pierloot, Kristine
+TI Electronic Structure of N-Bridged High-Valent Diiron-Oxo
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD SEP 25 2019
+PY 2019
+IS 54
+DI 10.1002/chem.201902766
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31313861
+UT WOS:000487749300004
+DA 2026-08-18
+ER
+
+PT J
+AU Nenov, A
+   Segatta, F
+   Bruner, A
+   Mukamel, S
+   Garavelli, M
+AF Nenov, Artur
+   Segatta, Francesco
+   Bruner, Adam
+   Mukamel, Shaul
+   Garavelli, Marco
+TI X-ray linear and non-linear spectroscopy of the ESCA molecule
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD SEP 21 2019
+PY 2019
+IS 11
+DI 10.1063/1.5116699
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31542011
+UT WOS:000487317400023
+DA 2026-08-18
+ER
+
+PT J
+AU Pieri, E
+   Ledentu, V
+   Sahlin, M
+   Dehez, F
+   Olivucci, M
+   Ferré, N
+AF Pieri, Elisa
+   Ledentu, Vincent
+   Sahlin, Michael
+   Dehez, Francois
+   Olivucci, Massimo
+   Ferre, Nicolas
+TI CpHMD-Then-QM/MM Identification of the Amino Acids Responsible for the Anabaena Sensory Rhodopsin pH-Dependent Electronic Absorption Spectrum
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD AUG 2019
+PY 2019
+IS 8
+DI 10.1021/acs.jctc.9b00221
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31264415
+UT WOS:000480826800023
+DA 2026-08-18
+ER
+
+PT J
+AU Delcey, MG
+   Sorensen, LK
+   Vacher, M
+   Couto, RC
+   Lundberg, M
+AF Delcey, Mickael G.
+   Sorensen, Lasse Kragh
+   Vacher, Morgane
+   Couto, Rafael C.
+   Lundberg, Marcus
+TI Efficient calculations of a large number of highly excited states for multiconfigurational wavefunctions
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD JUL 15 2019
+PY 2019
+IS 19
+DI 10.1002/jcc.25832
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30938847
+UT WOS:000470013600006
+DA 2026-08-18
+ER
+
+PT J
+AU Harriman, KLM
+   Errulat, D
+   Murugesu, M
+AF Harriman, Katie L. M.
+   Errulat, Dylan
+   Murugesu, Muralee
+TI Magnetic Axiality: Design Principles from Molecules to Materials
+SO TRENDS IN CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU CELL PRESS
+PI CAMBRIDGE
+J9 TRENDS CHEM
+PD JUL 2019
+PY 2019
+IS 4
+DI 10.1016/j.trechm.2019.04.005
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000521129800007
+DA 2026-08-18
+ER
+
+PT J
+AU Anda, A
+   Hansen, T
+   De Vico, L
+AF Anda, Andre
+   Hansen, Thorsten
+   De Vico, Luca
+TI Qy and Qx Absorption Bands for Bacteriochlorophyll a Molecules from LH2 and LH3
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM A
+PD JUN 27 2019
+PY 2019
+IS 25
+DI 10.1021/acs.jpca.9b02877
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31242736
+UT WOS:000473251700011
+DA 2026-08-18
+ER
+
+PT J
+AU Picchiotti, A
+   Nenov, A
+   Giussani, A
+   Prokhorenko, VI
+   Miller, RJD
+   Mukamel, S
+   Garavelli, M
+AF Picchiotti, Alessandra
+   Nenov, Artur
+   Giussani, Angelo
+   Prokhorenko, Valentyn I.
+   Miller, R. J. Dwayne
+   Mukamel, Shaul
+   Garavelli, Marco
+TI Pyrene, a Test Case for Deep-Ultraviolet Molecular Photophysics
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD JUN 20 2019
+PY 2019
+IS 12
+DI 10.1021/acs.jpclett.9b01325
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31081636
+UT WOS:000472804700046
+DA 2026-08-18
+ER
+
+PT J
+AU Seijo, L
+   Feofilov, SP
+   Barandiarán, Z
+AF Seijo, Luis
+   Feofilov, Sergey P.
+   Barandiaran, Zoila
+TI Fine-Tuning the Cr3+ R1-Line by Controlling Pauli Antisymmetry Strength
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD JUN 6 2019
+PY 2019
+IS 11
+DI 10.1021/acs.jpclett.9b00858
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31132282
+UT WOS:000471079400080
+DA 2026-08-18
+ER
+
+PT J
+AU Baiardi, A
+   Reiher, M
+AF Baiardi, Alberto
+   Reiher, Markus
+TI Large-Scale Quantum Dynamics with Matrix Product States
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JUN 2019
+PY 2019
+IS 6
+DI 10.1021/acs.jctc.9b00301
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31067052
+UT WOS:000471728500006
+DA 2026-08-18
+ER
+
+PT J
+AU Phung, QM
+   Pierloot, K
+AF Quan Manh Phung
+   Pierloot, Kristine
+TI Low-Lying Electromeric States in Chloro-Ligated Iron(IV)-Oxo Porphyrin as a Model for Compound I, Studied with Second-Order Perturbation Theory Based on Density Matrix Renormalization Group
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAY 2019
+PY 2019
+IS 5
+DI 10.1021/acs.jctc.9b00166
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30995039
+UT WOS:000468242900024
+DA 2026-08-18
+ER
+
+PT J
+AU Pedraza-González, L
+   De Vico, L
+   Marín, MD
+   Fanelli, F
+   Olivucci, M
+AF Pedraza-Gonzalez, Laura
+   De Vico, Luca
+   Marin, Maria del Carmen
+   Fanelli, Francesca
+   Olivucci, Massimo
+TI a-ARM: Automatic Rhodopsin Modeling with Chromophore Cavity Generation, Ionization State Selection, and External Counterion Placement
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAY 2019
+PY 2019
+IS 5
+DI 10.1021/acs.jctc.9b00061
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30916955
+UT WOS:000468242900032
+DA 2026-08-18
+ER
+
+PT J
+AU Inoue, K
+   Marín, MD
+   Tomida, S
+   Nakamura, R
+   Nakajima, Y
+   Olivucci, M
+   Kandori, H
+AF Inoue, Keiichi
+   Marin, Maria del Carmen
+   Tomida, Sahoko
+   Nakamura, Ryoko
+   Nakajima, Yuta
+   Olivucci, Massimo
+   Kandori, Hideki
+TI Red-shifting mutation of light-driven sodium-pump rhodopsin
+SO NATURE COMMUNICATIONS
+DT Article
+NR 0
+TC 0
+PU NATURE PORTFOLIO
+PI BERLIN
+J9 NAT COMMUN
+PD APR 30 2019
+PY 2019
+DI 10.1038/s41467-019-10000-x
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:31040285
+UT WOS:000466334200002
+DA 2026-08-18
+ER
+
+PT J
+AU Joos, JJ
+   Seijo, L
+   Barandiarán, Z
+AF Joos, Jonas J.
+   Seijo, Luis
+   Barandiaran, Zoila
+TI Direct Evidence of Intervalence Charge-Transfer States of Eu-Doped Luminescent Materials
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD APR 4 2019
+PY 2019
+IS 7
+DI 10.1021/acs.jpclett.9b00342
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30884232
+UT WOS:000463960700023
+DA 2026-08-18
+ER
+
+PT J
+AU Häse, F
+   Galván, IF
+   Aspuru-Guzik, A
+   Lindh, R
+   Vacher, M
+AF Hase, Florian
+   Galvan, Ignacio Fdez.
+   Aspuru-Guzik, Alan
+   Lindh, Roland
+   Vacher, Morgane
+TI How machine learning can assist the interpretation of ab initio molecular dynamics simulations and conceptual understanding of chemistry
+SO CHEMICAL SCIENCE
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 CHEM SCI
+PD FEB 28 2019
+PY 2019
+IS 8
+DI 10.1039/c8sc04516j
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30881655
+UT WOS:000459331200004
+DA 2026-08-18
+ER
+
+PT J
+AU Sharma, P
+   Bernales, V
+   Knecht, S
+   Truhlar, DG
+   Gagliardi, L
+AF Sharma, Prachi
+   Bernales, Varinia
+   Knecht, Stefan
+   Truhlar, Donald G.
+   Gagliardi, Laura
+TI Density matrix renormalization group pair-density functional theory (DMRG-PDFT): singlet-triplet gaps in polyacenes and polyacetylenes
+SO CHEMICAL SCIENCE
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 CHEM SCI
+PD FEB 14 2019
+PY 2019
+IS 6
+DI 10.1039/c8sc03569e
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30842836
+UT WOS:000458024700014
+DA 2026-08-18
+ER
+
+PT J
+AU Sorensen, LK
+   Kieri, E
+   Srivastav, S
+   Lundberg, M
+   Lindh, R
+AF Sorensen, Lasse Kragh
+   Kieri, Emil
+   Srivastav, Shruti
+   Lundberg, Marcus
+   Lindh, Roland
+TI Implementation of a semiclassical light-matter interaction using the Gauss-Hermite quadrature: A simple alternative to the multipole expansion
+SO PHYSICAL REVIEW A
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV A
+PD JAN 16 2019
+PY 2019
+IS 1
+DI 10.1103/PhysRevA.99.013419
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000455815000010
+DA 2026-08-18
+ER
+
+PT J
+AU Marín, MD
+   Agathangelou, D
+   Orozco-Gonzalez, Y
+   Valentini, A
+   Kato, Y
+   Abe-Yoshizumi, R
+   Kandori, H
+   Choi, A
+   Jung, KH
+   Haacke, S
+   Olivucci, M
+AF Marin, Maria del Carmen
+   Agathangelou, Damianos
+   Orozco-Gonzalez, Yoelvis
+   Valentini, Alessio
+   Kato, Yoshitaka
+   Abe-Yoshizumi, Rei
+   Kandori, Hideki
+   Choi, Ahreum
+   Jung, Kwang-Hwan
+   Haacke, Stefan
+   Olivucci, Massimo
+TI Fluorescence Enhancement of a Microbial Rhodopsin via Electronic Reprogramming
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD JAN 9 2019
+PY 2019
+IS 1
+DI 10.1021/jacs.8b09311
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30532962
+UT WOS:000455561800043
+DA 2026-08-18
+ER
+
+PT J
+CA Molcas Contributors
+SO MOLCAS manual
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 MOLCAS MAN
+PY 2019
+DA 2026-08-18
+ER
+
+PT J
+AU Guo, FS
+   Day, BM
+   Chen, YC
+   Tong, ML
+   Mansikkamäki, A
+   Layfield, RA
+AF Guo, Fu-Sheng
+   Day, Benjamin M.
+   Chen, Yan-Cong
+   Tong, Ming-Liang
+   Mansikkamaki, Akseli
+   Layfield, Richard A.
+TI Magnetic hysteresis up to 80 kelvin in a dysprosium metallocene single-molecule magnet
+SO SCIENCE
+DT Article
+NR 0
+TC 0
+PU AMER ASSOC ADVANCEMENT SCIENCE
+PI WASHINGTON
+J9 SCIENCE
+PD DEC 21 2018
+PY 2018
+IS 6421
+DI 10.1126/science.aav0652
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30337456
+UT WOS:000453845000058
+DA 2026-08-18
+ER
+
+PT J
+AU Borrego-Varillas, R
+   Teles-Ferreira, DC
+   Nenov, A
+   Conti, I
+   Ganzer, L
+   Manzoni, C
+   Garavelli, M
+   de Paula, AM
+   Cerullo, G
+AF Borrego-Varillas, Rocio
+   Teles-Ferreira, Danielle C.
+   Nenov, Artur
+   Conti, Irene
+   Ganzer, Lucia
+   Manzoni, Cristian
+   Garavelli, Marco
+   de Paula, Ana Maria
+   Cerullo, Giulio
+TI Observation of the Sub-100 Femtosecond Population of a Dark State in a Thiobase Mediating Intersystem Crossing
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD NOV 28 2018
+PY 2018
+IS 47
+DI 10.1021/jacs.8b07057
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30380844
+UT WOS:000451933100017
+DA 2026-08-18
+ER
+
+PT J
+AU Nenov, A
+   Conti, I
+   Borrego-Varillas, R
+   Cerullo, G
+   Garavelli, M
+AF Nenov, Artur
+   Conti, Irene
+   Borrego-Varillas, Rocio
+   Cerullo, Giulio
+   Garavelli, Marco
+TI Linear absorption spectra of solvated thiouracils resolved at the hybrid RASPT2/MM level
+SO CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 CHEM PHYS
+PD NOV 14 2018
+PY 2018
+DI 10.1016/j.chemphys.2018.07.025
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000454412800072
+DA 2026-08-18
+ER
+
+PT J
+AU Rackers, JA
+   Wang, Z
+   Lu, C
+   Laury, ML
+   Lagardere, L
+   Schnieders, MJ
+   Piquemal, JP
+   Ren, PY
+   Ponder, JW
+AF Rackers, Joshua A.
+   Wang, Zhi
+   Lu, Chao
+   Laury, Marie L.
+   Lagardere, Louis
+   Schnieders, Michael J.
+   Piquemal, Jean-Philip
+   Ren, Pengyu
+   Ponder, Jay W.
+TI Tinker 8: Software Tools for Molecular Design
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD OCT 2018
+PY 2018
+IS 10
+DI 10.1021/acs.jctc.8b00529
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30176213
+UT WOS:000447238500025
+DA 2026-08-18
+ER
+
+PT J
+AU De Vico, L
+   Anda, A
+   Osipov, VAI
+   Madsen, AO
+   Hansen, T
+AF De Vico, Luca
+   Anda, Andre
+   Osipov, Vladimir A. I.
+   Madsen, Anders O.
+   Hansen, Thorsten
+TI Macrocycle ring deformation as the secondary design principle for light-harvesting complexes
+SO PROCEEDINGS OF THE NATIONAL ACADEMY OF SCIENCES OF THE UNITED STATES OF AMERICA
+DT Article
+NR 0
+TC 0
+PU NATL ACAD SCIENCES
+PI WASHINGTON
+J9 P NATL ACAD SCI USA
+PD SEP 25 2018
+PY 2018
+IS 39
+DI 10.1073/pnas.1719355115
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30194231
+UT WOS:000445545200005
+DA 2026-08-18
+ER
+
+PT J
+AU Sergentu, DC
+   Duignan, TJ
+   Autschbach, J
+AF Sergentu, Dumitru-Claudiu
+   Duignan, Thomas J.
+   Autschbach, Jochen
+TI Ab Initio Study of Covalency in the Ground versus Core-Excited States and X-ray Absorption Spectra of Actinide Complexes
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD SEP 20 2018
+PY 2018
+IS 18
+DI 10.1021/acs.jpclett.8b02412
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30180572
+UT WOS:000445713200056
+DA 2026-08-18
+ER
+
+PT J
+AU Pham, LN
+   Nguyen, MT
+AF Le Nhan Pham
+   Minh Tho Nguyen
+TI Another Look at Photoelectron Spectra of the Anion Cr2O2-: Multireference Character and Energetic Degeneracy
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD SEP 2018
+PY 2018
+IS 9
+DI 10.1021/acs.jctc.8b00412
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30040893
+UT WOS:000444792700028
+DA 2026-08-18
+ER
+
+PT J
+AU Weingart, O
+   Nenov, A
+   Altoè, P
+   Rivalta, I
+   Segarra-Martí, J
+   Dokukina, I
+   Garavelli, M
+AF Weingart, Oliver
+   Nenov, Artur
+   Altoe, Piero
+   Rivalta, Ivan
+   Segarra-Marti, Javier
+   Dokukina, Irina
+   Garavelli, Marco
+TI COBRAMM 2.0 A software interface for tailoring molecular electronic structure calculations and running nanoscale (QM/MM) simulations
+SO JOURNAL OF MOLECULAR MODELING
+DT Article
+NR 0
+TC 0
+PU SPRINGER
+PI NEW YORK
+J9 J MOL MODEL
+PD SEP 2018
+PY 2018
+IS 9
+DI 10.1007/s00894-018-3769-6
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:30178229
+UT WOS:000443564800003
+DA 2026-08-18
+ER
+
+PT J
+AU Phung, QM
+   Pierloot, K
+AF Quan Manh Phung
+   Pierloot, Kristine
+TI The dioxygen adducts of iron and manganese porphyrins: electronic structure and binding energy
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 PHYS CHEM CHEM PHYS
+PD JUL 7 2018
+PY 2018
+IS 25
+DI 10.1039/c8cp03078b
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29901049
+UT WOS:000436571800015
+DA 2026-08-18
+ER
+
+PT J
+AU Segarra-Martí, J
+   Mukamel, S
+   Garavelli, M
+   Nenov, A
+   Rivalta, I
+AF Segarra-Marti, Javier
+   Mukamel, Shaul
+   Garavelli, Marco
+   Nenov, Artur
+   Rivalta, Ivan
+TI Towards Accurate Simulation of Two-Dimensional Electronic Spectroscopy
+SO TOPICS IN CURRENT CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU SPRINGER INTERNATIONAL PUBLISHING AG
+PI CHAM
+J9 TOPICS CURR CHEM
+PD JUN 2018
+PY 2018
+IS 3
+DI 10.1007/s41061-018-0201-8
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29858697
+UT WOS:000434142700001
+DA 2026-08-18
+ER
+
+PT J
+AU Battaglia, S
+   Keller, S
+   Knecht, S
+AF Battaglia, Stefano
+   Keller, Sebastian
+   Knecht, Stefan
+TI Efficient Relativistic Density-Matrix Renormalization Group Implementation in a Matrix-Product Formulation
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAY 2018
+PY 2018
+IS 5
+DI 10.1021/acs.jctc.7b01065
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29558618
+UT WOS:000431926500007
+DA 2026-08-18
+ER
+
+PT J
+AU Husch, T
+   Freitag, L
+   Reiher, M
+AF Husch, Tamara
+   Freitag, Leon
+   Reiher, Markus
+TI Calculation of Ligand Dissociation Energies in Large Transition-Metal Complexes
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAY 2018
+PY 2018
+IS 5
+DI 10.1021/acs.jctc.8b00061
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29595973
+UT WOS:000431926500016
+DA 2026-08-18
+ER
+
+PT J
+AU Phung, QM
+   Domingo, A
+   Pierloot, K
+AF Quan Manh Phung
+   Domingo, Alex
+   Pierloot, Kristine
+TI Dinuclear Iron(II) Spin-Crossover Compounds: A Theoretical Study
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD APR 6 2018
+PY 2018
+IS 20
+DI 10.1002/chem.201704441
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29068107
+UT WOS:000429703700025
+DA 2026-08-18
+ER
+
+PT J
+AU Nenov, A
+   Borrego-Varillas, R
+   Oriana, A
+   Ganzer, L
+   Segatta, F
+   Conti, I
+   Segarra-Marti, J
+   Omachi, J
+   Dapor, M
+   Taioli, S
+   Manzoni, C
+   Mukamel, S
+   Cerullo, G
+   Garavelli, M
+AF Nenov, Artur
+   Borrego-Varillas, Rocio
+   Oriana, Aurelio
+   Ganzer, Lucia
+   Segatta, Francesco
+   Conti, Irene
+   Segarra-Marti, Javier
+   Omachi, Junko
+   Dapor, Maurizio
+   Taioli, Simone
+   Manzoni, Cristian
+   Mukamel, Shaul
+   Cerullo, Giulio
+   Garavelli, Marco
+TI UV-Light-Induced Vibrational Coherences: The Key to Understand Kasha Rule Violation in trans-Azobenzene
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD APR 5 2018
+PY 2018
+IS 7
+DI 10.1021/acs.jpclett.8b00152
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29504764
+UT WOS:000429626900012
+DA 2026-08-18
+ER
+
+PT J
+AU Schnedermann, C
+   Yang, X
+   Liebel, M
+   Spillane, KM
+   Lugtenburg, J
+   Fernández, I
+   Valentini, A
+   Schapiro, I
+   Olivucci, M
+   Kukura, P
+   Mathies, RA
+AF Schnedermann, C.
+   Yang, X.
+   Liebel, M.
+   Spillane, K. M.
+   Lugtenburg, J.
+   Fernandez, I.
+   Valentini, A.
+   Schapiro, I.
+   Olivucci, M.
+   Kukura, P.
+   Mathies, R. A.
+TI Evidence for a vibrational phase-dependent isotope effect on the photochemistry of vision
+SO NATURE CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU NATURE PORTFOLIO
+PI BERLIN
+J9 NAT CHEM
+PD APR 2018
+PY 2018
+IS 4
+DI 10.1038/s41557-018-0014-y
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29556051
+UT WOS:000428212900013
+DA 2026-08-18
+ER
+
+PT J
+AU Agathangelou, D
+   Orozco-Gonzalez, Y
+   Marín, MD
+   Roy, PP
+   Brazard, J
+   Kandori, H
+   Jung, KH
+   Léonard, J
+   Buckup, T
+   Ferré, N
+   Olivucci, M
+   Haacke, S
+AF Agathangelou, D.
+   Orozco-Gonzalez, Y.
+   del Carmen Marin, M.
+   Roy, P. P.
+   Brazard, J.
+   Kandori, H.
+   Jung, K. -H.
+   Leonard, J.
+   Buckup, T.
+   Ferre, N.
+   Olivucci, M.
+   Haacke, S.
+TI Effect of point mutations on the ultrafast photo-isomerization of Anabaena sensory rhodopsin
+SO FARADAY DISCUSSIONS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 FARADAY DISCUSS
+PD APR 1 2018
+PY 2018
+DI 10.1039/c7fd00200a
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29388996
+UT WOS:000430145300004
+DA 2026-08-18
+ER
+
+PT J
+AU Borin, VA
+   Wiebeler, C
+   Schapiro, I
+AF Borin, Veniamin A.
+   Wiebeler, Christian
+   Schapiro, Igor
+TI A QM/MM study of the initial excited state dynamics of green-absorbing proteorhodopsin
+SO FARADAY DISCUSSIONS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 FARADAY DISCUSS
+PD APR 1 2018
+PY 2018
+DI 10.1039/c7fd00198c
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29393940
+UT WOS:000430145300008
+DA 2026-08-18
+ER
+
+PT J
+AU Norell, J
+   Jay, RM
+   Hantschmann, M
+   Eckert, S
+   Guo, M
+   Gaffney, KJ
+   Wernet, P
+   Lundberg, M
+   Föhlisch, A
+   Odelius, M
+AF Norell, Jesper
+   Jay, Raphael M.
+   Hantschmann, Markus
+   Eckert, Sebastian
+   Guo, Meiyuan
+   Gaffney, Kelly J.
+   Wernet, Philippe
+   Lundberg, Marcus
+   Foehlisch, Alexander
+   Odelius, Michael
+TI Fingerprints of electronic, spin and structural dynamics from resonant inelastic soft X-ray scattering in transient photo-chemical species
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 PHYS CHEM CHEM PHYS
+PD MAR 14 2018
+PY 2018
+IS 10
+DI 10.1039/c7cp08326b
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29484313
+UT WOS:000429286100052
+DA 2026-08-18
+ER
+
+PT J
+AU Segarra-Martí, J
+   Garavelli, M
+   Aquilante, F
+AF Segarra-Marti, J.
+   Garavelli, M.
+   Aquilante, F.
+TI Converging many-body correlation energies by means of sequence extrapolation
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JAN 21 2018
+PY 2018
+IS 3
+DI 10.1063/1.5000783
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29352775
+UT WOS:000423029200010
+DA 2026-08-18
+ER
+
+PT J
+AU Sand, AM
+   Hoyer, CE
+   Sharkas, K
+   Kidder, KM
+   Lindh, R
+   Truhlar, DG
+   Gagliard, L
+AF Sand, Andrew M.
+   Hoyer, Chad E.
+   Sharkas, Kamal
+   Kidder, Katherine M.
+   Lindh, Roland
+   Truhlar, Donald G.
+   Gagliard, Laura
+TI Analytic Gradients for Complete Active Space Pair-Density Functional Theory
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JAN 2018
+PY 2018
+IS 1
+DI 10.1021/acs.jctc.7b00967
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:29211966
+UT WOS:000419998300012
+DA 2026-08-18
+ER
+
+PT J
+AU Marchenko, A.
+   Duignan, T. J.
+   Philips, A.
+   Ludowieg, H. D.
+   Moore, B.
+AF Marchenko, A.
+   Duignan, T. J.
+   Philips, A.
+   Ludowieg, H. D.
+   Moore, B.
+TI Exatomic v0.4.1: A unified platform for computational chemists
+SO Zenodo
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 EXATOMIC V0 4 1 UNIF
+PY 2018
+DI 10.5281/zenodo.125683
+DA 2026-08-18
+ER
+
+PT J
+AU Wirz, LN
+   Reine, SS
+   Pedersen, TB
+AF Wirz, Lukas N.
+   Reine, Simen S.
+   Pedersen, Thomas Bondo
+TI On Resolution-of-the-Identity Electron Repulsion Integral Approximations and Variational Stability
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD OCT 2017
+PY 2017
+IS 10
+DI 10.1021/acs.jctc.7b00801
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28873316
+UT WOS:000412965700023
+DA 2026-08-18
+ER
+
+PT J
+AU Goodwin, CAP
+   Ortu, F
+   Reta, D
+   Chilton, NF
+   Mills, DP
+AF Goodwin, Conrad A. P.
+   Ortu, Fabrizio
+   Reta, Daniel
+   Chilton, Nicholas F.
+   Mills, David P.
+TI Molecular magnetic hysteresis at 60 kelvin in dysprosocenium
+SO NATURE
+DT Article
+NR 0
+TC 0
+PU NATURE PUBLISHING GROUP
+PI LONDON
+J9 NATURE
+PD AUG 24 2017
+PY 2017
+IS 7668
+DI 10.1038/nature23447
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28836589
+UT WOS:000408279000035
+DA 2026-08-18
+ER
+
+PT J
+AU Vacher, M
+   Farahani, P
+   Valentini, A
+   Frutos, LM
+   Karlsson, HO
+   Galván, IF
+   Lindh, R
+AF Vacher, Morgane
+   Farahani, Pooria
+   Valentini, Alessio
+   Frutos, Luis Manuel
+   Karlsson, Hans O.
+   Galvan, Ignacio Fdez.
+   Lindh, Roland
+TI How Do Methyl Groups Enhance the Triplet Chemiexcitation Yield of Dioxetane?
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD AUG 17 2017
+PY 2017
+IS 16
+DI 10.1021/acs.jpclett.7b01668
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28749694
+UT WOS:000408187400012
+DA 2026-08-18
+ER
+
+PT J
+AU Vitova, T
+   Pidchenko, I
+   Fellhauer, D
+   Bagus, PS
+   Joly, Y
+   Pruessmann, T
+   Bahl, S
+   Gonzalez-Robles, E
+   Rothe, J
+   Altmaier, M
+   Denecke, MA
+   Geckeis, H
+AF Vitova, T.
+   Pidchenko, I.
+   Fellhauer, D.
+   Bagus, P. S.
+   Joly, Y.
+   Pruessmann, T.
+   Bahl, S.
+   Gonzalez-Robles, E.
+   Rothe, J.
+   Altmaier, M.
+   Denecke, M. A.
+   Geckeis, H.
+TI The role of the 5f valence orbitals of early actinides in chemical bonding
+SO NATURE COMMUNICATIONS
+DT Article
+NR 0
+TC 0
+PU NATURE PORTFOLIO
+PI BERLIN
+J9 NAT COMMUN
+PD JUL 6 2017
+PY 2017
+DI 10.1038/ncomms16053
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28681848
+UT WOS:000404838100001
+DA 2026-08-18
+ER
+
+PT J
+AU Barandiarán, Z
+   Bettinelli, M
+   Seijo, L
+AF Barandiaran, Zoila
+   Bettinelli, Marco
+   Seijo, Luis
+TI Color Control of Pr3+ Luminescence by Electron-Hole Recombination Energy Transfer in CaTiO3 and CaZrO3
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD JUL 6 2017
+PY 2017
+IS 13
+DI 10.1021/acs.jpclett.7b01158
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28635288
+UT WOS:000405252600050
+DA 2026-08-18
+ER
+
+PT J
+AU Wolf, TJA
+   Myhre, RH
+   Cryan, JP
+   Coriani, S
+   Squibb, RJ
+   Battistoni, A
+   Berrah, N
+   Bostedt, C
+   Bucksbaum, P
+   Coslovich, G
+   Feifel, R
+   Gaffney, KJ
+   Grilj, J
+   Martinez, TJ
+   Miyabe, S
+   Moeller, SP
+   Mucke, M
+   Natan, A
+   Obaid, R
+   Osipov, T
+   Plekan, O
+   Wang, S
+   Koch, H
+   Gühr, M
+AF Wolf, T. J. A.
+   Myhre, R. H.
+   Cryan, J. P.
+   Coriani, S.
+   Squibb, R. J.
+   Battistoni, A.
+   Berrah, N.
+   Bostedt, C.
+   Bucksbaum, P.
+   Coslovich, G.
+   Feifel, R.
+   Gaffney, K. J.
+   Grilj, J.
+   Martinez, T. J.
+   Miyabe, S.
+   Moeller, S. P.
+   Mucke, M.
+   Natan, A.
+   Obaid, R.
+   Osipov, T.
+   Plekan, O.
+   Wang, S.
+   Koch, H.
+   Guehr, M.
+TI Probing ultrafast ππ*/nπ* internal conversion in organic chromophores via K-edge resonant absorption
+SO NATURE COMMUNICATIONS
+DT Article
+NR 0
+TC 0
+PU NATURE PUBLISHING GROUP
+PI LONDON
+J9 NAT COMMUN
+PD JUN 22 2017
+PY 2017
+DI 10.1038/s41467-017-00069-7
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28642477
+UT WOS:000403876000002
+DA 2026-08-18
+ER
+
+PT J
+AU Anda, A
+   De Vico, L
+   Hansen, T
+AF Anda, Andre
+   De Vico, Luca
+   Hansen, Thorsten
+TI Intermolecular Modes between LH2 Bacteriochlorophylls and Protein Residues: The Effect on the Excitation Energies
+SO JOURNAL OF PHYSICAL CHEMISTRY B
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM B
+PD JUN 8 2017
+PY 2017
+IS 22
+DI 10.1021/acs.jpcb.7b02071
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28485594
+UT WOS:000403191700004
+DA 2026-08-18
+ER
+
+PT J
+AU Segatta, F
+   Cupellini, L
+   Jurinovich, S
+   Mukamel, S
+   Dapor, M
+   Taioli, S
+   Garavelli, M
+   Mennucci, B
+AF Segatta, Francesco
+   Cupellini, Lorenzo
+   Jurinovich, Sandro
+   Mukamel, Shaul
+   Dapor, Maurizio
+   Taioli, Simone
+   Garavelli, Marco
+   Mennucci, Benedetta
+TI A Quantum Chemical Interpretation of Two-Dimensional Electronic Spectroscopy of Light-Harvesting Complexes
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD JUN 7 2017
+PY 2017
+IS 22
+DI 10.1021/jacs.7b02130
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28513172
+UT WOS:000403136500019
+DA 2026-08-18
+ER
+
+PT J
+AU Vacher, M
+   Brakestad, A
+   Karlsson, HO
+   Galván, IF
+   Lindh, R
+AF Vacher, Morgane
+   Brakestad, Anders
+   Karlsson, Hans O.
+   Galvan, Ignacio Fdez
+   Lindh, Roland
+TI Dynamical Insights into the Decomposition of 1,2-Dioxetane
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JUN 2017
+PY 2017
+IS 6
+DI 10.1021/acs.jctc.7b00198
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28437611
+UT WOS:000403530100009
+DA 2026-08-18
+ER
+
+PT J
+AU Ma, YJ
+   Knecht, S
+   Keller, S
+   Reiher, M
+AF Ma, Yingjin
+   Knecht, Stefan
+   Keller, Sebastian
+   Reiher, Markus
+TI Second-Order Self-Consistent-Field Density-Matrix Renormalization Group
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JUN 2017
+PY 2017
+IS 6
+DI 10.1021/acs.jctc.6b01118
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28485978
+UT WOS:000403530100016
+DA 2026-08-18
+ER
+
+PT J
+AU Chen, YC
+   Liu, JL
+   Wernsdorfer, W
+   Liu, D
+   Chibotaru, LF
+   Chen, XM
+   Tong, ML
+AF Chen, Yan-Cong
+   Liu, Jun-Liang
+   Wernsdorfer, Wolfgang
+   Liu, Dan
+   Chibotaru, Liviu F.
+   Chen, Xiao-Ming
+   Tong, Ming-Liang
+TI Hyperfine-Interaction-Driven Suppression of Quantum Tunneling at Zero Field in a Holmium(III) Single-Ion Magnet
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 ANGEW CHEM INT EDIT
+PD APR 24 2017
+PY 2017
+IS 18
+DI 10.1002/anie.201701480
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28295930
+UT WOS:000399384700016
+DA 2026-08-18
+ER
+
+PT J
+AU Valentini, A
+   Rivero, D
+   Zapata, F
+   García-Iriepa, C
+   Marazzi, M
+   Palmeiro, R
+   Galvan, IF
+   Sampedro, D
+   Olivucci, M
+   Frutos, LM
+AF Valentini, Alessio
+   Rivero, Daniel
+   Zapata, Felipe
+   Garcia-Iriepa, Cristina
+   Marazzi, Marco
+   Palmeiro, Raul
+   Galvan, Ignacio Fdez
+   Sampedro, Diego
+   Olivucci, Massimo
+   Manuel Frutos, Luis
+TI Optomechanical Control of Quantum Yield in Trans-Cis Ultrafast Photoisomerization of a Retinal Chromophore Model
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 ANGEW CHEM INT EDIT
+PD MAR 27 2017
+PY 2017
+IS 14
+DI 10.1002/anie.201611265
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28251753
+UT WOS:000397346200009
+DA 2026-08-18
+ER
+
+PT J
+AU Hughes-Currie, RB
+   Ivanovskikh, KV
+   Wells, JPR
+   Reid, MF
+   Gordon, RA
+   Seijo, L
+   Barandiarán, Z
+AF Hughes-Currie, Rosa B.
+   Ivanovskikh, Konstantin V.
+   Wells, Jon-Paul R.
+   Reid, Michael F.
+   Gordon, Robert A.
+   Seijo, Luis
+   Barandiaran, Zoila
+TI X-ray Excitation Triggers Ytterbium Anomalous Emission in CaF2:Yb but Not in SrF2:Yb
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD MAR 16 2017
+PY 2017
+IS 6
+DI 10.1021/acs.jpclett.7b00262
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28234013
+UT WOS:000396975600013
+DA 2026-08-18
+ER
+
+PT J
+AU Ungur, L
+   Chibotaru, LF
+AF Ungur, Liviu
+   Chibotaru, Liviu F.
+TI Ab Initio Crystal Field for Lanthanides
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD MAR 2017
+PY 2017
+IS 15
+DI 10.1002/chem.201605102
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27983776
+UT WOS:000397502900024
+DA 2026-08-18
+ER
+
+PT J
+AU Ma, Y
+   Knecht, S
+   Reiher, M
+AF Ma, Yingjin
+   Knecht, Stefan
+   Reiher, Markus
+TI Multiconfigurational Effects in Theoretical Resonance Raman Spectra
+SO CHEMPHYSCHEM
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEMPHYSCHEM
+PD FEB 2017
+PY 2017
+IS 4
+DI 10.1002/cphc.201601072
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27933695
+UT WOS:000394650000007
+DA 2026-08-18
+ER
+
+PT J
+AU Freitag, L
+   Knecht, S
+   Angeli, C
+   Reiher, M
+AF Freitag, Leon
+   Knecht, Stefan
+   Angeli, Celestino
+   Reiher, Markus
+TI Multireference Perturbation Theory with Cholesky Decomposition for the Density Matrix Renormalization Group
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD FEB 2017
+PY 2017
+IS 2
+DI 10.1021/acs.jctc.6b00778
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28094988
+UT WOS:000394924000007
+DA 2026-08-18
+ER
+
+PT J
+AU Pierloot, K
+   Phung, QM
+   Domingo, A
+AF Pierloot, Kristine
+   Quan Manh Phung
+   Domingo, Alex
+TI Spin State Energetics in First-Row Transition Metal Complexes: Contribution of (3s3p) Correlation and Its Description by Second-Order Perturbation Theory
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD FEB 2017
+PY 2017
+IS 2
+DI 10.1021/acs.jctc.6b01005
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28005368
+UT WOS:000394924000014
+DA 2026-08-18
+ER
+
+PT J
+AU Sorensen, LK
+   Guo, MY
+   Lindh, R
+   Lundberg, M
+AF Sorensen, Lasse Kragh
+   Guo, Meiyuan
+   Lindh, Roland
+   Lundberg, Marcus
+TI Applications to metal K pre-edges of transitionmetal dimers illustrate the approximate origin independence for the intensities in the length representation
+SO MOLECULAR PHYSICS
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+J9 MOL PHYS
+PD 2017
+PY 2017
+IS 1-2
+DI 10.1080/00268976.2016.1225993
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000396794700015
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Delcey, MG
+   Pedersen, TB
+   Galván, IF
+   Lindh, R
+AF Aquilante, Francesco
+   Delcey, Mickael G.
+   Pedersen, Thomas Bondo
+   Galvan, Ignacio Fdez
+   Lindh, Roland
+TI Inner projection techniques for the low-cost handling of two-electron integrals in quantum chemistry
+SO MOLECULAR PHYSICS
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+J9 MOL PHYS
+PD 2017
+PY 2017
+IS 17-18
+DI 10.1080/00268976.2017.1284354
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000408727700008
+DA 2026-08-18
+ER
+
+PT J
+AU Stein, CJ
+   Reiher, M
+AF Stein, Christopher J.
+   Reiher, Markus
+TI Automated Identification of Relevant Frontier Orbitals for Chemical Compounds and Processes
+SO CHIMIA
+DT Article
+NR 0
+TC 0
+PU SWISS CHEMICAL SOC
+PI BERN
+J9 CHIMIA
+PD 2017
+PY 2017
+IS 4
+DI 10.2533/chimia.2017.170
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:28446330
+UT WOS:000401690100004
+DA 2026-08-18
+ER
+
+PT J
+AU Knecht, S
+   Keller, S
+   Autschbach, J
+   Reiher, M
+AF Knecht, Stefan
+   Keller, Sebastian
+   Autschbach, Jochen
+   Reiher, Markus
+TI A Nonorthogonal State-Interaction Approach for Matrix Product State Wave Functions
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD DEC 2016
+PY 2016
+IS 12
+DI 10.1021/acs.jctc.6b00889
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27951678
+UT WOS:000389866500020
+DA 2026-08-18
+ER
+
+PT J
+AU Melaccio, F
+   Marín, MD
+   Valentini, A
+   Montisci, F
+   Rinaldi, S
+   Cherubini, M
+   Yang, XC
+   Kato, Y
+   Stenrup, M
+   Orozco-Gonzalez, Y
+   Ferré, N
+   Luk, HL
+   Kandori, H
+   Olivucci, M
+AF Melaccio, Federico
+   Marin, Maria del Carmen
+   Valentini, Alessio
+   Montisci, Fabio
+   Rinaldi, Silvia
+   Cherubini, Marco
+   Yang, Xuchun
+   Kato, Yoshitaka
+   Stenrup, Michael
+   Orozco-Gonzalez, Yoelvis
+   Ferre, Nicolas
+   Luk, Hoi Ling
+   Kandori, Hideki
+   Olivucci, Massimo
+TI Toward Automatic Rhodopsin Modeling as a Tool for High-Throughput Computational Photobiology
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD DEC 2016
+PY 2016
+IS 12
+DI 10.1021/acs.jctc.6b00367
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27779842
+UT WOS:000389866500030
+DA 2026-08-18
+ER
+
+PT J
+AU Zagal, JH
+   Koper, MTM
+AF Zagal, Jose H.
+   Koper, Marc T. M.
+TI Reactivity Descriptors for the Activity of Molecular MN4 Catalysts for the Oxygen Reduction Reaction
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Review
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 ANGEW CHEM INT EDIT
+PD NOV 14 2016
+PY 2016
+IS 47
+DI 10.1002/anie.201604311
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27666439
+UT WOS:000388252700004
+DA 2026-08-18
+ER
+
+PT J
+AU Ungur, L
+   Chibotaru, LF
+AF Ungur, Liviu
+   Chibotaru, Liviu F.
+TI Strategies toward High-Temperature Lanthanide-Based Single-Molecule Magnets
+SO INORGANIC CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 INORG CHEM
+PD OCT 17 2016
+PY 2016
+IS 20
+DI 10.1021/acs.inorgchem.6b01353
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27508399
+UT WOS:000385785700011
+DA 2026-08-18
+ER
+
+PT J
+AU Phung, QM
+   Wouters, S
+   Pierloot, K
+AF Quan Manh Phung
+   Wouters, Sebastian
+   Pierloot, Kristine
+TI Cumulant Approximated Second-Order Perturbation Theory Based on the Density Matrix Renormalization Group for Transition Metal Complexes: A Benchmark Study
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD SEP 2016
+PY 2016
+IS 9
+DI 10.1021/acs.jctc.6b00714
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27547847
+UT WOS:000383315700017
+DA 2026-08-18
+ER
+
+PT J
+AU Wouters, S
+   Van Speybroeck, V
+   Van Neck, D
+AF Wouters, Sebastian
+   Van Speybroeck, Veronique
+   Van Neck, Dimitri
+TI DMRG-CASPT2 study of the longitudinal static second hyperpolarizability of all-trans polyenes
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD AUG 7 2016
+PY 2016
+IS 5
+DI 10.1063/1.4959817
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27497552
+UT WOS:000381680000021
+DA 2026-08-18
+ER
+
+PT J
+AU Stein, CJ
+   von Burg, V
+   Reiher, M
+AF Stein, Christopher J.
+   von Burg, Vera
+   Reiher, Markus
+TI The Delicate Balance of Static and Dynamic Electron Correlation
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD AUG 2016
+PY 2016
+IS 8
+DI 10.1021/acs.jctc.6b00528
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27409981
+UT WOS:000381320200032
+DA 2026-08-18
+ER
+
+PT J
+AU Galván, IF
+   Delcey, MG
+   Pedersen, TB
+   Aquilante, F
+   Lindh, R
+AF Galvan, Ignacio Fdez.
+   Delcey, Mickael G.
+   Pedersen, Thomas Bondo
+   Aquilante, Francesco
+   Lindh, Roland
+TI Analytical State-Average Complete-Active-Space Self-Consistent Field Nonadiabatic Coupling Vectors: Implementation with Density-Fitted Two-Electron Integrals and Application to Conical Intersections
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD AUG 2016
+PY 2016
+IS 8
+DI 10.1021/acs.jctc.6b00384
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27327873
+UT WOS:000381320200021
+DA 2026-08-18
+ER
+
+PT J
+AU Guo, MY
+   Källman, E
+   Sorensen, LK
+   Delcey, MG
+   Pinjari, RV
+   Lundberg, M
+AF Guo, Meiyuan
+   Kallman, Erik
+   Sorensen, Lasse Kragh
+   Delcey, Mickael G.
+   Pinjari, Rahul V.
+   Lundberg, Marcus
+TI Molecular Orbital Simulations of Metal 1s2p Resonant Inelastic X-ray Scattering
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM A
+PD JUL 28 2016
+PY 2016
+IS 29
+DI 10.1021/acs.jpca.6b05139
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27398775
+UT WOS:000380730400008
+DA 2026-08-18
+ER
+
+PT J
+AU de Jong, M
+   Biner, D
+   Krämer, KW
+   Barandiarán, Z
+   Seijo, L
+   Meijerink, A
+AF de Jong, Mathijs
+   Biner, Daniel
+   Kramer, Karl W.
+   Barandiaran, Zoila
+   Seijo, Luis
+   Meijerink, Andries
+TI New Insights in 4f125d1 Excited States of Tm2+ through Excited State Excitation Spectroscopy
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD JUL 21 2016
+PY 2016
+IS 14
+DI 10.1021/acs.jpclett.6b00924
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27347766
+UT WOS:000380415400015
+DA 2026-08-18
+ER
+
+PT J
+AU Keller, S
+   Reiher, M
+AF Keller, Sebastian
+   Reiher, Markus
+TI Spin-adapted matrix product states and operators
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD APR 7 2016
+PY 2016
+IS 13
+DI 10.1063/1.4944921
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27059556
+UT WOS:000374527900003
+DA 2026-08-18
+ER
+
+PT J
+AU Gushchin, I
+   Shevchenko, V
+   Polovinkin, V
+   Borshchevskiy, V
+   Buslaev, P
+   Bamberg, E
+   Gordeliy, V
+AF Gushchin, Ivan
+   Shevchenko, Vitaly
+   Polovinkin, Vitaly
+   Borshchevskiy, Valentin
+   Buslaev, Pavel
+   Bamberg, Ernst
+   Gordeliy, Valentin
+TI Structure of the light-driven sodium pump KR2 and its implications for optogenetics
+SO FEBS JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 FEBS J
+PD APR 2016
+PY 2016
+IS 7
+DI 10.1111/febs.13585
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26535564
+UT WOS:000374010500004
+DA 2026-08-18
+ER
+
+PT J
+AU Vancoillie, S
+   Malmqvist, PÅ
+   Veryazov, V
+AF Vancoillie, Steven
+   Malmqvist, Per Ake
+   Veryazov, Valera
+TI Potential Energy Surface of the Chromium Dimer Re-re-revisited with Multiconfigurational Perturbation Theory
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD APR 2016
+PY 2016
+IS 4
+DI 10.1021/acs.jctc.6b00034
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26930185
+UT WOS:000374196400023
+DA 2026-08-18
+ER
+
+PT J
+AU Stein, CJ
+   Reiher, M
+AF Stein, Christopher J.
+   Reiher, Markus
+TI Automated Selection of Active Orbital Spaces
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD APR 2016
+PY 2016
+IS 4
+DI 10.1021/acs.jctc.6b00156
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26959891
+UT WOS:000374196400033
+DA 2026-08-18
+ER
+
+PT J
+AU Chen, YC
+   Liu, JL
+   Ungur, L
+   Liu, J
+   Li, QW
+   Wang, LF
+   Ni, ZP
+   Chibotaru, LF
+   Chen, XM
+   Tong, ML
+AF Chen, Yan-Cong
+   Liu, Jun-Liang
+   Ungur, Liviu
+   Liu, Jiang
+   Li, Quan-Wen
+   Wang, Long-Fei
+   Ni, Zhao-Ping
+   Chibotaru, Liviu F.
+   Chen, Xiao-Ming
+   Tong, Ming-Liang
+TI Symmetry-Supported Magnetic Blocking at 20 K in Pentagonal Bipyramidal Dy(III) Single-Ion Magnets
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD MAR 2 2016
+PY 2016
+IS 8
+DI 10.1021/jacs.5b13584
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26883386
+UT WOS:000371453700058
+DA 2026-08-18
+ER
+
+PT J
+AU Anda, A
+   Hansen, T
+   De Vico, L
+AF Anda, Andre
+   Hansen, Thorsten
+   De Vico, Luca
+TI Multireference Excitation Energies for Bacteriochlorophylls A within Light Harvesting System 2
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAR 2016
+PY 2016
+IS 3
+DI 10.1021/acs.jctc.5b01104
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26796483
+UT WOS:000371852300036
+DA 2026-08-18
+ER
+
+PT J
+AU Pinjari, RV
+   Delcey, MG
+   Guo, MY
+   Odelius, M
+   Lundberg, M
+AF Pinjari, Rahul V.
+   Delcey, Mickael G.
+   Guo, Meiyuan
+   Odelius, Michael
+   Lundberg, Marcus
+TI Cost and sensitivity of restricted active-space calculations of metal L-edge X-ray absorption spectra
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD FEB 15 2016
+PY 2016
+IS 5
+DI 10.1002/jcc.24237
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26502979
+UT WOS:000369176900002
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Autschbach, J
+   Carlson, RK
+   Chibotaru, LF
+   Delcey, MG
+   De Vico, L
+   Galván, IF
+   Ferré, N
+   Frutos, LM
+   Gagliardi, L
+   Garavelli, M
+   Giussani, A
+   Hoyer, CE
+   Li Manni, G
+   Lischka, H
+   Ma, DX
+   Malmqvist, PÅ
+   Müller, T
+   Nenov, A
+   Olivucci, M
+   Pedersen, TB
+   Peng, DL
+   Plasser, F
+   Pritchard, B
+   Reiher, M
+   Rivalta, I
+   Schapiro, I
+   Segarra-Martí, J
+   Stenrup, M
+   Truhlar, DG
+   Ungur, L
+   Valentini, A
+   Vancoillie, S
+   Veryazov, V
+   Vysotskiy, VP
+   Weingart, O
+   Zapata, F
+   Lindh, R
+AF Aquilante, Francesco
+   Autschbach, Jochen
+   Carlson, Rebecca K.
+   Chibotaru, Liviu F.
+   Delcey, Mickael G.
+   De Vico, Luca
+   Galvan, Ignacio Fdez
+   Ferre, Nicolas
+   Frutos, Luis Manuel
+   Gagliardi, Laura
+   Garavelli, Marco
+   Giussani, Angelo
+   Hoyer, Chad E.
+   Li Manni, Giovanni
+   Lischka, Hans
+   Ma, Dongxia
+   Malmqvist, Per Ake
+   Mueller, Thomas
+   Nenov, Artur
+   Olivucci, Massimo
+   Pedersen, Thomas Bondo
+   Peng, Daoling
+   Plasser, Felix
+   Pritchard, Ben
+   Reiher, Markus
+   Rivalta, Ivan
+   Schapiro, Igor
+   Segarra-Marti, Javier
+   Stenrup, Michael
+   Truhlar, Donald G.
+   Ungur, Liviu
+   Valentini, Alessio
+   Vancoillie, Steven
+   Veryazov, Valera
+   Vysotskiy, Victor P.
+   Weingart, Oliver
+   Zapata, Felipe
+   Lindh, Roland
+TI Molcas 8: New capabilities for multiconfigurational quantum chemical calculations across the periodic table
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD FEB 15 2016
+PY 2016
+IS 5
+DI 10.1002/jcc.24221
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26561362
+UT WOS:000369176900005
+DA 2026-08-18
+ER
+
+PT J
+AU Manathunga, M
+   Yang, XC
+   Luk, HL
+   Gozem, S
+   Frutos, LM
+   Valentini, A
+   Ferrè, N
+   Olivucci, M
+AF Manathunga, Madushanka
+   Yang, Xuchun
+   Luk, Hoi Ling
+   Gozem, Samer
+   Manuel Frutos, Luis
+   Valentini, Alessio
+   Ferre, Nicolas
+   Olivucci, Massimo
+TI Probing the Photodynamics of Rhodopsins with Reduced Retinal Chromophores
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD FEB 2016
+PY 2016
+IS 2
+DI 10.1021/acs.jctc.5b00945
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26640959
+UT WOS:000370112900034
+DA 2026-08-18
+ER
+
+PT J
+AU Gallagher, AT
+   Kelty, ML
+   Park, JG
+   Anderson, JS
+   Mason, JA
+   Walsh, JPS
+   Collins, SL
+   Harris, TD
+AF Gallagher, Audrey T.
+   Kelty, Margaret L.
+   Park, Jesse G.
+   Anderson, John S.
+   Mason, Jarad A.
+   Walsh, James P. S.
+   Collins, Shenell L.
+   Harris, T. David
+TI Dioxygen binding at a four-coordinate cobaltous porphyrin site in a metal-organic framework: structural, EPR, and O2 adsorption analysis
+SO INORGANIC CHEMISTRY FRONTIERS
+DT Article
+NR 0
+TC 0
+PU CHINESE CHEMICAL SOC
+PI TAIPEI
+J9 INORG CHEM FRONT
+PD 2016
+PY 2016
+IS 4
+DI 10.1039/c5qi00275c
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000374011600012
+DA 2026-08-18
+ER
+
+PT J
+AU Knecht, S
+   Hedegård, ED
+   Keller, S
+   Kovyrshin, A
+   Ma, YJ
+   Muolo, A
+   Stein, CJ
+   Reiher, M
+AF Knecht, Stefan
+   Hedegard, Erik Donovan
+   Keller, Sebastian
+   Kovyrshin, Arseny
+   Ma, Yingjin
+   Muolo, Andrea
+   Stein, Christopher J.
+   Reiher, Markus
+TI New Approaches for ab initio Calculations of Molecules with Strong Electron Correlation
+SO CHIMIA
+DT Article
+NR 0
+TC 0
+PU SWISS CHEMICAL SOC
+PI BERN
+J9 CHIMIA
+PD 2016
+PY 2016
+IS 4
+DI 10.2533/chimia.2016.244
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:27131108
+UT WOS:000375350900004
+DA 2026-08-18
+ER
+
+PT J
+AU Autschbach, J
+AF Autschbach, Jochen
+TI Orbitals for Analyzing Bonding and Magnetism of Heavy-Metal Complexes
+SO COMMENTS ON INORGANIC CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+J9 COMMENT INORG CHEM
+PD 2016
+PY 2016
+IS 4
+DI 10.1080/02603594.2015.1121874
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000375153300004
+DA 2026-08-18
+ER
+
+PT J
+AU Seijo, L
+   Barandiarán, Z
+AF Seijo, Luis
+   Barandiaran, Zoila
+TI Ab Initio Calculations on Excited States of Lanthanide Containing Materials
+SO HANDBOOK ON THE PHYSICS AND CHEMISTRY OF RARE EARTHS: INCLUDING ACTINIDES, VOL 50
+DT Article; Book Chapter
+NR 0
+TC 0
+PU NORTH HOLLAND
+PI NEW YORK
+J9 HBK PHYS CHEM RARE
+PD 2016
+PY 2016
+DI 10.1016/bs.hpcre.2016.03.003
+WE Book Citation Index – Science (BKCI-S)
+DA 2026-08-18
+ER
+
+PT J
+AU [Anonymous]
+AF [Anonymous]
+SO Integration des e njeux ecologiques dans les plans damenagement forestier integre de 2018-2023, Cahier 2.1-Enjeux lies a la structure dage des forets, Quebec, gouvernement du Quebec
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 IEEE-ASME T MECH
+PY 2016
+DA 2026-08-18
+ER
+
+PT J
+CA The Lancet HIV
+TI NHS England should reconsider PrEP decision
+SO Lancet HIV
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 LANCET HIV
+PY 2016
+DI DOI 10.1063/1.4961953
+DA 2026-08-18
+ER
+
+PT J
+AU Keller, S
+   Dolfi, M
+   Troyer, M
+   Reiher, M
+AF Keller, Sebastian
+   Dolfi, Michele
+   Troyer, Matthias
+   Reiher, Markus
+TI An efficient matrix product operator representation of the quantum chemical Hamiltonian
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD DEC 28 2015
+PY 2015
+IS 24
+DI 10.1063/1.4939000
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26723662
+UT WOS:000370412900083
+DA 2026-08-18
+ER
+
+PT J
+AU Zech, A
+   Aquilante, F
+   Wesolowski, TA
+AF Zech, Alexander
+   Aquilante, Francesco
+   Wesolowski, Tomasz A.
+TI Orthogonality of embedded wave functions for different states in frozen-density embedding theory
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD OCT 28 2015
+PY 2015
+IS 16
+DI 10.1063/1.4933372
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26520497
+UT WOS:000364235800006
+DA 2026-08-18
+ER
+
+PT J
+AU Stenrup, M
+   Lindh, R
+   Galván, IF
+AF Stenrup, Michael
+   Lindh, Roland
+   Galvan, Ignacio Fdez.
+TI Constrained numerical gradients and composite gradients: Practical tools for geometry optimization and potential energy surface navigation
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD AUG 15 2015
+PY 2015
+IS 22
+DI 10.1002/jcc.23987
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26140702
+UT WOS:000358085400006
+DA 2026-08-18
+ER
+
+PT J
+AU Segarra-Martí, J
+   Garavelli, M
+   Aquilante, F
+AF Segarra-Marti, Javier
+   Garavelli, Marco
+   Aquilante, Francesco
+TI Multiconfigurational Second-Order Perturbation Theory with Frozen Natural Orbitals Extended to the Treatment of Photochemical Problems
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD AUG 2015
+PY 2015
+IS 8
+DI 10.1021/acs.jctc.5b00479
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26574459
+UT WOS:000359500000025
+DA 2026-08-18
+ER
+
+PT J
+AU Delcey, MG
+   Pedersen, TB
+   Aquilante, F
+   Lindh, R
+AF Delcey, Mickael G.
+   Pedersen, Thomas Bondo
+   Aquilante, Francesco
+   Lindh, Roland
+TI Analytical gradients of the state-average complete active space self-consistent field method with density fitting
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUL 28 2015
+PY 2015
+IS 4
+DI 10.1063/1.4927228
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26233110
+UT WOS:000358929100016
+DA 2026-08-18
+ER
+
+PT J
+AU Hedegård, ED
+   Knecht, S
+   Kielberg, JS
+   Jensen, HJA
+   Reiher, M
+AF Hedegard, Erik Donovan
+   Knecht, Stefan
+   Kielberg, Jesper Skau
+   Jensen, Hans Jorgen Aagaard
+   Reiher, Markus
+TI Density matrix renormalization group with efficient dynamical electron correlation through range separation
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUN 14 2015
+PY 2015
+IS 22
+DI 10.1063/1.4922295
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26071702
+UT WOS:000356176600010
+DA 2026-08-18
+ER
+
+PT J
+AU Iwahara, N
+   Chibotaru, LF
+AF Iwahara, Naoya
+   Chibotaru, Liviu F.
+TI Exchange interaction between J multiplets
+SO PHYSICAL REVIEW B
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV B
+PD MAY 28 2015
+PY 2015
+IS 17
+DI 10.1103/PhysRevB.91.174438
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000355170300003
+DA 2026-08-18
+ER
+
+PT J
+AU Richings, GW
+   Polyak, I
+   Spinlove, KE
+   Worth, GA
+   Burghardt, I
+   Lasorne, B
+AF Richings, G. W.
+   Polyak, I.
+   Spinlove, K. E.
+   Worth, G. A.
+   Burghardt, I.
+   Lasorne, B.
+TI Quantum dynamics simulations using Gaussian wavepackets: the vMCG method
+SO INTERNATIONAL REVIEWS IN PHYSICAL CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+J9 INT REV PHYS CHEM
+PD APR 3 2015
+PY 2015
+IS 2
+DI 10.1080/0144235X.2015.1051354
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000357443300001
+DA 2026-08-18
+ER
+
+PT J
+AU Wernet, P
+   Kunnus, K
+   Josefsson, I
+   Rajkovic, I
+   Quevedo, W
+   Beye, M
+   Schreck, S
+   Grübel, S
+   Scholz, M
+   Nordlund, D
+   Zhang, W
+   Hartsock, RW
+   Schlotter, WF
+   Turner, JJ
+   Kennedy, B
+   Hennies, F
+   de Groot, FMF
+   Gaffney, KJ
+   Techert, S
+   Odelius, M
+   Föhlisch, A
+AF Wernet, Ph.
+   Kunnus, K.
+   Josefsson, I.
+   Rajkovic, I.
+   Quevedo, W.
+   Beye, M.
+   Schreck, S.
+   Gruebel, S.
+   Scholz, M.
+   Nordlund, D.
+   Zhang, W.
+   Hartsock, R. W.
+   Schlotter, W. F.
+   Turner, J. J.
+   Kennedy, B.
+   Hennies, F.
+   de Groot, F. M. F.
+   Gaffney, K. J.
+   Techert, S.
+   Odelius, M.
+   Foehlisch, A.
+TI Orbital-specific mapping of the ligand exchange dynamics of Fe(CO)5 in solution
+SO NATURE
+DT Article
+NR 0
+TC 0
+PU NATURE PUBLISHING GROUP
+PI LONDON
+J9 NATURE
+PD APR 2 2015
+PY 2015
+IS 7545
+DI 10.1038/nature14296
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25832405
+UT WOS:000352027700040
+DA 2026-08-18
+ER
+
+PT J
+AU Yanai, T
+   Kurashige, Y
+   Mizukami, W
+   Chalupsky, J
+   Lan, TN
+   Saitow, M
+AF Yanai, Takeshi
+   Kurashige, Yuki
+   Mizukami, Wataru
+   Chalupsky, Jakub
+   Tran Nguyen Lan
+   Saitow, Masaaki
+TI Density Matrix Renormalization Group for ab initio Calculations and Associated Dynamic Correlation Methods: A Review of Theory and Applications
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI HOBOKEN
+J9 INT J QUANTUM CHEM
+PD MAR 5 2015
+PY 2015
+IS 5
+DI 10.1002/qua.24808
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000348373700006
+DA 2026-08-18
+ER
+
+PT J
+AU Bauer, D
+   Buckley, J
+   Cahill-Rowley, M
+   Cotta, R
+   Drlica-Wagner, A
+   Feng, JL
+   Funk, S
+   Hewett, J
+   Hooper, D
+   Ismail, A
+   Kaplinghat, M
+   Kusenko, A
+   Matchev, K
+   McKinsey, D
+   Rizzo, T
+   Shepherd, W
+   Tait, TMP
+   Wijangco, AM
+   Wood, M
+AF Bauer, Daniel
+   Buckley, James
+   Cahill-Rowley, Matthew
+   Cotta, Randel
+   Drlica-Wagner, Alex
+   Feng, Jonathan L.
+   Funk, Stefan
+   Hewett, JoAnne
+   Hooper, Dan
+   Ismail, Ahmed
+   Kaplinghat, Manoj
+   Kusenko, Alexander
+   Matchev, Konstantin
+   McKinsey, Daniel
+   Rizzo, Tom
+   Shepherd, William
+   Tait, Tim M. P.
+   Wijangco, Alexander M.
+   Wood, Matthew
+CA Snowmass 2013 Cosmic Frontier
+TI Dark matter in the coming decade: Complementary paths to discovery and beyond
+SO PHYSICS OF THE DARK UNIVERSE
+DT Article
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 PHYS DARK UNIVERSE
+PD MAR-JUN 2015
+PY 2015
+DI 10.1016/j.dark.2015.04.001
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000367159200004
+DA 2026-08-18
+ER
+
+PT J
+AU Marchand, G
+   Eng, J
+   Schapiro, I
+   Valentini, A
+   Frutos, LM
+   Pieri, E
+   Olivucci, M
+   Léonard, J
+   Gindensperger, E
+AF Marchand, Gabriel
+   Eng, Julien
+   Schapiro, Igor
+   Valentini, Alessio
+   Frutos, Luis Manuel
+   Pieri, Elisa
+   Olivucci, Massimo
+   Leonard, Jeremie
+   Gindensperger, Etienne
+TI Directionality of Double-Bond Photoisomerization Dynamics Induced by a Single Stereogenic Center
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD FEB 19 2015
+PY 2015
+IS 4
+DI 10.1021/jz502644h
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26262473
+UT WOS:000349942500006
+DA 2026-08-18
+ER
+
+PT J
+AU Dresselhaus, T
+   Neugebauer, J
+   Knecht, S
+   Keller, S
+   Ma, YJ
+   Reiher, M
+AF Dresselhaus, Thomas
+   Neugebauer, Johannes
+   Knecht, Stefan
+   Keller, Sebastian
+   Ma, Yingjin
+   Reiher, Markus
+TI Self-consistent embedding of density-matrix renormalization group wavefunctions in a density functional environment
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JAN 28 2015
+PY 2015
+IS 4
+DI 10.1063/1.4906152
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25637973
+UT WOS:000349018100014
+DA 2026-08-18
+ER
+
+PT J
+AU Liddle, ST
+   van Slageren, J
+AF Liddle, Stephen T.
+   van Slageren, Joris
+TI Improving f-element single molecule magnets
+SO CHEMICAL SOCIETY REVIEWS
+DT Review
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 CHEM SOC REV
+PD 2015
+PY 2015
+IS 19
+DI 10.1039/c5cs00222b
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26158197
+UT WOS:000361669700001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, P.
+   Tang, J.
+AF Zhang, P.
+   Tang, J.
+SO Lanthanide Single Molecule Magnets
+DT CITED-REFERENCE
+NR 0
+TC 0
+PU Springer Berlin Heidelberg
+J9 LANTHANIDE SINGLE MO
+PY 2015
+DA 2026-08-18
+ER
+
+PT J
+SO Lanthanides and Actinides in Molecular Magnetism
+DT CITED-REFERENCE
+NR 0
+TC 0
+PU Wiley VCH
+J9 LANTHANIDES ACTINIDE
+PY 2015
+DA 2026-08-18
+ER
+
+PT J
+AU Worth, G. A.
+   Giri, K.
+   Richings, G. W.
+   Burghardt, I.
+   Beck, M. H.
+   Jackle, A.
+   Meyer, H.-D.
+AF Worth, G. A.
+   Giri, K.
+   Richings, G. W.
+   Burghardt, I.
+   Beck, M. H.
+   Jackle, A.
+   Meyer, H.-D.
+SO The QUANTICS Package
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 The QUANTICS Package, Version 1.1
+PY 2015
+DA 2026-08-18
+ER
+
+PT J
+AU [Anonymous]
+AF [Anonymous]
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 CHIBOTARU LANTHANIDE
+PY 2015
+DA 2026-08-18
+ER
+
+PT J
+AU Gendron, F
+   Le Guennic, B
+   Autschbach, J
+AF Gendron, Frederic
+   Le Guennic, Boris
+   Autschbach, Jochen
+TI Magnetic Properties and Electronic Structures of Ar3UIV-L Complexes with Ar = C5(CH3)4H- or C5H5- and L = CH3, NO, and Cl
+SO INORGANIC CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 INORG CHEM
+PD DEC 15 2014
+PY 2014
+IS 24
+DI 10.1021/ic502365h
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25426844
+UT WOS:000346544100058
+DA 2026-08-18
+ER
+
+PT J
+AU Anderson, JS
+   Gallagher, AT
+   Mason, JA
+   Harris, TD
+AF Anderson, John S.
+   Gallagher, Audrey T.
+   Mason, Jarad A.
+   Harris, T. David
+TI A Five-Coordinate Heme Dioxygen Adduct Isolated within a Metal-Organic Framework
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD NOV 26 2014
+PY 2014
+IS 47
+DI 10.1021/ja5103103
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25380235
+UT WOS:000345720500008
+DA 2026-08-18
+ER
+
+PT J
+AU Kurashige, Y
+   Chalupsky, J
+   Lan, TN
+   Yanai, T
+AF Kurashige, Yuki
+   Chalupsky, Jakub
+   Tran Nguyen Lan
+   Yanai, Takeshi
+TI Complete active space second-order perturbation theory with cumulant approximation for extended active-space wavefunction from density matrix renormalization group
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD NOV 7 2014
+PY 2014
+IS 17
+DI 10.1063/1.4900878
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25381506
+UT WOS:000344782200014
+DA 2026-08-18
+ER
+
+PT J
+AU Pinjari, RV
+   Delcey, MG
+   Guo, MY
+   Odelius, M
+   Lundberg, M
+AF Pinjari, Rahul V.
+   Delcey, Mickael G.
+   Guo, Meiyuan
+   Odelius, Michael
+   Lundberg, Marcus
+TI Restricted active space calculations of L-edge X-ray absorption spectra: From molecular orbitals to multiplet states
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD SEP 28 2014
+PY 2014
+IS 12
+DI 10.1063/1.4896373
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25273421
+UT WOS:000342844100021
+DA 2026-08-18
+ER
+
+PT J
+AU Farahani, P
+   Roca-Sanjuán, D
+   Aquilante, F
+AF Farahani, Pooria
+   Roca-Sanjuan, Daniel
+   Aquilante, Francesco
+TI A Two-Scale Approach to Electron Correlation in Multiconfigurational Perturbation Theory
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD AUG 15 2014
+PY 2014
+IS 22
+DI 10.1002/jcc.23666
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:25042641
+UT WOS:000339958300001
+DA 2026-08-18
+ER
+
+PT J
+AU Miyagi, H
+   Madsen, LB
+AF Miyagi, Haruhide
+   Madsen, Lars Bojer
+TI Time-dependent restricted-active-space self-consistent-field theory for laser-driven many-electron dynamics. II. Extended formulation and numerical analysis
+SO PHYSICAL REVIEW A
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV A
+PD JUN 25 2014
+PY 2014
+IS 6
+DI 10.1103/PhysRevA.89.063416
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000338647500004
+DA 2026-08-18
+ER
+
+PT J
+AU Gendron, F
+   Páez-Hernández, D
+   Notter, FP
+   Pritchard, B
+   Bolvin, H
+   Autschbach, J
+AF Gendron, Frederic
+   Paez-Hernandez, Dayan
+   Notter, FrancoisPaul
+   Pritchard, Ben
+   Bolvin, Helene
+   Autschbach, Jochen
+TI Magnetic Properties and Electronic Structure of Neptunyl(VI) Complexes: Wavefunctions, Orbitals, and Crystal-Field Models
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEM-EUR J
+PD JUN 23 2014
+PY 2014
+IS 26
+DI 10.1002/chem.201305039
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:24848696
+UT WOS:000337742600020
+DA 2026-08-18
+ER
+
+PT J
+AU Wouters, S
+   Poelmans, W
+   Ayers, PW
+   Van Neck, D
+AF Wouters, Sebastian
+   Poelmans, Ward
+   Ayers, Paul W.
+   Van Neck, Dimitri
+TI CheMPS2: A free open-source spin-adapted implementation of the density matrix renormalization group for ab initio quantum chemistry
+SO COMPUTER PHYSICS COMMUNICATIONS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+J9 COMPUT PHYS COMMUN
+PD JUN 2014
+PY 2014
+IS 6
+DI 10.1016/j.cpc.2014.01.019
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000337929400001
+DA 2026-08-18
+ER
+
+PT J
+AU Delcey, MG
+   Freitag, L
+   Pedersen, TB
+   Aquilante, F
+   Lindh, R
+   González, L
+AF Delcey, Mickael G.
+   Freitag, Leon
+   Pedersen, Thomas Bondo
+   Aquilante, Francesco
+   Lindh, Roland
+   Gonzalez, Leticia
+TI Analytical gradients of complete active space self-consistent field energies using Cholesky decomposition: Geometry optimization and spin-state energetics of a ruthenium nitrosyl complex
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD MAY 7 2014
+PY 2014
+IS 17
+DI 10.1063/1.4873349
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:24811621
+UT WOS:000336048000005
+DA 2026-08-18
+ER
+
+PT J
+AU Ungur, L
+   Le Roy, JJ
+   Korobkov, I
+   Murugesu, M
+   Chibotaru, LF
+AF Ungur, Liviu
+   Le Roy, Jennifer J.
+   Korobkov, Ilia
+   Murugesu, Muralee
+   Chibotaru, Liviu F.
+TI Fine-tuning the Local Symmetry to Attain Record Blocking Temperature and Magnetic Remanence in a Single-Ion Magnet**
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 ANGEW CHEM INT EDIT
+PD APR 22 2014
+PY 2014
+IS 17
+DI 10.1002/anie.201310451
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:24652777
+UT WOS:000334396800026
+DA 2026-08-18
+ER
+
+PT J
+AU Dolgov, SV
+   Khoromskij, BN
+   Oseledets, IV
+   Savostyanov, DV
+AF Dolgov, S. V.
+   Khoromskij, B. N.
+   Oseledets, I. V.
+   Savostyanov, D. V.
+TI Computation of extreme eigenvalues in higher dimensions using block tensor train format
+SO COMPUTER PHYSICS COMMUNICATIONS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 COMPUT PHYS COMMUN
+PD APR 2014
+PY 2014
+IS 4
+DI 10.1016/j.cpc.2013.12.017
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000334480900003
+DA 2026-08-18
+ER
+
+PT J
+AU Boström, J
+   Veryazov, V
+   Aquilante, F
+   Pedersen, TB
+   Lindh, R
+AF Bostrom, Jonas
+   Veryazov, Valera
+   Aquilante, Francesco
+   Pedersen, Thomas Bondo
+   Lindh, Roland
+TI Analytical Gradients of the Second-Order Moller-Plesset Energy Using Cholesky Decompositions
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI HOBOKEN
+J9 INT J QUANTUM CHEM
+PD MAR 5 2014
+PY 2014
+IS 5
+DI 10.1002/qua.24563
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000329794400003
+DA 2026-08-18
+ER
+
+PT J
+AU Ernst, OP
+   Lodowski, DT
+   Elstner, M
+   Hegemann, P
+   Brown, LS
+   Kandori, H
+AF Ernst, Oliver P.
+   Lodowski, David T.
+   Elstner, Marcus
+   Hegemann, Peter
+   Brown, Leonid S.
+   Kandori, Hideki
+TI Microbial and Animal Rhodopsins: Structures, Functions, and Molecular Mechanisms
+SO CHEMICAL REVIEWS
+DT Review
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 CHEM REV
+PD JAN 8 2014
+PY 2014
+IS 1
+DI 10.1021/cr4003769
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:24364740
+UT WOS:000329586000002
+DA 2026-08-18
+ER
+
+PT J
+AU Bokarev, SI
+   Dantz, M
+   Suljoti, E
+   Kühn, O
+   Aziz, EF
+AF Bokarev, Sergey I.
+   Dantz, Marcus
+   Suljoti, Edlira
+   Kuehn, Oliver
+   Aziz, Emad F.
+TI State-Dependent Electron Delocalization Dynamics at the Solute-Solvent Interface: Soft-X-Ray Absorption Spectroscopy and Ab Initio Calculations
+SO PHYSICAL REVIEW LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV LETT
+PD AUG 20 2013
+PY 2013
+IS 8
+DI 10.1103/PhysRevLett.111.083002
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:24010434
+UT WOS:000323388200005
+DA 2026-08-18
+ER
+
+PT J
+AU Vancoillie, S
+   Delcey, MG
+   Lindh, R
+   Vysotskiy, V
+   Malmqvist, PÅ
+   Veryazov, V
+AF Vancoillie, Steven
+   Delcey, Mickael G.
+   Lindh, Roland
+   Vysotskiy, Victor
+   Malmqvist, Per-Ake
+   Veryazov, Valera
+TI Parallelization of a multiconfigurational perturbation theory
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD AUG 15 2013
+PY 2013
+IS 22
+DI 10.1002/jcc.23342
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:23749386
+UT WOS:000321437900009
+DA 2026-08-18
+ER
+
+PT J
+AU Sato, T
+   Ishikawa, KL
+AF Sato, Takeshi
+   Ishikawa, Kenichi L.
+TI Time-dependent complete-active-space self-consistent-field method for multielectron dynamics in intense laser fields
+SO PHYSICAL REVIEW A
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV A
+PD AUG 2 2013
+PY 2013
+IS 2
+DI 10.1103/PhysRevA.88.023402
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000322775800004
+DA 2026-08-18
+ER
+
+PT J
+AU Merlot, P
+   Kjærgaard, T
+   Helgaker, T
+   Lindh, R
+   Aquilante, F
+   Reine, S
+   Pedersen, TB
+AF Merlot, Patrick
+   Kjaergaard, Thomas
+   Helgaker, Trygve
+   Lindh, Roland
+   Aquilante, Francesco
+   Reine, Simen
+   Pedersen, Thomas Bondo
+TI Attractive electron-electron interactions within robust local fitting approximations
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD JUN 30 2013
+PY 2013
+IS 17
+DI 10.1002/jcc.23284
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:23553369
+UT WOS:000319404800006
+DA 2026-08-18
+ER
+
+PT J
+AU Glendening, ED
+   Landis, CR
+   Weinhold, F
+AF Glendening, Eric D.
+   Landis, Clark R.
+   Weinhold, Frank
+TI NBO 6.0: Natural bond orbital analysis program
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD JUN 15 2013
+PY 2013
+IS 16
+DI 10.1002/jcc.23266
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:23483590
+UT WOS:000318696800008
+DA 2026-08-18
+ER
+
+PT J
+AU García-Iriepa, C
+   Marazzi, M
+   Zapata, F
+   Valentini, A
+   Sampedro, D
+   Frutos, LM
+AF Garcia-Iriepa, Cristina
+   Marazzi, Marco
+   Zapata, Felipe
+   Valentini, Alessio
+   Sampedro, Diego
+   Manuel Frutos, Luis
+TI Chiral Hydrogen Bond Environment Providing Unidirectional Rotation in Photoactive Molecular Motors
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD MAY 2 2013
+PY 2013
+IS 9
+DI 10.1021/jz302152v
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26282290
+UT WOS:000318536500005
+DA 2026-08-18
+ER
+
+PT J
+AU Pronk, S
+   Páll, S
+   Schulz, R
+   Larsson, P
+   Bjelkmar, P
+   Apostolov, R
+   Shirts, MR
+   Smith, JC
+   Kasson, PM
+   van der Spoel, D
+   Hess, B
+   Lindahl, E
+AF Pronk, Sander
+   Pall, Szilard
+   Schulz, Roland
+   Larsson, Per
+   Bjelkmar, Par
+   Apostolov, Rossen
+   Shirts, Michael R.
+   Smith, Jeremy C.
+   Kasson, Peter M.
+   van der Spoel, David
+   Hess, Berk
+   Lindahl, Erik
+TI GROMACS 4.5: a high-throughput and highly parallel open source molecular simulation toolkit
+SO BIOINFORMATICS
+DT Article
+NR 0
+TC 0
+PU OXFORD UNIV PRESS
+PI OXFORD
+J9 BIOINFORMATICS
+PD APR 1 2013
+PY 2013
+IS 7
+DI 10.1093/bioinformatics/btt055
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:23407358
+UT WOS:000316695700004
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Pedersen, TB
+   Veryazov, V
+   Lindh, R
+AF Aquilante, Francesco
+   Pedersen, Thomas Bondo
+   Veryazov, Valera
+   Lindh, Roland
+TI MOLCAS-a software for multiconfigurational quantum chemistry calculations
+SO WILEY INTERDISCIPLINARY REVIEWS-COMPUTATIONAL MOLECULAR SCIENCE
+DT Article
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 WIRES COMPUT MOL SCI
+PD MAR-APR 2013
+PY 2013
+IS 2
+DI 10.1002/wcms.1117
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000318044900003
+DA 2026-08-18
+ER
+
+PT J
+AU Boström, J
+   Aquilante, F
+   Pedersen, TB
+   Lindh, R
+AF Bostrom, Jonas
+   Aquilante, Francesco
+   Pedersen, Thomas Bondo
+   Lindh, Roland
+TI Analytical Gradients of Hartree-Fock Exchange with Density Fitting Approximations
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JAN 2013
+PY 2013
+IS 1
+DI 10.1021/ct200836x
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26589023
+UT WOS:000313378700024
+DA 2026-08-18
+ER
+
+PT J
+AU Chibotaru, LF
+   Ungur, L
+AF Chibotaru, L. F.
+   Ungur, L.
+TI Negative g Factors, Berry Phases, and Magnetic Properties of Complexes
+SO PHYSICAL REVIEW LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV LETT
+PD DEC 11 2012
+PY 2012
+IS 24
+DI 10.1103/PhysRevLett.109.246403
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:23368351
+UT WOS:000312299400013
+DA 2026-08-18
+ER
+
+PT J
+AU Josefsson, I
+   Kunnus, K
+   Schreck, S
+   Föhlisch, A
+   de Groot, F
+   Wernet, P
+   Odelius, M
+AF Josefsson, Ida
+   Kunnus, Kristjan
+   Schreck, Simon
+   Foehlisch, Alexander
+   de Groot, Frank
+   Wernet, Philippe
+   Odelius, Michael
+TI Ab Initio Calculations of X-ray Spectra: Atomic Multiplet and Molecular Orbital Effects in a Multiconfigurational SCF Approach to the L-Edge Spectra of Transition Metal Complexes
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD DEC 6 2012
+PY 2012
+IS 23
+DI 10.1021/jz301479j
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26290989
+UT WOS:000312170600029
+DA 2026-08-18
+ER
+
+PT J
+AU Wernet, P
+   Kunnus, K
+   Schreck, S
+   Quevedo, W
+   Kurian, R
+   Techert, S
+   de Groot, FMF
+   Odelius, M
+   Föhlisch, A
+AF Wernet, Philippe
+   Kunnus, Kristjan
+   Schreck, Simon
+   Quevedo, Wilson
+   Kurian, Reshmi
+   Techert, Simone
+   de Groot, Frank M. F.
+   Odelius, Michael
+   Foehlisch, Alexander
+TI Dissecting Local Atomic and Intermolecular Interactions of Transition-Metal Ions in Solution with Selective X-ray Spectroscopy
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM LETT
+PD DEC 6 2012
+PY 2012
+IS 23
+DI 10.1021/jz301486u
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26290971
+UT WOS:000312170600009
+DA 2026-08-18
+ER
+
+PT J
+AU Chibotaru, LF
+   Ungur, L
+AF Chibotaru, L. F.
+   Ungur, L.
+TI Ab initio calculation of anisotropic magnetic properties of complexes. I. Unique definition of pseudospin Hamiltonians and their derivation
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD AUG 14 2012
+PY 2012
+IS 6
+DI 10.1063/1.4739763
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:22897260
+UT WOS:000308048700012
+DA 2026-08-18
+ER
+
+PT J
+AU Malmqvist, PÅ
+   Veryazov, V
+AF Malmqvist, Per Ake
+   Veryazov, Valera
+TI The binatural orbitals of electronic transitions
+SO MOLECULAR PHYSICS
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+J9 MOL PHYS
+PD 2012
+PY 2012
+IS 19-20
+DI 10.1080/00268976.2012.697587
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000310570200017
+DA 2026-08-18
+ER
+
+PT J
+AU Veryazov, V
+   Malmqvist, PÅ
+   Roos, BO
+AF Veryazov, Valera
+   Malmqvist, Per Ake
+   Roos, Bjorn O.
+TI How to Select Active Space for Multiconfigurational Quantum Chemistry?
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI MALDEN
+J9 INT J QUANTUM CHEM
+PD NOV 5 2011
+PY 2011
+IS 13
+DI 10.1002/qua.23068
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000295110300015
+DA 2026-08-18
+ER
+
+PT J
+AU Ma, DX
+   Li Manni, G
+   Gagliardi, L
+AF Ma, Dongxia
+   Li Manni, Giovanni
+   Gagliardi, Laura
+TI The generalized active space concept in multiconfigurational self-consistent field methods
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUL 28 2011
+PY 2011
+IS 4
+DI 10.1063/1.3611401
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:21806111
+UT WOS:000293477300029
+DA 2026-08-18
+ER
+
+PT J
+AU Richter, M
+   Marquetand, P
+   González-Vázquez, J
+   Sola, I
+   González, L
+AF Richter, Martin
+   Marquetand, Philipp
+   Gonzalez-Vazquez, Jesus
+   Sola, Ignacio
+   Gonzalez, Leticia
+TI SHARC: ab Initio Molecular Dynamics with Surface Hopping in the Adiabatic Representation Including Arbitrary Couplings
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD MAY 2011
+PY 2011
+IS 5
+DI 10.1021/ct1007394
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26610121
+UT WOS:000290293000004
+DA 2026-08-18
+ER
+
+PT J
+AU Ungur, L
+   Chibotaru, LF
+AF Ungur, Liviu
+   Chibotaru, Liviu F.
+TI Magnetic anisotropy in the excited states of low symmetry lanthanide complexes
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 PHYS CHEM CHEM PHYS
+PD 2011
+PY 2011
+IS 45
+DI 10.1039/c1cp22689d
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:22027865
+UT WOS:000296871500006
+DA 2026-08-18
+ER
+
+PT J
+AU Sauri, V
+   Serrano-Andrés, L
+   Shahi, ARM
+   Gagliardi, L
+   Vancoillie, S
+   Pierloot, K
+AF Sauri, Vicenta
+   Serrano-Andres, Luis
+   Shahi, Abdul Rehaman Moughal
+   Gagliardi, Laura
+   Vancoillie, Steven
+   Pierloot, Kristine
+TI Multiconfigurational Second-Order Perturbation Theory Restricted Active Space (RASPT2) Method for Electronic Excited States: A Benchmark Study
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD JAN 2011
+PY 2011
+IS 1
+DI 10.1021/ct100478d
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26606229
+UT WOS:000285990300018
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Boman, L
+   Boström, J
+   Koch, H
+   Lindh, R
+   de Merás, AS
+   Pedersen, TB
+AF Aquilante, Francesco
+   Boman, Linus
+   Bostrom, Jonas
+   Koch, Henrik
+   Lindh, Roland
+   Sanchez de Meras, Alfredo
+   Pedersen, Thomas Bondo
+TI CHOLESKY DECOMPOSITION TECHNIQUES IN ELECTRONIC STRUCTURE THEORY
+SO LINEAR-SCALING TECHNIQUES IN COMPUTATIONAL CHEMISTRY AND PHYSICS: METHODS AND APPLICATIONS
+DT Article; Book Chapter
+NR 0
+TC 0
+PU SPRINGER
+PI DORDRECHT
+J9 CHALL ADV COMPUT CHE
+PD 2011
+PY 2011
+DI 10.1007/978-90-481-2853-2_13
+WE Book Citation Index – Science (BKCI-S)
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   De Vico, L
+   Ferré, N
+   Ghigo, G
+   Malmqvist, PÅ
+   Neogrády, P
+   Pedersen, TB
+   Pitonák, M
+   Reiher, M
+   Roos, BO
+   Serrano-Andrés, L
+   Urban, M
+   Veryazov, V
+   Lindh, R
+AF Aquilante, Francesco
+   De Vico, Luca
+   Ferre, Nicolas
+   Ghigo, Giovanni
+   Malmqvist, Per-Ake
+   Neogrady, Pavel
+   Pedersen, Thomas Bondo
+   Pitonak, Michal
+   Reiher, Markus
+   Roos, Bjorn O.
+   Serrano-Andres, Luis
+   Urban, Miroslav
+   Veryazov, Valera
+   Lindh, Roland
+TI Software News and Update MOLCAS 7: The Next Generation
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Review
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 J COMPUT CHEM
+PD JAN 15 2010
+PY 2010
+IS 1
+DI 10.1002/jcc.21318
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:19499541
+UT WOS:000273186800021
+DA 2026-08-18
+ER
+
+PT J
+AU Pedersen, TB
+   Aquilante, F
+   Lindh, R
+AF Pedersen, Thomas Bondo
+   Aquilante, Francesco
+   Lindh, Roland
+TI Density fitting with auxiliary basis sets from Cholesky decompositions
+SO THEORETICAL CHEMISTRY ACCOUNTS
+DT Article
+NR 0
+TC 0
+PU SPRINGER
+PI NEW YORK
+J9 THEOR CHEM ACC
+PD SEP 2009
+PY 2009
+IS 1-2
+DI 10.1007/s00214-009-0608-y
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000269219100001
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Todorova, TK
+   Gagliardi, L
+   Pedersen, TB
+   Roos, B
+AF Aquilante, Francesco
+   Todorova, Tanya Kumanova
+   Gagliardi, Laura
+   Pedersen, Thomas Bondo
+   Roos, Bjorn
+TI Systematic truncation of the virtual space in multiconfigurational perturbation theory
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUL 21 2009
+PY 2009
+IS 3
+DI 10.1063/1.3157463
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:19624187
+UT WOS:000268206800019
+DA 2026-08-18
+ER
+
+PT J
+AU Abramavicius, D
+   Palmieri, B
+   Voronine, DV
+   Sanda, F
+   Mukamel, S
+AF Abramavicius, Darius
+   Palmieri, Benoit
+   Voronine, Dmitri V.
+   Sanda, Frantisek
+   Mukamel, Shaul
+TI Coherent Multidimensional Optical Spectroscopy of Excitons in Molecular Aggregates; Quasiparticle versus Supermolecule Perspectives
+SO CHEMICAL REVIEWS
+DT Review
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 CHEM REV
+PD JUN 2009
+PY 2009
+IS 6
+DI 10.1021/cr800268n
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:19432416
+UT WOS:000266929800006
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Gagliardi, L
+   Pedersen, TB
+   Lindh, R
+AF Aquilante, Francesco
+   Gagliardi, Laura
+   Pedersen, Thomas Bondo
+   Lindh, Roland
+TI Atomic Cholesky decompositions: A route to unbiased auxiliary basis sets for density fitting approximation with tunable accuracy and efficiency
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD APR 21 2009
+PY 2009
+IS 15
+DI 10.1063/1.3116784
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:19388736
+UT WOS:000265486300010
+DA 2026-08-18
+ER
+
+PT J
+AU Aquilante, F
+   Lindh, R
+   Pedersen, TB
+AF Aquilante, Francesco
+   Lindh, Roland
+   Pedersen, Thomas Bondo
+TI Analytic derivatives for the Cholesky representation of the two-electron integrals
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUL 21 2008
+PY 2008
+IS 3
+DI 10.1063/1.2955755
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:18647015
+UT WOS:000257840700006
+DA 2026-08-18
+ER
+
+PT J
+AU Malmqvist, PA
+   Pierloot, K
+   Shahi, ARM
+   Cramer, CJ
+   Gagliardi, L
+AF Malmqvist, Per Ake
+   Pierloot, Kristine
+   Shahi, Abdul Rehaman Moughal
+   Cramer, Christopher J.
+   Gagliardi, Laura
+TI The restricted active space followed by second-order perturbation theory method: Theory and application to the study of CuO2 and Cu2O2 systems
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD MAY 28 2008
+PY 2008
+IS 20
+DI 10.1063/1.2920188
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:18513012
+UT WOS:000256304200013
+DA 2026-08-18
+ER
+
+PT J
+AU Chibotaru, LF
+   Ungur, L
+   Soncini, A
+AF Chibotaru, Liviu F.
+   Ungur, Liviu
+   Soncini, Alessandro
+TI The origin of nonmagnetic Kramers doublets in the ground state of dysprosium triangles: Evidence for a toroidal magnetic moment
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+NR 0
+TC 0
+PU WILEY-BLACKWELL
+PI MALDEN
+J9 ANGEW CHEM INT EDIT
+PD 2008
+PY 2008
+IS 22
+DI 10.1002/anie.200800283
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:18428177
+UT WOS:000256261900014
+DA 2026-08-18
+ER
+
+PT J
+AU Vancoillie, S
+   Malmqvist, PÅ
+   Pierloot, K
+AF Vancoillie, Steven
+   Malmqvist, Per-Ake
+   Pierloot, Kristine
+TI Calculation of EPR g tensors for transition-metal complexes based on multiconfigurational perturbation theory (CASPT2)
+SO CHEMPHYSCHEM
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+J9 CHEMPHYSCHEM
+PD AUG 24 2007
+PY 2007
+IS 12
+DI 10.1002/cphc.200700128
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:17647251
+UT WOS:000249602300011
+DA 2026-08-18
+ER
+
+PT J
+AU Lyon, JT
+   Andrews, L
+   Malmqvist, PA
+   Roos, BO
+   Yang, TX
+   Bursten, BE
+AF Lyon, Jonathan T.
+   Andrews, Lester
+   Malmqvist, Per-Ake
+   Roos, Bjorn O.
+   Yang, Tianxiao
+   Bursten, Bruce E.
+TI Infrared spectrum and bonding in uranium methylidene dihydride, CH2=UH2
+SO INORGANIC CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 INORG CHEM
+PD JUN 11 2007
+PY 2007
+IS 12
+DI 10.1021/ic062407w
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:17487964
+UT WOS:000246907800026
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Malmqvist, PÅ
+   Gagliardi, L
+AF Roos, Bjorn O.
+   Malmqvist, Per-Ake
+   Gagliardi, Laura
+TI Exploring the actinide-actinide bond:: Theoretical studies of the chemical bond in Ac2, Th2, Pa2, and U2
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD DEC 27 2006
+PY 2006
+IS 51
+DI 10.1021/ja066615z
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:17177451
+UT WOS:000242941600106
+DA 2026-08-18
+ER
+
+PT J
+AU Cogdell, RJ
+   Gall, A
+   Köhler, J
+AF Cogdell, Richard J.
+   Gall, Andrew
+   Koehler, Juergen
+TI The architecture and function of the light-harvesting apparatus of purple bacteria:: from single molecules to in vivo membranes
+SO QUARTERLY REVIEWS OF BIOPHYSICS
+DT Review
+NR 0
+TC 0
+PU CAMBRIDGE UNIV PRESS
+PI NEW YORK
+J9 Q REV BIOPHYS
+PD AUG 2006
+PY 2006
+IS 3
+DI 10.1017/S0033583506004434
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:17038210
+UT WOS:000243145000002
+DA 2026-08-18
+ER
+
+PT J
+AU De Vico, L
+   Olivucci, M
+   Lindh, R
+AF De Vico, L
+   Olivucci, M
+   Lindh, R
+TI New general tools for constrained geometry optimizations
+SO JOURNAL OF CHEMICAL THEORY AND COMPUTATION
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J CHEM THEORY COMPUT
+PD SEP-OCT 2005
+PY 2005
+IS 5
+DI 10.1021/ct0500949
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:26641918
+UT WOS:000231871500027
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Lindh, R
+   Malmqvist, PA
+   Veryazov, V
+   Widmark, PO
+AF Roos, BO
+   Lindh, R
+   Malmqvist, PA
+   Veryazov, V
+   Widmark, PO
+TI New relativistic ANO basis sets for transition metal atoms
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM A
+PD JUL 28 2005
+PY 2005
+IS 29
+DI 10.1021/jp0581126
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:16834004
+UT WOS:000230696000023
+DA 2026-08-18
+ER
+
+PT J
+AU Nest, M
+   Klamroth, T
+   Saalfrank, P
+AF Nest, M
+   Klamroth, T
+   Saalfrank, P
+TI The multiconfiguration time-dependent Hartree-Fock method for quantum chemical calculations
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD MAR 22 2005
+PY 2005
+IS 12
+DI 10.1063/1.1862243
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:15836364
+UT WOS:000228287900002
+DA 2026-08-18
+ER
+
+PT J
+AU Nilsson, DE
+AF Nilsson, DE
+TI Photoreceptor evolution: Ancient siblings serve different tasks
+SO CURRENT BIOLOGY
+DT Editorial Material
+NR 0
+TC 0
+PU CELL PRESS
+PI CAMBRIDGE
+J9 CURR BIOL
+PD FEB 8 2005
+PY 2005
+IS 3
+DI 10.1016/j.cub.2005.01.027
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:15694299
+UT WOS:000227027700013
+DA 2026-08-18
+ER
+
+PT J
+AU Andruniów, T
+   Ferré, N
+   Olivucci, M
+AF Andruniów, T
+   Ferré, N
+   Olivucci, M
+TI Structure, initial excited-state relaxation, and energy storage of rhodopsin resolved at the multiconfigurational perturbation theory level
+SO PROCEEDINGS OF THE NATIONAL ACADEMY OF SCIENCES OF THE UNITED STATES OF AMERICA
+DT Article
+NR 0
+TC 0
+PU NATL ACAD SCIENCES
+PI WASHINGTON
+J9 P NATL ACAD SCI USA
+PD DEC 28 2004
+PY 2004
+IS 52
+DI 10.1073/pnas.0407997101
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:15604139
+UT WOS:000226102700007
+DA 2026-08-18
+ER
+
+PT J
+AU Veryazov, V
+   Widmark, PO
+   Serrano-Andrés, L
+   Lindh, R
+   Roos, BO
+AF Veryazov, V
+   Widmark, PO
+   Serrano-Andrés, L
+   Lindh, R
+   Roos, BO
+TI 2MOLCAS as a development platform for quantum chemistry software
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Article; Proceedings Paper
+CT 6th Annual Meeting of the V A Fock School on Quantum and Computational Chemistry
+CY MAY 12-16, 2003
+CL Novgorod, RUSSIA
+NR 0
+TC 0
+PU WILEY
+PI HOBOKEN
+J9 INT J QUANTUM CHEM
+PD NOV 15 2004
+PY 2004
+IS 4
+DI 10.1002/qua.20166
+WE Science Citation Index Expanded (SCI-EXPANDED); Conference Proceedings Citation Index - Science (CPCI-S)
+UT WOS:000224637400037
+DA 2026-08-18
+ER
+
+PT J
+AU Angeli, C
+   Borini, S
+   Cestari, M
+   Cimiraglia, R
+AF Angeli, C
+   Borini, S
+   Cestari, M
+   Cimiraglia, R
+TI A quasidegenerate formulation of the second order n-electron valence state perturbation theory approach
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AIP Publishing
+PI MELVILLE
+J9 J CHEM PHYS
+PD SEP 1 2004
+PY 2004
+IS 9
+DI 10.1063/1.1778711
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:15332949
+UT WOS:000223623800010
+DA 2026-08-18
+ER
+
+PT J
+AU Rudowicz, C
+   Chung, CY
+AF Rudowicz, C
+   Chung, CY
+TI The generalization of the extended Stevens operators to higher ranks and spins, and a systematic review of the tables of the tensor operators and their matrix elements
+SO JOURNAL OF PHYSICS-CONDENSED MATTER
+DT Article
+NR 0
+TC 0
+PU IOP PUBLISHING LTD
+PI BRISTOL
+J9 J PHYS-CONDENS MAT
+PD AUG 18 2004
+PY 2004
+IS 32
+DI 10.1088/0953-8984/16/32/018
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000223750600024
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Malmqvist, PÅ
+AF Roos, BO
+   Malmqvist, PÅ
+TI Relativistic quantum chemistry: the multiconfigurational approach
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+J9 PHYS CHEM CHEM PHYS
+PD JUN 7 2004
+PY 2004
+IS 11
+DI 10.1039/b401472n
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000222357600020
+DA 2026-08-18
+ER
+
+PT J
+AU Karlström, G
+   Lindh, R
+   Malmqvist, PÅ
+   Roos, BO
+   Ryde, U
+   Veryazov, V
+   Widmark, PO
+   Cossi, M
+   Schimmelpfennig, B
+   Neogrady, P
+   Seijo, L
+AF Karlström, G
+   Lindh, R
+   Malmqvist, PÅ
+   Roos, BO
+   Ryde, U
+   Veryazov, V
+   Widmark, PO
+   Cossi, M
+   Schimmelpfennig, B
+   Neogrady, P
+   Seijo, L
+TI MOLCAS: a program package for computational chemistry
+SO COMPUTATIONAL MATERIALS SCIENCE
+DT Article; Proceedings Paper
+CT Symposium on Software Development for Process and Materials Disign
+CY SEP 15-16, 2002
+CL MOSCOW, RUSSIA
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 COMP MATER SCI
+PD OCT 2003
+PY 2003
+IS 2
+DI 10.1016/S0927-0256(03)00109-5
+WE Science Citation Index Expanded (SCI-EXPANDED); Conference Proceedings Citation Index - Science (CPCI-S)
+UT WOS:000186360000012
+DA 2026-08-18
+ER
+
+PT J
+AU Lindh, R
+   Krogh, JW
+   Schütz, M
+   Hirao, K
+AF Lindh, R
+   Krogh, JW
+   Schütz, M
+   Hirao, K
+TI Semidirect parallel self-consistent field:: the load balancing problem in the input/output intensive self-consistent field iterations
+SO THEORETICAL CHEMISTRY ACCOUNTS
+DT Article
+NR 0
+TC 0
+PU SPRINGER-VERLAG
+PI NEW YORK
+J9 THEOR CHEM ACC
+PD OCT 2003
+PY 2003
+IS 3
+DI 10.1007/s00214-003-0469-8
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000186604300007
+DA 2026-08-18
+ER
+
+PT J
+AU Angeli, C
+   Cimiraglia, R
+   Malrieu, JP
+AF Angeli, C
+   Cimiraglia, R
+   Malrieu, JP
+TI n-electron valence state perturbation theory:: A spinless formulation and an efficient implementation of the strongly contracted and of the partially contracted variants
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD NOV 22 2002
+PY 2002
+IS 20
+DI 10.1063/1.1515317
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000179042300009
+DA 2026-08-18
+ER
+
+PT J
+AU Malmqvist, PÅ
+   Roos, BO
+   Schimmelpfennig, B
+AF Malmqvist, PÅ
+   Roos, BO
+   Schimmelpfennig, B
+TI The restricted active space (RAS) state interaction approach with spin-orbit coupling
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD MAY 10 2002
+PY 2002
+IS 3-4
+DI 10.1016/S0009-2614(02)00498-0
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000175958700011
+DA 2026-08-18
+ER
+
+PT J
+AU Ferré, N
+   Angyán, JG
+AF Ferré, N
+   Angyán, JG
+TI Approximate electrostatic interaction operator for QM/MM calculations
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD APR 22 2002
+PY 2002
+IS 3-4
+DI 10.1016/S0009-2614(02)00343-3
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000175408600022
+DA 2026-08-18
+ER
+
+PT J
+AU Angeli, C
+   Cimiraglia, R
+   Malrieu, JP
+AF Angeli, C
+   Cimiraglia, R
+   Malrieu, JP
+TI N-electron valence state perturbation theory: a fast implementation of the strongly contracted variant
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD DEC 21 2001
+PY 2001
+IS 3-4
+DI 10.1016/S0009-2614(01)01303-3
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000173058400015
+DA 2026-08-18
+ER
+
+PT J
+AU Angeli, C
+   Cimiraglia, R
+   Evangelisti, S
+   Leininger, T
+   Malrieu, JP
+AF Angeli, C
+   Cimiraglia, R
+   Evangelisti, S
+   Leininger, T
+   Malrieu, JP
+TI Introduction of n-electron valence states for multireference perturbation theory
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUN 15 2001
+PY 2001
+IS 23
+DI 10.1063/1.1361246
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000169352300003
+DA 2026-08-18
+ER
+
+PT J
+AU Stålring, J
+   Bernhardsson, A
+   Lindh, R
+AF Stålring, J
+   Bernhardsson, A
+   Lindh, R
+TI Analytical gradients of a state average MCSCF state and a state average diagnostic
+SO MOLECULAR PHYSICS
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI LONDON
+J9 MOL PHYS
+PD JAN 2001
+PY 2001
+IS 2
+DI 10.1080/002689700110005642
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT WOS:000165930000005
+DA 2026-08-18
+ER
+
+PT J
+AU Meyer, K
+   Mindiola, DJ
+   Baker, TA
+   Davis, WM
+   Cummins, CC
+AF Meyer, K
+   Mindiola, DJ
+   Baker, TA
+   Davis, WM
+   Cummins, CC
+TI Uranium hexakisamido complexes
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+NR 0
+TC 0
+PU WILEY-V C H VERLAG GMBH
+PI BERLIN
+J9 ANGEW CHEM INT EDIT
+PD 2000
+PY 2000
+IS 17
+WE Index Chemicus (IC); Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:11028031
+UT WOS:000089227800008
+DA 2026-08-18
+ER
+
+PT J
+AU Lindh, R
+   Bernhardsson, A
+   Schütz, M
+AF Lindh, R
+   Bernhardsson, A
+   Schütz, M
+TI Force-constant weighted redundant coordinates in molecular geometry optimizations
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD APR 16 1999
+PY 1999
+IS 5-6
+DI 10.1016/S0009-2614(99)00247-X
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:6270867
+DA 2026-08-18
+ER
+
+PT J
+AU Bernhardsson, A
+   Lindh, R
+   Olsen, J
+   Fülscher, M
+AF Bernhardsson, A
+   Lindh, R
+   Olsen, J
+   Fülscher, M
+TI A direct implementation of the second-order derivatives of multiconfigurational SCF energies and an analysis of the preconditioning in the associated response equation
+SO MOLECULAR PHYSICS
+DT Article
+NR 0
+TC 0
+PU TAYLOR & FRANCIS LTD
+PI LONDON
+J9 MOL PHYS
+PD FEB 20 1999
+PY 1999
+IS 4
+DI 10.1080/00268979909482998
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:6280047
+DA 2026-08-18
+ER
+
+PT J
+AU Weinhold, F.
+AF Weinhold, F.
+SO Encyclopedia of Computational Chemistry
+DT CITED-REFERENCE
+NR 0
+TC 0
+PU John Wiley Sons
+J9 ENCY COMPUTATIONAL C
+PY 1998
+DA 2026-08-18
+ER
+
+PT J
+AU Hess, BA
+   Marian, CM
+   Wahlgren, U
+   Gropen, O
+AF Hess, BA
+   Marian, CM
+   Wahlgren, U
+   Gropen, O
+TI A mean-field spin-orbit method applicable to correlated wavefunctions
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD MAR 29 1996
+PY 1996
+IS 5-6
+DI 10.1016/0009-2614(96)00119-4
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:5258032
+DA 2026-08-18
+ER
+
+PT J
+CA (USDA/APHIS) United States of Department of Agriculture/Animal and Plant Health Inspection Service
+TI The application of irradiation to phytosanitary problems, 1996
+SO Fed. Reg
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 FED REGISTER
+PY 1996
+DA 2026-08-18
+ER
+
+PT J
+AU WHITE, SR
+AF WHITE, SR
+TI DENSITY-MATRIX ALGORITHMS FOR QUANTUM RENORMALIZATION-GROUPS
+SO PHYSICAL REVIEW B
+DT Article
+NR 0
+TC 0
+PU AMERICAN PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV B
+PD OCT 1 1993
+PY 1993
+IS 14
+DI 10.1103/PhysRevB.48.10345
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:10007313
+UT MEDLINE:10007313
+DA 2026-08-18
+ER
+
+PT J
+AU LINDH, R
+AF LINDH, R
+TI THE REDUCED MULTIPLICATION SCHEME OF THE RYS-GAUSS QUADRATURE FOR 1ST-ORDER INTEGRAL DERIVATIVES
+SO THEORETICA CHIMICA ACTA
+DT Article
+NR 0
+TC 0
+PU SPRINGER VERLAG
+PI NEW YORK
+J9 THEOR CHIM ACTA
+PD JUN 1993
+PY 1993
+IS 6
+DI 10.1007/BF01112982
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:4589656
+DA 2026-08-18
+ER
+
+PT J
+AU WHITE, SR
+AF WHITE, SR
+TI DENSITY-MATRIX FORMULATION FOR QUANTUM RENORMALIZATION-GROUPS
+SO PHYSICAL REVIEW LETTERS
+DT Article
+NR 0
+TC 0
+PU AMERICAN PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV LETT
+PD NOV 9 1992
+PY 1992
+IS 19
+DI 10.1103/PhysRevLett.69.2863
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:10046608
+UT MEDLINE:10046608
+DA 2026-08-18
+ER
+
+PT J
+AU LINDH, R
+   RYU, U
+   LIU, B
+AF LINDH, R
+   RYU, U
+   LIU, B
+TI THE REDUCED MULTIPLICATION SCHEME OF THE RYS QUADRATURE AND NEW RECURRENCE RELATIONS FOR AUXILIARY FUNCTION BASED 2-ELECTRON INTEGRAL EVALUATION
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI WOODBURY
+J9 J CHEM PHYS
+PD OCT 15 1991
+PY 1991
+IS 8
+DI 10.1063/1.461610
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:4034632
+DA 2026-08-18
+ER
+
+PT J
+AU TULLY, JC
+AF TULLY, JC
+TI MOLECULAR-DYNAMICS WITH ELECTRONIC-TRANSITIONS
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI MELVILLE
+J9 J CHEM PHYS
+PD JUL 15 1990
+PY 1990
+IS 2
+DI 10.1063/1.459170
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:3735796
+DA 2026-08-18
+ER
+
+PT J
+AU MALMQVIST, PA
+   RENDELL, A
+   ROOS, BO
+AF MALMQVIST, PA
+   RENDELL, A
+   ROOS, BO
+TI THE RESTRICTED ACTIVE SPACE SELF-CONSISTENT-FIELD METHOD, IMPLEMENTED WITH A SPLIT GRAPH UNITARY-GROUP APPROACH
+SO JOURNAL OF PHYSICAL CHEMISTRY
+DT Article; Proceedings Paper
+CT INTERNATIONAL CONF IN HONOR OF PROFESSOR JOHN A POPLE : FORTY YEARS OF QUANTUM CHEMISTRY
+CY OCT 15-19, 1989
+CL UNIV GEORGIA, ATHENS, GA
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J PHYS CHEM-US
+PD JUL 12 1990
+PY 1990
+IS 14
+WE Conference Proceedings Citation Index - Science (CPCI-S); Science Citation Index Expanded (SCI-EXPANDED)
+DA 2026-08-18
+ER
+
+PT J
+AU MALMQVIST, PA
+   ROOS, BO
+AF MALMQVIST, PA
+   ROOS, BO
+TI THE CASSCF STATE INTERACTION METHOD
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+NR 0
+TC 0
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+J9 CHEM PHYS LETT
+PD FEB 24 1989
+PY 1989
+IS 2
+DI 10.1016/0009-2614(89)85347-3
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:3382044
+DA 2026-08-18
+ER
+
+PT J
+AU BARANDIARAN, Z
+   SEIJO, L
+AF BARANDIARAN, Z
+   SEIJO, L
+TI THE ABINITIO MODEL POTENTIAL REPRESENTATION OF THE CRYSTALLINE ENVIRONMENT - THEORETICAL-STUDY OF THE LOCAL DISTORTION ON NACL-CU+
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI WOODBURY
+J9 J CHEM PHYS
+PD NOV 1 1988
+PY 1988
+IS 9
+DI 10.1063/1.455549
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:3300802
+DA 2026-08-18
+ER
+
+PT J
+AU OLSEN, J
+   ROOS, BO
+   JORGENSEN, P
+   JENSEN, HJA
+AF OLSEN, J
+   ROOS, BO
+   JORGENSEN, P
+   JENSEN, HJA
+TI DETERMINANT BASED CONFIGURATION-INTERACTION ALGORITHMS FOR COMPLETE AND RESTRICTED CONFIGURATION-INTERACTION SPACES
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI WOODBURY
+J9 J CHEM PHYS
+PD AUG 15 1988
+PY 1988
+IS 4
+DI 10.1063/1.455063
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:3252998
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, B. O.
+AF Roos, B. O.
+SO Adv. Chem. Phys
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 ADV CHEM PHYS
+PY 1987
+DI DOI 10.1002/9780470142943.CH7
+DA 2026-08-18
+ER
+
+PT J
+AU MALMQVIST, PA
+AF MALMQVIST, PA
+TI CALCULATION OF TRANSITION DENSITY-MATRICES BY NONUNITARY ORBITAL TRANSFORMATIONS
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Article
+NR 0
+TC 0
+PU JOHN WILEY & SONS INC
+PI NEW YORK
+J9 INT J QUANTUM CHEM
+PD OCT 1986
+PY 1986
+IS 4
+DI 10.1002/qua.560300404
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:2808864
+DA 2026-08-18
+ER
+
+PT J
+AU HESS, BA
+AF HESS, BA
+TI RELATIVISTIC ELECTRONIC-STRUCTURE CALCULATIONS EMPLOYING A 2-COMPONENT NO-PAIR FORMALISM WITH EXTERNAL-FIELD PROJECTION OPERATORS
+SO PHYSICAL REVIEW A
+DT Article
+NR 0
+TC 0
+PU AMERICAN PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV A
+PD JUN 1986
+PY 1986
+IS 6
+DI 10.1103/PhysRevA.33.3742
+WE Science Citation Index Expanded (SCI-EXPANDED)
+PM MEDLINE:9897114
+UT MEDLINE:9897114
+DA 2026-08-18
+ER
+
+PT J
+AU LINARD, JE
+   ELLIS, PE
+   BUDGE, JR
+   JONES, RD
+   BASOLO, F
+AF LINARD, JE
+   ELLIS, PE
+   BUDGE, JR
+   JONES, RD
+   BASOLO, F
+TI OXYGENATION OF IRON(II) AND COBALT(II) CAPPED PORPHYRINS
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+NR 0
+TC 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+J9 J AM CHEM SOC
+PD 1980
+PY 1980
+IS 6
+WE Science Citation Index Expanded (SCI-EXPANDED)
+DA 2026-08-18
+ER
+
+PT J
+AU Almlof, J.
+AF Almlof, J.
+SO The Molecule Integral Program
+DT CITED-REFERENCE
+NR 0
+TC 0
+PU University of Stockholm
+J9 MOL INTEGRAL PROGRAM
+PY 1974
+DA 2026-08-18
+ER
+
+PT J
+AU LINES, ME
+AF LINES, ME
+TI ORBITAL ANGULAR MOMENTUM IN THEORY OF PARAMAGNETIC CLUSTERS
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+NR 0
+TC 0
+PU AMER INST PHYSICS
+PI WOODBURY
+J9 J CHEM PHYS
+PD 1971
+PY 1971
+IS 6
+DI 10.1063/1.1676524
+WE Science Citation Index Expanded (SCI-EXPANDED)
+UT INSPEC:315720
+DA 2026-08-18
+ER
+
+PT J
+AU Abragam, A.
+   Bleaney, B
+AF Abragam, A.
+   Bleaney, B
+SO Electron Paramagnetic Resonance of Transition Ions
+DT CITED-REFERENCE
+NR 0
+TC 0
+PU Oxford University Press
+J9 ELECT PARAMAGNETIC R
+PY 1970
+DA 2026-08-18
+ER
+
+PT J
+AU SCHRAUZEGN
+AF null
+SO J AM CHEM SOC
+DT CITED-REFERENCE
+NR 0
+TC 0
+PY 1968
+DI DOI 10.1021/ja01025a068
+DA 2026-08-18
+ER
+
+PT J
+AU PRYCE, MHL
+AF PRYCE, MHL
+TI SIGN OF G IN MAGNETIC RESONANCE, AND THE SIGN OF THE QUADRUPOLE MOMENT OF NP-237
+SO PHYSICAL REVIEW LETTERS
+DT Article
+NR 0
+TC 0
+PU AMERICAN PHYSICAL SOC
+PI COLLEGE PK
+J9 PHYS REV LETT
+PD 1959
+PY 1959
+IS 8
+WE Science Citation Index Expanded (SCI-EXPANDED)
+DA 2026-08-18
+ER
+
+PT J
+AU [Anonymous]
+AF [Anonymous]
+DT CITED-REFERENCE
+NR 0
+TC 0
+J9 SCINE AUTOCAS
+PY 1000
+DA 2026-08-18
+ER
+
+PT J
+AU Nyvang, A.
+   Malmqvist, P. A.
+   Veryazov, V.
+AF Nyvang, A.
+   Malmqvist, P. A.
+   Veryazov, V.
+TI A generally contracted Gaussian basis set for photochemistry and photophysics in the range 0-2 keV
+DT CITED-REFERENCE
+CT Proceedings of the Swedish Theoretical Chemistry 2017 Meeting
+NR 0
+TC 0
+J9 P SWED THEOR CHEM 20
+PY 1000
+DA 2026-08-18
+ER
+
+EF  

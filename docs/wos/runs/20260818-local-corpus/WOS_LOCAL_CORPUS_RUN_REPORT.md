@@ -17,8 +17,20 @@ This run used the user-provided Clarivate Plain Text exports as read-only input.
 
 ## Imported WoS corpus
 
-Input location: `imports/incoming/wos/`  
-Input files: **13** user-provided `savedrecs` exports.
+At the time of this run, the input location was `imports/incoming/wos/`. The
+workspace has since been reorganized into the following local staging layout:
+
+```text
+imports/wos/
+├── new/   # newly staged WoS exports awaiting import
+└── done/  # exports already used/processed by the local corpus workflow
+```
+
+The `done/` directory currently contains **13** `savedrecs` exports, which are
+the source files represented by the initial run below. The `new/` directory
+contains **3** subsequently staged exports (`cui.txt`, `roland.txt`, and
+`roos.txt`); these were imported in the follow-up cycle documented below, but
+the original text files remain in place as read-only staging inputs.
 
 The exports contained 1,507 tagged records. **1,485** had a stable WoS accession (`UT`) and were stored. **22** records had no `UT` (mostly `DT=CITED-REFERENCE` artifacts) and were skipped with an explicit count; they cannot be stored in the UT-keyed Full Record corpus.
 
@@ -34,6 +46,24 @@ Final corpus statistics:
 | import batches recorded | 38 |
 
 The 38 batches reflect the initial overlapping import, the successful full re-import after the UT-less-record fix, and the DOI-normalization repair re-import. Re-importing by `UT` remained idempotent: the final repair pass created no new records and only updated existing records.
+
+### Follow-up import from `imports/wos/new/`
+
+The three subsequently staged files were imported into the same independent
+WoS database as batches **39–41**:
+
+| File | Parsed records | New records | Updated records | Skipped without UT |
+|---|---:|---:|---:|---:|
+| `cui.txt` | 226 | 223 | 3 | 0 |
+| `roland.txt` | 164 | 140 | 24 | 0 |
+| `roos.txt` | 27 | 20 | 7 | 0 |
+| **Total** | **417** | **383** | **34** | **0** |
+
+The current database therefore contains **1,868** unique WoS records,
+**10,489** authors, **2,933** corresponding-author members, **92,142** cited
+references, and **31,080** resolved local citation edges. The 34 updates include
+overlap with records imported earlier in this cycle; no duplicate `UT` records
+were created.
 
 ## Paperazzi ↔ WoS matching
 
@@ -61,6 +91,28 @@ The two ambiguous records were intentionally not accepted:
 
 The first dry run incorrectly reported 556 matches because the DOI parser truncated legacy DOI strings containing angle brackets and semicolons. Paperazzi `47` was temporarily shown as linked to an unrelated Favaro record. The parser now preserves the complete legacy DOI, the corrected dry run reports 554 matches, and the stale false links were superseded during the corrected apply pass.
 
+### Follow-up matching dry run after batches 39–41
+
+The new WoS corpus was matched against the same 2,513-paper validation database
+without applying any Paperazzi-side state changes:
+
+| State | Count |
+|---|---:|
+| `WOS_MATCHED` | 589 |
+| `WOS_MATCH_AMBIGUOUS` | 3 |
+| `WOS_NOT_IN_LOCAL_CORPUS` | 1,921 |
+| `WOS_NOT_CHECKED` | 0 |
+
+The new total is **589 / 2,513 = 23.44%**, an increase of **35 newly matched
+Zotero papers** over the initial 554. The accepted-match dry-run methods are
+**574 DOI-exact** and **15 title-exact**. Of the 413 unique `UT`s in the three
+new files, 39 correspond to matched Zotero papers; 4 were already accepted
+before this import, so the net new coverage is 35 papers.
+
+This was a dry run only: `paper_wos_links` and `paper_wos_match_state` were not
+updated. The unmatched output was written to the local generated file
+`tmp/wos-runs/wos-unmatched-after-new-20260818.jsonl`.
+
 ## Semantic and browser spot checks
 
 - `WOS:000383410700048`, *Singlet Fission via an Excimer-Like Intermediate in 3,6-Bis(thiophen-2-yl)diketopyrrolopyrrole Derivatives*: the RP group `Schatz, GC; Marks, TJ; Wasielewski, MR (corresponding author)` preserved all three group members.
@@ -72,7 +124,7 @@ The first dry run incorrectly reported 556 matches because the DOI parser trunca
 
 ## Citation frontier and next manual WoS searches
 
-The generated expansion plan is `data/wos-expansion-plan.json`. The strongest residual themes were fluorescent proteins/carotenoid proteins, singlet fission, configuration interaction/active space, density-functional theory, charge transfer, intersystem crossing, CO2 reduction, DNA/proton transfer, and photodynamic therapy. The most frequent residual venues included JCTC, JACS, JCP, PCCP, Chemical Physics Letters, and Journal of Physical Chemistry A/B.
+The generated expansion plan is `tmp/wos-runs/wos-expansion-plan.json`. The strongest residual themes were fluorescent proteins/carotenoid proteins, singlet fission, configuration interaction/active space, density-functional theory, charge transfer, intersystem crossing, CO2 reduction, DNA/proton transfer, and photodynamic therapy. The most frequent residual venues included JCTC, JACS, JCP, PCCP, Chemical Physics Letters, and Journal of Physical Chemistry A/B.
 
 Recommended next broad, human-triggered WoS searches are:
 
@@ -107,8 +159,12 @@ The documented `paperazzi-wos` executable was not present in the environment, al
 
 ## Data boundary
 
-- WoS source exports remain under ignored `imports/incoming/wos/` and were not modified or committed.
-- `data/wos.sqlite3`, match outputs, and the selected validation database are local generated state and were not committed.
+- WoS source exports are now organized under local `imports/wos/new/` and
+  `imports/wos/done/`; the 13 files in `done/` are the inputs for the initial
+  run, and the 3 files retained in `new/` were imported in follow-up batches
+  39–41 without modifying their contents.
+- `data/wos.sqlite3` and the selected validation database are local runtime state;
+  historical validation artifacts and WoS matching outputs are kept under
+  `tmp/` and were not committed.
 - No Zotero database, Zotero storage, or PDF file was modified.
 - No ambiguous match was promoted automatically.
-

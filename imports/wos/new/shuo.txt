@@ -1,0 +1,1857 @@
+FN Clarivate Analytics Web of Science
+VR 1.0
+PT J
+AU Chang, XP
+   Liu, K
+   Fan, FR
+   Zhang, TS
+AF Chang, Xue-Ping
+   Liu, Ke
+   Fan, Feng-Ran
+   Zhang, Teng-Shuo
+TI Excited-State Relaxation Mechanism of 5-Hydroxyflavone: A CASPT2 Investigation in the Microsolvated Aqueous Surrounding
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID INTRAMOLECULAR PROTON-TRANSFER; PHOTOPHYSICAL PROPERTIES; PERTURBATION-THEORY; MEAN-FIELD; AB-INITIO; FLUORESCENCE; OXYBENZONE; QUERCETIN; FLAVONOLS; FRUIT
+AB 5-Hydroxyflavone (5HF) is a naturally occurring flavonol with a hydroxyl group at the C5 position and shows unusual proton-transfer properties with a very low fluorescence quantum yield, which justifies its role as a natural UV filter. Using the CASPT2//CASSCF method to study the mechanistic photophysics of its two-water hydrogen-bonded complex 5HF-2H2O (referred to as 5HF-2W), we have identified four competitive S2(pi pi*) radiationless relaxation channels from the Franck-Condon (FC) point. The first is barrierless excited-state intramolecular proton transfer (ESIPT) to generate the 1 pi pi*-T tautomer, which further evolves toward the nearby 1 pi pi*/S0-T conical intersection and then deactivates back to the S0 state, followed by favorable reverse ground-state proton transfer. The second is indirect 1 pi pi*-> 3 pi pi* intersystem crossing (ISC) mediated by the dark 1n pi* state. In this route, the 1 pi pi* state first hops to the 1n pi* state via the 1 pi pi*/1n pi*-N conical intersection, followed by 1n pi*-> 3 pi pi* ISC at the 1n pi*/3 pi pi*/3n pi*-N intersection structure to reach the 3 pi pi* state, enhanced by the CASPT2-computed large 1n pi*/3 pi pi* spin-orbit coupling (SOC) of 30.2 cm-1. The generated 3 pi pi* state undergoes ESIPT by overcoming a 3.5 kcal/mol energy barrier to yield the 3 pi pi*-T tautomer, which subsequently runs into the nearby 3 pi pi*/S0-T crossing point and hops to the S0 state. The third is similar to the second one, but its ISC is relayed by the 3n pi* state. At the 1n pi*/3 pi pi*/3n pi*-N intersection structure, it first transfers to the 3n pi* state (1n pi*/3n pi* SOC: 17.4 cm-1) and then hops to the 3 pi pi* state through 3n pi*-> 3 pi pi* internal conversion (IC) at the 3n pi*/3 pi pi*-N conical intersection, which is followed by direct ISC from T1 to S0 via the 3 pi pi*/S0-N crossing point. The last one is direct 1 pi pi*-> S0 IC from the FC region through the 1 pi pi*/S0-N conical intersection. This work contributes to the understanding of the photophysics of 5HF-based flavonoids and their analogues.
+C1 [Chang, Xue-Ping; Liu, Ke; Fan, Feng-Ran] Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+FU Natural Science Foundation of Henan Province [252300420262]; National Natural Science Foundation of China [21803050]; Nanhu Scholars Program for Young Scholars of Xinyang Normal University [NA]
+FX This work has been supported by the Natural Science Foundation of Henan Province (252300420262), the National Natural Science Foundation of China (21803050), and the Nanhu Scholars Program for Young Scholars of XYNU. We also thank Dr. Bin-Bin Xie for the most valuable discussions and help.
+NR 0
+TC 1
+Z9 1
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD MAR 12 2026
+PY 2026
+VL 130
+IS 10
+BP 2080
+EP 2090
+DI 10.1021/acs.jpca.5c08237
+EA FEB 2026
+EY 2026
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Pigments, Sensors & Probes (2.59); ESIPT (2.59.890)
+PM 41760575
+UT WOS:001703253000001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Fan, FR
+   Liu, K
+   Zhang, TS
+AF Chang, Xue-Ping
+   Fan, Feng-Ran
+   Liu, Ke
+   Zhang, Teng-Shuo
+TI Quantum Mechanics/Molecular Mechanics Study on the Excited-State Relaxation Pathways of 2′-Deoxy-5-Fluorocytidine in Aqueous Solution
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; CYTOSINE DEAMINASE; MOLECULAR-DYNAMICS; GENE-THERAPY; MEAN-FIELD; 5-FLUOROCYTOSINE; PHOTOPHYSICS; CHROMOPHORE; CONVERSION; INSIGHTS
+AB We have employed a high-level QM(CASPT2//CASSCF)/MM approach to investigate the excited-state properties and decay mechanism of 2 '-deoxy-5-fluorocytidine (5FdCyd) in aqueous solution. The S1(pi pi*) and S2(n pi*) states are the lowest spectroscopically bright and dark states in the Franck-Condon region with the predicted vertical excitation energies of 99.0 [4.29] and 117.3 kcal/mol [5.09 eV], respectively, at the QM(CASPT2)/MM level. Four feasible excited-state nonradiative relaxation pathways are also suggested for the initially populated S1(pi pi*) state. The photoexcited 1 pi pi* state undergoes a bifurcation event that leads to fast diabatically evolution along the 1 pi pi* state into its minimum 1 pi pi*-MIN and transformation to the 1n pi* state at the nearby 1 pi pi*/1n pi* conical intersection, which are followed by further deactivation to the S0 state through the 1 pi pi*/S0 and 1n pi*/S0 conical intersections, respectively. The corresponding energy barriers for the 1 pi pi* and 1n pi* states' internal conversions (ICs) to the S0 state are predicted to be 5.9 and 1.5 kcal/mol, respectively, at the QM(CASPT2)/MM level. In addition, the existence of minor intersystem crossing (ISC) routes of 1 pi pi* -> 1n pi* -> 3 pi pi 2* -> 3 pi pi 1* and 1 pi pi* -> 3 pi pi 2* -> 3 pi pi 1*, could transfer the system to the triplet states. Once populated to the 3 pi pi 1* state, it will first evolve into its minimum 3 pi pi 1*-MIN, from which ISC to the S0 state occurs via the 3 pi pi 1*/S0 crossing point, with the calculated spin-orbit coupling (SOC) of 4.9 cm-1 at the QM(CASPT2)/MM level. In comparison, the involved slowly occurring ISCs can be significantly prohibited by the ultrafast and effective ICs. The present work rationalizes the ultrafast excited-state relaxation dynamics of 5FdCyd and its low quantum yields of triplet formation and fluorescence. It contributes important mechanistic insights into the in-depth understanding of the photophysics of 5FdCyd's derivatives and analogues.
+C1 [Chang, Xue-Ping; Fan, Feng-Ran; Liu, Ke] Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU Natural Science Foundation of Henan Province [252300420262]; National Natural Science Foundation of China [21803050]; Nanhu Scholars Program for Young Scholars of Xinyang Normal University [NA]
+FX This work has been supported by the Natural Science Foundation of Henan Province (252300420262), the National Natural Science Foundation of China (21803050), and the Nanhu Scholars Program for Young Scholars of XYNU.
+NR 0
+TC 0
+Z9 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD NOV 13 2025
+PY 2025
+VL 129
+IS 45
+BP 10348
+EP 10357
+DI 10.1021/acs.jpca.5c04929
+EA NOV 2025
+EY 2025
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 41189049
+UT WOS:001608613100001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhan, F
+   Zhang, TS
+   Chen, JQ
+   Xu, KW
+   Tong, JY
+   Yang, YF
+   She, YB
+   Li, GJ
+AF Zhan, Feng
+   Zhang, Teng-Shuo
+   Chen, Jianqiang
+   Xu, Kewei
+   Tong, Jieying
+   Yang, Yun-Fang
+   She, Yuanbin
+   Li, Guijie
+TI Enhancing blue phosphorescent OLED efficiency by modulating the excited state of tetradentate Pt(II) complexes via N-embedding and steric hindrance effects
+SO CHEMICAL ENGINEERING JOURNAL
+DT Article
+DE Excited-state modulation; Spin orbit coupling; N -heterocyclic carbene; Tetradentate Pt(II) complex; Phosphorescent blue OLED
+ID LIGHT-EMITTING-DIODES; PLATINUM(II) COMPLEXES; GOLD(III) COMPLEXES
+AB Although tetradentate Pt(II) complexes show great potential for commercial blue phosphorescent organic light-emitting diodes (OLEDs), simultaneously achieving high efficiency and low efficiency roll-off remains challenging. Herein, we propose an effective strategy to modulate the excited states of emitters by embedding N atom into the benzimidazole moiety and adjusting the steric hindrance of the N-aryl substituent, effectively enhancing spin orbit coupling (SOC) and reducing the singlet-triplet energy gap (LEST), as demonstrated for four blue Pt(II) complexes (Pt1N-DTB, Pt1N-DIP, Pt4N-DTB, and Pt4N-DIP). The increased SOC and reduced LEST facilitated two spin-flip intersystem crossing (ISC) processes, which effectively reduced the excited-state lifetime, leading to a significant improvement in the external quantum efficiency (EQE) of the device while suppressing the efficiency roll-off. The excited-state lifetime of a proof-of-concept emitter, Pt1N-DTB, was drastically reduced to 1.47 mu s compared to that of PtON-TBBI (2.50 mu s). The device based on Pt4N-DIP achieved EQE of 33.0 % at 1000 cd/m2, which represents a record-high value among blue phosphorescent OLEDs based on Ir(III) and Pt(II) complexes with CIEy < 0.25. Furthermore, even at 10000 cd/m2, the Pt4N-DIP device maintained high EQE of 26.7 %, demonstrating minimal efficiency roll-off. This outstanding electroluminescent performance confirms the superiority of our molecular design strategy.
+C1 [Zhan, Feng; Zhang, Teng-Shuo; Chen, Jianqiang; Xu, Kewei; Tong, Jieying; Yang, Yun-Fang; She, Yuanbin; Li, Guijie] Zhejiang Univ Technol, Coll Chem Engn, Ctr Phosphorescent Mat Res, State Key Lab Green Chem Synth & Convers, Hangzhou 310014, Peoples R China
+C3 Zhejiang University of Technology
+RP Li, GJ (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, Ctr Phosphorescent Mat Res, State Key Lab Green Chem Synth & Convers, Hangzhou 310014, Peoples R China.
+EM guijieli@zjut.edu.cn
+RI Yang, Yunfang/OLQ-1528-2025; Li, Guijie/C-8028-2019
+OI Li, Guijie/0000-0002-0740-2235
+FU Province Vanguard Goose-Leading Initiative [2024C01260]
+FX Acknowledgements This work was supported by the National Natural Science Foundation of China (grant no. 22178319, 22478357 and 22138011) and Zhejiang
+NR 0
+TC 11
+Z9 11
+PU ELSEVIER SCIENCE SA
+PI LAUSANNE
+PA PO BOX 564, 1001 LAUSANNE, SWITZERLAND
+J9 CHEM ENG J
+JI Chem. Eng. J.
+PD OCT 1 2025
+PY 2025
+VL 521
+AR 166619
+DI 10.1016/j.cej.2025.166619
+EA AUG 2025
+EY 2025
+WC Engineering, Environmental; Engineering, Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Engineering
+TO Chemistry (2); Organic Semiconductors (2.114); OLEDs (2.114.321)
+UT WOS:001583236600008
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, KK
+   Li, Q
+   Chen, XH
+   Li, ZR
+   Yang, YF
+   Zhang, TS
+   Shen, HM
+   Wang, Q
+   Wang, B
+   Zhang, Y
+   Xia, JX
+   Li, HM
+   She, YB
+AF Wang, Keke
+   Li, Qiang
+   Chen, Xiahe
+   Li, Zhengrun
+   Yang, Yun-Fang
+   Zhang, Teng-Shuo
+   Shen, Hai-Min
+   Wang, Qin
+   Wang, Bin
+   Zhang, Yi
+   Xia, Jiexiang
+   Li, Huaming
+   She, Yuanbin
+TI Porous organic polymers with shiftable active Co(II) sites for photocatalytic reduction of CO2 to C2H4
+SO APPLIED CATALYSIS B-ENVIRONMENT AND ENERGY
+DT Article
+DE Photocatalysis; CO2 reduction; Multi-carbon hydrocarbons; Flexible structures; Atomic metals
+ID FRAMEWORKS; PHOTOREDUCTION
+AB Photoreduction of CO2 to multi-carbon products such as C2H4 is particularly attractive but extremely challenging due to kinetically sluggish C-C coupling and inefficient charge transfer. Herein, a flexible porous organic polymer (F-TotPp(Co)) with shiftable active Co(II) sites was constructed via the Sonogashira reaction of 5,10,15,20-tetra(4-bromophenyl)Co(II) porphyrin (Pp(Co)) and 2,4,6-tri(2-propyn-1-yloxy)-1,3,5-triazine (Tot). Under illumination, F-TotPp(Co) catalyst can photocatalytically reduce CO2 to C2H4 with an electron-based selectivity of 42.5 %, which has rarely been achieved in rigid R-TebPp(Co) and metal-free F-TotPp(2H) catalyst system. Electron paramagnetic resonance, in situ FT-IR, and density functional theory calculations show that the shiftable active Co(II) sites promote the C C coupling of *CO and *CHO, which is the rate-determining step for C2H4 formation. Photoelectrochemical studies including photoluminescence, electrochemical impedance spectroscopy, and time-resolved photoluminescence indicate that atomic Co2+ ions facilitate the separation and transfer of photogenerated electrons. Furthermore, cycling experiments, X-ray photoelectron spectroscopy, and X-ray absorption fine structure analysis confirm the excellent stability of F-TotPp(Co) during the CO2 reduction process. This work provides a new approach to construct efficient photocatalysts for the reduction of CO2 to multi-carbon products.
+C1 [Wang, Keke; Li, Qiang; Chen, Xiahe; Li, Zhengrun; Yang, Yun-Fang; Zhang, Teng-Shuo; Shen, Hai-Min; Wang, Qin; She, Yuanbin] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Tech, Hangzhou 310014, Peoples R China; [Wang, Bin; Xia, Jiexiang; Li, Huaming] Jiangsu Univ, Inst Energy Res, Sch Chem & Chem Engn, Zhenjiang 212013, Jiangsu, Peoples R China; [Zhang, Yi] Hong Kong Polytech Univ, Dept Appl Phys, Hong Kong, Peoples R China
+C3 Zhejiang University of Technology; Jiangsu University; Hong Kong Polytechnic University
+RP Yang, YF; She, YB (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Tech, Hangzhou 310014, Peoples R China.; Xia, JX (corresponding author), Jiangsu Univ, Inst Energy Res, Sch Chem & Chem Engn, Zhenjiang 212013, Jiangsu, Peoples R China.
+EM sheyb@zjut.edu.cn; xjx@ujs.edu.cn; yangyf@zjut.edu.cn
+RI huaming, li/S-1885-2016; Xia, Jiexiang/J-4793-2013; Yang, Yunfang/OLQ-1528-2025
+FU National Natural Science Foundation of China [22138011, 22478358]; Zhejiang Provincial Natural Science Foundation of China [LY22B060006]
+FX This work was supported by the National Natural Science Foundation of China (22138011, 22478358) and Zhejiang Provincial Natural Science Foundation of China (LY22B060006).
+NR 0
+TC 30
+Z9 30
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 APPL CATAL B-ENVIRON
+JI Appl. Catal. B-Environ. Energy
+PD MAR 2025
+PY 2025
+VL 362
+AR 124765
+DI 10.1016/j.apcatb.2024.124765
+EA OCT 2024
+EY 2024
+WC Chemistry, Physical; Engineering, Environmental; Engineering, Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Engineering
+TO Chemistry (2); Photocatalysts (2.74); TiO2 Photocatalysis (2.74.5)
+UT WOS:001371910200017
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Fan, FR
+   Liu, K
+   Lv, HT
+   Zhao, G
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Fan, Feng-Ran
+   Liu, Ke
+   Lv, Hai-Ting
+   Zhao, Geng
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+TI Quantum Mechanics/Molecular Mechanics Studies on the Excited-State Relaxation Mechanisms of Cytidine Analogues: 2′-Deoxy-5-Methylcytidine and 2′-Deoxy-5-Hydroxymethylcytidine in Aqueous Solution
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID PERTURBATION-THEORY; SUBSTRATE PREFERENCE; MOLECULAR-DYNAMICS; DNA METHYLATION; MEAN-FIELD; CYTOSINE; 5-METHYLCYTOSINE; FLUORESCENCE; CHROMOPHORE; INSIGHTS
+AB We have used the high-level QM(CASPT2//CASSCF)/MM method to investigate the excited-state properties and decay pathways of two important cytidine analogues, i.e., 2 '-deoxy-5-methylcytidine (5mdCyd) and 2 '-deoxy-5-hydroxymethylcytidine (5hmdCyd), in aqueous solution. In view of the computed minimum-energy structures, conical intersections, and crossing points, and the relevant excited-state decay paths including the different internal conversion (IC) and intersystem crossing (ISC) routes in and between the S1, T1, T2, and S0 states, we finally provided the feasible excited-state relaxation mechanisms of these two important epigenetic DNA nucleosides. Upon 285 nm photoexcitation, the lowest spectroscopically bright S1(pi pi*) state is initially populated in the Franck-Condon (FC) region in both solvated systems and then mainly occurs direct IC to the ground state through the nearby accessible S1/S0 conical intersection, with the QM(CASPT2)/MM computed energy barriers of 9.5 and 1.6 kcal/mol for 5mdCyd and 5hmdCyd, respectively. In addition, the S1(pi pi*) state can partially hop to the T1(pi pi*) state directly or is mediated by the T2(pi pi*) state. In comparison to the favorable singlet-mediated IC channel, the minor S1 -> T1 and S1 -> T2 -> T1 ISCs would take place slowly. Subsequently, the T1 state will further approach the nearby T1/S0 crossing point to slowly deactivate to the S0 state. Due to the T1/S0 crossing point above the T1-MIN as well with the small T1/S0 SOC, i.e., 9.8 kcal/mol and 0.3 cm-1 in 5mdCyd and 8.7 kcal/mol and 1.9 cm-1 in 5hmdCyd, the slow ISC would trap the system in the T1 state for a long time. The present work rationalizes the excited-state dynamics of 5mdCyd and 5hmdCyd in aqueous solution and could provide mechanistic insights into understanding the photophysics and photochemistry of similar epigenetic DNA nucleosides and their derivatives.
+C1 [Chang, Xue-Ping; Fan, Feng-Ran; Liu, Ke; Lv, Hai-Ting; Zhao, Geng] Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI xie, binbin/0000-0002-5347-2795; Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [252300420262]; Natural Science Foundation of Henan Province [21803050]; National Natural Science Foundation of China [2023-1-093]; Key Science and Technology Project of Jinhua City [LZ23B030001]; Zhejiang Provincial Natural Science Foundation of China; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work has been supported by the Natural Science Foundation of Henan Province (252300420262), the National Natural Science Foundation of China (21803050), the Key Science and Technology Project of Jinhua City (2023-1-093), the Zhejiang Provincial Natural Science Foundation of China (LZ23B030001), and the Nanhu Scholars Program for Young Scholars of XYNU.
+NR 0
+TC 1
+Z9 1
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD APR 21 2025
+PY 2025
+VL 129
+IS 17
+BP 3817
+EP 3828
+DI 10.1021/acs.jpca.4c08520
+EA APR 2025
+EY 2025
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 40257932
+UT WOS:001471684500001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Fan, FR
+   Liu, K
+   Lv, HT
+   Zhao, G
+   Zheng, LY
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Fan, Feng-Ran
+   Liu, Ke
+   Lv, Hai-Ting
+   Zhao, Geng
+   Zheng, Lingyun
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+TI Quantum mechanics/molecular mechanics studies on mechanistic photophysics of epigenetic C5-halogenated DNA nucleosides: 2′-deoxy-5-chlorocytidine and 2′-deoxy-5-bromocytidine in aqueous solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID EXCITED-STATE DYNAMICS; AB-INITIO; PERTURBATION-THEORY; CYTOSINE DEAMINASE; 5-FLUOROCYTOSINE; DEACTIVATION; DERIVATIVES; RELAXATION; FIELD; GENE
+AB In this work, we have employed the high-level QM(CASPT2//CASSCF)/MM method to study the photophysical mechanisms of two important metabolized DNA/RNA nucleoside byproducts, i.e., 2 '-deoxy-5-chlorocytidine (5CldCyd) and 2 '-deoxy-5-bromocytidine (5BrdCyd), in aqueous solution. On the basis of our optimized minimum-energy structures, conical intersections, and crossing points, as well as the computed associated excited-state relaxation pathways involving the different internal conversion (IC) and intersystem crossing (ISC) processes in and between the S1, T1, T2, and S0 states, we have suggested the feasible excited-state relaxation mechanisms of these two important epigenetic halogenated DNA nucleosides. The initially populated spectroscopic bright 1 pi pi* state in the Franck-Condon (FC) region is the S1 state both for 5CldCyd and 5BrdCyd under 295 nm irradiation. The excited S1 state first evolves into its minimum S1-MIN and rapidly undergoes efficient IC to the S0 state via the nearby low-lying S1/S0 conical intersection. The corresponding energy barrier of the S1 -> S0 IC path in 5CldCyd is estimated to be 4.6 kcal mol-1 at the QM(CASPT2)/MM level, while it is found to be an almost barrierless process in 5BrdCyd. In addition to this very efficient IC, the S1 state can partially slowly undergo ISC to transfer to the T1 state. Because the small spin-orbit couplings (SOCs) of S1/T1 and S1/T2 are estimated to be less than 5.0 cm-1 at the QM(CASPT2)/MM level, the ISC involved T1 formation is not so efficient. The resulting T1 state from the minor S1 -> T1 and S1 -> T2 -> T1 ISCs will first relax to its minimum T1-MIN and continue to approach the nearby accessible T1/S0 crossing point, followed by further T1 -> S0 ISC to the S0 state. Relatively, the T1 -> S0 ISC of 5BrdCyd is significantly enhanced by a large T1/S0 SOC of 32.9 cm-1 at the T1/S0 crossing point. The present work rationalizes the excited-state dynamics of 5CldCyd and 5BrdCyd in aqueous solution and could provide mechanistic insights into understanding the photophysics of similar halogenated DNA nucleosides and their derivatives.
+C1 [Chang, Xue-Ping; Fan, Feng-Ran; Liu, Ke; Lv, Hai-Ting; Zhao, Geng; Zheng, Lingyun] Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Green Catalysis & Synth Key Lab Xinyang City, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI xie, binbin/0000-0002-5347-2795; Zhang, Teng-Shuo/0000-0002-6145-1855; Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [21803050]; National Natural Science Foundation of China [252300420262]; Natural Science Foundation of Henan Province [LZ23B030001]; Zhejiang Provincial Natural Science Foundation of China [2023-1-093]; Key Science and Technology Project of Jinhua City [242102320377]; Key R&D and Promotion Project in Henan Province [24B530004]; Key Scientific Research Project of Higher Education Institutions in Henan province; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work has been supported by the National Natural Science Foundation of China (21803050), the Natural Science Foundation of Henan Province (252300420262), the Zhejiang Provincial Natural Science Foundation of China (LZ23B030001), the Key Science and Technology Project of Jinhua City (2023-1-093), the Key R&D and Promotion Project in Henan Province (242102320377), the Key Scientific Research Project of Higher Education Institutions in Henan province (24B530004), and the Nanhu Scholars Program for Young Scholars of XYNU.
+NR 0
+TC 1
+Z9 1
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD APR 3 2025
+PY 2025
+VL 27
+IS 14
+BP 7139
+EP 7150
+DI 10.1039/d4cp04574b
+EA MAR 2025
+EY 2025
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 40109225
+UT WOS:001448570000001
+DA 2026-08-18
+ER
+
+PT J
+AU Shi, XM
+   Chen, XY
+   Huang, Y
+   Liu, ZY
+   Zhao, B
+   Yan, LP
+   Zhang, TS
+   Fu, HB
+   Wang, L
+AF Shi, Xiaomei
+   Chen, Xinyu
+   Huang, Yu
+   Liu, Zuyuan
+   Zhao, Bo
+   Yan, Lingpeng
+   Zhang, Teng-Shuo
+   Fu, Hongbing
+   Wang, Long
+TI Efficient singlet fission in rubicene null aggregates
+SO CHEMICAL SCIENCE
+DT Article
+ID EXCITON-FISSION; DESIGN STRATEGY; THIN-FILM; STATES; YIELD; C-70
+AB The singlet fission (SF) photovoltaic applications are currently restricted by the limited number of practical SF materials and the lack of understanding of the underlying SF mechanism in typical molecular aggregates. Null-aggregates are molecular aggregates that exhibit minimal exciton-exciton interactions, leading to a monomer-like spectroscopic signature, and thus hold distinct advantages in bypassing extra energy loss and excimer trap issues in conventional H- and J-aggregates. However, it remains unknown if null-aggregates could also contribute to an efficient SF process. In this work, we present an efficient SF system based on rubicene null aggregates. The comprehensive structural and spectroscopic studies demonstrate that the destructive interference between long-range Coulomb and short-range charge-transfer (CT) couplings leads to the monomer-like absorption characteristics of the null aggregates. More importantly, the significant CT coupling interactions contribute to an efficient SF process with a SF rate of (1.0 ps)-1 and a triplet yield of 192% in the null aggregates. Our findings not only provide a deep insight into the SF mechanism in the special null aggregates but also offer a robust SF material system with suitable energies, which would open up a new avenue for the future molecular design and device applications.
+C1 [Shi, Xiaomei] Shanxi Med Univ, Dept Biochem & Mol Biol, Taiyuan 030001, Peoples R China; [Chen, Xinyu; Liu, Zuyuan; Zhao, Bo; Yan, Lingpeng; Wang, Long] Taiyuan Univ Technol, Key Lab Interface Sci & Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China; [Huang, Yu; Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China; [Fu, Hongbing] Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China
+C3 Shanxi Medical University; Taiyuan University of Technology; Zhejiang University of Technology; Capital Normal University
+RP Shi, XM (corresponding author), Shanxi Med Univ, Dept Biochem & Mol Biol, Taiyuan 030001, Peoples R China.; Wang, L (corresponding author), Taiyuan Univ Technol, Key Lab Interface Sci & Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China.; Zhang, TS (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China.
+EM shxm@sxmu.edu.cn; zhangts@zjut.edu.cn; wanglong@tyut.edu.cn
+OI Fu, Hongbing/0000-0003-4528-189X; Yan, Lingpeng/0000-0003-1177-8558; Zhang, Teng-Shuo/0000-0002-6145-1855; Wang, Long/0000-0002-6334-8878
+FU National Natural Science Foundation of China [22005210, 22479107, 22501164, 22433005]
+FX This work was supported by the National Natural Science Foundation of China (no. 22501164, 22479107, 22433005 and 22005210) and by the Fundamental Research Program of Shanxi Province (no. 202203021224004 and 20210302124469).
+NR 0
+TC 2
+Z9 2
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 CHEM SCI
+JI Chem. Sci.
+PD FEB 25 2026
+PY 2026
+VL 17
+IS 8
+BP 4168
+EP 4173
+DI 10.1039/d5sc06978e
+EA DEC 2025
+EY 2025
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Organic Semiconductors (2.114); Organic Solar Cells (2.114.61)
+PM 41510009
+UT WOS:001655288600001
+DA 2026-08-18
+ER
+
+PT J
+AU Wu, ZX
+   Anderson, CL
+   Zhang, TS
+   Liu, Y
+   Fu, HB
+   Wang, L
+AF Wu, Zixiang
+   Anderson, Christopher L.
+   Zhang, Teng-Shuo
+   Liu, Yi
+   Fu, Hongbing
+   Wang, Long
+TI Side-chain ionization enables ultrafast intramolecular singlet fission in the azaquinodimethane skeleton
+SO CHEMICAL SCIENCE
+DT Article
+ID EXCITON-FISSION; DESIGN STRATEGY; CHARGE-TRANSFER; EFFICIENCY
+AB Singlet fission (SF) could significantly alleviate thermalization losses of high-energy photons, thus holding great potential for improving the power conversion efficiency of solar cells. Conventional SF materials require an intricate control of molecular packing motifs in the solid state to achieve efficient multiexciton generation. Small molecule intramolecular singlet fission (iSF) materials have emerged as promising alternatives and show great potential for practical device applications. However, the scope of such iSF materials remains rather limited, necessitating innovative molecular design strategies. Herein, we present how a side-chain ionization strategy leads to an iSF chromophore based on the azaquinodimethane (AQM) ring system. Systematic theoretical and spectroscopic analyses reveal that the direct attachment of electron-withdrawing ionic groups to the conjugated AQM core renders the originally fluorescent AQM nonemissive, leading to ionic AQM (iAQM) derivatives capable of ultrafast iSF to populate triplet-like species. Further fine-tuning of the iAQM skeleton imparts subtle intermolecular interactions that are indispensable for the efficient separation of triplet pairs following iSF in the aggregated state. Our findings offer unprecedented insights into molecular design and triplet exciton dynamics, laying the foundation for the discovery of rare molecular iSF materials.
+C1 [Wu, Zixiang; Wang, Long] Taiyuan Univ Technol, Key Lab Interface Sci Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China; [Anderson, Christopher L.; Liu, Yi] Lawrence Berkeley Natl Lab, Mol Foundry, Berkeley, CA 94720 USA; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China; [Fu, Hongbing] Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China
+C3 Taiyuan University of Technology; United States Department of Energy (DOE); Lawrence Berkeley National Laboratory; Zhejiang University of Technology; Capital Normal University
+RP Wang, L (corresponding author), Taiyuan Univ Technol, Key Lab Interface Sci Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China.; Liu, Y (corresponding author), Lawrence Berkeley Natl Lab, Mol Foundry, Berkeley, CA 94720 USA.; Zhang, TS (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China.; Fu, HB (corresponding author), Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China.
+EM zhangts@zjut.edu.cn; yliu@lbl.gov; hbfu@cnu.edu.cn; wanglong@tyut.edu.cn
+RI Liu, yi/A-3384-2008
+OI Wang, Long/0000-0002-6334-8878; Fu, Hongbing/0000-0003-4528-189X; Liu, yi/0000-0002-3954-6102
+FU National Natural Science Foundation of China [22479107, 22005210]; National Natural Science Foundation of China [202203021224004, 20210302124469]; Fundamental Research Program of Shanxi Province [DE-AC02-05CH11231]; Office of Science, Office of Basic Energy Sciences, of the U.S. Department of Energy
+FX This work was supported by the National Natural Science Foundation of China (No. 22479107 and 22005210) and by the Fundamental Research Program of Shanxi Province (No. 202203021224004 and 20210302124469). Part of the work was carried out as a user project at the Molecular Foundry, a user facility supported by the Office of Science, Office of Basic Energy Sciences, of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231.
+NR 0
+TC 2
+Z9 2
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 CHEM SCI
+JI Chem. Sci.
+PD JUL 23 2025
+PY 2025
+VL 16
+IS 29
+BP 13374
+EP 13381
+DI 10.1039/d5sc01980j
+EA JUN 2025
+EY 2025
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Organic Semiconductors (2.114); Organic Solar Cells (2.114.61)
+PM 40575673
+UT WOS:001515855400001
+DA 2026-08-18
+ER
+
+PT J
+AU Ding, DB
+   Chen, XH
+   Wu, HL
+   Shen, HM
+   Zhang, TS
+   Wang, KK
+   Yang, YF
+   She, YB
+AF Ding, Debo
+   Chen, Xiahe
+   Wu, Hongli
+   Shen, Hai-Min
+   Zhang, Teng-Shuo
+   Wang, Keke
+   Yang, Yun-Fang
+   She, Yuan-Bin
+TI Computational insights into the photocatalytic conversion of CO2 to C2H4 on synergistic dual sites in tandem rhenium-bipyridine/ copper-porphyrinic system
+SO JOURNAL OF CATALYSIS
+DT Article
+DE Photocatalysis; CO 2 reduction; Ethylene; C -C coupling; DFT Calculations
+ID MOLECULAR-ORBITAL METHODS; GAUSSIAN-TYPE BASIS; CU SINGLE ATOMS; VISIBLE-LIGHT; BASIS-SETS; ELECTROCATALYTIC REDUCTION; MECHANISM; SELECTIVITY; ACTIVATION; PHOTOREDUCTION
+AB The rhenium(I)-bipyridine complex (Re-bpy) has been reported to be a very active photocatalyst to stabilize the *CO species in CO2 reduction, and the copper-porphyrinic triazine framework Cu-PTF was found to be a very good relay partner and cooperator in facilitating the C-C coupling process to generate C2H4. To unravel the mechanism of reduction of CO2 to C1 and C2 products and how such two catalysts synergistically promote C-C coupling, we conducted density functional theory (DFT) calculations. The most favorable mechanism comprises the following key steps: CO2 activation by Re-bpy, formation of Re-CO species, proton-coupled electron transfer (PCET) to form Re-CHO species, synergistic coupling between Re-CHO and Cu-CO to form Cu-CO-CHO-Re intermediate, the PCET to form resting state Cu-CHO-CH2-Re intermediate, another PCET to generate Cu-CHOH-CH2-Re, PCET and elimination of H2O and dissociation to yield C2H4. Our DFT calculations provides insights into the catalytic pathways and the cooperative interactions between the two catalysts, paving the way for the development of more efficient catalytic systems for CO2 reduction reactions.
+C1 [Ding, Debo; Chen, Xiahe; Wu, Hongli; Shen, Hai-Min; Zhang, Teng-Shuo; Wang, Keke; Yang, Yun-Fang; She, Yuan-Bin] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China
+C3 Zhejiang University of Technology
+RP Yang, YF; She, YB (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China.
+EM sheyb@zjut.edu.cn; yangyf@zjut.edu.cn
+RI Yang, Yun-Fang/OLQ-1528-2025
+OI Yang, Yun-Fang/0000-0002-6287-1640; Zhang, Teng-Shuo/0000-0002-6145-1855; Wang, Keke/0000-0002-2227-8471
+FU National Natural Science Foundation of China [22138011, 22371256, 21978272]; Zhejiang Provincial Natural Science Foundation of China [LR25B020002]; Fundamental Research Funds for the Provincial Universities of Zhejiang [RF-C2022006]; State Key Laboratory of Green Chemical Synthesis and Conversion at Zhejiang University of Technology
+FX Financial support by National Natural Science Foundation of China (22138011, 22371256 and 21978272) , the Zhejiang Provincial Natural Science Foundation of China (LR25B020002) , the Fundamental Research Funds for the Provincial Universities of Zhejiang (RF-C2022006) , and the State Key Laboratory of Green Chemical Synthesis and Conversion at Zhejiang University of Technology is gratefully acknowledged.
+NR 0
+TC 2
+Z9 2
+PU ACADEMIC PRESS INC ELSEVIER SCIENCE
+PI SAN DIEGO
+PA 525 B ST, STE 1900, SAN DIEGO, CA 92101-4495 USA
+J9 J CATAL
+JI J. Catal.
+PD JUL 2025
+PY 2025
+VL 447
+AR 116144
+DI 10.1016/j.jcat.2025.116144
+EA APR 2025
+EY 2025
+WC Chemistry, Physical; Engineering, Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Engineering
+TO Chemistry (2); Electrochemistry (2.62); CO2 Electroreduction (2.62.2102)
+UT WOS:001482501300001
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, KK
+   Yan, B
+   Zhou, BL
+   Zhang, Y
+   Lin, GL
+   Zhang, TS
+   Zhou, MM
+   Shen, HM
+   Yang, YF
+   Xia, JX
+   Li, HM
+   She, YB
+AF Wang, Keke
+   Yan, Bin
+   Zhou, Bolin
+   Zhang, Yi
+   Lin, Guo-Liang
+   Zhang, Teng-Shuo
+   Zhou, Mengmeng
+   Shen, Hai-Min
+   Yang, Yun-Fang
+   Xia, Jiexiang
+   Li, Huaming
+   She, Yuanbin
+TI Acceleration of Photoinduced Electron Transfer by Modulating Electronegativity of Substituents in Stable Zr-Metal-Organic Frameworks to Boost Photocatalytic CO2 Reduction
+SO ACS APPLIED MATERIALS & INTERFACES
+DT Article
+DE metal-organic framework; CO2 photoreduction; electron-donating group; push effect; chargetransfer
+ID S-SCHEME HETEROJUNCTION; VISIBLE-LIGHT; MOF; NANOCOMPOSITE; CONSTRUCTION; PERFORMANCE; SYSTEM; RAMAN; TIO2
+AB Photoreduction of CO2 with water into chemical feedstocks of fuels provides a green way to help solve both the energy crisis and carbon emission issues. Metal-organic frameworks (MOFs) show great potential for CO2 photoreduction. However, poor water stability and sluggish charge transfer could limit their application. Herein, three water-stable MOFs functionalized with electron-donating methyl groups and/or electron-withdrawing trifluoromethyl groups are obtained for the CO2 photoreduction. Compared with UiO-67-o-CF3-CH3 and UiO-67-o-(CF3)(2), UiO-67-o-(CH3)(2) achieves excellent performance with an average CO generation rate of 178.0 mu mol g(-1) h(-1) without using any organic solvent or sacrificial reagent. The superior photocatalytic activity of UiO-67-o-(CH3)(2) is attributed to the fact that compared with trifluoromethyl groups, methyl groups could not only elevate CO2 adsorption capacity and reduction potential but also promote photoinduced charge separation and migration. These are evidenced by gas physisorption, photoluminescence, time-resolved photoluminescence, electrochemical impedance spectroscopy, transient photocurrent characteristics, and density functional theory calculations. The possible working mechanisms of electron-donating methyl groups are also proposed. Moreover, UiO-67-o-(CH3)(2) demonstrates excellent reusability for the CO2 reduction. Based on these results, it could be affirmed that the strategy of modulating substituent electronegativity could provide guidance for designing highly efficient photocatalysts.
+C1 [Wang, Keke; Yan, Bin; Zhou, Bolin; Lin, Guo-Liang; Zhang, Teng-Shuo; Zhou, Mengmeng; Shen, Hai-Min; Yang, Yun-Fang; She, Yuanbin] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China; [Zhang, Yi; Xia, Jiexiang; Li, Huaming] Jiangsu Univ, Inst Energy Res, Sch Chem & Chem Engn, Zhenjiang 212013, Peoples R China
+C3 Zhejiang University of Technology; Jiangsu University
+RP Wang, KK; She, YB (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China.; Xia, JX (corresponding author), Jiangsu Univ, Inst Energy Res, Sch Chem & Chem Engn, Zhenjiang 212013, Peoples R China.
+EM wangkk@zjut.edu.cn; sheyb@zjut.edu.cn; xjx@ujs.edu.cn
+RI Xia, Jiexiang/J-4793-2013; yan, bin/LDE-8425-2024; Zhou, Mengmeng/ABC-5370-2021; huaming, li/S-1885-2016; zhou, bolin/KHX-0072-2024; Yang, Yunfang/OLQ-1528-2025
+OI Wang, Keke/0000-0002-2227-8471
+FU National Natural Science Foundation of China [22138011, 21808201]; Zhejiang Provincial Natural Science Foundation of China [LY22B060006]
+FX The authors acknowledge the financial support provided by the National Natural Science Foundation of China (22138011 and 21808201) and Zhejiang Provincial Natural Science Foundation of China(LY22B060006).
+NR 0
+TC 12
+Z9 12
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 ACS APPL MATER INTER
+JI ACS Appl. Mater. Interfaces
+PD JUN 18 2024
+PY 2024
+VL 16
+IS 26
+BP 33601
+EP 33610
+DI 10.1021/acsami.4c06191
+EA JUN 2024
+EY 2024
+WC Nanoscience & Nanotechnology; Materials Science, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Science & Technology - Other Topics; Materials Science
+TO Chemistry (2); Inorganic & Nuclear Chemistry (2.22); Metal-Organic Frameworks (2.22.336)
+PM 38889009
+UT WOS:001250634600001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhou, MM
+   Ding, DB
+   Shi, YS
+   Wang, KK
+   Wang, Q
+   Chen, XH
+   Shen, HM
+   Zhang, TS
+   Yang, YF
+   Xia, JX
+   Li, HM
+   She, YB
+AF Zhou, Mengmeng
+   Ding, Debo
+   Shi, Yansong
+   Wang, Keke
+   Wang, Qin
+   Chen, Xiahe
+   Shen, Hai-Min
+   Zhang, Teng-Shuo
+   Yang, Yun-Fang
+   Xia, Jiexiang
+   Li, Huaming
+   She, Yuanbin
+TI Hydrogen-Bonded organic framework Containing stacked Cu2+for photocatalytic reduction of CO2 to C2H4
+SO CHEMICAL ENGINEERING JOURNAL
+DT Article
+DE Hydrogen-bonded organic frameworks; Metallization; C-C coupling; CO 2 photoreduction
+ID PERFORMANCE; PHOTOREDUCTION; CATALYST; COPPER; OXIDE; MOF
+AB Solar-driven photocatalytic conversion of carbon dioxide (CO2) to high-value ethene (C2H4) is a promising and environmentally friendly reaction, but key challenges such as low C-C coupling performance and poor electron transfer efficiency need to be addressed. Herein, Cu2+ ions are precisely stacked via the metallization of 4,4 ',4 ''- (1,3,5-triazine-2,4,6-triyl)tribenzoic acid-based hydrogen-bonded organic framework (PFC-11) to obtain PFC-11 (Cu). Compared with PFC-11, the abundant catalytically active Cu2+ sites of PFC-11(Cu) provide good light- harvesting and efficient charge-transfer performance. This is confirmed by photoluminescence spectroscopy and transient photocurrent measurements. Consequently, PFC-11(Cu) can photocatalytically reduce CO2 to C2H4 with a yield of 2.4 mu mol center dot g-1 within 10 h and an electron selectivity of 92.30 % in water without any photo- sensitizer or sacrificial agent. In-situ diffuse reflectance Fourier transform infrared spectroscopy and density functional theory calculations are used to confirm the achievement of C-C coupling over PFC-11(Cu) due to the reasonable distribution of Cu2+ ions in the framework structure. This study provides a new approach to design photocatalysts with tunable activity center layer spacing for efficient CO2 reduction to multi-carbon compounds.
+C1 [Zhou, Mengmeng; Ding, Debo; Shi, Yansong; Wang, Keke; Wang, Qin; Chen, Xiahe; Shen, Hai-Min; Zhang, Teng-Shuo; Yang, Yun-Fang; She, Yuanbin] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China; [Xia, Jiexiang; Li, Huaming] Jiangsu Univ, Sch Chem & Chem Engn, Sch Environm & Safety Engn, Inst Energy Res, Zhenjiang 212013, Peoples R China
+C3 Zhejiang University of Technology; Jiangsu University
+RP Wang, KK; Yang, YF; She, YB (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Peoples R China.
+EM wangkk@zjut.edu.cn; sheyb@zjut.edu.cn; yangyf@zjut.edu.cn
+RI Xia, Jiexiang/J-4793-2013; Zhou, Mengmeng/ABC-5370-2021; huaming, li/S-1885-2016; Yang, Yun-Fang/OLQ-1528-2025
+OI Yang, Yun-Fang/0000-0002-6287-1640; Wang, Keke/0000-0002-2227-8471
+FU National Natural Science Foundation of China [22478358, 22138011]; Zhejiang Provincial Natural Science Foundation of China [LY22B060006]
+FX This work was supported by the National Natural Science Foundation of China (22478358, 22138011) , Zhejiang Provincial Natural Science Foundation of China (LY22B060006) .
+NR 0
+TC 11
+Z9 13
+PU ELSEVIER SCIENCE SA
+PI LAUSANNE
+PA PO BOX 564, 1001 LAUSANNE, SWITZERLAND
+J9 CHEM ENG J
+JI Chem. Eng. J.
+PD JAN 1 2025
+PY 2025
+VL 503
+AR 158501
+DI 10.1016/j.cej.2024.158501
+EA DEC 2024
+EY 2024
+WC Engineering, Environmental; Engineering, Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Engineering
+TO Chemistry (2); Photocatalysts (2.74); TiO2 Photocatalysis (2.74.5)
+UT WOS:001416236200001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhan, F
+   Lin, GL
+   Zhang, TS
+   Xu, KW
+   Yang, YF
+   Li, GJ
+   She, YB
+AF Zhan, Feng
+   Lin, Guo-Liang
+   Zhang, Teng-Shuo
+   Xu, Kewei
+   Yang, Yun-Fang
+   Li, Guijie
+   She, Yuanbin
+TI Pt-S Bond-Enabled Temperature-Dependent Phosphorescence in S-Heteroaryl Tetradentate Pt(S∧C∧N∧O) Complexes
+SO INORGANIC CHEMISTRY
+DT Article
+ID CYCLOMETALATED PLATINUM(II) COMPLEXES; LIGHT-EMITTING DEVICES; IRIDIUM COMPLEXES; RED LUMINESCENCE; PT(II) COMPLEXES; EFFICIENT; LIGANDS; EMITTERS; ARYLATION; COLOR
+AB This study presents the rare examples of S-heteroaryl tetradentate Pt(S<^>C<^>N<^>O) luminescent complexes (PtSZ and PtSZtBu) containing a Pt-S bond. The presence of the Pt-S bond allows the novel Pt(S<^>C<^>N<^>O) complexes to exhibit temperature-dependent phosphorescent emission behavior. The PtSZtBu exhibits dual-emission phenomena and biexponential transient decay spectra above 250 K, indicating the presence of two minimal excited states in the potential energy surface (PES) of the T-1 state. Through complementary experimental and computational studies, we have identified changes in orbital composition between Pt(d(xy))-S(p(x)) and Pt(d(yz))-S(p(z)) in excited states with increasing temperature. This results in two energy minima, enabling the excited states to decay selectively and radiatively at different temperatures. Consequently, this leads to remarkable steady-state and transient emission spectra changes. Our work not only provides valuable insights for the development of novel Pt-S bond-based tetradentate Pt(II) complexes but also enhances our understanding of the distinctive properties governed by the Pt-S bond.
+C1 [Zhan, Feng; Lin, Guo-Liang; Zhang, Teng-Shuo; Xu, Kewei; Yang, Yun-Fang; Li, Guijie; She, Yuanbin] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Zhejiang, Peoples R China
+C3 Zhejiang University of Technology
+RP Li, GJ; She, YB (corresponding author), Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Techn, Hangzhou 310014, Zhejiang, Peoples R China.
+EM guijieli@zjut.edu.cn; sheyb@zjut.edu.cn
+RI Yang, Yun-Fang/OLQ-1528-2025
+OI Li, Guijie/0000-0002-0740-2235; Yang, Yun-Fang/0000-0002-6287-1640
+FU National Natural Science Foundation of China [22178319, 22138011]; National Natural Science Foundation of China
+FX This work was supported by the National Natural Science Foundation of China (grant no. 22178319 and 22138011). We thank Jiale Ying's helpful discussion.
+NR 0
+TC 6
+Z9 6
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 INORG CHEM
+JI Inorg. Chem.
+PD MAY 2 2024
+PY 2024
+VL 63
+IS 19
+BP 8822
+EP 8831
+DI 10.1021/acs.inorgchem.4c00601
+EA MAY 2024
+EY 2024
+WC Chemistry, Inorganic & Nuclear
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Organic Semiconductors (2.114); OLEDs (2.114.321)
+PM 38696545
+UT WOS:001225407300001
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, L
+   Zhang, TS
+   Fu, LY
+   Xie, SH
+   Wu, YS
+   Cui, GL
+   Fang, WH
+   Yao, JNA
+   Fu, HB
+AF Wang, Long
+   Zhang, Teng-Shuo
+   Fu, Liyuan
+   Xie, Shaohua
+   Wu, Yishi
+   Cui, Ganglong
+   Fang, Wei-Hai
+   Yao, Jiannian
+   Fu, Hongbing
+TI High-Lying 31Ag Dark-State-Mediated Singlet Fission
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; EXCITON-FISSION; EFFICIENCY; PENTACENE; PATHWAY; DESIGN
+AB Singlet fission (SF), the conversion of one high-energy singlet to two low-energy triplets, provides the potential to increase the efficiency of photovoltaic devices. In the SF chromophores with C-2h symmetry, exemplified by polyenes, singlet-to-triplet conversion generally involves a low-lying 2(1)A(g) dark state, which serves as either a multiexciton (ME) intermediate to promote the SF process or a parasitic trap state to shunt excited-state populations via internal conversion. This controversial behavior calls for a deep understanding of dark-state-related photophysics involving the higher-lying singlet state. However, the optical "dark" and "transient" nature of these dark states and strong correlation feature of double exciton species make their characterization and interpretation challenging from both experimental and computational perspectives. In the present work combining transient spectroscopy and multireference electronic structure calculations (XDW-CASPT2), we addressed a new photophysical model, i.e., a high-lying 3(1)A(g) dark-state-mediated ultrafast SF process in the benzodipyrrolidone (BDPP) skeleton. Such a 3(1)A(g) dark state with distinctive double excitation character, described as the ME state, could be populated from the initial 1(1)B(u) bright state on an ultrafast time scale given the quasi-degeneracy and intersection of the two electronic states. Furthermore, the suitable optical band gap and triplet energy, high triplet yield, and excellent photostability render BDPP a promising SF candidate for photovoltaic devices. These results not only enrich the arsenal of SF materials but also shed new insights into the understanding of dark-state-related photophysics, which could promote the development of new SF-active materials.
+C1 [Wang, Long] Taiyuan Univ Technol, Minist Educ, Key Lab Interface Sci & Engn Adv Mat, Taiyuan 030024, Peoples R China; [Zhang, Teng-Shuo; Cui, Ganglong; Fang, Wei-Hai] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Fu, Liyuan; Xie, Shaohua; Wu, Yishi; Fu, Hongbing] Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China; [Yao, Jiannian] Chinese Acad Sci, Inst Chem, Beijing Natl Lab Mol Sci BNLMS, Key Lab Photochem, Beijing 100190, Peoples R China
+C3 Taiyuan University of Technology; Beijing Normal University; Capital Normal University; Chinese Academy of Sciences; Institute of Chemistry, CAS
+RP Wang, L (corresponding author), Taiyuan Univ Technol, Minist Educ, Key Lab Interface Sci & Engn Adv Mat, Taiyuan 030024, Peoples R China.; Cui, GL (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.; Wu, YS; Fu, HB (corresponding author), Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China.
+EM ganglong.cui@bnu.edu.cn; wanglong@tyut.edu.cn; hbfu@cnu.edu.cn; yswu@iccas.ac.cn
+RI Cui, Ganglong/D-5883-2011
+OI Zhang, Teng-Shuo/0000-0002-6145-1855; Cui, Ganglong/0000-0002-9752-1659; Fang, Wei-Hai/0000-0002-1668-465X; Wang, Long/0000-0002-6334-8878; 吴, 义室/0000-0002-1575-1937; Fu, Hongbing/0000-0003-4528-189X
+FU National Natural Science Foundation of China [22005210, 22090022, 21833005, 21790364, 21573251, 21688102, 21590801]; National Key Research and Development Program of China [2017YFA0204503]; Beijing Natural Science Foundation of China [2162011]; Project of State Key Laboratory on Integrated Optoelectronics of Jilin University [IOSKL2014KF16]; Youth Innovative Research Team of Capital Normal University
+FX This work was supported by the National Natural Science Foundation of China (Grant Nos. 22005210, 22090022, 21833005, 21790364, 21573251, 21688102, and 21590801), the National Key Research and Development Program of China 2017YFA0204503, the Beijing Natural Science Foundation of China (Grant No. 2162011), Project of State Key Laboratory on Integrated Optoelectronics of Jilin University (IOSKL2014KF16), and the Youth Innovative Research Team of Capital Normal University.
+NR 0
+TC 37
+Z9 39
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J AM CHEM SOC
+JI J. Am. Chem. Soc.
+PD APR 21 2021
+PY 2021
+VL 143
+IS 15
+BP 5691
+EP 5697
+DI 10.1021/jacs.0c11681
+EA APR 2021
+EY 2021
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED); Index Chemicus (IC)
+SC Chemistry
+TO Chemistry (2); Organic Semiconductors (2.114); Organic Solar Cells (2.114.61)
+PM 33843229
+UT WOS:000643591600018
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Fan, FR
+   Zhao, G
+   Ma, XT
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Fan, Feng-Ran
+   Zhao, Geng
+   Ma, Xiantao
+   Zhang, Teng-Shuo
+   Xie, Bin -Bin
+TI CASPT2//CASSCF studies on mechanistic photophysics of 3-hydroxyflavone
+SO CHEMICAL PHYSICS
+DT Article
+DE 3-Hydroxyflavone; CASPT2//CASSCF; Electronic structure calculation; Mechanistic photophysics
+ID STATE PROTON-TRANSFER; 2ND-ORDER PERTURBATION-THEORY; EXCITED-STATE; AB-INITIO; GROUND-STATE; MEAN-FIELD; SUNSCREENS; SPECTROSCOPY; FLUORESCENCE; EUMELANIN
+AB 3-Hydroxyflavone (3-HF) as the backbone of flavonols has been extensively studied on the dual fluorescence and excited-state intramolecular proton transfer (ESIPT) after photoexcitation. However, its detailed excited-state relaxation mechanism is still unclear. Herein, the minimum-energy structures, conical intersections and single-t-triplet crossing points of 3-HF in the 1 pi pi*, 1n pi*, 3 pi pi*, 3n pi*, and S0 states in the gas phase were first optimized by the CASPT2//CASSCF method. Then, the minimum-energy proton transfer (MEPT) and excited-state decay (ESD) pathways were calculated as well. Based on the calculation results, we proposed several possible ESD pathways from the initially populated bright S2(pi pi*) state. The major channel is singlet-involved and stretch -torsion coupled ESIPT pathway. 3-HF in normal (N) form first undergoes efficient 1 pi pi* ESIPT with a small barrier of 2.2 kcal/mol to yield the 1 pi pi* proton-transferred tautomer (T). Subsequently, the T tautomer approaches the nearby accessible S1/S0 conical intersection and then occurs internal conversion (IC) to fall back to the S0 state. Finally, the S0 species quickly transfers into the N conformer via the reverse ground state intra-molecular proton transfer (GSIPT) to realize the ground-state recovery. In addition, the minor ESD pathways are involved less efficient intersystem crossing (ISC) processes. The present work could provide insights into understanding the photophysics of flavonols and their derivatives.
+C1 [Chang, Xue-Ping; Fan, Feng-Ran; Zhao, Geng; Ma, Xiantao] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin -Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP; Ma, XT (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xiantaoma@126.com; xuepingchang@xynu.edu.cn
+RI Ma, Xiantao/AAA-5779-2020
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [21803050]; Nanhu Scholars Pro-gram for Young Scholars of XYNU
+FX This work has been supported by the National Natural Science Foundation of China (X.-P.C.: 21803050) and the Nanhu Scholars Pro-gram for Young Scholars of XYNU (X.-P.C) .
+NR 0
+TC 11
+Z9 12
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS
+JI Chem. Phys.
+PD NOV 1 2023
+PY 2023
+VL 575
+AR 112056
+DI 10.1016/j.chemphys.2023.112056
+EA AUG 2023
+EY 2023
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Pigments, Sensors & Probes (2.59); ESIPT (2.59.890)
+UT WOS:001138714600001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Zhang, TS
+   Fang, YG
+   Cui, GL
+AF Chang, Xue-Ping
+   Zhang, Teng-Shuo
+   Fang, Ye-Guang
+   Cui, Ganglong
+TI Quantum Mechanics/Molecular Mechanics Studies on the Photophysical Mechanism of Methyl Salicylate
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID ELECTRON-PARAMAGNETIC-RESONANCE; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR-ORBITAL METHODS; EXCITED-STATE DYNAMICS; PROTON-TRANSFER; PHOTOPROTECTION MECHANISM; METHOXY METHYLCINNAMATE; SUNSCREEN OXYBENZONE; TRIPLET-STATE; GAS-PHASE
+AB Methyl salicylate (MS) as a subunit of larger salicylates found in commercial sunscreens has been shown to exhibit keto-enol tautomerization and dual fluorescence emission via excited-state intramolecular proton transfer (ESIPT) after the absorption of ultraviolet (UV) radiation. However, its excited-state relaxation mechanism is unclear. Herein, we have employed the quantum mechanics(CASPT2//CASSCF)/molecular mechanics method to explore the ESIPT and excited-state relaxation mechanism of MS in the lowest three electronic states, that is, S-0, S-1, and T-1 states, in a methanol solution. Based on the optimized geometric and electronic structures, conical intersections and crossing points, and minimum-energy paths combined with the computed linearly interpolated Cartesian coordinate paths, the photophysical mechanism of MS has been proposed. The S-1 state is a spectroscopically bright (1)pi pi* state in the Franck-Condon region. From the initially populated S-1 state, there exist three nonradiative relaxation paths to repopulate the S-0 state. In the first one, the S1 system (i.e., ketoB form) first undergoes an ESIPT path to generate an S-1 tautomer (i.e., enol form) that exhibits a large Stokes shift in experiments. The generated S-1 enol tautomer further evolves toward the nearby S-1/S-0 conical intersection and then hops to the S-0 state, followed by the backward ground-state intramolecular proton transfer (GSIPT) to the initial ketoB form S-0 state. In the second one, the S-1 system first hops through the S-1 -> T-1 intersystem crossing (ISC) to the T-1 state, which then further decays to the S-0 state via T-1 -> S-0 ISC at the T-1/S-0 crossing point. In the third path, the T-1 system that stems from the S-1 -> T-1 ISC process via the S-1/T-1 crossing point first takes place a T-1 ESIPT to generate a T-1 enol tautomer, which can further decay to the S-0 state via T-1-to-S-0 ISC. Finally, the GSIPT occurs to back the system to the initial ketoB form S-0 state. Our present work could contribute to understanding the photophysics of MS and its derivatives.
+C1 [Zhang, Teng-Shuo; Fang, Ye-Guang; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Minist Educ, Key Lab Theoret & Computat Photochem, Beijing 100875, Peoples R China; [Chang, Xue-Ping] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China
+C3 Beijing Normal University; Xinyang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+RI Fang, Ye Guang/POU-6420-2026; Cui, Ganglong/D-5883-2011
+OI Chang, Xue-Ping/0000-0002-8166-898X; Cui, Ganglong/0000-0002-9752-1659
+FU National Natural Science Foundation of China [21803050]; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work was supported by the National Natural Science Foundation of China (X.P.C.: 21803050) and the Nanhu Scholars Program for Young Scholars of XYNU (X.P.C.).
+NR 0
+TC 25
+Z9 26
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD MAR 11 2021
+PY 2021
+VL 125
+IS 9
+BP 1880
+EP 1891
+DI 10.1021/acs.jpca.0c10589
+EA MAR 2021
+EY 2021
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Clinical & Life Sciences (1); Dermatology - General (1.158); Skin Photoaging Mechanisms (1.158.1308)
+PM 33645980
+UT WOS:000629168400010
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, YH
+   Sun, XW
+   Zhang, TS
+   Liu, XY
+   Cui, GL
+AF Zhang, Ya-Hui
+   Sun, Xin-Wei
+   Zhang, Teng-Shuo
+   Liu, Xiang-Yang
+   Cui, Ganglong
+TI Nonadiabatic Dynamics Simulations on Early-Time Photochemistry of Spirobenzopyran
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID RING-OPENING REACTION; EXCITED-STATE DECAY; MOLECULAR-DYNAMICS; CONICAL INTERSECTION; ULTRAFAST DYNAMICS; SPIROPYRAN; PHOTOISOMERIZATION; CONVERSION; IMPLEMENTATION; PHOTOCHROMISM
+AB Photoinduced ring-opening, decay, and isomerization of spirobenzopyran have been explored by the OM2/MRCI nonadiabatic dynamics simulations based on Tully's fewest-switches surface hopping scheme. The efficient S-1 to S-0 internal conversion as observed in experiments is attributed to the existence of two efficient excited-state decay pathways. The first one is related to the C-N dissociation, and the second one is done to the C-O dissociation. The C-O dissociation pathway is dominant, and more than 90% trajectories decay to the S-0 state via the C-O bond-fission related S-1/S-0 conical intersections. Near these regions in the S-0 state, trajectories can either return to spirobenzopyran or proceed to various intermediates including merocyanine via a series of bond rotations. Our nonadiabatic dynamics simulations also demonstrate that the hydrogen-out-of-plane (HOOP) motion is important for efficient and ultrafast excited-state deactivation. On the other hand, we have also found that the replacement of methyl groups by hydrogen atoms in spirobenzopyran can artificially introduce different intramolecular hydrogen transfers leading to hydrogen-transferred intermediates. This finding is important for the community and demonstrates that such a kind of structural truncation, sometimes, could be problematic, leading to incorrect photodynamics. Our present work provides valuable insights into the photodynamics of spirobenzopyran, which could be helpful for the design of spiropyran-based photochromic materials.
+C1 [Zhang, Ya-Hui; Sun, Xin-Wei; Zhang, Teng-Shuo; Liu, Xiang-Yang; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China
+C3 Beijing Normal University
+RP Liu, XY; Cui, GL (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.
+EM ganglong.cui@bnu.edu.cn; xiangyangliu@sicnu.edu.cn
+RI Sun, Xinwei/W-6724-2019; Cui, Ganglong/D-5883-2011
+OI Cui, Ganglong/0000-0002-9752-1659
+FU NSFC [21520102005, 21688102, 21590801, 21421003]; Fundamental Research Funds for Central Universities
+FX This study is supported by NSFC Grants 21520102005, 21688102, 21590801, and 21421003; G.C. is grateful for support from the "Fundamental Research Funds for Central Universities".
+NR 0
+TC 24
+Z9 24
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD APR 2 2020
+PY 2020
+VL 124
+IS 13
+BP 2547
+EP 2559
+DI 10.1021/acs.jpca.0c00791
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Photochemistry (2.234); Photoresponsive Polymers (2.234.1149)
+PM 32187492
+UT WOS:000526393800004
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Zhao, G
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Zhao, Geng
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+TI Quantum mechanics/molecular mechanics studies on mechanistic photophysics of cytosine aza-analogues: 2,4-diamino-1,3,5-triazine and 2-amino-1,3,5-triazine in aqueous solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID EXCITED-STATE DYNAMICS; NONRADIATIVE DECAY MECHANISMS; ULTRAFAST DEACTIVATION; RELAXATION MECHANISMS; TRANSIENT ABSORPTION; PERTURBATION-THEORY; NUCLEIC-ACIDS; MEAN-FIELD; DNA; MODEL
+AB The excited-state properties and photophysics of cytosine aza-analogues, i.e., 2,4-diamino-1,3,5-triazine (2,4-DT) and 2-amino-1,3,5-triazine (2-AT) in solution have been systematically explored using the QM(MS-CASPT2//CASSCF)/MM approach. The excited-state nonradiative relaxation mechanisms for the initially photoexcited S-1(pi pi*) state decay back to the S-0 state are proposed in terms of the present computed minima, surface crossings (conical intersections and singlet-triplet crossings), and excited-state decay paths in the S-1, S-2, T-1, T-2, and S-0 states. Upon photoexcitation to the bright S-1(pi pi*) state, 2,4-DT quickly relaxes to its S-1 minimum and then overcomes a small energy barrier of 5.1 kcal mol(-1) to approach a S-1/S-0 conical intersection, where the S-1 system hops to the S-0 state through S-1 -> S-0 internal conversion (IC). In addition, at the S-1 minimum, the system could partially undergo intersystem crossing (ISC) to the T-1 state, followed by further ISC to the S-0 state via the T-1/S-0 crossing point. In the T-1 state, an energy barrier of 7.9 kcal mol(-1) will trap 2,4-DT for a while. In parallel, for 2-AT, the system first relaxes to the S-1 minimum and then S-1 -> S-0 IC or S-1 -> T-1 -> S-0 ISCs take place to the S-0 state by surmounting a large barrier of 15.3 kcal mol(-1) or 11.9 kcal mol(-1), respectively, which heavily suppress electronic transition to the S-0 state. Different from 2,4-DT, upon photoexcitation in the Franck-Condon region, 2-AT can quickly evolve in an essentially barrierless manner to nearby S-2/S-1 conical intersection, where the S-2 and T-1 states can be populated. Once it hops to the S-2 state, the system will overcome a relatively small barrier (6.6 kcal mol(-1)vs. 15.3 kcal mol(-1)) through IC to the S-0 state. Similarly, an energy barrier of 11.9 kcal mol(-1) heavily suppresses the T-1 state transformation to the S-0 state. The present work manifests that the amination/deamination of the triazine rings can affect some degree of different vertical and adiabatic excitation energies and nonradiative decay pathways in solution. It not only rationalizes excited-state decay dynamics of 2,4-DT and 2-AT in aqueous solution but could also provide insights into the understanding of the photophysics of aza-nucleobases.
+C1 [Chang, Xue-Ping; Zhao, Geng] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [21803050]; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work has been supported by the National Natural Science Foundation of China (X.-P.C.: 21803050) and the Nanhu Scholars Program for Young Scholars of XYNU (X.-P.C).
+NR 0
+TC 5
+Z9 5
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD MAR 15 2023
+PY 2023
+VL 25
+IS 11
+BP 7669
+EP 7680
+DI 10.1039/d2cp05639a
+EA FEB 2023
+EY 2023
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 36857660
+UT WOS:000940391400001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Fan, FR
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Fan, Feng-Ran
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+TI Quantum mechanics/molecular mechanics studies on the excited-state decay mechanisms of cytidine aza-analogues: 5-azacytidine and 2′-deoxy-5-azacytidine in aqueous solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID ULTRAFAST INTERNAL-CONVERSION; PERTURBATION-THEORY; MEAN-FIELD; DYNAMICS; CYTOSINE; SINGLET; 5-AZACYTOSINE; PHOTOCHEMISTRY; FLUORESCENCE; PHOTOPHYSICS
+AB The excited state properties and deactivation pathways of two DNA methylation inhibitors, i.e., 5-azacytidine (5ACyd) and 2 & PRIME;-deoxy-5-azacytidine (5AdCyd) in aqueous solution, are comprehensively explored with the QM(CASPT2//CASSCF)/MM protocol. We systematically map the feasible decay mechanisms based on the obtained excited-state decay paths involving all the identified minimum-energy structures, conical intersections, and crossing points driving the different internal conversion (IC) and intersystem crossing (ISC) routes in and between the 1 & pi;& pi;*, 1n & pi;*, 3 & pi;& pi;*, 3n & pi;*, and S0 states. Unlike the 1n & pi;* state below the 1 & pi;& pi;* state in 5ACyd, deoxyribose group substitution at the N1 position leads to the 1 & pi;& pi;* state becoming the S1 state in 5AdCyd. In 5ACyd and 5AdCyd, the initially populated 1 & pi;& pi;* state mainly deactivates to the S0 state through the direct 1 & pi;& pi;* & RARR; S0 IC or mediated by the 1n & pi;* state. The former nearly barrierless IC channel of 1 & pi;& pi;* & RARR; S0 occurs ultrafast via the nearby low-lying 1 & pi;& pi;*/S0 conical intersection. In the latter IC channel of 1 & pi;& pi;* & RARR; 1n & pi;* & RARR; S0, the initially photoexcited 1 & pi;& pi;* state first approaches the nearby S2/S1 conical section 1 & pi;& pi;*/1n & pi;* and then undergoes efficient IC to the 1n & pi;* state, followed by the further IC to the initial S0 state via the S1/S0 conical intersection 1n & pi;*/S0. The 1n & pi;*/S0 conical intersection is estimated to be located 6.0 and 4.9 kcal mol-1 above the 1n & pi;* state minimum in 5ACyd and 5AdCyd, respectively, at the QM(CASPT2)/MM level. In addition to the efficient singlet-mediated IC channels, the minor ISC routes would populate 1 & pi;& pi;* to T1(& pi;& pi;*) through 1 & pi;& pi;* & RARR; T1 or 1 & pi;& pi;* & RARR; 1n & pi;* & RARR; T1. Relatively, the 1 & pi;& pi;* & RARR; 1n & pi;* & RARR; T1 route benefits from the spin-orbit coupling (SOC) of 1n & pi;*/3 & pi;& pi;* of 8.7 cm-1 in 5ACyd and 10.2 cm-1 in 5AdCyd, respectively. Subsequently, the T1 system will approach the nearby T1/S0 crossing point 3 & pi;& pi;*/S0 driving it back to the S0 state. Given the 3 & pi;& pi;*/S0 crossing point located above the T1 minimum and the small T1/S0 SOC, i.e., 8.4 kcal mol-1 and 2.1 cm-1 in 5ACyd and 6.8 kcal mol-1 and 1.9 cm-1 in 5AdCyd, respectively, the slow T1 & RARR; S0 would trap the system in the T1 state for a while. The present work could contribute to understanding the mechanistic photophysics and photochemistry of similar aza-nucleosides and their derivatives.The excited state properties and deactivation pathways of two DNA methylation inhibitors, i.e., 5-azacytidine (5ACyd) and 2 & PRIME;-deoxy-5-azacytidine (5AdCyd) in aqueous solution are comprehensively explored with the QM(CASPT2//CASSCF)/MM protocol.
+C1 [Chang, Xue-Ping; Fan, Feng-Ran] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU This work has been supported by the National Natural Science Foundation of China (X.-P. C.: 21803050), Zhejiang Provincial Natural Science Foundation of China (LZ23B030001 and LQ19B030007), the National Key Research and Development Program of China (2019YF
+FX This work has been supported by the National Natural Science Foundation of China (X.-P. C.: 21803050), Zhejiang Provincial Natural Science Foundation of China (LZ23B030001 and LQ19B030007), the National Key Research and Development Program of China (2019YFA0709400), and the Nanhu Scholars Program for Young Scholars of XYNU (X.-P. C).
+NR 0
+TC 4
+Z9 4
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD OCT 4 2023
+PY 2023
+VL 25
+IS 38
+BP 26258
+EP 26269
+DI 10.1039/d3cp03628f
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 37743787
+UT WOS:001074358800001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Yu, L
+   Zhang, TS
+   Cui, GL
+AF Chang, Xue-Ping
+   Yu, Li
+   Zhang, Teng-Shuo
+   Cui, Ganglong
+TI Quantum mechanics/molecular mechanics studies on the mechanistic photophysics of sunscreen oxybenzone in methanol solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID INTRAMOLECULAR PROTON-TRANSFER; MOLECULAR-ORBITAL METHODS; EXCITED-STATE DYNAMICS; BOTTOM-UP APPROACH; AB-INITIO; NONADIABATIC DYNAMICS; PERTURBATION-THEORY; PHOTOPROTECTION MECHANISM; METHOXY METHYLCINNAMATE; BUILDING-BLOCKS
+AB Herein, we have employed the QM(CASPT2//CASSCF)/MM method to explore the photophysical and photochemical mechanism of oxybenzone (OB) in methanol solution. Based on the optimized minima, conical intersections and crossing points, and minimum-energy reaction paths related to excited-state intramolecular proton transfer (ESIPT) and excited-state decay paths in the (1)pi pi*, (1)n pi*, (3)pi pi*, (3)n pi*, and S-0 states, we have identified several feasible excited-state relaxation pathways for the initially populated S-2((1)pi pi*) state to decay to the initial enol isomer' S-0 state. The major one is the singlet-mediated and stretch-torsion coupled ESIPT pathway, in which the system first undergoes an essentially barrierless (1)pi pi* ESIPT process to generate the (1)pi pi* keto species, and finally realizes its ground state recovery through the subsequent carbonyl stretch-torsion facilitating S-1 -> S-0 internal conversion (IC) and the reverse ground-state intramolecular proton transfer (GSIPT) process. The minor ones are related to intersystem crossing (ISC) processes. At the S-2((1)pi pi*) minimum, an S-2((1)pi pi*)/S-1((1)n pi*)/T-2((3)n pi*) three-state intersection region helps the S-2 system branch into the T-1 state through a S-2 -> S-1 -> T-1 or S-2 -> T-2 -> T-1 process. Once it has reached the T-1 state, the system may relax to the S-0 state via direct ISC or via subsequent nearly barrierless (3)pi pi* ESIPT to yield the T-1 keto tautomer and ISC. The resultant S-0 keto species significantly undergoes reverse GSIPT and only a small fraction yields the trans-keto form that relaxes back more slowly. However, due to small spin-orbit couplings at T-1/S-0 crossing points, the ISC to S-0 state occurs very slowly. The present work rationalizes not only the ultrafast excited-state decay dynamics of OB but also its phosphorescence emission at low temperature.
+C1 [Chang, Xue-Ping; Yu, Li] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Cui, Ganglong] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Beijing Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [21803050]; Natural Science Foundation of Henan Province [202300410337]; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work has been supported by the National Natural Science Foundation of China (21803050), the Natural Science Foundation of Henan Province (202300410337) and the Nanhu Scholars Program for Young Scholars of XYNU.
+NR 0
+TC 11
+Z9 11
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD JUN 1 2022
+PY 2022
+VL 24
+IS 21
+BP 13293
+EP 13304
+DI 10.1039/d2cp01263d
+EA MAY 2022
+EY 2022
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Clinical & Life Sciences (1); Dermatology - General (1.158); Skin Photoaging Mechanisms (1.158.1308)
+PM 35607908
+UT WOS:000801012200001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, TS
+   Fang, YG
+   Song, XF
+   Fang, WH
+   Cui, GL
+AF Zhang, Teng-Shuo
+   Fang, Ye-Guang
+   Song, Xiu-Fang
+   Fang, Wei-Hai
+   Cui, Ganglong
+TI Hydrogen-Bonding Interaction Regulates Photoisomerization of a Single-Bond-Rotation Locked Photoactive Yellow Protein Chromophore in Protein
+SO JOURNAL OF PHYSICAL CHEMISTRY LETTERS
+DT Article
+ID PURPLE PHOTOTROPHIC BACTERIUM; AB-INITIO; ECTOTHIORHODOSPIRA-HALOPHILA; TRANS/CIS ISOMERIZATION; STRUCTURAL EVOLUTION; QUANTUM YIELD; ACTIVE-SITE; PHOTOCYCLE; DYNAMICS; TIME
+AB We have employed the QM(CASPT2//CASSCF)/MM method to explore the excited-state isomerization and decay mechanism of a single-bond-rotation locked photoactive yellow protein (PYP) chromophore in wild-type and mutant proteins. The S-1 state is a spectroscopically bright state in the Franck-Condon region. In this state, there exist two excited-state isomerization pathways separately related to the clockwise and anticlockwise rotations of the C=C bond. The clockwise path is favorable because of a small barrier of 2 kcal/mol and uses a novel bicycle-pedal unidirectional photoisomerization mechanism in which the involved two dihedral angles rotate asynchronously because of the reinforced hydrogen-bonding interaction between the chromophore and Cys69. Near the twisted S-1 minimum, the chromophore hops to the S-0 state via the S-1/S-0 conical intersection. Finally, the R52A mutation has small effects on the excited-state properties and photoisomerization of the locked PYP chromophore. The present work provides new insights for understanding the photochemistry of PYP chromophores in protein surroundings.
+C1 [Zhang, Teng-Shuo; Fang, Ye-Guang; Song, Xiu-Fang; Fang, Wei-Hai; Cui, Ganglong] Beijing Normal Univ, Key Lab Theoret & Computat Photochem, Minist Educ, Chem Coll, Beijing 100875, Peoples R China
+C3 Beijing Normal University
+RP Cui, GL (corresponding author), Beijing Normal Univ, Key Lab Theoret & Computat Photochem, Minist Educ, Chem Coll, Beijing 100875, Peoples R China.
+EM ganglong.cui@bnu.edu.cn
+RI Cui, Ganglong/D-5883-2011; song, xiufang/KLY-1938-2024; Fang, Ye Guang/POU-6420-2026
+OI Zhang, Teng-Shuo/0000-0002-6145-1855; Song, Xiufang/0009-0004-7243-5625; Cui, Ganglong/0000-0002-9752-1659; Fang, Wei-Hai/0000-0002-1668-465X
+FU NSFC [21520102005, 21688102, 21590801, 21421003]; Fundamental Research Funds for Central Universities
+FX This study is supported by the NSFC Grants 21520102005, 21688102, 21590801, and 21421003. G.C. is also grateful for financial support from "Fundamental Research Funds for Central Universities".
+NR 0
+TC 18
+Z9 18
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM LETT
+JI J. Phys. Chem. Lett.
+PD APR 2 2020
+PY 2020
+VL 11
+IS 7
+BP 2470
+EP 2476
+DI 10.1021/acs.jpclett.0c00294
+WC Chemistry, Physical; Nanoscience & Nanotechnology; Materials Science, Multidisciplinary; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Science & Technology - Other Topics; Materials Science; Physics
+TO Agriculture, Environment & Ecology (3); Crop Science (3.4); Plant Light Responses (3.4.1499)
+PM 32150415
+UT WOS:000526348400012
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, JX
+   Zhang, TS
+   Zhu, X
+   Li, CX
+   Dong, L
+   Cui, GL
+   Yang, QZ
+AF Wang, Jian-Xin
+   Zhang, Teng-Shuo
+   Zhu, Xin
+   Li, Chun-Xiang
+   Dong, Lei
+   Cui, Ganglong
+   Yang, Qing-Zheng
+TI Organic Thermometers Based on Aggregation of Difluoroboron β-Diketonate Chromophores
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID ROOM-TEMPERATURE; MOLECULAR-MECHANICS; LIQUID-CRYSTALS; CHARGE-TRANSFER; FLUORESCENCE; THERMOCHROMISM; EMISSION; LUMINESCENCE; ENHANCEMENT; FRAMEWORK
+AB We report several novel thermometers resulting from the temperature-induced aggregation of difluoroboron beta-diketonate chromophores. These thermometers exhibit a much wider temperature-dependent fluorescence emission from 445 to 592 nm along with the color change from blue to red in a dilute chloroform solution. Spectroscopy measurements and theoretical calculations confirm that the thermochromic luminescence originates from the reversible change in the noncovalent intermolecular interactions and the abrupt volume shrinkage of the solvent at its melting point. The present work provides a new strategy for rationally designing high-performance thermometers having a wide emission property.
+C1 [Zhang, Teng-Shuo; Li, Chun-Xiang; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Wang, Jian-Xin; Zhu, Xin; Dong, Lei; Yang, Qing-Zheng] Beijing Normal Univ, Coll Chem, Key Lab Radiopharmaceut, Minist Educ, Beijing 100875, Peoples R China
+C3 Beijing Normal University; Beijing Normal University
+RP Wang, JX (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Radiopharmaceut, Minist Educ, Beijing 100875, Peoples R China.
+EM jianxinwang@mail.bnu.edu.cn
+RI Dong, Lei/JPY-2821-2023; Yang, Qing-Zheng/S-5057-2016; Cui, Ganglong/D-5883-2011
+OI Wang, Jian-Xin/0000-0002-7838-5575; Yang, Qing-Zheng/0000-0002-9131-4907; Cui, Ganglong/0000-0002-9752-1659
+FU National Natural Science Foundation of China [21525206, 21971023]
+FX This work was financially supported by the National Natural Science Foundation of China (21525206 and 21971023) to QZY.
+NR 0
+TC 23
+Z9 24
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD DEC 3 2020
+PY 2020
+VL 124
+IS 48
+BP 10082
+EP 10089
+DI 10.1021/acs.jpca.0c08649
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Pigments, Sensors & Probes (2.59); Fluorescent Chemosensors (2.59.341)
+PM 33226240
+UT WOS:000598115400019
+DA 2026-08-18
+ER
+
+PT J
+AU Yin, BW
+   Wang, JL
+   Xue, PJ
+   Zhang, TS
+   Xie, BB
+   Shen, L
+   Fang, WH
+AF Yin, Bo-Wen
+   Wang, Jie-Lei
+   Xue, Pu-Jie
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+   Shen, Lin
+   Fang, Wei-Hai
+TI Understanding the Excited-State Relaxation Mechanisms of Xanthophyll Lutein by Multi-configurational Electronic Structure Calculations
+SO JOURNAL OF CHEMICAL INFORMATION AND MODELING
+DT Article
+ID LIGHT-HARVESTING COMPLEX; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR-ORBITAL METHODS; TAMM-DANCOFF; CAROTENOIDS; ENERGIES; DYNAMICS; S-1; IDENTIFICATION; GRADIENTS
+AB The contradictory behaviors in light harvesting and non-photochemicalquenching make xanthophyll lutein the most attractive functional moleculein photosynthesis. Despite several theoretical simulations on thespectral properties and excited-state dynamics, the atomic-level photophysicalmechanisms need to be further studied and established, especiallyfor an accurate description of geometric and electronic structuresof conical intersections for the lowest several electronic statesof lutein. In the present work, semiempirical OM2/MRCI and multi-configurationalrestricted active space self-consistent field methods were performedto optimize the minima and conical intersections in and between the1Ag(-), 2Ag(-), 1Bu(+), and1Bu(-) states. Meanwhile, the relative energies wererefined by MS-CASPT2(10,8)/6-31G*, which can reproduce correct electronicstate properties as those in the spectroscopic experiments. Basedon the above calculation results, we proposed a possible excited-staterelaxation mechanism for lutein from its initially populated 1Bu(+) state. Once excited to the optically bright 1Bu(+) state, the system will propagate along the key reaction coordinate,i.e., the stretching vibration of the conjugated carbon chain. Duringthis period of time, the 1Bu(-) state will participatein and forms a resonance state between the 1Bu(-) and1Bu(+) states. Later, the system will rapidly hop to the2Ag(-) state via the 1Bu(+)/2Ag(-) conical intersection. Finally, the lutein molecule will survivein the 2Ag(-) state for a relatively long time beforeit internally converts to the ground state directly or via a twistedS(1)/S-0 conical intersection. Notably, thoughthe photophysical picture may be very different in solvents and proteins,the current theoretical study proposed a promising calculation protocoland also provided many valuable mechanistic insights for lutein andsimilar carotenoids.
+C1 [Yin, Bo-Wen; Wang, Jie-Lei; Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China; [Xue, Pu-Jie; Shen, Lin; Fang, Wei-Hai] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China
+C3 Zhejiang Normal University; Beijing Normal University; Zhejiang University of Technology
+RP Xie, BB (corresponding author), Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China.; Shen, L (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.
+EM binbinxie@zjnu.edu.cn; lshen@bnu.edu.cn
+OI yin, bowen/0000-0002-4213-5697; Fang, Wei-Hai/0000-0002-1668-465X; xie, binbin/0000-0002-5347-2795
+FU National Key Research and Development Program of China [2019YFA0709400]; Zhejiang Provincial Natural Science Foundation of China [LZ23B030001, LQ19B030007, LQ23B030009]; National Natural Science Foundation of China [22193041, 21903068, 21903005]
+FX This research was supported by the National Key Research and Development Program of China (2019YFA0709400), Zhejiang Provincial Natural Science Foundation of China (LZ23B030001, LQ19B030007, and LQ23B030009), and National Natural Science Foundation of China (22193041, 21903068, and 21903005).
+NR 0
+TC 7
+Z9 7
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J CHEM INF MODEL
+JI J. Chem Inf. Model.
+PD JUL 25 2023
+PY 2023
+VL 63
+IS 15
+BP 4679
+EP 4690
+DI 10.1021/acs.jcim.3c00640
+EA JUL 2023
+EY 2023
+WC Chemistry, Medicinal; Chemistry, Multidisciplinary; Computer Science, Information Systems; Computer Science, Interdisciplinary Applications
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Pharmacology & Pharmacy; Chemistry; Computer Science
+TO Agriculture, Environment & Ecology (3); Photosynthesis & Pigment Biology (3.171); Photosynthesis Mechanisms (3.171.129)
+PM 37489739
+UT WOS:001033224800001
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, L
+   Zhang, TS
+   Tian, XB
+   Guo, ST
+   Wang, H
+   Cui, GL
+   Fang, WH
+   Fu, HB
+   Yao, JN
+AF Wang, Long
+   Zhang, Teng-Shuo
+   Tian, Xiangbin
+   Guo, Shaoting
+   Wang, Hua
+   Cui, Ganglong
+   Fang, Wei-Hai
+   Fu, Hongbing
+   Yao, Jiannian
+TI Conformational distortion-harnessed singlet fission dynamics in thienoquinoid: rapid generation and subsequent annihilation of multiexciton dark state
+SO JOURNAL OF MATERIALS CHEMISTRY C
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; QUINOIDAL OLIGOTHIOPHENES; CONJUGATED POLYMERS; EXCITON-FISSION; MOLECULES
+AB Singlet fission (SF) is a multiexciton generation process that could potentially offset thermalization losses and boost the efficiency of photovoltaic devices. However, the scope of SF-active materials still remains rather limited due to the specific energetic requirements and complicated modulation of intermolecular interactions. Therefore, there is a high demand for developing new SF-capable compounds targeted at practical application. In the current work, the SF dynamics of thienoquinoid (TQ), which exhibits high extinction coefficient and excellent stability, were studied systematically based on transient absorption spectroscopy and theoretical calculations. Results present a distinctive conformational distortion-harnessed SF process featuring the rapid generation and subsequent annihilation of intramolecular multiexciton (ME) dark state with 2(1)A symmetry. The increased lifetimes could be achieved via the partially constrained conformational distortion and exciton delocalization in solid or aggregate states, yet these SF-populated ME species cannot undergo effective decoupling and dissociate completely into individual triplet excitons instead, recovering to ground state via the triplet-triplet annihilation channel. These findings present a deeper understanding of SF dynamics in the TQ skeleton, which could be conducive to improving the conversion efficiency of SF-based photovoltaic devices and developing new SF compounds.
+C1 [Wang, Long; Tian, Xiangbin; Guo, Shaoting; Wang, Hua] Taiyuan Univ Technol, Key Lab Interface Sci & Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, State Key Lab Breeding Base Green Chem Synth Tech, Hangzhou 310014, Zhejiang, Peoples R China; [Zhang, Teng-Shuo; Cui, Ganglong; Fang, Wei-Hai] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Fu, Hongbing] Capital Normal Univ, Dept Chem, Beijing Key Lab Opt Mat & Photon Devices, Beijing 100048, Peoples R China; [Yao, Jiannian] Chinese Acad Sci, Inst Chem, Key Lab Photochem, Beijing 100190, Peoples R China
+C3 Taiyuan University of Technology; Zhejiang University of Technology; Beijing Normal University; Capital Normal University; Chinese Academy of Sciences; Institute of Chemistry, CAS
+RP Wang, L (corresponding author), Taiyuan Univ Technol, Key Lab Interface Sci & Engn Adv Mat, Minist Educ, Taiyuan 030024, Peoples R China.
+EM wanglong@tyut.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI Cui, Ganglong/0000-0002-9752-1659; Fang, Wei-Hai/0000-0002-1668-465X; Fu, Hongbing/0000-0003-4528-189X; Wang, Long/0000-0002-6334-8878
+FU National Natural Science Foundation of China [22005210]
+FX This work was supported by the National Natural Science Foundation of China (Grant no. 22005210). The authors thank Prof. Yong-Jin Pu, Yamagata University, for his kindly offering single crystal data for the TQ molecule.
+NR 0
+TC 8
+Z9 8
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 J MATER CHEM C
+JI J. Mater. Chem. C
+PD MAR 17 2022
+PY 2022
+VL 10
+IS 11
+BP 4268
+EP 4275
+DI 10.1039/d1tc05631j
+EA FEB 2022
+EY 2022
+WC Materials Science, Multidisciplinary; Physics, Applied
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Materials Science; Physics
+TO Chemistry (2); Organic Semiconductors (2.114); Organic Solar Cells (2.114.61)
+UT WOS:000760408100001
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Zheng, LY
+   Yu, L
+   Zhang, TS
+   Xie, BB
+AF Chang, Xue-Ping
+   Zheng, Lingyun
+   Yu, Li
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+TI Quantum mechanics/molecular mechanics studies on excited state decay pathways of 5-azacytosine in aqueous solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID INTERSYSTEM CROSSING MECHANISMS; MOLECULAR WAVE-FUNCTIONS; ANO BASIS-SETS; PERTURBATION-THEORY; NUCLEIC-ACIDS; RELAXATION MECHANISMS; TRANSIENT ABSORPTION; DNA METHYLATION; MEAN-FIELD; GAS-PHASE
+AB In this work, we have used the QM(CASPT2//CASSCF)/MM approach to study the photophysical properties and relaxation mechanism of 5-azacytosine (5-AC) in aqueous solution. Based on the relevant minimum-energy structures and intersection structures, and excited-state decay paths in the S-1, S-2, T-1, T-2, and S-0 states, several feasible excited-state nonradiative decay channels from the initially populated S-2(pi pi*) state are proposed. Two major channels are singlet-mediated nonradiative pathways, in which the S-2 system will internally convert (IC) to the S-0 state directly or mediated by the (1)n pi* state via a (1)pi pi*/(1)n pi* conical intersection. The minor ones are related to intersystem crossing (ISC) processes. The system would populate to the T-1 state via the S-2 -> S-1 -> T-1 or S-2 -> T-2 -> T-1 ISC process, followed by further decay to the S-0 state via the transition from T-1 to S-0. However, due to small spin-orbit couplings (SOCs) at the singlet-triplet crossing points, the related ISC would be less efficient and probably take longer. The present work rationalizes the ultrafast excited-state decay dynamics of 5-AC in aqueous solution and its low quantum yields of triplets and fluorescence. It provides important mechanistic insights into understanding 5-AC's derivatives and analogues.
+C1 [Chang, Xue-Ping; Zheng, Lingyun; Yu, Li] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Zhejiang Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+OI Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China; Natural Science Foundation of Henan Province; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work has been supported by the National Natural Science Foundation of China (21803050), the Natural Science Foundation of Henan Province (202300410337), and the Nanhu Scholars Program for Young Scholars of XYNU.
+NR 0
+TC 7
+Z9 7
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD NOV 23 2022
+PY 2022
+VL 24
+IS 45
+BP 27793
+EP 27803
+DI 10.1039/d2cp03661d
+EA OCT 2022
+EY 2022
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 36349893
+UT WOS:000882118700001
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, KX
+   Yin, BW
+   Jia, PK
+   Zhang, TS
+   Cui, GL
+   Xie, BB
+AF Wang, Ke-Xin
+   Yin, Bo -Wen
+   Jia, Pei-Ke
+   Zhang, Teng-Shuo
+   Cui, Ganglong
+   Xie, Bin-Bin
+TI Electronic structure calculations and nonadiabatic dynamics simulations on reversible photochromic mechanism of spirooxazine
+SO DYES AND PIGMENTS
+DT Article
+DE Photochromism; Spirooxazine; Ring -opening reaction; Isomerization; Nonadiabatic dynamics simulations
+ID CORRELATED MOLECULAR CALCULATIONS; 2ND-ORDER PERTURBATION-THEORY; SURFACE-HOPPING PROGRAM; GAUSSIAN-BASIS SETS; ULTRAFAST DYNAMICS; PROTON-TRANSFER; NEWTON-X; ABSORPTION; SPECTROSCOPY; SPIROPYRANS
+AB In this work, the combined electronic structure calculations (OM2/MRCI and MS-CASPT2//CASSCF) and Tully's fewest-switches surface hopping dynamics simulations (OM2/MRCI) have been conducted to investigate the photoinduced ring-opening, relaxation, and subsequent isomerization of spirooxazine. The OM2/MRCI and MSCASPT2//CASSCF methods share very similar structures of S0 and S1 minima and S1/S0 conical intersections, and also provide comparable relative energies at the same time. The relevant reaction paths indicate that two bonded conical intersections and two unbonded ones will play very important roles in the nonadiabatic transitions. In addition, the S1 state nonadiabatic dynamics simulations reveal two effective and competitive S1 -* S0 decay pathways via the bonded and unbonded conical intersections. And the C-O bond dissociation could take place either in the S1 state before hopping or in the S0 state after nonadiabatic transitions, which will finally generate three types of ground-state products, i.e. the closed-loop spirooxazine, a variety of merocyanine intermediates, and a small amount of hydrogen-transferred merocyanine isomers. Besides, the out-of-plane hydrogen (HOOP) oscillations could be an efficient and ultrafast inactivation channel for the excited-state relaxation processes. The currently simulated results provide important mechanistic insights into spirooxazine-based photochromic materials.
+C1 [Wang, Ke-Xin; Yin, Bo -Wen; Jia, Pei-Ke; Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310014, Zhejiang, Peoples R China; [Cui, Ganglong] Beijing Normal Univ, Minist Educ Coll Chem, Key Lab Theoret & Computat Photochem, Beijing 100875, Peoples R China
+C3 Zhejiang Normal University; Zhejiang Sci-Tech University; Beijing Normal University
+RP Xie, BB (corresponding author), Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China.
+EM binbinxie@zjnu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI xie, binbin/0000-0002-5347-2795
+FU National Key Research and Development Program of China [2019YFA0709400]; National Natural Science Foundation of China [21903068]; Zhejiang Provincial Natural Science Foundation of China [LQ19B030007]
+FX This work was supported by the National Key Research and Development Program of China for B. X. (Grant No. 2019YFA0709400) , the National Natural Science Foundation of China for B. X. (Grant No. 21903068) and Zhejiang Provincial Natural Science Foundation of China for B. X. (Grant No. LQ19B030007) . We also thank M.S. Ya-Hui Zhang for most valuable discussions and help.
+NR 0
+TC 13
+Z9 13
+PU ELSEVIER SCI LTD
+PI London
+PA 125 London Wall, London, ENGLAND
+J9 DYES PIGMENTS
+JI Dyes Pigment.
+PD SEP 2022
+PY 2022
+VL 205
+AR 110509
+DI 10.1016/j.dyepig.2022.110509
+WC Chemistry, Applied; Engineering, Chemical; Materials Science, Textiles
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Engineering; Materials Science
+TO Chemistry (2); Photochemistry (2.234); Photoresponsive Polymers (2.234.1149)
+UT WOS:000830055400005
+DA 2026-08-18
+ER
+
+PT J
+AU Chang, XP
+   Zhang, TS
+   Cui, GL
+AF Chang, Xue-Ping
+   Zhang, Teng-Shuo
+   Cui, Ganglong
+TI Theoretical Studies on the Excited-State Decay Mechanism of Homomenthyl Salicylate in a Gas Phase and an Acetonitrile Solution
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID INTRAMOLECULAR PROTON-TRANSFER; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR-ORBITAL METHODS; BOTTOM-UP APPROACH; METHYL-SALICYLATE; NONADIABATIC DYNAMICS; AB-INITIO; RELAXATION PATHWAYS; TRIPLET-STATE; MEAN-FIELD
+AB Here, we employ the CASPT2//CASSCF and QM(CASPT2//CASSCF)/MM approaches to explore the photo-chemical mechanism of homomenthyl salicylate (HMS) in vacuum and an acetonitrile solution. The results show that in both cases, the excited-state relaxation mainly involves a spectroscopically "bright" S-1((1)pi pi*) state and the lower-lying T-1 and T-2 states. In the major relaxation pathway, the photoexcited S-1 keto system first undergoes an essentially barrierless excited-state intramolecular proton transfer (ESIPT) to generate the S-1 enol minimum, near which a favorable S-1/S-0 conical intersection decays the system to the S-0 state followed by a reverse ground-state intramolecular proton transfer (GSIPT) to repopulate the initial S-0 keto species. In the minor one, an S-1/T-2/T-1 three-state intersection in the keto region makes the T-1 state populated via direct and T-2-mediated intersystem crossing (ISC) processes. In the T-1 state, an ESIPT occurs, which is followed by ISC near a T-1/S-0 crossing point in the enol region to the S-0 state and finally back to the S-0 keto species. In addition, a T-1/S-0 crossing point near the T-1 keto minimum can also help the system decay to the S-0 keto species. However, small spin-orbit couplings between T-1 and S-0 at these T-1/S-0 crossing points make ISC to the S-0 state very slow and make the system trapped in the T-1 state for a while. The present work rationalizes not only the ultrafast excited-state decay dynamics of HMS but also its low quantum yield of phosphorescence at 77 K.
+C1 [Chang, Xue-Ping] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Peoples R China; [Cui, Ganglong] Beijing Normal Univ, Key Lab Theoret & Computat Photochem, Minist Educ, Coll Chem, Beijing 100875, Peoples R China
+C3 Xinyang Normal University; Zhejiang University of Technology; Beijing Normal University
+RP Chang, XP (corresponding author), Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China.
+EM xuepingchang@xynu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI Cui, Ganglong/0000-0002-9752-1659; Chang, Xue-Ping/0000-0002-8166-898X
+FU National Natural Science Foundation of China [21803050]; Nanhu Scholars Program for Young Scholars of XYNU
+FX This work was supported by the National Natural Science Foundation of China (X.-P.C.: 21803050) and the Nanhu Scholars Program for Young Scholars of XYNU (X.-P.C.) .
+NR 0
+TC 14
+Z9 14
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD JAN 13 2022
+PY 2022
+VL 126
+IS 1
+BP 16
+EP 28
+DI 10.1021/acs.jpca.1c07108
+EA DEC 2021
+EY 2021
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Pigments, Sensors & Probes (2.59); ESIPT (2.59.890)
+PM 34963284
+UT WOS:000739336900001
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, TS
+   Li, ZW
+   Fang, Q
+   Barbatti, M
+   Fang, WH
+   Cui, GL
+AF Zhang, Teng-Shuo
+   Li, Zi-Wen
+   Fang, Qiu
+   Barbatti, Mario
+   Fang, Wei-Hai
+   Cui, Ganglong
+TI Stereoselective Excited-State Isomerization and Decay Paths in cis-Cyclobiazobenzene
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID TIME-RESOLVED FLUORESCENCE; MOLECULAR-ORBITAL METHODS; PHOTOISOMERIZATION DYNAMICS; AZOBENZENE PHOTOSWITCHES; PHOTOCHEMICAL DYNAMICS; NONADIABATIC DYNAMICS; CONICAL INTERSECTION; TRANS ISOMERIZATION; PROTON-TRANSFER; MECHANISM
+AB Herein, we have employed OM2/MRCI-based full-dimensional nonadiabatic dynamics simulations to explore the photoisomerization and subsequent excited-state decay of a macrocyclic cyclobiazobenzene molecule. Two S-1/S-0 conical intersection structures are found to be responsible for the excited-state decay. Related to these two conical intersections, we found two stereoselective photoisomerization and excited-state decay pathways, which correspond to the clockwise and counterclockwise rotation motions with respect to the N=N bond of the azo group. In both pathways, the excited-state isomerization is ultrafast and finishes within ca. 69 fs, but the clockwise isomerization channel is much more favorable than the counterclockwise one with a ratio of 74% versus 26%. Importantly, the present work demonstrates that stereoselective pathways exist not only in the photoisomerization of isolated azobenzene (AB)-like systems but also in macrocyclic systems with multiple ABs. This finding could provide useful insights for understanding and controlling the photodynamics of macrocyclic nanostructures with AB units as the main building units.
+C1 [Zhang, Teng-Shuo; Li, Zi-Wen; Fang, Qiu; Fang, Wei-Hai; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Minist Educ, Key Lab Theoret & Computat Photochem, Beijing 100875, Peoples R China; [Barbatti, Mario] Aix Marseille Univ, CNRS, ICR, Marseille, France
+C3 Beijing Normal University; Aix-Marseille Universite; Centre National de la Recherche Scientifique (CNRS)
+RP Cui, GL (corresponding author), Beijing Normal Univ, Coll Chem, Minist Educ, Key Lab Theoret & Computat Photochem, Beijing 100875, Peoples R China.; Barbatti, M (corresponding author), Aix Marseille Univ, CNRS, ICR, Marseille, France.
+EM ganglong.cui@bnu.edu.cn; mario.barbatti@univ-amu.fr
+RI Cui, Ganglong/D-5883-2011; Barbatti, Mario/F-5647-2014
+OI Cui, Ganglong/0000-0002-9752-1659; Fang, Wei-Hai/0000-0002-1668-465X; Barbatti, Mario/0000-0001-9336-6607; Zhang, Teng-Shuo/0000-0002-6145-1855
+FU National Natural Science Foundation of China [NSFC-21421003]; Fundamental Research Funds for Central Universities; Excellence Initiative of Aix-Marseille University (A*MIDEX) - French Government "Investissements d'Avenir" program; project Equip@Meso - French Government "Investissements d'Avenir" program [ANR-10-EQPX-29-01]
+FX This work is supported by National Natural Science Foundation of China (NSFC-21421003); G.C. is also grateful for financial support from "Fundamental Research Funds for Central Universities". M. B. thanks the support of the Excellence Initiative of Aix-Marseille University (A*MIDEX) and the project Equip@Meso (ANR-10-EQPX-29-01), both funded by the French Government "Investissements d'Avenir" program.
+NR 0
+TC 9
+Z9 10
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD JUL 25 2019
+PY 2019
+VL 123
+IS 29
+BP 6144
+EP 6151
+DI 10.1021/acs.jpca.9b04372
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Photochemistry (2.234); Photoresponsive Polymers (2.234.1149)
+PM 31246461
+UT WOS:000477785700008
+DA 2026-08-18
+ER
+
+PT J
+AU Guo, WW
+   Zhang, TS
+   Fang, WH
+   Cui, GL
+AF Guo, Wei-Wei
+   Zhang, Teng-Shuo
+   Fang, Wei-Hai
+   Cui, Ganglong
+TI QM/MM studies on the excited-state relaxation mechanism of a semisynthetic dTPT3 base
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID EXPANDED GENETIC ALPHABET; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR-ORBITAL METHODS; AQUEOUS-SOLUTION; NUCLEIC-ACIDS; MEAN-FIELD; DNA; PAIR; DYNAMICS; OPTIMIZATION
+AB Semisynthetic alphabets can potentially increase the genetic information stored in DNA through the formation of unusual base pairs. Recent experiments have shown that near-visible-light irradiation of the dTPT3 chromophore could lead to the formation of a reactive triplet state and of singlet oxygen in high quantum yields. However, the detailed excited-state relaxation paths that populate the lowest triplet state are unclear. Herein, we have for the first time employed the QM(MS-CASPT2//CASSCF)/MM method to explore the spectroscopic properties and excited-state relaxation mechanism of the aqueous dTPT3 chromophore. On the basis of the results, we have found that (1) the S-2((1)pi pi*) state of dTPT3 is the initially populated excited singlet state upon near-visible light irradiation; and (2) there are two efficient relaxation pathways to populate the lowest triplet state, i.e. T-1((3)pi pi*). In the first one, the S-2((1)pi pi*) system first decays to the S-1((1)n pi*) state near the S-2/S-1 conical intersection, which is followed by an efficient S-1 -> T-1 intersystem crossing process at the S-1/T-1 crossing point; in the second one, an efficient S-2 -> T-2 intersystem crossing takes place first, and then, the T-2((3)n pi*) system hops to the T-1((3)pi pi*) state through an internal conversion process at the T-2/T-1 conical intersection. Moreover, an S-2/S-1/T-2 intersection region is found to play a vital role in the excited-state relaxation. These new mechanistic insights help in understanding the photophysics and photochemistry of unusual base pairs.
+C1 [Guo, Wei-Wei; Zhang, Teng-Shuo; Fang, Wei-Hai; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China
+C3 Beijing Normal University
+RP Cui, GL (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.
+EM ganglong.cui@bnu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI Cui, Ganglong/0000-0002-9752-1659
+FU National Natural Science Foundation of China [21522302, 21520102005, 21421003]; Fundamental Research Funds for the Central Universities
+FX This work was supported by the National Natural Science Foundation of China (21522302, 21520102005, and 21421003); G. C. is also grateful for financial support from the "Fundamental Research Funds for the Central Universities''.
+NR 0
+TC 19
+Z9 20
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD FEB 21 2018
+PY 2018
+VL 20
+IS 7
+BP 5067
+EP 5073
+DI 10.1039/c7cp08696b
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); Oligonucleotide Modifications (2.170.988)
+PM 29388994
+UT WOS:000425107800047
+DA 2026-08-18
+ER
+
+PT J
+AU Liu, XY
+   Zhang, TS
+   Fang, Q
+   Fang, WH
+   González, L
+   Cui, GL
+AF Liu, Xiang-Yang
+   Zhang, Teng-Shuo
+   Fang, Qiu
+   Fang, Wei-Hai
+   Gonzalez, Leticia
+   Cui, Ganglong
+TI Hydrogen-Bond Network Determines the Early Photoisomerization Processes of Cph1 and AnPixJ Phytochromes
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+DE CASPT2; CASSCF; photochemistry; photoreceptors; QM; MM
+ID CYANOBACTERIOCHROME ANPIXJ; CHROMOPHORE; PHOTOCONVERSION; DOMAIN; PHYCOCYANOBILIN; PHOTOCYCLES; ABSORPTION; DYNAMICS; TRACKING; SHOWS
+AB Phytochrome proteins are light receptors that play a pivotal role in regulating the life cycles of plants and microorganisms. Intriguingly, while cyanobacterial phytochrome Cph1 and cyanobacteriochrome AnPixJ use the same phycocyanobilin (PCB) chromophore to absorb light, their excited-state behavior is very different. We employ multiscale calculations to rationalize the different early photoisomerization mechanisms of PCB in Cph1 and AnPixJ. We found that their electronic S-1, T-1, and S-0 potential minima exhibit distinct geometric and electronic structures due to different hydrogen bond networks with the protein environment. These specific interactions influence the S-1 electronic structures along the photoisomerization paths, ultimately leading to internal conversion in Cph1 but intersystem crossing in AnPixJ. This explains why the excited-state relaxation in AnPixJ is much slower (ca. 100 ns) than in Cph1 (ca. 30 ps). Further, we predict that efficient internal conversion in AnPixJ can be achieved upon protonating the carboxylic group that interacts with PCB.
+C1 [Liu, Xiang-Yang; Zhang, Teng-Shuo; Fang, Qiu; Fang, Wei-Hai; Cui, Ganglong] Beijing Normal Univ, Key Lab Theoret & Computat Photochem, Coll Chem, Minist Educ, Beijing 100875, Peoples R China; [Liu, Xiang-Yang] Sichuan Normal Univ, Coll Chem & Mat Sci, Chengdu 610068, Peoples R China; [Gonzalez, Leticia] Univ Vienna, Fac Chem, Inst Theoret Chem, Wahringer Str 17, A-1090 Vienna, Austria
+C3 Beijing Normal University; Sichuan Normal University; University of Vienna
+RP Cui, GL (corresponding author), Beijing Normal Univ, Key Lab Theoret & Computat Photochem, Coll Chem, Minist Educ, Beijing 100875, Peoples R China.; González, L (corresponding author), Univ Vienna, Fac Chem, Inst Theoret Chem, Wahringer Str 17, A-1090 Vienna, Austria.
+EM ganglong.cui@bnu.edu.cn; leticia.gonzalez@univie.ac.at
+RI Gonzalez, Leticia/G-7770-2012; Cui, Ganglong/D-5883-2011
+OI Zhang, Teng-Shuo/0000-0002-6145-1855; Gonzalez, Leticia/0000-0001-5112-794X; Cui, Ganglong/0000-0002-9752-1659
+FU NSFC [21688102]
+FX This work has been supported by the NSFC grants No. 21688102 (G.C.). L.G. thanks the University of Vienna for continuous support. G.C. also appreciates the Beijing PARATERA Tech. Corp., Ltd. for quickly managing to provide high-performance and highly parallel computer resources to significantly speed up 200 ns MD and 1 ps QM/MM non-adiabatic dynamics simulations.
+NR 0
+TC 8
+Z9 9
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+PA POSTFACH 101161, 69451 WEINHEIM, GERMANY
+J9 ANGEW CHEM INT EDIT
+JI Angew. Chem.-Int. Edit.
+PD AUG 16 2021
+PY 2021
+VL 60
+IS 34
+BP 18688
+EP 18693
+DI 10.1002/anie.202104853
+EA JUL 2021
+EY 2021
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Agriculture, Environment & Ecology (3); Crop Science (3.4); Plant Light Responses (3.4.1499)
+PM 34097335
+UT WOS:000673143000001
+DA 2026-08-18
+ER
+
+PT J
+AU Peng, Q
+   Zhu, YH
+   Zhang, TS
+   Liu, XY
+   Fang, WH
+   Cui, GL
+AF Peng, Qin
+   Zhu, Yun-Hua
+   Zhang, Teng-Shuo
+   Liu, Xiang-Yang
+   Fang, Wei-Hai
+   Cui, Ganglong
+TI Selenium substitution effects on excited-state properties and photophysics of uracil: a MS-CASPT2 study
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID CORRELATED MOLECULAR CALCULATIONS; INTERSYSTEM CROSSING PATHWAYS; 2ND-ORDER PERTURBATION-THEORY; GAUSSIAN-BASIS SETS; TRIPLET-STATES; NUCLEIC-ACIDS; MEAN-FIELD; BASE-PAIR; DYNAMICS; DNA
+AB The photophysics of selenium-substituted nucleobases has attracted recent experimental attention because they could serve as potential photosensitizers in photodynamic therapy. Herein, we present a comprehensive MS-CASPT2 study on the spectroscopic and excited-state properties, and photophysics of 2-selenouracil (2SeU), 4-selenouracil (4SeU), and 2,4-selenouracil (24SeU). Relevant minima, conical intersections, crossing points, and excited-state relaxation paths in the lowest five electronic states (i.e., S-0, S-1, S-2, T-2, and T-1) are explored. On the basis of these results, their photophysical mechanisms are proposed. Upon photoirradiation to the bright S-2 state, 2SeU quickly relaxes to its S-2 minimum and then moves in an essentially barrierless way to a nearby S-2/S-1 conical intersection near which the S-1 state is populated. Next, the S-1 system arrives at an S-1/T-2/T-1 intersection where a large S-1/T-1 spin-orbit coupling of 430.8 cm(-1) makes the T-1 state populated. In this state, a barrier of 6.8 kcal mol(-1) will trap 2SeU for a while. In parallel, for 4SeU or 24SeU, the system first relaxes to the S-2 minimum and then overcomes a small barrier to approach an S-2/S-1 conical intersection. Once hopping to the S-1 state, there exists an extended region with very close S-1, T-2, and T-1 energies. Similarly, a large S-1/T-1 spin-orbit coupling of 426.8 cm(-1) drives the S-1 -> T-1 intersystem crossing process thereby making the T-1 state populated. Similarly, an energy barrier heavily suppresses electronic transition to the S-0 state. The present work manifests that different selenium substitutions on uracil can lead to a certain extent of different vertical and adiabatic excitation energies, excited-state properties, and relaxation pathways. These insights could help understand the photophysics of selenium-substituted nucleobases.
+C1 [Peng, Qin; Zhu, Yun-Hua; Zhang, Teng-Shuo; Fang, Wei-Hai; Cui, Ganglong] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Liu, Xiang-Yang] Sichuan Normal Univ, Coll Chem & Mat Sci, Chengdu 610068, Peoples R China
+C3 Beijing Normal University; Sichuan Normal University
+RP Cui, GL (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.; Liu, XY (corresponding author), Sichuan Normal Univ, Coll Chem & Mat Sci, Chengdu 610068, Peoples R China.
+EM ganglong.cui@bnu.edu.cn; xiangyangliu@sicnu.eud.cn
+RI Cui, Ganglong/D-5883-2011
+OI Cui, Ganglong/0000-0002-9752-1659
+FU NSFC [21520102005, 21688102, 21590801, 21421003]; Fundamental Research Funds for Central Universities
+FX This study is supported by the NSFC Grants 21520102005, 21688102, 21590801, and 21421003. G. C. is also grateful for the financial support from the "Fundamental Research Funds for Central Universities".
+NR 0
+TC 20
+Z9 20
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD JUN 7 2020
+PY 2020
+VL 22
+IS 21
+BP 12120
+EP 12128
+DI 10.1039/d0cp01369b
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 32440669
+UT WOS:000540513500031
+DA 2026-08-18
+ER
+
+PT J
+AU Zhu, YH
+   Tang, XF
+   Chang, XP
+   Zhang, TS
+   Xie, BB
+   Cui, GL
+AF Zhu, Yun-Hua
+   Tang, Xiu-Fang
+   Chang, Xue-Ping
+   Zhang, Teng-Shuo
+   Xie, Bin-Bin
+   Cui, Ganglong
+TI Mechanistic Photophysics of Tellurium-Substituted Uracils: Insights from Multistate Complete-Active-Space Second-Order Perturbation Calculations
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID INTERSYSTEM CROSSING DYNAMICS; EXCITED-STATE PROPERTIES; TRIPLET-STATES; GAS-PHASE; SELENIUM; SULFUR; ABSORPTION; RELAXATION; NUCLEOBASE; PATHWAYS
+AB The photophysical mechanisms of tellurium-substituted uracils were studied at the multistate complete-active-space second-order perturbation level with a particular focus on how the position and number of tellurium substitutions affect their nonadiabatic relaxation processes. Electronic structure analysis reveals that the lowest several excited states are closely concerned with the n and it orbitals at the Te-7-C-2 [Te-8-C-4] moiety of 2-tellurouracil (2TeU) [4TeU and 24TeU]. Both planar and twisted minima were optimized for 2TeU, whereas only planar ones were obtained for 4TeU and 24TeU, except for a twisted T-1 minimum of 4TeU. Based on intersection structures and linearly interpolated internal coordinate paths, we proposed several feasible excited-state deactivation paths. It is found that the relaxation channels for 2TeU are more complicated than those of 4TeU and 24TeU. The electronic population transfer to the T-1 state for 2TeU is easier than that for 4TeU and 24TeU in consideration of the barrier heights from the S-2 Franck-Condon point to the S-2/S-1 or S-2/T-2 intersections. In addition, the recovery of the ground state from the T-1 state for 2TeU will be more efficient than that for the other two systems as well.
+C1 [Zhu, Yun-Hua; Cui, Ganglong] Beijing Normal Univ, Minist Educ, Key Lab Theoret & Computat Photochem, Coll Chem, Beijing 100875, Peoples R China; [Tang, Xiu-Fang; Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Zhejiang, Peoples R China; [Chang, Xue-Ping] Xinyang Normal Univ, Coll Chem & Chem Engn, Xinyang 464000, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China
+C3 Beijing Normal University; Zhejiang Normal University; Xinyang Normal University; Zhejiang University of Technology
+RP Xie, BB (corresponding author), Zhejiang Normal Univ, Hangzhou Inst Adv Studies, Hangzhou 311231, Zhejiang, Peoples R China.
+EM binbinxie@zjnu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI xie, binbin/0000-0002-5347-2795; Chang, Xue-Ping/0000-0002-8166-898X; Cui, Ganglong/0000-0002-9752-1659
+FU National Natural Science Foundation of China [21903068, 21803050]; Zhejiang Provincial Natural Science Foundation of China [LQ19B030007]
+FX This work was supported by the National Natural Science Foundation of China for B.X. (Grant No. 21903068) and X.C. (Grant No. 21803050) and Zhejiang Provincial Natural Science Foundation of China for B.X. (Grant No. LQ19B030007).
+NR 0
+TC 10
+Z9 10
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD OCT 14 2021
+PY 2021
+VL 125
+IS 40
+BP 8816
+EP 8826
+DI 10.1021/acs.jpca.1c06169
+EA OCT 2021
+EY 2021
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 34606278
+UT WOS:000709634700005
+DA 2026-08-18
+ER
+
+PT J
+AU Zhu, YH
+   Zhang, TS
+   Tang, XF
+   Xie, BB
+   Cui, GL
+AF Zhu, Yun-Hua
+   Zhang, Teng-Shuo
+   Tang, Xiu-Fang
+   Xie, Bin-Bin
+   Cui, Ganglong
+TI MS-CASPT2 studies on the mechanistic photophysics of tellurium-substituted guanine and cytosine
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; EXCITED-STATE PROPERTIES; ULTRAVIOLET-ABSORPTION; TRIPLET-STATES; BASIS-SETS; SULFUR; PATHWAYS; BASES; 2,4-DITHIOTHYMINE; DEACTIVATION
+AB Sulfur-substituted nucleobases are highly promising photosensitizers that are widely used in photodynamic therapy, and there are numerous studies exploring their unique photophysical behaviors. However, relevant photophysical investigations on selenium and tellurium substitutions are still rare. Herein, the high-level multistate complete-active-space second-order perturbation (MS-CASPT2) method was performed for the first time to explore the excited-state relaxation processes of tellurium-substituted guanine (TeG) and cytosine (TeC). Based on the electronic state properties in the Franck-Condon (FC) region, we found that the lowest five (S-0, S-1, S-2, T-1, and T-2) and six (S-0, S-1, S-2, T-1, T-2 and T-3) states will participate in the nonadiabatic transition processes of TeG and TeC systems, respectively. In these electronic states, two kinds of minimum and intersection structures (i.e., planar and twisted structures) were obtained for both TeG and TeC systems. The linearly interpolated internal coordinate (LIIC) paths and spin-orbit coupling (SOC) constants revealed several possible planar and twisted excited-state decay channels, which could lead the systems to the lowest reactive triplet state of T-1. Small energy barriers in the T-1 state will trap the TeG and TeC systems for a while before they finally populate to the ground state. Although tellurium substitution would further redshift the absorption wavelength and enhance the intersystem crossing (ISC) rate to the T-1 state compared with sulfur and selenium substitutions, the rapid ISC process of T-1 -> S-0 may make it a less effective photosensitizer to sensitize the molecular oxygen. We believe our present work will provide important mechanistic insights into the photophysics of tellurium-substituted nucleobases.
+C1 [Zhu, Yun-Hua; Cui, Ganglong] Beijing Normal Univ, Minist Educ, Key Lab Theoret & Computat Photochem, Coll Chem, Beijing 100875, Peoples R China; [Tang, Xiu-Fang; Xie, Bin-Bin] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China; [Zhang, Teng-Shuo] Zhejiang Univ Technol, Coll Chem Engn, Hangzhou 310014, Zhejiang, Peoples R China
+C3 Beijing Normal University; Zhejiang Normal University; Zhejiang University of Technology
+RP Cui, GL (corresponding author), Beijing Normal Univ, Minist Educ, Key Lab Theoret & Computat Photochem, Coll Chem, Beijing 100875, Peoples R China.; Xie, BB (corresponding author), Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China.
+EM ganglong.cui@bnu.edu.cn; binbinxie@zjnu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI xie, binbin/0000-0002-5347-2795; Cui, Ganglong/0000-0002-9752-1659
+FU National Natural Science Foundation of China [21903068, 21688102, 21590801, 21520102005, 21421003]; Zhejiang Provincial Natural Science Foundation of China [LQ19B030007]
+FX This work was supported by the National Natural Science Foundation of China for B. X. (Grant No. 21903068) and G. C. (No. 21688102, 21590801, 21520102005, and 21421003) and Zhejiang Provincial Natural Science Foundation of China for B. X. (Grant No. LQ19B030007).
+NR 0
+TC 7
+Z9 7
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD JUN 7 2021
+PY 2021
+VL 23
+IS 21
+BP 12421
+EP 12430
+DI 10.1039/d1cp01142a
+EA MAY 2021
+EY 2021
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 34028476
+UT WOS:000653213100001
+DA 2026-08-18
+ER
+
+PT J
+AU Li, B
+   Zhang, TS
+   Xue, JD
+   Xie, BB
+   Fang, WH
+   Shen, L
+AF Li, Bo
+   Zhang, Teng-Shuo
+   Xue, Jiadan
+   Xie, Bin-Bin
+   Fang, Wei-Hai
+   Shen, Lin
+TI Theoretical studies on the photochemistry of 2-nitrofluorene in the gas phase and acetonitrile solution
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID POLYCYCLIC AROMATIC-HYDROCARBONS; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR-ORBITAL METHODS; TRIPLET-STATE; FORCE-FIELD; 1-NITRONAPHTHALENE; PHOTOLYSIS; DYNAMICS; ENERGY; MUTAGENICITY
+AB The photophysical and photochemical mechanisms of 2-nitrofluorene (2-NF) in the gas phase and acetonitrile solution have been studied theoretically. Upon similar to 330 nm irradiation to the first bright state ((1)pi pi*), the 2-NF system can decay to triplet excited statesviarapid intersystem crossing (ISC) processes through different surface crossing points or to the ground stateviaan ultrafast internal conversion (IC) process through the S-1/S-0 conical intersection. The (1)n pi* dark state will serve as a bridge when the system leaves the Franck-Condon (FC) region and approaches to the S-1 minimum. The molecule maintains a planar geometry during the excited-state relaxation processes. The differences on excitation properties such as electronic configurations and spin-orbit coupling (SOC) interactions between those in the gas phase and acetonitrile solution cannot be neglected, indicating possible changes on the efficiency of the related ISC processes for the 2-NF system in solution. Once arrived at the T-1 state, it would further decay to the S-0 state or photodegrade into the Ar-O-center dot and NO center dot free radicals. During the intramolecular rearrangement process, the twisting of the nitro group out of the aromatic-ring plane is regarded as a critical structural variation for the photodegradation of the 2-NF system. The free radicals finally form through oxaziridine-type intermediate and transition state structures. The present work provides important mechanistic insights to the photochemistry of nitro-substituted polyaromatic compounds.
+C1 [Li, Bo; Xie, Bin-Bin; Fang, Wei-Hai] Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China; [Zhang, Teng-Shuo; Fang, Wei-Hai; Shen, Lin] Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China; [Xue, Jiadan] Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Peoples R China
+C3 Zhejiang Normal University; Beijing Normal University; Zhejiang Sci-Tech University
+RP Xie, BB (corresponding author), Zhejiang Normal Univ, Hangzhou Inst Adv Studies, 1108 Gengwen Rd, Hangzhou 311231, Zhejiang, Peoples R China.; Shen, L (corresponding author), Beijing Normal Univ, Coll Chem, Key Lab Theoret & Computat Photochem, Minist Educ, Beijing 100875, Peoples R China.
+EM binbinxie@mail.bnu.edu.cn; lshen@bnu.edu.cn
+OI xie, binbin/0000-0002-5347-2795
+FU National Natural Science Foundation of China [21903068, 21973082, 21590801, 21688102, 21520102005, 21421003, 21903005]; Zhejiang Provincial Natural Science Foundation of China [LQ19B030007]
+FX This work was supported by the National Natural Science Foundation of China for B. X. (Grant No. 21903068), J. X. (No. 21973082), W. F. (No. 21590801, 21688102, 21520102005, and 21421003) and L. S. (No. 21903005) and Zhejiang Provincial Natural Science Foundation of China for B. X. (Grant No. LQ19B030007).
+NR 0
+TC 10
+Z9 10
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD AUG 7 2020
+PY 2020
+VL 22
+IS 29
+BP 16772
+EP 16782
+DI 10.1039/d0cp01969k
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Agriculture, Environment & Ecology (3); Herbicides, Pesticides & Ground Poisoning (3.60); PAHs (3.60.993)
+PM 32662496
+UT WOS:000556485900026
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, TS
+   Du, R
+   Zhao, YY
+   Xue, JD
+   Wang, HG
+   Zheng, XM
+AF Zhang, Teng-Shuo
+   Du, Rui
+   Zhao, Yan-Yin
+   Xue, Jia-Dan
+   Wang, Hui-Gang
+   Zheng, Xuming
+TI Solvent-dependent structural dynamics of 2(1H)-pyridinone in light absorbing S4(ππ*) state
+SO JOURNAL OF RAMAN SPECTROSCOPY
+DT Article
+DE 2(1H)-pyridinone; excited state proton transfer; resonance Raman; structural dynamics; vibrational assignment
+ID TIME PHOTODISSOCIATION DYNAMICS; PHASE TAUTOMERIC EQUILIBRIUM; DENSITY-FUNCTIONAL THEORY; A-BAND ABSORPTION; PROTON-TRANSFER; GAS-PHASE; MATRIX-ISOLATION; HYDROGEN-TRANSFER; RESONANCE; SPECTROSCOPY
+AB The B-band resonance Raman spectra of 2(1H)-pyridinone (NHP) in water and acetonitrile were obtained, and their intensity patterns were found to be significantly different. To explore the underlying excited state tautomeric reaction mechanisms of NHP in water and acetonitrile, the vibrational analysis was carried out for NHP, 2(1D)-pyridinone (NDP), NHP-(H2O)(n) (n=1, 2) clusters, and NDP-(D2O)(n) (n=1, 2) clusters on the basis of the FT-Raman experiments, the B3LYP/6-311++G(d,p) computations using PCM solvent model, and the normal mode analysis. Good agreements between experimental and theoretically predicted frequencies and intensities in different surrounding environments enabled reliable assignments of Raman bands in both the FT-Raman and the resonance Raman spectra. The results indicated that most of the B-band resonance Raman spectra in H2O was assignable to the fundamental, overtones, and combination bands of about ten vibration modes of ring-type NHP-(H2O)(2) cluster, while most of the B-band resonance Raman spectra in CH3CN was assigned to the fundamental, overtones, and combination bands of about eight vibration modes of linear-type NHP-CH3CN. The solvent effect of the excited state enol-keto tautomeric reaction mechanisms was explored on the basis of the significant difference in the short-time structural dynamics of NHP in H2O and CH3CN. The inter-molecular and intra-molecular ESPT reaction mechanisms were proposed respectively to explain the Franck-Condon region structural dynamics of NHP in H2O and CH3CN.Copyright (c) 2015 John Wiley & Sons, Ltd.
+C1 [Zhang, Teng-Shuo; Du, Rui; Zhao, Yan-Yin; Xue, Jia-Dan; Wang, Hui-Gang; Zheng, Xuming] Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China; [Zheng, Xuming] Zhejiang Sci Tech Univ, MOE, State Key Lab Adv Text Mat & Mfg Technol, Hangzhou 310018, Zhejiang, Peoples R China; [Zheng, Xuming] Zhejiang Sci Tech Univ, MOE, Engn Res Ctr Ecodyeing & Finishing Text, Hangzhou 310018, Zhejiang, Peoples R China
+C3 Zhejiang Sci-Tech University; Zhejiang Sci-Tech University; Zhejiang Sci-Tech University
+RP Zheng, XM (corresponding author), Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China.
+EM zxm@zstu.edu.cn
+RI wang, Huigang/GYJ-2531-2022
+OI Zhang, Teng-Shuo/0000-0002-6145-1855
+FU NSFC [21473163, 21033002, 21202032]; National Key Basic Research and Development Plan 973 of China [2013CB834604]
+FX This work was supported by grants from NSFC (No. 21473163, 21033002, 21202032) and the National Key Basic Research and Development Plan 973 of China (2013CB834604). We thank Professor Micha H. Jamroz for his generous offer of the VEDA program and kind help in the use of the program. X. Z. wishes to acknowledge the referees for their contributions in making this a better paper.
+NR 0
+TC 8
+Z9 8
+PU WILEY
+PI HOBOKEN
+PA 111 RIVER ST, HOBOKEN 07030-5774, NJ USA
+J9 J RAMAN SPECTROSC
+JI J. Raman Spectrosc.
+PD MAR 2016
+PY 2016
+VL 47
+IS 3
+BP 299
+EP 309
+DI 10.1002/jrs.4784
+WC Spectroscopy
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Spectroscopy
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000372322800006
+DA 2026-08-18
+ER
+
+PT J
+AU Jiang, J
+   Zhang, TS
+   Xue, JD
+   Zheng, XM
+   Cui, GL
+   Fang, WH
+AF Jiang, Jie
+   Zhang, Teng-shuo
+   Xue, Jia-dan
+   Zheng, Xuming
+   Cui, Ganglong
+   Fang, Wei-hai
+TI Short-time dynamics of 2-thiouracil in the light absorbing S2(ππ*) state
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+ID RESONANCE RAMAN-SCATTERING; POST-HARTREE-FOCK; A-BAND ABSORPTION; PHOTODISSOCIATION DYNAMICS; OPTICAL SPECTROSCOPY; INFRARED-SPECTRA; MATRIX-ISOLATION; DEPENDENT THEORY; EXCITED-STATES; 4-THIOTHYMIDINE
+AB Ultrahigh quantum yields of intersystem crossing to the lowest triplet state T-1 are observed for 2-thiouracils (2TU), which is in contrast to the natural uracils that predominantly exhibit ultrafast internal conversion to the ground state upon excitation to the singlet excited state. The intersystem crossing mechanism of 2TU has recently been investigated using second-order perturbation methods with a high-level complete-active space self-consistent field. Three competitive nonadiabatic pathways to the lowest triplet state T-1 from the initially populated singlet excited state S-2 were proposed. We investigate the initial decay dynamics of 2TU from the light absorbing excited states using resonance Raman spectroscopy, time-dependent wave-packet theory in the simple model, and complete-active space self-consistent field (CASSCF) and time dependent-Becke's three-parameter exchange and correlation functional with the Lee-Yang-Parr correlation functional (TD-B3LYP) calculations. The obtained short-time structural dynamics in easy-to-visualize internal coordinates were compared with the CASSCF(16,11) predicted key nonadiabatic decay routes. Our results indicate that the predominant decay pathway initiated at the Franck-Condon region is toward the S-2/S-1 conical intersection point and S2T3 intersystem crossing point, but not toward the S2T2 intersystem crossing point. (C) 2015 AIP Publishing LLC.
+C1 [Jiang, Jie; Zhang, Teng-shuo; Xue, Jia-dan; Zheng, Xuming] Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China; [Cui, Ganglong; Fang, Wei-hai] Beijing Normal Univ, Coll Chem, Beijing 100875, Peoples R China
+C3 Zhejiang Sci-Tech University; Beijing Normal University
+RP Zheng, XM (corresponding author), Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China.
+EM zxm@zstu.edu.cn
+RI Cui, Ganglong/D-5883-2011
+OI Zhang, Teng-Shuo/0000-0002-6145-1855; Cui, Ganglong/0000-0002-9752-1659; Fang, Wei-Hai/0000-0002-1668-465X
+FU NSFC [21473163, 21033002, 21202032]; National Basic Research Program of China [2013CB834604]
+FX This work was supported by grants from NSFC (Nos. 21473163, 21033002, and 21202032) and the National Basic Research Program of China (No. 2013CB834604).
+NR 0
+TC 33
+Z9 34
+PU AMER INST PHYSICS
+PI MELVILLE
+PA 1305 WALT WHITMAN RD, STE 300, MELVILLE, NY 11747-4501 USA
+J9 J CHEM PHYS
+JI J. Chem. Phys.
+PD NOV 7 2015
+PY 2015
+VL 143
+IS 17
+AR 175103
+DI 10.1063/1.4935047
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Nucleic Acids Chemistry (2.170); DNA Photophysics (2.170.2058)
+PM 26547183
+UT WOS:000364585200036
+DA 2026-08-18
+ER
+
+PT J
+AU Zhang, TS
+   Xue, JD
+   Zheng, XM
+   Xie, BB
+   Fang, WH
+AF Zhang, Teng-Shuo
+   Xue, Jia-Dan
+   Zheng, Xuming
+   Xie, Bin-Bin
+   Fang, Wei-Hai
+TI Short-time dynamics and decay mechanism of 2(1H)-pyridinone upon excitation to the light-absorbing S4(2ππ*1) state
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+ID MULTIREFERENCE PERTURBATION-THEORY; PHOTODISSOCIATION DYNAMICS; TAUTOMERIC EQUILIBRIUM; MATRIX-ISOLATION; PROTON-TRANSFER; GAS-PHASE; RAMAN; 2-HYDROXYPYRIDINE; SPECTROSCOPY; CLUSTERS
+AB The excited-state structural dynamics and the decay mechanism of 2(1H)-pyridinone (NHP) after excitation to the S-4(2(1)pi pi*) light-absorbing state were studied using resonance Raman spectroscopy and complete-active space self-consistent field (CASSCF) calculations. The B-band absorption cross-section and the corresponding absolute resonance Raman cross-sections were simulated using a simple model based on time-dependent wave-packet theory. The geometric structures of the singlet electronic excited states and their curve-crossing points were optimized at the CASSCF level of theory. The obtained short-time structural dynamics in easy-to-visualize internal coordinates were then compared with the CASSCF-predicted structural-parameter changes of S-4(2(1)pi pi*)/S-3(2(1)n pi*)-MIN, S-4(2(1)pi pi*)/S-1(1(1)n pi*)-MIN, and S-4(2(1)pi pi*)-MIN. Our results indicate that the initial population of NHP in the S-4 state bifurcates in or near the Franck-Condon region, leading to two predominant (S4S3-MIN and S4S1-MIN) internal conversion pathways. The lowest-lying S-2(1(1)pi pi*) excited state is finally formed via subsequent internal conversions S-3(2(1)n pi*) = S-2(1(1)pi pi*)-MIN and S-1(1(1)n pi*)/S-2(1(1)pi pi*)MIN. The enol-keto tautomeric mechanism does not seem to play a role. The decay mechanism in the singlet realm is proposed. Published by AIP Publishing.
+C1 [Zhang, Teng-Shuo; Xue, Jia-Dan; Zheng, Xuming] Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China; [Xie, Bin-Bin; Fang, Wei-Hai] Beijing Normal Univ, Chem Coll, Beijing 100875, Peoples R China
+C3 Zhejiang Sci-Tech University; Beijing Normal University
+RP Zheng, XM (corresponding author), Zhejiang Sci Tech Univ, Dept Chem, Hangzhou 310018, Zhejiang, Peoples R China.
+EM zhengxuming126@126.com
+OI xie, binbin/0000-0002-5347-2795; Fang, Wei-Hai/0000-0002-1668-465X
+FU NSFC [21473163, 21033002, 21202032]; National Basic Research Program of China [2013CB834604]
+FX This work was supported by grants from NSFC (Nos. 21473163, 21033002, and 21202032) and the National Basic Research Program of China (No. 2013CB834604).
+NR 0
+TC 4
+Z9 4
+PU AIP Publishing
+PI MELVILLE
+PA 1305 WALT WHITMAN RD, STE 300, MELVILLE, NY 11747-4501 USA
+J9 J CHEM PHYS
+JI J. Chem. Phys.
+PD MAR 21 2017
+PY 2017
+VL 146
+IS 11
+AR 114305
+DI 10.1063/1.4977763
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 28330344
+UT WOS:000397313600017
+DA 2026-08-18
+ER
+
+EF  

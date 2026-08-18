@@ -1,0 +1,1197 @@
+FN Clarivate Analytics Web of Science
+VR 1.0
+PT J
+AU Aquilante, F
+   De Vico, L
+   Ferré, N
+   Ghigo, G
+   Malmqvist, PÅ
+   Neogrády, P
+   Pedersen, TB
+   Pitonák, M
+   Reiher, M
+   Roos, BO
+   Serrano-Andrés, L
+   Urban, M
+   Veryazov, V
+   Lindh, R
+AF Aquilante, Francesco
+   De Vico, Luca
+   Ferre, Nicolas
+   Ghigo, Giovanni
+   Malmqvist, Per-Ake
+   Neogrady, Pavel
+   Pedersen, Thomas Bondo
+   Pitonak, Michal
+   Reiher, Markus
+   Roos, Bjorn O.
+   Serrano-Andres, Luis
+   Urban, Miroslav
+   Veryazov, Valera
+   Lindh, Roland
+TI Software News and Update MOLCAS 7: The Next Generation
+SO JOURNAL OF COMPUTATIONAL CHEMISTRY
+DT Review
+DE MOLCAS; ANO-RCC; RASPT2; ESPF; Cholesky decomposition; coupled cluster; Douglas-Kroll-Hess; photo chemistry
+ID COUPLED-CLUSTER THEORY; ANO BASIS-SETS; 2ND-ORDER PERTURBATION-THEORY; MOLECULAR WAVE-FUNCTIONS; OPTIMIZED VIRTUAL ORBITALS; FULL CCSDT MODEL; REDUCED MULTIPLICATION SCHEME; LOWEST TRIPLET-STATE; GAUSSIAN-BASIS SETS; AB-INITIO
+AB Some of the new unique features of the MOLCAS quantum chemistry package version 7 are presented inthis report. In particular, the Cholesky decomposition method applied to some quantum chemical methods is described. This approach is used both in the context of a straight forward approximation of the two-electron integrals and in the generation of so-called auxiliary basis sets. The article describes how the method is implemented for most known wave functions models: self-consistent field, density functional theory, 2nd order perturbation theory, complete-active space self-consistent field multiconfigurational reference 2nd order perturbation theory, and coupled-cluster methods. The report further elaborates on the implementation of a restricted-active space self-consistent field reference function in conjunction with 2nd order perturbation theory. The average atomic natural orbital basis for relativistic calculations, covering the whole periodic table, are described and associated unique properties are demonstrated. Furthermore, the use of the arbitrary order Douglas-Kroll-Hess transformation for one-component relativistic calculations and its implementation are discussed. This section especially focuses on the implementation of the so-called picture-change-free atomic orbital property integrals. Moreover, the ElectroStatic Potential Fitted scheme, a version of a quantum mechanics/molecular mechanics hybrid method implemented in MOLCAS, is described and discussed. Finally, the report discusses the use of the MOLCAS package for advanced studies of photo chemical phenomena and the usefulness of the algorithms for constrained geometry optimization in MOLCAS in association with such studies. (c) 2009 Wiley Periodicals, Inc. J Corn put Chem 31: 224-247, 2010
+C1 [Malmqvist, Per-Ake; Pedersen, Thomas Bondo; Roos, Bjorn O.; Veryazov, Valera; Lindh, Roland] Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; [Aquilante, Francesco] Univ Geneva, Dept Phys Chem, CH-1211 Geneva, Switzerland; [De Vico, Luca] Univ Copenhagen, Dept Chem, DK-2100 Copenhagen, Denmark; [Ferre, Nicolas] Univ Aix Marseille 1, Univ Aix Marseille 2, Univ Aix Marseille 3, CNRS,UMR 6264,Lab Chim Prov,Fac St Jerome, F-13397 Marseille 20, France; [Ghigo, Giovanni] Univ Turin, Dipartimento Chim Gen & Chim Organ, I-10125 Turin, Italy; [Neogrady, Pavel; Pitonak, Michal; Urban, Miroslav] Comenius Univ, Fac Nat Sci, Dept Phys & Theoret Chem, Bratislava 84215, Slovakia; [Pitonak, Michal] Acad Sci Czech Republ, Inst Organ Chem & Biochem, CR-16610 Prague 6, Czech Republic; [Pitonak, Michal] Ctr Biomol & Complex Mol Syst, Prague 16610 6, Czech Republic; [Reiher, Markus] ETH, Chem Phys Lab, CH-8093 Zurich, Switzerland; [Serrano-Andres, Luis] Univ Valencia, Inst Ciencia Mol, Dept Quim Fis, ES-46071 Valencia, Spain
+C3 Lund University; University of Geneva; University of Copenhagen; Aix-Marseille Universite; Centre National de la Recherche Scientifique (CNRS); University of Turin; Comenius University Bratislava; Czech Academy of Sciences; Institute of Organic Chemistry & Biochemistry of the Czech Academy of Sciences; Swiss Federal Institutes of Technology Domain; ETH Zurich; University of Valencia
+RP Lindh, R (corresponding author), Chem Ctr Lund, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM roland.lindh@teokem.lu.se; valera.veryazov@teokem.lu.se
+RI Veryazov, Valera/AAB-7765-2019; Urban, Miroslav/I-3118-2015; Neogrady, Pavel/I-6486-2015; De Vico, Luca/HFZ-7775-2022; Ghigo, Giovanni/ADG-0405-2022; Ferré, Nicolas/K-8228-2012; Aquilante, Francesco/L-6147-2013; Lindh, Roland/F-3471-2012; Pitoňák, Michal/I-7254-2015; Pedersen, Thomas/B-8646-2008; Reiher, Markus/F-9265-2018
+OI Veryazov, Valera/0000-0002-0172-7047; De Vico, Luca/0000-0002-2821-5711; Ghigo, Giovanni/0000-0002-2480-5415; Ferré, Nicolas/0000-0002-5583-8834; Aquilante, Francesco/0000-0003-4422-3938; Lindh, Roland/0000-0001-7567-8295; Pitoňák, Michal/0000-0002-0601-9488; Pedersen, Thomas/0000-0001-8967-6055; Reiher, Markus/0000-0002-9508-1565
+FU Swedish Science Research Council; ETH Zurich [0-20436-07]; Slovak Research and Development Agency [APVV-20-018405]; Ministry of Education of the Czech Republic (Center for Biomolecules and Complex Molecular Systems, LC512) [Z4 055 0506]; Consolider-Ingenio in Molecular Nanoscience of the Spanish MEC/FEDER [CTQ2007-61260, CSD2007-0010]
+FX Swedish Science Research Council ETH Zurich; contract/grant number: ETH grant 0-20436-07 Schweitzer Nationalfonds; contract/grant number: project 200020-121870 Slovak Research and Development Agency; contract/grant number: APVV-20-018405 Ministry of Education of the Czech Republic (Center for Biomolecules and Complex Molecular Systems, LC512); contract/grant number: Z4 055 0506 Consolider-Ingenio in Molecular Nanoscience of the Spanish MEC/FEDER; contract/grant numbers: CTQ2007-61260 and CSD2007-0010
+NR 0
+TC 1487
+Z9 1566
+PU WILEY
+PI HOBOKEN
+PA 111 RIVER ST, HOBOKEN 07030-5774, NJ USA
+J9 J COMPUT CHEM
+JI J. Comput. Chem.
+PD JAN 15 2010
+PY 2010
+VL 31
+IS 1
+BP 224
+EP 247
+DI 10.1002/jcc.21318
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 19499541
+UT WOS:000273186800021
+DA 2026-08-18
+ER
+
+PT J
+AU Veryazov, V
+   Malmqvist, PÅ
+   Roos, BO
+AF Veryazov, Valera
+   Malmqvist, Per Ake
+   Roos, Bjorn O.
+TI How to Select Active Space for Multiconfigurational Quantum Chemistry?
+SO INTERNATIONAL JOURNAL OF QUANTUM CHEMISTRY
+DT Article
+DE ab initio quantum chemistry; multiconfigurational methods; RASSCF; RASPT2; active orbitals
+ID 2ND-ORDER PERTURBATION-THEORY; AB-INITIO; ELECTRONIC SPECTROSCOPY; MOLECULAR ORBITALS; WAVE-FUNCTIONS; CASPT2 METHOD
+AB Bjorn Roos is one of the pioneers in the development and usage of multiconfigurational methods, in particular, the complete active space self-consistent field method and the perturbational complete active space perturbation theory through second order. To perform multiconfigurational calculations using these methods, a set of active orbitals must be selected, and the success of the methods depends on the choice of this set. This is not only sometimes easy but also sometimes difficult, especially for use of the more recent RASSCF and RASPT2 methods (which use a "restricted active space" rather than the complete one). Although an automated procedure for selecting the active orbitals would be a preferable solution, this does not seem feasible yet. An account of the problem is given, with examples and some approaches that usually work. (C) 2011 Wiley Periodicals, Inc. Int J Quantum Chem 111: 3329-3338, 2011
+C1 [Veryazov, Valera; Malmqvist, Per Ake; Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 Lund University
+RP Veryazov, V (corresponding author), Lund Univ, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM valera.veryazov@teokem.lu.se
+RI Veryazov, Valera/AAB-7765-2019
+OI Veryazov, Valera/0000-0002-0172-7047
+FU Swedish National Science Foundation (VR) [621-2010-5008, 239-2009-6797]; Swedish National Science Foundation [621-2010-5008, 239-2009-6794]
+FX Contract grant sponsor: Swedish National Science Foundation (VR). Contract grant numbers: 621-2010-5008, 239-2009-6797. P.A.M. thanks Swedish National Science Foundation via the Linnaeus grant for the Organizing Molecular Matter center of excellence project (239-2009-6794), and through individual grant (621-2010-5008). P.A.M. and V.V. thank Prof. B.O. Roos (deceased), for ideas and collaborations discussed in this article.
+NR 0
+TC 222
+Z9 246
+PU WILEY-BLACKWELL
+PI MALDEN
+PA COMMERCE PLACE, 350 MAIN ST, MALDEN 02148, MA USA
+J9 INT J QUANTUM CHEM
+JI Int. J. Quantum Chem.
+PD NOV 5 2011
+PY 2011
+VL 111
+IS 13
+SI SI
+BP 3329
+EP 3338
+DI 10.1002/qua.23068
+WC Chemistry, Physical; Mathematics, Interdisciplinary Applications; Quantum Science & Technology; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Mathematics; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000295110300015
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Borin, AC
+   Gagliardi, L
+AF Roos, Bjorn O.
+   Borin, Antonio C.
+   Gagliardi, Laura
+TI Reaching the maximum multiplicity of the covalent chemical bond
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+DE ab initio calculations; actinides; bond theory; multiple bonds; quantum chemistry
+ID 2ND-ORDER PERTURBATION-THEORY; QUINTUPLE BOND; QUANTUM-CHEMISTRY; CENTERS; U-2
+C1 Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; Univ Sao Paulo, Inst Quim, BR-05508900 Sao Paulo, Brazil; Univ Geneva, Dept Chim Phys, CH-1211 Geneva, Switzerland
+C3 Lund University; Universidade de Sao Paulo; University of Geneva
+RP Roos, BO (corresponding author), Chem Ctr Lund, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM bjorn.roos@teokem.lu.se
+RI Gagliardi, Laura/S-3023-2017; Borin, Antonio Carlos/C-6223-2014
+OI Gagliardi, Laura/0000-0001-5227-1396; Borin, Antonio Carlos/0000-0003-3047-2044
+NR 0
+TC 279
+Z9 305
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+PA PO BOX 10 11 61, D-69451 WEINHEIM, GERMANY
+J9 ANGEW CHEM INT EDIT
+JI Angew. Chem.-Int. Edit.
+PD 2007
+PY 2007
+VL 46
+IS 9
+BP 1469
+EP 1472
+DI 10.1002/anie.200603600
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17225237
+UT WOS:000244507100020
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Malmqvist, PÅ
+   Gagliardi, L
+AF Roos, Bjorn O.
+   Malmqvist, Per-Ake
+   Gagliardi, Laura
+TI Exploring the actinide-actinide bond:: Theoretical studies of the chemical bond in Ac2, Th2, Pa2, and U2
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; QUANTUM-CHEMISTRY; QUINTUPLE BOND; MOLECULE; CENTERS
+AB Multiconfigurational quantum chemical methods (CASSCF/CASPT2) have been used to study the chemical bond in the actinide diatoms Ac-2, Th-2, Pa-2, and U-2. Scalar relativistic effects and spin-orbit coupling have been included in the calculations. In the Ac-2 and Th-2 diatoms the atomic 6d, 7s, and 7p orbitals are the significant contributors to the bond, while for the two heavier diatoms, the 5f orbitals become increasingly important. Ac-2 is characterized by a double bond with a (3)Sigma(-)(g)(0(g)(+)) ground state, a bond distance of 3.64. angstrom, and a bond energy of 1.19 eV. Th-2 has quadruple bond character with a D-3(g)(1(g)) ground state. The bond distance is 2.76 angstrom and the bond energy (D-0) 3.28 eV. Pa-2 is characterized by a quintuple bond with a (3)Sigma(-)(g)(0(g)(+)) ground state. The bond distance is 2.37 angstrom and the bond energy 4.00 eV. The uranium diatom has also a quintuple bond with a O-7(g) (8(g)) ground state, a bond distance of 2.43 angstrom, and a bond energy of 1.15 eV. It is concluded that the strongest bound actinide diatom is Pa-2, characterized by a well-developed quintuple bond.
+C1 Lund Univ, Dept Theoret Chem, Chem Ctr, S-22100 Lund, Sweden; Univ Geneva, Dept Phys Chem Sci 2, CH-1211 Geneva 4, Switzerland
+C3 Lund University; University of Geneva
+RP Roos, BO (corresponding author), Lund Univ, Dept Theoret Chem, Chem Ctr, POB 124, S-22100 Lund, Sweden.
+EM Bjorn.Roos@teokem.lu.se
+RI Gagliardi, Laura/S-3023-2017
+OI Gagliardi, Laura/0000-0001-5227-1396
+NR 0
+TC 178
+Z9 193
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J AM CHEM SOC
+JI J. Am. Chem. Soc.
+PD DEC 27 2006
+PY 2006
+VL 128
+IS 51
+BP 17000
+EP 17006
+DI 10.1021/ja066615z
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17177451
+UT WOS:000242941600106
+DA 2026-08-18
+ER
+
+PT J
+AU Jensen, KP
+   Roos, BO
+   Ryde, U
+AF Jensen, Kasper P.
+   Roos, Bjorn O.
+   Ryde, Ulf
+TI Performance of density functionals for first row transition metal systems
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+ID ELECTRONIC-STRUCTURE; CORRELATION-ENERGY; APPROXIMATION; COMPLEXES; DIATOMICS; ACCURACY; EXCHANGE; STATES; BOND; COC
+AB This article investigates the performance of five commonly used density functionals, B3LYP, BP86, PBE0, PBE, and BLYP, for studying diatomic molecules consisting of a first row transition metal bonded to H, F, Cl, Br, N, C, O, or S. Results have been compared with experiment wherever possible. Open-shell configurations are found more often in the order PBE0 > B3LYP > PBE similar to BP86 > BLYP. However, on average, 58 of 63 spins are correctly predicted by any functional, with only small differences. BP86 and PBE are slightly better for obtaining geometries, with errors of only 0.020 A. Hybrid functionals tend to overestimate bond lengths by a few picometers and underestimate bond strengths by favoring open shells. Nonhybrid functionals usually overestimate bond energies. All functionals exhibit similar errors in bond energies, between 42 and 53 kJ/mol. Late transition metals are found to be better modeled by hybrid functionals, whereas nonhybrid functionals tend to have less of a preference. There are systematic errors in predicting certain properties that could be remedied. BLYP performs the best for ionization potentials studied here, PBE0 the worst. In other cases, errors are similar. Finally, there is a clear tendency for hybrid functionals to give larger dipole moments than nonhybrid functionals. These observations may be helpful in choosing and improving existing functionals for tasks involving transition metals, and for designing new, improved functionals. (c) 2007 American Institute of Physics.
+C1 Yale Univ, Dept Chem, New Haven, CT 06520 USA; Lund Univ, Dept Theoret Chem, Ctr Chem, S-22100 Lund, Sweden
+C3 Yale University; Lund University
+RP Jensen, KP (corresponding author), Yale Univ, Dept Chem, POB 208107, New Haven, CT 06520 USA.
+EM kasper.jensen@yale.edu
+RI /AAA-4626-2021; Kepp, Kasper P/G-1748-2013; Ryde, Ulf/D-5882-2017
+OI Kepp, Kasper P/0000-0002-6754-7348
+NR 0
+TC 223
+Z9 242
+PU AIP Publishing
+PI MELVILLE
+PA 1305 WALT WHITMAN RD, STE 300, MELVILLE, NY 11747-4501 USA
+J9 J CHEM PHYS
+JI J. Chem. Phys.
+PD JAN 7 2007
+PY 2007
+VL 126
+IS 1
+AR 014103
+DI 10.1063/1.2406071
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17212486
+UT WOS:000243380000007
+DA 2026-08-18
+ER
+
+PT J
+AU Gagliardi, L
+   Roos, BO
+AF Gagliardi, Laura
+   Roos, Bjorn O.
+TI Multiconfigurational quantum chemical methods for molecular systems containing actinides
+SO CHEMICAL SOCIETY REVIEWS
+DT Review
+ID 2ND-ORDER PERTURBATION; ELECTRONIC-SPECTRUM; INFRARED-SPECTRA; FINE-STRUCTURE; WAVE-FUNCTIONS; GROUND-STATE; UO2 MOLECULE; CUO MOLECULE; SOLID NEON; CHEMISTRY
+AB Recent advances in computational actinide chemistry are reported in this tutorial review. Muticonfigurational quantum chemical methods have been employed to study the gas phase spectroscopy of small actinide molecules. Examples of actinide compounds studied in solution are also presented. Finally the multiple bond in the diuranium molecule and other diactinide compounds is described.
+C1 Sci II Univ Geneva, Dept Phys Chem, CH-1211 Geneva 4, Switzerland; Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 University of Geneva; Lund University
+RP Gagliardi, L (corresponding author), Sci II Univ Geneva, Dept Phys Chem, 30,Quai Ernest Ansermet, CH-1211 Geneva 4, Switzerland.
+EM Laura.Gagliardi@chiphy.unige.ch; bjorn.roos@teokem.lu.se
+RI Gagliardi, Laura/S-3023-2017
+OI Gagliardi, Laura/0000-0001-5227-1396
+NR 0
+TC 128
+Z9 143
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 CHEM SOC REV
+JI Chem. Soc. Rev.
+PD 2007
+PY 2007
+VL 36
+IS 6
+BP 893
+EP 903
+DI 10.1039/b601115m
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17534476
+UT WOS:000246804000018
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Veryazov, V
+   Conradie, J
+   Taylor, PR
+   Ghosh, A
+AF Roos, Bjorn O.
+   Veryazov, Valera
+   Conradie, Jeanet
+   Taylor, Peter R.
+   Ghosh, Abhik
+TI Not Innocent: Verdict from Ab Initio Multiconfigurational Second-Order Perturbation Theory on the Electronic Structure of Chloroiron Corrole
+SO JOURNAL OF PHYSICAL CHEMISTRY B
+DT Article
+ID PI-CATION RADICALS; NMR
+AB From a suitably broad perspective, transition metal corroles may be viewed as stable, synthetic analogues of high-valent heme protein intermediates such as compounds I and II. Against this backdrop, the electronic structure of chloroiron corrole has provoked a lively debate in recent years. Thus, whereas NMR spectroscopy and DFT calculations suggest an S = 3/2 Fe(III) corrole(center dot 2-) radical description, certain researchers have favored an Fe(IV) formulation. These two descriptions are indistinguishable as far as DFT calculations are concerned. Ab initio CASSCF/CASPT2 calculations provide unambiguous support for the former description. In addition, they rule out any Fe(IV) state, whether high- or low-spin, within 1.5 eV of the ground state.
+C1 [Roos, Bjorn O.; Veryazov, Valera] Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; [Conradie, Jeanet; Ghosh, Abhik] Univ Tromso, Dept Chem, N-9037 Tromso, Norway; [Conradie, Jeanet] Univ Orange Free State, Dept Chem, ZA-9300 Bloemfontein, South Africa; [Taylor, Peter R.] Univ Warwick, Dept Chem, Coventry CV4 7AL, W Midlands, England; [Taylor, Peter R.] Univ Warwick, Ctr Comp Sci, Coventry CV4 7AL, W Midlands, England
+C3 Lund University; UiT The Arctic University of Tromso; University of the Free State; University of Warwick; University of Warwick
+RP Roos, BO (corresponding author), Lund Univ, Ctr Chem, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM abhik@chem.uit.no
+RI Conradie, Jeanet/O-1838-2019; Veryazov, Valera/AAB-7765-2019; Ghosh, Abhik/AAH-1277-2020
+OI Conradie, Jeanet/0000-0002-8120-6830; Veryazov, Valera/0000-0002-0172-7047; Ghosh, Abhik/0000-0003-1161-6364
+FU Research Council of Norway; Swedish Research Council; Wolfson Foundation of the Royal Society
+FX This work was supported by the Research Council of Norway, the Swedish Research Council, and the Wolfson Foundation of the Royal Society.
+NR 0
+TC 83
+Z9 93
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM B
+JI J. Phys. Chem. B
+PD NOV 13 2008
+PY 2008
+VL 112
+IS 45
+BP 14099
+EP 14102
+DI 10.1021/jp807734x
+WC Biophysics; Chemistry, Physical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Biophysics; Chemistry
+TO Chemistry (2); Pigments, Sensors & Probes (2.59); Porphyrins (2.59.350)
+PM 18950087
+UT WOS:000260675800003
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Lindh, R
+   Cho, HG
+   Andrews, L
+AF Roos, Bjorn O.
+   Lindh, Roland
+   Cho, Han-Gook
+   Andrews, Lester
+TI Agostic interaction in the methylidene metal dihydride complexes H2MCH2 (M = Y, Zr, Nb, Mo, Ru, Th, or U)
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; METHANE ACTIVATION; INFRARED-SPECTRUM; ATOMS; BOND; POLYMERIZATION; LIGAND; CH3-MH
+AB Multiconfigurational quantum chemical methods (complete active space self-consistent field (CASSCF)/second-order perturbation theory (CASPT2)) have been used to study the agostic interaction between the metal atom and H(C) in the methylidene metal dihydride complexes H2MCH2, where M is a second row transition metal or the actinide atoms Th or U. The geometry of some of these complexes is highly irregular due to the formation of a three center bond CH center dot center dot center dot M, where the electrons in the CH bond are delocalized onto empty or half empty orbitals of d- or f-type on the metal. No agostic interaction is expected when M = Y, where only a single bond with methylene can be formed, or when M = Ru, because of the lack of empty electron accepting metal valence orbitals. The largest agostic interaction is found in the Zr and U complexes.
+C1 Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA
+C3 Lund University; University of Virginia
+RP Roos, BO (corresponding author), Lund Univ, Ctr Chem, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM Bjorn.Roos@teokem.lu.se
+RI Lindh, Roland/F-3471-2012
+OI Lindh, Roland/0000-0001-7567-8295
+NR 0
+TC 75
+Z9 80
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD JUL 19 2007
+PY 2007
+VL 111
+IS 28
+BP 6420
+EP 6424
+DI 10.1021/jp071914b
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17580834
+UT WOS:000247966600038
+DA 2026-08-18
+ER
+
+PT J
+AU Rocha-Rinza, T
+   De Vico, L
+   Veryazov, V
+   Roos, BO
+AF Rocha-Rinza, Tomas
+   De Vico, Luca
+   Veryazov, Valera
+   Roos, Bjorn O.
+TI A theoretical study of singlet low-energy excited states of the benzene dimer
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+ID PERTURBATION-THEORY; FLUORESCENCE; RELAXATION; EXCIMERS; PYRENE; NAPHTHALENE; SPECTRA; MONOMER; SURFACE; ALKYL
+AB The singlet ground and low-energy excited states of the benzene dimer in D-6h geometry are characterized using second order multireference perturbation theory (CASPT2). The counterpoise-corrected spectroscopic parameters of the benzene excimer are in quantitative agreement with experiment. The same method was used to compute a submanifold of the potential energy hypersurface of the first excited state of the benzene dimer, exhibiting two local minima in addition to a saddle point between them. This study demonstrates the suitability of CASPT2 to describe the benzene excimer and suggests that the method can be used to describe weak intermolecular interactions involving excited states. (c) 2006 Elsevier B.V. All rights reserved.
+C1 Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; Univ Nacl Autonoma Mexico, Fac Quim, Dept Fis & Quim Teor, Ciudad Univ, Mexico City 04510, DF, Mexico
+C3 Lund University; Universidad Nacional Autonoma de Mexico
+RP Roos, BO (corresponding author), Chem Ctr Lund, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM bjorn.roos@teokem.lu.se
+RI De Vico, Luca/HFZ-7775-2022; Veryazov, Valera/AAB-7765-2019; Rocha Rinza, Tomas/GPK-0904-2022
+OI De Vico, Luca/0000-0002-2821-5711; Veryazov, Valera/0000-0002-0172-7047
+NR 0
+TC 52
+Z9 55
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS LETT
+JI Chem. Phys. Lett.
+PD AUG 4 2006
+PY 2006
+VL 426
+IS 4-6
+BP 268
+EP 272
+DI 10.1016/j.cplett.2006.05.123
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000239555500007
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+   Pyykkö, P
+AF Roos, Bjorn O.
+   Pyykko, Pekka
+TI Bonding Trends in Molecular Compounds of Lanthanides: The Double-Bonded Carbene Cations LnCH2+ (Ln = Sc, Y, La-Lu)
+SO CHEMISTRY-A EUROPEAN JOURNAL
+DT Article
+DE bond theory; computational chemistry; lanthanides; periodic trends
+ID ELECTRONIC-STRUCTURE CALCULATIONS; ELEMENTS; IONS; TRIHALIDES; COMPLEXES; CHEMISTRY; ATOMS; NO; CE
+AB Quasi-relativistic Douglas-Kroll CASPT2 calculations are reported for the title molecules, mainly to provide primary data for a fit of double-bond covalent radii. Indeed, a well-developed sigma(2)pi(2) double bond is identified in all cases. For Eu and Yb, however, it is an excited state. The main valence orbitals of all Ln ions are 6s and 5d. In the sigma bonds, more 5d than 6s character is found at the Ln. The Ln=C bond lengths show a systematic lanthanide contraction of 13 pm from La to Lu. An agostic symmetry breaking is demonstrated for Ce but its effect on the Ln-C length is small.
+C1 [Roos, Bjorn O.] Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; [Pyykko, Pekka] Univ Helsinki, Dept Chem, Helsinki 00014, Finland
+C3 Lund University; University of Helsinki
+RP Roos, BO (corresponding author), Chem Ctr Lund, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM Bjorn.Roos@teokem.lu.se; Pekka.Pyykko@helsinki.fi
+NR 0
+TC 36
+Z9 39
+PU WILEY-BLACKWELL
+PI MALDEN
+PA COMMERCE PLACE, 350 MAIN ST, MALDEN 02148, MA USA
+J9 CHEM-EUR J
+JI Chem.-Eur. J.
+PD 2010
+PY 2010
+VL 16
+IS 1
+BP 270
+EP 275
+DI 10.1002/chem.200902310
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 19937867
+UT WOS:000274007900032
+DA 2026-08-18
+ER
+
+PT J
+AU Lyon, JT
+   Andrews, L
+   Malmqvist, PA
+   Roos, BO
+   Yang, TX
+   Bursten, BE
+AF Lyon, Jonathan T.
+   Andrews, Lester
+   Malmqvist, Per-Ake
+   Roos, Bjorn O.
+   Yang, Tianxiao
+   Bursten, Bruce E.
+TI Infrared spectrum and bonding in uranium methylidene dihydride, CH2=UH2
+SO INORGANIC CHEMISTRY
+DT Article
+ID RELATIVISTIC EFFECTIVE POTENTIALS; SPIN-ORBIT OPERATORS; GAUSSIAN-BASIS SETS; AGOSTIC INTERACTIONS; THEORETICAL INVESTIGATIONS; CONFIGURATION-INTERACTION; MP2 ENERGY; ATOMS; ACTIVATION; COMPLEXES
+AB Uranium atoms activate methane upon ultraviolet excitation to form the methyl uranium hydride CH3-UH, which undergoes alpha-H transfer to produce uranium methylidene dihydride, CH2UH2. This rearrangement most likely occurs on an excited-quintet potential-energy surface and is followed by relaxation in the argon matrix. These simple U + CH4 reaction products are identified through isotopic substitution ((CH4)-C-13, CD4, CH2D2) and density functional theory frequency and structure calculations for the strong U-H stretching modes. Relativistic multiconfiguration (CASSCF/CASPT2) calculations substantiate the agostic distorted C-1 ground-state structure for the triplet CH2UH2 molecule. We find that uranium atoms are less reactive in methane activation than thorium atoms. Our calculations show that the CH2UH2 complex is distorted more than CH2ThH2. A favorable interaction between the low energy open-shell U(5f) sigma orbital and the agostic hydrogen contributes to the distortion in the uranium methylidene complexes.
+C1 Dept Chem, Charlottesville, VA 22904 USA; Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; Ohio State Univ, Dept Chem, Columbus, OH 43210 USA
+C3 Lund University; Ohio State University; University System of Ohio; Ohio State University
+RP Andrews, L (corresponding author), Dept Chem, POB 400319, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+RI /AAC-6212-2021
+OI Lyon, Jonathan/0000-0003-2143-1216
+NR 0
+TC 62
+Z9 69
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 INORG CHEM
+JI Inorg. Chem.
+PD JUN 11 2007
+PY 2007
+VL 46
+IS 12
+BP 4917
+EP 4925
+DI 10.1021/ic062407w
+WC Chemistry, Inorganic & Nuclear
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17487964
+UT WOS:000246907800026
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, XF
+   Andrews, L
+   Malmqvist, PÅ
+   Roos, BO
+   Gonçalves, AP
+   Pereira, CCL
+   Marçalo, J
+   Godart, C
+   Villeroy, B
+AF Wang, Xuefeng
+   Andrews, Lester
+   Malmqvist, Per-Ake
+   Roos, Bjorn O.
+   Goncalves, Antonio P.
+   Pereira, Claudia C. L.
+   Marcalo, Joaquim
+   Godart, Claude
+   Villeroy, Benjamin
+TI Infrared Spectra and Quantum Chemical Calculations of the Uranium Carbide Molecules UC and CUC with Triple Bonds
+SO JOURNAL OF THE AMERICAN CHEMICAL SOCIETY
+DT Article
+ID HARMONIC VIBRATIONAL FREQUENCIES; NEUTRON-DIFFRACTION; MULTIPLE-BOND; XE ATOMS; METHYLIDENE; COMPLEXES; APPROXIMATION; DIHYDRIDE; CRYSTAL; UO2+
+AB Laser evaporation of carbon-rich uranium/carbon alloys followed by atom reactions in a solid argon matrix and trapping at 8 K gives weak infrared absorptions for CUO at 852 and 804 cm(-1). A new band at 827 cm(-1) becomes a doublet with mixed carbon 12 and 13 isotopes and exhibits the 1.0381 isotopic frequency ratio, which is appropriate for the UC diatomic molecule, and another new band at 891 cm(-1) gives a three-band mixed isotopic spectrum with the 1.0366 isotopic frequency ratio, which is characteristic of the linear CUC molecule. CASPT2 calculations with dynamical correlation find the C U C ground state as linear (3)Sigma(+)(u)- with 1.840 angstrom bond length and molecular orbital occupancies for an effective bond order of 2.83. Similar calculations with spin-orbit coupling show that the U C diatomic molecule has a quintet (Lambda = 5, Omega = 3) ground state, a similar 1.855 angstrom bond length, and a fully developed triple bond of 2.82 effective bond order.
+C1 [Wang, Xuefeng; Andrews, Lester] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Malmqvist, Per-Ake; Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; [Goncalves, Antonio P.; Pereira, Claudia C. L.; Marcalo, Joaquim] Inst Tecnol & Nucl CFMCUL, Unidade Ciencias Quim & Radiofarmaceut, P-2686953 Sacavem, Portugal; [Godart, Claude; Villeroy, Benjamin] CNRS, ICMPE, F-94320 Thiais, France
+C3 University of Virginia; Lund University; Universidade de Lisboa; Universite Paris-Est-Creteil-Val-de-Marne (UPEC); Centre National de la Recherche Scientifique (CNRS)
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+RI Marçalo, Joaquim/J-5476-2013; Pereira Gonçalves, Antonio/B-2849-2008; Pereira, Cláudia/AAF-3677-2020
+OI Marçalo, Joaquim/0000-0001-7580-057X; Pereira Gonçalves, Antonio/0000-0003-2640-3038
+FU DOE [DE-SC0001034]; NCSA [CHE07-0004N]; Swedish Research Council [70526201]; Fundacao para a Ciencia e a Tecnologia (Portugal)
+FX We gratefully acknowledge financial support from DOE Grant No. DE-SC0001034, NCSA computing Grant No. CHE07-0004N, the Swedish Research Council (VR) for Grant No. 70526201, and the Fundacao para a Ciencia e a Tecnologia through the Ciencia 2007 Program (Portugal).
+NR 0
+TC 51
+Z9 55
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J AM CHEM SOC
+JI J. Am. Chem. Soc.
+PD JUN 23 2010
+PY 2010
+VL 132
+IS 24
+BP 8484
+EP 8488
+DI 10.1021/ja102475t
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 20504028
+UT WOS:000278905700048
+DA 2026-08-18
+ER
+
+PT J
+AU Borin, AC
+   Gobbo, JP
+   Roos, BO
+AF Borin, Antonio Carlos
+   Gobbo, Joao Paulo
+   Roos, Bjorn O.
+TI A theoretical study of the binding and electronic spectrum of the Mo2 molecule
+SO CHEMICAL PHYSICS
+DT Article
+DE molybdenum dimer; metal-metal multiple bond; excited electronic states
+ID 2ND-ORDER PERTURBATION-THEORY; TRANSITION-METAL; BASIS-SETS; BOND; DIMOLYBDENUM; STATES; MO2; POTENTIALS; DICHROMIUM; CONSTANTS
+AB Multiconfigurational SCF and second-order perturbation theory have been employed to study seven low-lying singlet and triplet electronic states of the Mo-2 molecule. The bond order of the ground state has been analyzed based on the effective bond order (EBO), indicating that a fully developed sextuple bond is formed between the two Mo atoms. The experimentally observed excited states a(3)Sigma(+)(u) and A(1)Sigma(+)(u) have been determined and the so-called (3)Lambda excited state identified as the b(3)Sigma(+)(u) state, in agreement with experimental expectations. (C) 2007 Elsevier B.V. All rights reserved.
+C1 [Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; [Borin, Antonio Carlos; Gobbo, Joao Paulo] Univ Sao Paulo, Inst Quim, BR-05508900 Sao Paulo, Brazil
+C3 Lund University; Universidade de Sao Paulo
+RP Roos, BO (corresponding author), Lund Univ, Ctr Chem, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM ancborin@iq.usp.br; Bjorn.Roos@teokem.lu.se
+RI Borin, Antonio Carlos/C-6223-2014
+OI Borin, Antonio Carlos/0000-0003-3047-2044
+NR 0
+TC 32
+Z9 37
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS
+JI Chem. Phys.
+PD JAN 29 2008
+PY 2008
+VL 343
+IS 2-3
+BP 210
+EP 216
+DI 10.1016/j.chemphys.2007.05.028
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000253622400009
+DA 2026-08-18
+ER
+
+PT J
+AU Azizi, Z
+   Roos, BO
+   Veryazov, V
+AF Azizi, Zahra
+   Roos, Bjorn O.
+   Veryazov, Valera
+TI How accurate is the CASPT2 method?
+SO PHYSICAL CHEMISTRY CHEMICAL PHYSICS
+DT Article
+ID QUANTUM-CHEMICAL CALCULATIONS; 2ND-ORDER PERTURBATION-THEORY; AB-INITIO; S-3; SPECTROSCOPY; COMPLEXES; CHEMISTRY; DIMERS; ATOMS; S3O
+AB This paper is a reply to a recent paper on the isomers of trisulfur oxides (Chem. Commun., 2005, 3712) where the accuracy of the CASPT2 method is called in question. We illustrate that their results are due to an inadequate choice of active orbitals. Some results for related O and S containing molecules are also presented to strengthen the argumentation. It is concluded that the CASPT2 method is accurate to at least 0.1 eV (2 kcal mol(-1)) for this type of systems.
+C1 Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden; Islamic Azad Univ, Sci & Res Branch, Dept Chem, Tehran, Iran
+C3 Lund University; Islamic Azad University
+RP Azizi, Z (corresponding author), Chem Ctr Lund, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+RI Veryazov, Valera/AAB-7765-2019; Azizi, Zahra/AAN-3812-2021
+OI Veryazov, Valera/0000-0002-0172-7047; Azizi, Zahra/0000-0001-5255-8311
+NR 0
+TC 59
+Z9 63
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 PHYS CHEM CHEM PHYS
+JI Phys. Chem. Chem. Phys.
+PD 2006
+PY 2006
+VL 8
+IS 23
+BP 2727
+EP 2732
+DI 10.1039/b603046g
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 16763705
+UT WOS:000238130000009
+DA 2026-08-18
+ER
+
+PT J
+AU Borin, AC
+   Gobbo, JP
+   Roos, BO
+AF Borin, Antonio Carlos
+   Gobbo, Joao Paulo
+   Roos, Bjorn O.
+TI Electronic structure and chemical bonding in W2 molecule
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; TRANSITION-METAL ATOMS; TUNGSTEN DIMERS; BASIS-SETS; SPECTROSCOPY; CHEMISTRY; SPECTRUM; MATRICES; CASPT2; STATES
+AB The electronic structure of the lowest-lying electronic states of W-2 were investigated at the CASPT2 level. The ground state is a X-1 Sigma(+)(g) state, followed by the a(3)Delta(u), b(3)Sigma(+)(u) and A(1)Delta(u) electronic states. Seven low-lying Omega-states were computed: (1)0(g)(+), (2)3(u), (3)2(u), (4)1(u), (5)0(u)(-), (6)1(u), and (7)2(u), with the ground state corresponding to the (1)0(g)(+)(X-1 Sigma(+)(g)) state. Comparison with the other VIB transition metal group dimers indicates a common pattern of electronic structure and spectroscopic properties. (C) 2010 Elsevier B.V. All rights reserved.
+C1 [Borin, Antonio Carlos; Gobbo, Joao Paulo] Univ Sao Paulo, Inst Quim, BR-05508900 Sao Paulo, Brazil; [Roos, Bjorn O.] Chem Ctr Lund, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 Universidade de Sao Paulo; Lund University
+RP Borin, AC (corresponding author), Univ Sao Paulo, Inst Quim, Av Prof Lineu Prestes 748, BR-05508900 Sao Paulo, Brazil.
+EM ancborin@iq.usp.br
+RI Borin, Antonio Carlos/C-6223-2014
+OI Borin, Antonio Carlos/0000-0003-3047-2044
+FU CNPq (Conselho Nacional de Desenvolvimento Cientifico and Tecnologico); FAPESP (Fundacao de Amparo a Pesquisa do Estado de Sao Paulo); Lund University
+FX A.C.B. acknowledges academic support by the CNPq (Conselho Nacional de Desenvolvimento Cientifico and Tecnologico) and FAPESP (Fundacao de Amparo a Pesquisa do Estado de Sao Paulo). J.P.G. is grateful to FAPESP for a graduate fellowship. B.O.R. acknowledges support from the vice chancellor of Lund University. The authors thank the Laboratorio de Computacao Cientifica Avancada (LCCA) of the Universidade de Sao Paulo for the services and computer time.
+NR 0
+TC 26
+Z9 30
+PU ELSEVIER SCIENCE BV
+PI AMSTERDAM
+PA PO BOX 211, 1000 AE AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS LETT
+JI Chem. Phys. Lett.
+PD APR 16 2010
+PY 2010
+VL 490
+IS 1-3
+BP 24
+EP 28
+DI 10.1016/j.cplett.2010.03.022
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000276258500006
+DA 2026-08-18
+ER
+
+PT J
+AU La Macchia, G
+   Aquilante, F
+   Veryazov, V
+   Roos, BO
+   Gagliardi, L
+AF La Macchia, Giovanni
+   Aquilante, Francesco
+   Veryazov, Valera
+   Roos, Bjorn O.
+   Gagliardi, Laura
+TI Bond Length and Bond Order in One of the Shortest Cr-Cr Bonds
+SO INORGANIC CHEMISTRY
+DT Article
+ID ELECTRONIC-SPECTRUM; TRANSITION-METAL; COMPOUND; COORDINATION; CHEMISTRY; BENT
+AB Multiconfigurational quantum chemical calculations on the R-diimines dichromium compound confirm that the Cr-Cr bond, 1.80 angstrom, is among the shortest Cr-I-Cr-I bonds. However, the bond between the two Cr atoms is only a quadruple bond rather than a quintuple bond. The reason why the bond is so short has to be attributed to the strain in the NCCN ligand moieties.
+C1 [La Macchia, Giovanni; Aquilante, Francesco; Gagliardi, Laura] Univ Geneva, Dept Phys Chem, CH-1211 Geneva, Switzerland; [Veryazov, Valera; Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 University of Geneva; Lund University
+RP Gagliardi, L (corresponding author), Univ Geneva, Dept Phys Chem, 30 Quai Ernest Ansermet, CH-1211 Geneva, Switzerland.
+EM laura.gagliardi@unige.ch
+RI Veryazov, Valera/AAB-7765-2019; Gagliardi, Laura/S-3023-2017; Aquilante, Francesco/L-6147-2013
+OI Veryazov, Valera/0000-0002-0172-7047; Gagliardi, Laura/0000-0001-5227-1396; Aquilante, Francesco/0000-0003-4422-3938
+FU Swiss National Science Foundation [200021-111645/1, 200020-120007]; Swedish Research Council; Swiss National Science Foundation (SNF) [200020-120007] Funding Source: Swiss National Science Foundation (SNF)
+FX This work was supported by the Swiss National Science Foundation (Grants 200021-111645/1 and 200020-120007) and the Swedish Research Council (VR) through the Linnaeus Center of Excellence on Organizing Molecular Matter (OMM).
+NR 0
+TC 49
+Z9 56
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 INORG CHEM
+JI Inorg. Chem.
+PD DEC 15 2008
+PY 2008
+VL 47
+IS 24
+BP 11455
+EP 11457
+DI 10.1021/ic801537w
+WC Chemistry, Inorganic & Nuclear
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 19006291
+UT WOS:000261510100004
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, XF
+   Roos, BO
+   Andrews, L
+AF Wang, Xuefeng
+   Roos, Bjorn O.
+   Andrews, Lester
+TI Calculations and Matrix Infrared Spectra of Terminal Borylene Complexes FB=MF2
+SO ANGEWANDTE CHEMIE-INTERNATIONAL EDITION
+DT Article
+DE borylenes; density functional calculations; group 4 metals; IR spectroscopy; matrix isolation
+ID TRANSITION-METAL-COMPLEXES; HARMONIC VIBRATIONAL FREQUENCIES; BORON-FLUORINE CHEMISTRY; TITANIUM; MONOFLUORIDE; ABSTRACTION; LIGANDS; BONDS
+C1 [Wang, Xuefeng; Andrews, Lester] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 University of Virginia; Lund University
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+FU DOE [6855694, DE-AC02-05CH11231]; NCSA [CHE07-0004N]
+FX M=Ti, Zr, HE Supported by Subgrant No. 6855694 under Prime Contract No. DE-AC02-05CH11231 to the Lawrence Berkeley National Laboratory from the DOE and NCSA computing Grant No. CHE07-0004N to L.A.
+NR 0
+TC 36
+Z9 37
+PU WILEY-V C H VERLAG GMBH
+PI WEINHEIM
+PA POSTFACH 101161, 69451 WEINHEIM, GERMANY
+J9 ANGEW CHEM INT EDIT
+JI Angew. Chem.-Int. Edit.
+PD 2010
+PY 2010
+VL 49
+IS 1
+BP 157
+EP 160
+DI 10.1002/anie.200904797
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Synthesis (2.1); Main-Group Organometallics (2.1.507)
+PM 19950153
+UT WOS:000273620300024
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, XF
+   Andrews, L
+   Lindh, R
+   Veryazov, V
+   Roos, BO
+AF Wang, Xuefeng
+   Andrews, Lester
+   Lindh, Roland
+   Veryazov, Valera
+   Roos, Bjorn O.
+TI A combined theoretical and experimental study of simple terminal group 6 nitride and phosphide NMX3 and PMX3 molecules
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID DENSITY-FUNCTIONAL THEORY; MATRIX INFRARED-SPECTRA; PHOSPHORUS TRIPLE BOND; ANO BASIS-SETS; VIBRATIONAL FREQUENCIES; TRANSIENT MOLECULES; TRANSITION-METALS; ACID-CHLORIDES; ENERGY LEVELS; AB-INITIO
+AB Organometallic complexes containing terminal metal nitrides and phosphides are important synthetic reagents. Laser-ablated group 6 metal atoms react with NF3, PF3, and PCl3 to form the simple lowest energy N MF3, and P MX3 products following insertion and halogen transfer, with the exception of P CrF3, which is a higher energy species and is not observed. The E MX3 pnictide metal trihalide molecules are identified from both argon and neon matrix infrared spectra and frequencies calculated by density functional theory and multiconfigurational second-order perturbation theory (CASSCF/CASPT2). These simple terminal nitrides involve strong triple bonds, which range from 2.80 to 2.77 to 2.59 natural bond order for M = W, Mo, and Cr, respectively, as computed by CASSCF/CASPT2, and the M N stretching frequencies also follow this order. The terminal phosphides are weaker with bond orders 2.74, 2.67, and 2.18, respectively, as the more diffuse 3p orbitals are less effective for bonding to the more compact metal valence d orbitals.
+C1 [Wang, Xuefeng; Andrews, Lester] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Lindh, Roland; Veryazov, Valera; Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, S-222100 Lund, Sweden
+C3 University of Virginia; Lund University
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+RI Lindh, Roland/F-3471-2012; Veryazov, Valera/AAB-7765-2019
+OI Lindh, Roland/0000-0001-7567-8295; Veryazov, Valera/0000-0002-0172-7047
+FU NSF [CHE 03-52487]; NCSA computing [CHE07-0004N]; Swedish Research Council
+FX We gratefully acknowledge financial support from NSF Grant CHE 03-52487 and NCSA computing Grant No. CHE07-0004N to L.A. and from the Swedish Research Council (VR) through the Linnaeus Center of Excellence on Organizing Molecular Matter (OMM) to R.L. and B.O.R.
+NR 0
+TC 24
+Z9 29
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD SEP 4 2008
+PY 2008
+VL 112
+IS 35
+BP 8030
+EP 8037
+DI 10.1021/jp804469a
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 18693715
+UT WOS:000258800400006
+DA 2026-08-18
+ER
+
+PT J
+AU O'Brien, LC
+   Oberlink, AE
+   Roos, BO
+AF O'Brien, Leah C.
+   Oberlink, Anne E.
+   Roos, Bjorn O.
+TI The electronic spectrum of AuO: A combined theoretical and experimental study
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID 2ND-ORDER PERTURBATION-THEORY; SPECTROSCOPY; TRANSITION; CHEMISTRY; STATE
+AB The near-infrared electronic spectrum of AuO1 has been re-examined in light of the new microwave data on the nu = 0 and nu = 1 vibrations of the X-2 Pi(3/2) state of AuO. The two observed bands in the spectrum, with red-degraded bandheads located at 10726 and 10665 cm(-1), have been reanalyzed. New theoretical work on AuO clarifies the electronic structure, and the bands in the infrared are now assigned as the (0,1) and (1,2) bands of the a(4)Sigma(-)(3/2) - X-2 Pi(3/2) transition, respectively.
+C1 So Illinois Univ, Dept Chem, Edwardsville, IL 62026 USA; Lund Univ, Ctr Chem, Dept Theoret Chem, S-21100 Lund, Sweden
+C3 Southern Illinois University Edwardsville; Southern Illinois University System; Southern Illinois University Edwardsville; Lund University
+RP O'Brien, LC (corresponding author), So Illinois Univ, Dept Chem, Edwardsville, IL 62026 USA.
+EM lobrien@siue.edu
+OI O'Brien, Leah/0000-0001-8858-5960
+NR 0
+TC 24
+Z9 26
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD NOV 2 2006
+PY 2006
+VL 110
+IS 43
+BP 11954
+EP 11957
+DI 10.1021/jp063394a
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 17064183
+UT WOS:000241553800007
+DA 2026-08-18
+ER
+
+PT J
+AU Andrews, L
+   Wang, XF
+   Roos, BO
+AF Andrews, Lester
+   Wang, Xuefeng
+   Roos, Bjorn O.
+TI AsUF3 Molecule with a Weak Triple Bond to Uranium
+SO INORGANIC CHEMISTRY
+DT Article
+ID DENSITY-FUNCTIONAL THERMOCHEMISTRY; HARMONIC VIBRATIONAL FREQUENCIES; INFRARED-SPECTRA; METHYLIDENE; COMPLEXES; NITRIDE; ATOMS; APPROXIMATION; ANALOGS; SETS
+AB After reactions of uranium atoms with NF3 and PF3 to form the N UF3 and P UF3 molecules, the analogous reaction with AsF3 produced the novel terminal arsenide As UF3. This first molecule with a uranium-arsenic bond was identified from matrix infrared spectra through comparison with spectra of the uranium nitride and phosphide species, with spectra using other metals, and with frequencies computed by density functional and multiconfigurational wave function methods. The latter calculation describes a weak triple bond to uranium in the As UF3 molecule, which has slightly less bonding and more antibonding character than the weak triple bond in P UF3.
+C1 [Andrews, Lester; Wang, Xuefeng] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, S-222100 Lund, Sweden
+C3 University of Virginia; Lund University
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+FU DOE [6855694, DE-AC02-05CH11231]; NCSA [CHE07-0004N]; Swedish Research Council
+FX We grate fully acknowledge financial support from Subgrant No. 6855694 under Prime Contract No. DE-AC02-05CH11231 to the Lawrence Berkeley National Laboratory from the DOE, and NCSA computing Grant CHE07-0004N to L.A.and from the Swedish Research Council (VR) through the Linnaeus Center of Excellence oil Organizing Molecular Matter (OMM) to B.O.R. G. L. Schrobilgen and M. J. Hughes kindly provided the AsF3 sample, and C. C. Cummins shared helpful information.
+NR 0
+TC 19
+Z9 21
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 INORG CHEM
+JI Inorg. Chem.
+PD JUL 20 2009
+PY 2009
+VL 48
+IS 14
+BP 6594
+EP 6598
+DI 10.1021/ic9005696
+WC Chemistry, Inorganic & Nuclear
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 19514741
+UT WOS:000268137900039
+DA 2026-08-18
+ER
+
+PT J
+AU De Vico, L
+   Pegado, L
+   Heimdal, J
+   Söderhjelm, P
+   Roos, BO
+AF De Vico, Luca
+   Pegado, Luis
+   Heimdal, Jimmy
+   Soderhjelm, Par
+   Roos, Bjorn O.
+TI The ozone ring closure as a test for multi-state multi-configurational second order perturbation theory (MS-CASPT2)
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+ID POTENTIAL-ENERGY SURFACES; CYCLIC OZONE; STATES; GEOMETRY; FORMS; FIELD; O-3; SCF
+AB The open and closed forms of ozone and the path connecting them through a transition state, in C-2v symmetry, are explored using the multi-state, multi-configurational second order perturbative method, MS-CASPT2. It is demonstrated that, by using an ANO-L triple-zeta basis set, it is possible to set up an active space able to describe the otherwise troublesome transition state region. Both a conical intersection and a near degeneracy region between the 1(1)A(1) and 2(1)A(1) states are located in the vicinity of the transition state. The relative position of the intersection and the transition state are discussed. (c) 2008 Elsevier B. V. All rights reserved.
+C1 [De Vico, Luca; Heimdal, Jimmy; Soderhjelm, Par; Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, SE-22100 Lund, Sweden; [Pegado, Luis] Lund Univ, Dept Phys Chem 1, SE-22100 Lund, Sweden
+C3 Lund University; Lund University
+RP De Vico, L (corresponding author), Univ Copenhagen, Dept Chem, Univ Parken 5, DK-2100 Copenhagen, Denmark.
+EM luca@kemi.ku.dk
+RI De Vico, Luca/HFZ-7775-2022
+OI De Vico, Luca/0000-0002-2821-5711; Söderhjelm, Pär/0000-0001-6938-7803
+NR 0
+TC 19
+Z9 20
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS LETT
+JI Chem. Phys. Lett.
+PD AUG 8 2008
+PY 2008
+VL 461
+IS 1-3
+BP 136
+EP 141
+DI 10.1016/j.cplett.2008.06.065
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000258104100027
+DA 2026-08-18
+ER
+
+PT J
+AU Borin, AC
+   Gobbo, JP
+   Roos, BO
+AF Borin, Antonio Carlos
+   Gobbo, Joao Paulo
+   Roos, Bjorn O.
+TI Electronic structure and chemical bonding in the ground states of Tc2 and Re2
+SO MOLECULAR PHYSICS
+DT Article
+DE transition metal bonding; transition metal diatoms; ground state; CASPT2
+ID 2ND-ORDER PERTURBATION-THEORY; TRANSITION-METAL; MANGANESE DIMER; BASIS-SETS; SPECTRUM
+AB Multiconfiguration second-order perturbation theory, including relativistic effects and spin-orbit coupling, has been employed to investigate the nature of the chemical bonding in the ground state of Tc-2 and Re-2. The Tc-2 ground state is found to be a 0(g)(+) state, with an effective bond order (EBO) of 4.4, and a dissociation energy of 3.25 eV. The Re-2 ground state is a 1(g) state, with EBO = 4.3. Almost degenerate to it, is a 0(g)(+) state (T-e = 77 cm(-1)), with EBO = 4.1. Experimental evidence also indicates that the ground state is of 1(g) nature. The dissociation energy is computed to be 5.0 eV in agreement with an experimental estimate of 4 +/- 1 eV.
+C1 [Borin, Antonio Carlos; Gobbo, Joao Paulo] Univ Sao Paulo, Inst Quim, BR-05508900 Sao Paulo, Brazil; [Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, S-22100 Lund, Sweden
+C3 Universidade de Sao Paulo; Lund University
+RP Borin, AC (corresponding author), Univ Sao Paulo, Inst Quim, Av Prof Lineu Prestes 748, BR-05508900 Sao Paulo, Brazil.
+EM ancborin@iq.usp.br
+RI Borin, Antonio Carlos/C-6223-2014
+OI Borin, Antonio Carlos/0000-0003-3047-2044
+NR 0
+TC 12
+Z9 14
+PU TAYLOR & FRANCIS LTD
+PI ABINGDON
+PA 2-4 PARK SQUARE, MILTON PARK, ABINGDON OR14 4RN, OXON, ENGLAND
+J9 MOL PHYS
+JI Mol. Phys.
+PD 2009
+PY 2009
+VL 107
+IS 8-12
+SI SI
+BP 1035
+EP 1040
+DI 10.1080/00268970802712555
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000266972800032
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, XF
+   Roos, BO
+   Andrews, L
+AF Wang, Xuefeng
+   Roos, Bjorn O.
+   Andrews, Lester
+TI Matrix infrared spectra and electronic structure calculations of the first actinide borylene: FB=ThF2
+SO CHEMICAL COMMUNICATIONS
+DT Article
+ID HARMONIC VIBRATIONAL FREQUENCIES; TRANSITION-METAL-COMPLEXES; BORON-FLUORINE CHEMISTRY; ANO BASIS-SETS; IMIDO ANALOGS; THORIUM; MOLECULES; URANIUM; ATOMS; MONOFLUORIDE
+AB Laser-ablated Th atoms react with BF3 during condensation in excess argon at 6 K to form the first actinide borylene (FB=ThF2) and actinide-boron multiple bond. Three new product absorptions in the B-F and Th-F stretching regions of matrix infrared spectra are assigned to FB=ThF2 from comparison to theoretically predicted vibrational frequencies.
+C1 [Wang, Xuefeng; Andrews, Lester] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, Ctr Chem, S-222100 Lund, Sweden
+C3 University of Virginia; Lund University
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu; Bjorn.Roos@teokem.lu.se; xw2u@virginia.edu
+FU DOE [DE-SC0001034]; NCSA [CHE07-0004N]
+FX We gratefully acknowledge financial support from DOE Grant No. DE-SC0001034 and NCSA computing Grant No. CHE07-0004N and helpful correspondence with H. Braunschweig.
+NR 0
+TC 21
+Z9 23
+PU ROYAL SOC CHEMISTRY
+PI CAMBRIDGE
+PA THOMAS GRAHAM HOUSE, SCIENCE PARK, MILTON RD, CAMBRIDGE CB4 0WF, CAMBS, ENGLAND
+J9 CHEM COMMUN
+JI Chem. Commun.
+PD 2010
+PY 2010
+VL 46
+IS 10
+BP 1646
+EP 1648
+DI 10.1039/b923195a
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 20177603
+UT WOS:000274827000013
+DA 2026-08-18
+ER
+
+PT J
+AU Mastalerz, R
+   Widmark, PO
+   Roos, BO
+   Lindh, R
+   Reiher, M
+AF Mastalerz, Remigius
+   Widmark, Per-Olof
+   Roos, Bjorn Olof
+   Lindh, Roland
+   Reiher, Markus
+TI Basis set representation of the electron density at an atomic nucleus
+SO JOURNAL OF CHEMICAL PHYSICS
+DT Article
+ID ANO BASIS-SETS; ISOMER-SHIFTS; FUNCTIONAL THEORY; WAVE-FUNCTIONS; FIELD SHIFT; EXCHANGE; ENERGY; APPROXIMATION; DISPLACEMENT; PREDICTION
+AB In this paper a detailed investigation of the basis set convergence for the calculation of relativistic electron densities at the position of finite-sized atomic nuclei is presented. The development of Gauss-type basis sets for such electron densities is reported and the effect of different contraction schemes is studied. Results are then presented for picture-change corrected calculations based on the Douglas-Kroll-Hess Hamiltonian. Moreover, the role of electron correlation, the effect of the numerical integration accuracy in density functional calculations, and the convergence with respect to the order of the Douglas-Kroll-Hess Hamiltonian and the picture-change-transformed property operator are studied. (C) 2010 American Institute of Physics. [doi:10.1063/1.3491239]
+C1 [Widmark, Per-Olof; Roos, Bjorn Olof] Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; [Mastalerz, Remigius; Reiher, Markus] Swiss Fed Inst Technol, Phys Chem Lab, CH-8093 Zurich, Switzerland; [Lindh, Roland] Uppsala Univ, Dept Phys & Analyt Chem, SE-75120 Uppsala, Sweden
+C3 Lund University; ETH Zurich; Swiss Federal Institutes of Technology Domain; ETH Zurich; Uppsala University
+RP Widmark, PO (corresponding author), Lund Univ, Ctr Chem, Dept Theoret Chem, POB 124, S-22100 Lund, Sweden.
+EM markus.reiher@phys.chem.ethz.ch; per-olof.widmark@teokem.lu.se
+RI Reiher, Markus/F-9265-2018; Lindh, Roland/F-3471-2012
+OI Reiher, Markus/0000-0002-9508-1565; Lindh, Roland/0000-0001-7567-8295
+FU Schweizer National Fonds [200020-121870]; Swedish Research Council through Linnaeus Center of Excellence on OrganizingMolecularMatter (OMM)
+FX R.M. and M.R. thank the Schweizer National Fonds (Project no. 200020-121870) for generous financial support. P.-O.W., B.O.R., and R.L. thank the Swedish Research Council (VR) direct and indirectly through the Linnaeus Center of Excellence on OrganizingMolecularMatter (OMM) for financial support.
+NR 0
+TC 28
+Z9 28
+PU AIP Publishing
+PI MELVILLE
+PA 1305 WALT WHITMAN RD, STE 300, MELVILLE, NY 11747-4501 USA
+J9 J CHEM PHYS
+JI J. Chem. Phys.
+PD OCT 14 2010
+PY 2010
+VL 133
+IS 14
+AR 144111
+DI 10.1063/1.3491239
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 20949991
+UT WOS:000283200400014
+DA 2026-08-18
+ER
+
+PT J
+AU Wang, XF
+   Andrews, L
+   Knitter, M
+   Malmqvist, PA
+   Roos, BO
+AF Wang, Xuefeng
+   Andrews, Lester
+   Knitter, Marta
+   Malmqvist, Per-Ake
+   Roos, Bjorn O.
+TI Experimental and Theoretical Investigation of Simple Terminal Group 6 Arsenide AsMF3 Molecules
+SO JOURNAL OF PHYSICAL CHEMISTRY A
+DT Article
+ID DENSITY-FUNCTIONAL THERMOCHEMISTRY; HARMONIC VIBRATIONAL FREQUENCIES; CHROMIUM(VI) NITRIDO COMPLEXES; PHOSPHORUS TRIPLE BOND; ANO BASIS-SETS; INFRARED-SPECTRA; MOLYBDENUM; APPROXIMATION; METHYLIDENE; METATHESIS
+AB Laser-ablated group 6 metal atoms react with NF3 and PF3 to form the simple lowest energy N MF3 and P=MX3 products, and this investigation has been extended to AsF3. Mo and W atoms react with AsF3 upon excitation by laser ablation or UV irradiation to form stable trigonal As MF3 terminal arsenides. These molecules are identified by comparison of the closely related infrared spectra of the analogous phosphide species and with frequencies calculated by density functional theory and multiconfigurational second order perturbation theory (CASSCF/CASPT2). Computed CASSCF/CASPT2 triple bond lengths for the As MoF3 and As WF3 molecules are 2.240 angstrom and 2.250 angstrom, respectively. The natural bond orders calculated by CASSCF/CASPT2 decrease from 2.67 to 2.60 for P MoF3 to As MoF3 and from 2.74 to 2.70 for P WF3 to As WF3 as the arsenic valence orbitals are less effective than those of phosphorus in bonding to each metal atom and the larger metal orbital size becomes more compatible with the arsenic valence orbitals. The Cr atom reaction gives the arsinidene AsF=CrF2 product instead of the higher energy As CrF3 molecule as the Cr (VI) state is not supported by the softer pnictides.
+C1 [Wang, Xuefeng; Andrews, Lester] Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA; [Knitter, Marta; Malmqvist, Per-Ake; Roos, Bjorn O.] Lund Univ, Dept Theoret Chem, Ctr Chem, S-222100 Lund, Sweden
+C3 University of Virginia; Lund University
+RP Andrews, L (corresponding author), Univ Virginia, Dept Chem, Charlottesville, VA 22904 USA.
+EM lsa@virginia.edu
+OI Galynska, Marta/0000-0002-0968-1856
+NR 0
+TC 6
+Z9 6
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 J PHYS CHEM A
+JI J. Phys. Chem. A
+PD MAY 28 2009
+PY 2009
+VL 113
+IS 21
+BP 6064
+EP 6069
+DI 10.1021/jp901308n
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+PM 19413289
+UT WOS:000266296500005
+DA 2026-08-18
+ER
+
+PT J
+AU Roos, BO
+AF Roos, Bjorn O.
+TI Multiconfigurational quantum chemistry
+SO ABSTRACTS OF PAPERS OF THE AMERICAN CHEMICAL SOCIETY
+DT Meeting Abstract
+C1 [Roos, Bjorn O.] Lund Univ, Ctr Chem, Dept Theoret Chem, Lund, Sweden
+C3 Lund University
+NR 0
+TC 0
+Z9 0
+PU AMER CHEMICAL SOC
+PI WASHINGTON
+PA 1155 16TH ST, NW, WASHINGTON, DC 20036 USA
+J9 ABSTR PAP AM CHEM S
+JI Abstr. Pap. Am. Chem. Soc.
+PD MAR 21 2010
+PY 2010
+VL 239
+MA 195-PHYS
+WC Chemistry, Multidisciplinary
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry
+UT WOS:000208189304237
+DA 2026-08-18
+ER
+
+PT J
+AU Ruipérez, F
+   Roos, BO
+   Barandiarán, Z
+   Seijo, L
+AF Ruiperez, Fernando
+   Roos, Bjorn O.
+   Barandiaran, Zoila
+   Seijo, Luis
+TI The 5f3 manifold of the free-ion U3+ :: Ab initio calculations
+SO CHEMICAL PHYSICS LETTERS
+DT Article
+ID MODEL POTENTIAL METHOD; 2ND-ORDER PERTURBATION-THEORY; SPIN-ORBIT; ELECTRONIC-STRUCTURE; SPECTRUM ANALYSIS; CORE POTENTIALS; STATE; SPECTROSCOPY; LANTHANIDE; ABSORPTION
+AB The energy levels of the 5f(3) manifold of the free-ion U3+ Up to 30 000 cm(-1) are calculated with two well stabilized ab initio methods based on the two-component Hamiltonians of Cowan-Griffin-Wood-Boring and Douglas-Kroll-Hess. Although the corresponding experimental data do not exist, estimates made out of experiments on the 50 manifold of U3+ in solids are usually referred to as the experimental energies of U3+ in gas phase. On the basis of a discussion on the available data of f-element ions in gas phase and in solids and a discussion on the expected precision of the present calculations, we suggest that the 50 energy levels of free U3+ are higher than the estimates and lower than the present ab initio calculations. (c) 2006 Elsevier B.V. All rights reserved.
+C1 Univ Autonoma Madrid, Dept Quim, E-28049 Madrid, Spain; Lund Univ, Ctr Chem, Dept Theoret Chem, S-22100 Lund, Sweden; Univ Autonoma Madrid, Inst Univ Ciencia Mat Nicolas Cabrera, E-28049 Madrid, Spain
+C3 Autonomous University of Madrid; Lund University; Autonomous University of Madrid
+RP Seijo, L (corresponding author), Univ Autonoma Madrid, Dept Quim, CXIV, E-28049 Madrid, Spain.
+EM luis.seijo@uam.es
+RI Barandiaran, Zoila/K-5218-2014; Seijo, Luis/G-3872-2011; Ruipérez, Fernando/H-9744-2013
+OI Barandiaran, Zoila/0000-0001-7166-6844; Seijo, Luis/0000-0002-0621-3694; Ruipérez, Fernando/0000-0002-5585-245X; Teorikoa, Kimika/0009-0006-5627-3798
+NR 0
+TC 11
+Z9 11
+PU ELSEVIER
+PI AMSTERDAM
+PA RADARWEG 29, 1043 NX AMSTERDAM, NETHERLANDS
+J9 CHEM PHYS LETT
+JI Chem. Phys. Lett.
+PD JAN 26 2007
+PY 2007
+VL 434
+IS 1-3
+BP 1
+EP 5
+DI 10.1016/j.cplett.2006.11.093
+WC Chemistry, Physical; Physics, Atomic, Molecular & Chemical
+WE Science Citation Index Expanded (SCI-EXPANDED)
+SC Chemistry; Physics
+TO Chemistry (2); Physical Chemistry (2.15); Quantum Chemistry (2.15.3)
+UT WOS:000243820100001
+DA 2026-08-18
+ER
+
+EF  

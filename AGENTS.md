@@ -139,3 +139,32 @@ During a ground-truth/PDF audit:
 Production fixes belong to a later, explicitly requested repair step.
 
 WoS import/matching is not a PDF audit. Deterministic parsing of Clarivate tagged plain text, exact DOI/title matching, citation-edge resolution and ordinary WoS corpus maintenance may run in bulk because they operate on structured exported data rather than generating PDF ground truth.
+
+## 8. WoS import staging and archival
+
+- `imports/wos/new/` is the pending staging area for newly received WoS exports.
+- After a file is successfully imported and the import result is verified, move
+  that exact source file to `imports/wos/done/`.
+- Do not move a failed or unverified file to `done/`; leave it in `new/` and
+  record the failure or pending status.
+- Keep the original exported text unchanged when moving it between staging
+  directories.
+
+## 9. Micromamba cache-lock workaround
+
+- In the managed local sandbox, `micromamba run` may fail before launching the
+  environment because its default cache lock under
+  `/home/shuo/.cache/mamba/proc/` is not writable or cannot be acquired.
+- When this occurs, use a task-local writable cache and keep the existing
+  Micromamba root prefix:
+
+  ```bash
+  export XDG_CACHE_HOME=/tmp/paperazzi-mamba-cache
+  export MAMBA_ROOT_PREFIX=/home/shuo/.local/share/mamba
+  micromamba run -n Paperazzi ...
+  ```
+
+- This is a Micromamba launcher/cache issue, not a Paperazzi or SQLite database
+  lock. Do not delete lock files unless no Micromamba process is using them.
+- Do not replace the `Paperazzi` environment with Anaconda/base or modify its
+  packages as a workaround.
