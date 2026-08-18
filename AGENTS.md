@@ -45,6 +45,14 @@ The canonical architecture is documented in:
 
 `docs/architecture/WOS_BACKGROUND_CORPUS.md`
 
+For the next real local WoS import/matching/coverage cycle, the mandatory operational documents are:
+
+`docs/wos/LOCAL_WOS_CORPUS_RUNBOOK.md`
+
+`prompts/local_ai/WOS_LOCAL_CORPUS_NEXT_STEP_AGENT.md`
+
+A local AI asked to perform the first/subsequent real WoS corpus cycle must read those documents before importing, matching, applying links, or planning the next manual WoS export.
+
 ## 4. WoS RP correspondence semantics — mandatory
 
 WoS `RP` is a Corresponding/Reprint Address **group** representation. The `(corresponding author)` marker applies to the preceding author-name group attached to that address, not only to the immediately adjacent name.
