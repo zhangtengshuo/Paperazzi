@@ -88,6 +88,19 @@ UT WOS:P
 ER
 
 PT J
+AU Alpha, A
+AF Alpha, Alice
+TI Metadata-only neighbor
+SO JOURNAL OTHER
+DT Article
+DE unrelated vocabulary
+NR 0
+PY 2024
+DI 10.1000/e
+UT WOS:E
+ER
+
+PT J
 AU Ref, X
 AF Reference, Xavier
 TI Historical X
@@ -173,7 +186,12 @@ class GraphAnalyticsTests(unittest.TestCase):
         first_path = connector["paths"][0]
         self.assertEqual(first_path["nodes"][0]["ut"], "WOS:D")
         self.assertEqual(first_path["nodes"][-1]["ut"], "WOS:C")
-        self.assertTrue(all(edge["direction"] in {"FORWARD_CITATION", "REVERSE_TRAVERSAL"} for edge in first_path["edges"]))
+        self.assertTrue(
+            all(
+                edge["direction"] in {"FORWARD_CITATION", "REVERSE_TRAVERSAL"}
+                for edge in first_path["edges"]
+            )
+        )
 
     def test_related_centrality_community_and_rpys_services(self) -> None:
         GraphAnalyticsBuilder(self.wos_db, self.analytics_db).build(
@@ -183,7 +201,7 @@ class GraphAnalyticsTests(unittest.TestCase):
         )
         service = GraphAnalyticsService(self.analytics_db)
 
-        related = service.related("WOS:A", limit=20)
+        related = service.related("WOS:A", limit=30)
         by_ut = {row["ut"]: row for row in related["items"]}
         self.assertIn("WOS:B", by_ut)
         self.assertGreater(by_ut["WOS:B"]["shared_reference_count"], 0)
@@ -194,6 +212,13 @@ class GraphAnalyticsTests(unittest.TestCase):
             by_ut["WOS:P"]["warnings"],
         )
 
+        # E has no citation, coupling or co-citation edge with A. It must still be a
+        # candidate because the explicit author metadata is shared.
+        self.assertIn("WOS:E", by_ut)
+        self.assertEqual(by_ut["WOS:E"]["shared_reference_count"], 0)
+        self.assertIn("SHARED_AUTHORS", by_ut["WOS:E"]["evidence_classes"])
+        self.assertGreater(by_ut["WOS:E"]["reasons"]["shared_author_jaccard"], 0)
+
         centrality = service.centrality(metric="pagerank_local", limit=10)
         self.assertEqual(centrality["metric"], "pagerank_local")
         self.assertTrue(centrality["items"])
@@ -203,9 +228,10 @@ class GraphAnalyticsTests(unittest.TestCase):
         self.assertIn("LABEL_PROPAGATION", communities["algorithm"])
 
         rpys = service.rpys()
-        years = {row["year"] for row in rpys["series"]}
-        self.assertIn(2010, years)
-        self.assertIn(2012, years)
+        by_year = {row["year"]: row for row in rpys["series"]}
+        self.assertIn(2010, by_year)
+        self.assertIn(2012, by_year)
+        self.assertEqual(by_year[2010]["local_baseline"], 0.0)
 
 
 if __name__ == "__main__":
