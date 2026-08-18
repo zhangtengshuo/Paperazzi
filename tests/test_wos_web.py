@@ -44,6 +44,7 @@ ID EXCITON FISSION; CHARGE TRANSFER
 FU National Science Foundation [CHE-12345]; Example Foundation
 FX Funding acknowledgement text.
 CR Smith, AB, 2020, JOURNAL B, V1, P2, DOI 10.1000/reference
+NR 1
 TC 5
 Z9 7
 PY 2025
@@ -116,7 +117,6 @@ class WosWebTests(unittest.TestCase):
                 paper = client.get("/api/papers/1/wos")
                 self.assertEqual(paper.status_code, 200)
                 self.assertEqual(paper.json()["status"], "WOS_NOT_CHECKED")
-                # Existing Paperazzi is still fully usable.
                 self.assertEqual(client.get("/api/papers/1").status_code, 200)
                 self.assertIn("WoS Corpus", client.get("/").text)
             app.state.engine.dispose()
@@ -138,6 +138,8 @@ class WosWebTests(unittest.TestCase):
                 body = detail.json()
                 self.assertEqual(body["status"], "WOS_MATCHED")
                 self.assertEqual(body["record"]["ut"], "WOS:WEB")
+                self.assertEqual(body["record"]["cr_status"], "COMPLETE")
+                self.assertEqual(body["record"]["reported_reference_count"], 1)
                 self.assertEqual(
                     [row["full_name"] for row in body["record"]["corresponding_authors"]],
                     ["Xie, Xiaoyu", "Ma, Haibo"],
@@ -151,11 +153,25 @@ class WosWebTests(unittest.TestCase):
                 }
                 self.assertIn("ORCID", author_ids)
 
+                observations = client.get("/api/wos/records/WOS:WEB/observations")
+                self.assertEqual(observations.status_code, 200)
+                obs_body = observations.json()
+                self.assertEqual(obs_body["canonical_cr_status"], "COMPLETE")
+                self.assertEqual(obs_body["canonical_reference_count"], 1)
+                self.assertEqual(obs_body["reported_reference_count"], 1)
+                self.assertEqual(obs_body["items"][0]["cr_export_status"], "COMPLETE")
+
+                refs = client.get("/api/wos/records/WOS:WEB/references")
+                self.assertEqual(refs.status_code, 200)
+                self.assertEqual(refs.json()["cr_status"], "COMPLETE")
+                self.assertEqual(refs.json()["reported_reference_count"], 1)
+
                 missing = client.get("/api/papers/2/wos").json()
                 self.assertEqual(missing["status"], "WOS_NOT_IN_LOCAL_CORPUS")
 
                 stats = client.get("/api/wos/stats").json()
                 self.assertEqual(stats["records"], 1)
+                self.assertEqual(stats["records_cr_complete"], 1)
                 coverage = client.get("/api/wos/coverage").json()
                 self.assertEqual(coverage["active_zotero_papers"], 2)
                 self.assertEqual(coverage["matched"], 1)
