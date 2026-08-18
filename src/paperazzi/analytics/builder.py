@@ -12,6 +12,7 @@ from .algorithms import (
     rpys,
     weighted_label_communities,
 )
+from .revision import wos_revision
 from .snapshot import GraphSnapshot, WosGraphSnapshotLoader
 from .store import AnalyticsStore
 
@@ -34,6 +35,7 @@ class GraphAnalyticsBuilder:
         community_min_weight: float = 0.10,
     ) -> dict[str, Any]:
         snapshot = WosGraphSnapshotLoader(self.wos_path).load()
+        source_revision = wos_revision(self.wos_path)
         parameters = {
             "min_shared_references": min_shared_references,
             "min_co_citation": min_co_citation,
@@ -49,6 +51,7 @@ class GraphAnalyticsBuilder:
                 "source": "LOCAL_WOS_CORPUS",
                 "wos_database": str(self.wos_path),
                 "record_count": len(snapshot.nodes),
+                "source_revision": source_revision,
             },
             algorithm="PAPERAZZI_GRAPH_ANALYTICS_V1",
             parameters=parameters,
@@ -84,6 +87,7 @@ class GraphAnalyticsBuilder:
         return {
             "analysis_run_id": run_id,
             "input_snapshot_hash": snapshot.snapshot_hash,
+            "source_revision": source_revision,
             "input_quality": snapshot.input_quality,
             "parameters": parameters,
             "paper_nodes": len(snapshot.nodes),
