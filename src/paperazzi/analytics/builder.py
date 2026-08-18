@@ -9,15 +9,15 @@ from .algorithms import (
     bibliographic_coupling,
     citation_node_metrics,
     co_citation,
-    rpys,
     weighted_label_communities,
 )
 from .revision import wos_revision
+from .rpys import rpys
 from .snapshot import GraphSnapshot, WosGraphSnapshotLoader
 from .store import AnalyticsStore
 
 ANALYSIS_TYPE = "GRAPH_ANALYTICS_V1"
-CODE_VERSION = "ga-v1.0"
+CODE_VERSION = "ga-v1.1"
 
 
 class GraphAnalyticsBuilder:
@@ -43,6 +43,7 @@ class GraphAnalyticsBuilder:
             "community_min_weight": community_min_weight,
             "pagerank_damping": 0.85,
             "coupling_normalization_policy": "COMPLETE_CR_ONLY",
+            "rpys_local_baseline": "MEDIAN_NEIGHBOR_YEARS_INCLUDING_ZERO_COUNTS",
         }
         run_id = self.store.begin_run(
             analysis_type=ANALYSIS_TYPE,
