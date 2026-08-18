@@ -10,6 +10,13 @@ _DOI_RE = re.compile(r"10\.\d{4,9}/[^\s]+", re.IGNORECASE)
 _YEAR_RE = re.compile(r"\b(18|19|20|21)\d{2}\b")
 _CORRESP_MARKER = "(corresponding author)"
 
+CR_COMPLETE = "COMPLETE"
+CR_COMPLETE_ZERO = "COMPLETE_ZERO"
+CR_PARTIAL = "PARTIAL"
+CR_PRESENT_UNVERIFIED = "PRESENT_UNVERIFIED"
+CR_MISSING_FROM_EXPORT = "MISSING_FROM_EXPORT"
+CR_UNKNOWN = "UNKNOWN"
+
 
 def normalize_space(value: str | None) -> str | None:
     if value is None:
@@ -61,6 +68,9 @@ class WosRawRecord:
     def first(self, tag: str) -> str | None:
         values = self.fields.get(tag)
         return normalize_space(values[0]) if values else None
+
+    def has(self, tag: str) -> bool:
+        return tag in self.fields
 
 
 @dataclass(slots=True, frozen=True)
@@ -122,6 +132,9 @@ class ParsedWosRecord:
     pmid: str | None
     times_cited_wos: int | None
     times_cited_total: int | None
+    reported_reference_count: int | None
+    cr_tag_present: bool
+    cr_export_status: str
     authors: list[WosAuthor]
     addresses: list[WosAddressGroup]
     organizations: list[str]
@@ -260,6 +273,29 @@ def _to_int(value: str | None) -> int | None:
         return None
 
 
+def classify_cr_export(raw: WosRawRecord, parsed_count: int) -> tuple[int | None, bool, str]:
+    """Classify one WoS export observation of a record's cited-reference list.
+
+    `NR` is WoS's cited-reference count.  It lets us distinguish a legitimate
+    zero-reference record from a non-zero record whose `CR` payload was omitted
+    by an export.  When `NR` is absent, a present CR list remains useful but is
+    marked unverified rather than silently treated as complete.
+    """
+    reported = _to_int(raw.first("NR"))
+    has_cr = raw.has("CR")
+    if reported == 0 and parsed_count == 0:
+        return reported, has_cr, CR_COMPLETE_ZERO
+    if has_cr and reported is not None:
+        if parsed_count >= reported:
+            return reported, has_cr, CR_COMPLETE
+        return reported, has_cr, CR_PARTIAL
+    if has_cr and parsed_count > 0:
+        return reported, has_cr, CR_PRESENT_UNVERIFIED
+    if reported is not None and reported > 0:
+        return reported, has_cr, CR_MISSING_FROM_EXPORT
+    return reported, has_cr, CR_UNKNOWN
+
+
 def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
     ut = raw.first("UT")
     if not ut:
@@ -280,6 +316,12 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
         for tag in ("WC", "SC", "TO", "WE")
         if raw.text(tag)
     }
+    references = [
+        parse_reference(value, i) for i, value in enumerate(raw.values("CR"))
+    ]
+    reported_reference_count, cr_tag_present, cr_export_status = classify_cr_export(
+        raw, len(references)
+    )
     return ParsedWosRecord(
         ut=ut,
         doi=normalize_doi(raw.first("DI")),
@@ -304,6 +346,9 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
         pmid=raw.first("PM"),
         times_cited_wos=_to_int(raw.first("TC")),
         times_cited_total=_to_int(raw.first("Z9")),
+        reported_reference_count=reported_reference_count,
+        cr_tag_present=cr_tag_present,
+        cr_export_status=cr_export_status,
         authors=authors,
         addresses=parse_c1_groups(raw.text("C1")),
         organizations=split_semicolon_values(raw.text("C3")),
@@ -316,9 +361,7 @@ def interpret_record(raw: WosRawRecord) -> ParsedWosRecord:
         classifications=classifications,
         funding_agencies=raw.text("FU"),
         funding_text=raw.text("FX"),
-        references=[
-            parse_reference(value, i) for i, value in enumerate(raw.values("CR"))
-        ],
+        references=references,
         raw_record=raw,
     )
 
@@ -327,9 +370,9 @@ def parse_records_with_stats(text: str) -> tuple[list[ParsedWosRecord], int]:
     """Parse Full Records and skip UT-less cited-reference artifacts.
 
     WoS exports can contain ``DT=CITED-REFERENCE`` entries without a stable
-    ``UT`` alongside Full Records.  They are useful as provenance in the
+    ``UT`` alongside Full Records. They are useful as provenance in the
     export, but cannot be stored in the independent corpus whose primary key
-    is UT.  Keep the strict UT requirement for stored records while exposing
+    is UT. Keep the strict UT requirement for stored records while exposing
     the skipped count to the importer.
     """
     raw_records = parse_tagged_text(text)
