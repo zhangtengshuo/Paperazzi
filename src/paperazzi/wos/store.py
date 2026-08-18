@@ -10,7 +10,7 @@ from typing import Any, Iterator
 
 from .parser import ParsedWosRecord, normalize_author_key, normalize_doi, normalize_title, parse_records
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 SCHEMA_SQL = r"""
 PRAGMA foreign_keys=ON;
@@ -20,8 +20,10 @@ CREATE TABLE IF NOT EXISTS wos_import_batches (
  imported_at TEXT NOT NULL,record_count INTEGER NOT NULL DEFAULT 0,new_count INTEGER NOT NULL DEFAULT 0,updated_count INTEGER NOT NULL DEFAULT 0);
 CREATE INDEX IF NOT EXISTS ix_wos_batches_sha ON wos_import_batches(source_sha256);
 CREATE TABLE IF NOT EXISTS wos_records (
- ut TEXT PRIMARY KEY,doi TEXT,normalized_doi TEXT,title TEXT,normalized_title TEXT,source_title TEXT,document_type TEXT,abstract TEXT,
- publication_year INTEGER,publication_date TEXT,volume TEXT,issue TEXT,begin_page TEXT,end_page TEXT,article_number TEXT,pmid TEXT,
+ ut TEXT PRIMARY KEY,doi TEXT,normalized_doi TEXT,title TEXT,normalized_title TEXT,source_title TEXT,
+ source_abbrev_29 TEXT,source_iso_abbrev TEXT,publication_type_code TEXT,document_type TEXT,abstract TEXT,
+ publication_year INTEGER,publication_date TEXT,early_access_date TEXT,early_access_year INTEGER,wos_data_date TEXT,
+ volume TEXT,issue TEXT,begin_page TEXT,end_page TEXT,article_number TEXT,pmid TEXT,
  times_cited_wos INTEGER,times_cited_total INTEGER,raw_record TEXT NOT NULL,first_imported_at TEXT NOT NULL,last_imported_at TEXT NOT NULL,
  last_batch_id INTEGER NOT NULL REFERENCES wos_import_batches(batch_id));
 CREATE INDEX IF NOT EXISTS ix_wos_records_doi ON wos_records(normalized_doi);
@@ -76,9 +78,18 @@ CREATE INDEX IF NOT EXISTS ix_wos_cr_doi ON wos_cited_references(cited_doi);
 CREATE INDEX IF NOT EXISTS ix_wos_cr_target ON wos_cited_references(target_ut);
 CREATE TABLE IF NOT EXISTS wos_record_metrics (
  metric_id INTEGER PRIMARY KEY,ut TEXT NOT NULL REFERENCES wos_records(ut) ON DELETE CASCADE,
- batch_id INTEGER NOT NULL REFERENCES wos_import_batches(batch_id) ON DELETE CASCADE,observed_at TEXT NOT NULL,
+ batch_id INTEGER NOT NULL REFERENCES wos_import_batches(batch_id) ON DELETE CASCADE,observed_at TEXT NOT NULL,source_data_date TEXT,
  times_cited_wos INTEGER,times_cited_total INTEGER,UNIQUE(ut,batch_id));
 """
+
+V2_RECORD_COLUMNS = {
+    "source_abbrev_29": "TEXT",
+    "source_iso_abbrev": "TEXT",
+    "publication_type_code": "TEXT",
+    "early_access_date": "TEXT",
+    "early_access_year": "INTEGER",
+    "wos_data_date": "TEXT",
+}
 
 
 def _now() -> str:
@@ -97,6 +108,10 @@ def _identifier_value(raw: str) -> str:
     return raw.rsplit("/", 1)[1].strip() if "/" in raw else raw.strip()
 
 
+def _columns(con: sqlite3.Connection, table: str) -> set[str]:
+    return {str(row[1]) for row in con.execute(f"PRAGMA table_info({table})").fetchall()}
+
+
 class WosCorpusStore:
     """Writable owner and read service for an independent local WoS corpus."""
 
@@ -107,11 +122,23 @@ class WosCorpusStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect(write=True) as con:
             con.executescript(SCHEMA_SQL)
+            self._migrate_schema(con)
             con.execute(
                 "INSERT INTO wos_meta(key,value) VALUES('schema_version',?) "
                 "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
                 (str(SCHEMA_VERSION),),
             )
+
+    @staticmethod
+    def _migrate_schema(con: sqlite3.Connection) -> None:
+        """Small in-place migrations for the independent, Paperazzi-owned WoS DB."""
+        record_columns = _columns(con, "wos_records")
+        for name, sql_type in V2_RECORD_COLUMNS.items():
+            if name not in record_columns:
+                con.execute(f"ALTER TABLE wos_records ADD COLUMN {name} {sql_type}")
+        metric_columns = _columns(con, "wos_record_metrics")
+        if "source_data_date" not in metric_columns:
+            con.execute("ALTER TABLE wos_record_metrics ADD COLUMN source_data_date TEXT")
 
     @contextmanager
     def connect(self, *, write: bool = False) -> Iterator[sqlite3.Connection]:
@@ -183,15 +210,12 @@ class WosCorpusStore:
                     con.execute("SELECT 1 FROM wos_records WHERE ut=?", (record.ut,)).fetchone()
                     is not None
                 )
-                self._upsert_record(
-                    con, record, batch_id=batch_id, imported_at=imported_at
-                )
+                self._upsert_record(con, record, batch_id=batch_id, imported_at=imported_at)
                 new_count += int(not existed)
                 updated_count += int(existed)
             self.resolve_citation_targets(con)
             con.execute(
-                "UPDATE wos_import_batches SET record_count=?,new_count=?,updated_count=? "
-                "WHERE batch_id=?",
+                "UPDATE wos_import_batches SET record_count=?,new_count=?,updated_count=? WHERE batch_id=?",
                 (len(records), new_count, updated_count, batch_id),
             )
         return {
@@ -217,20 +241,23 @@ class WosCorpusStore:
         first = old[0] if old else imported_at
         con.execute(
             """INSERT INTO wos_records(
-               ut,doi,normalized_doi,title,normalized_title,source_title,document_type,abstract,
-               publication_year,publication_date,volume,issue,begin_page,end_page,article_number,
-               pmid,times_cited_wos,times_cited_total,raw_record,first_imported_at,last_imported_at,last_batch_id)
-               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+               ut,doi,normalized_doi,title,normalized_title,source_title,source_abbrev_29,source_iso_abbrev,
+               publication_type_code,document_type,abstract,publication_year,publication_date,early_access_date,
+               early_access_year,wos_data_date,volume,issue,begin_page,end_page,article_number,pmid,
+               times_cited_wos,times_cited_total,raw_record,first_imported_at,last_imported_at,last_batch_id)
+               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                ON CONFLICT(ut) DO UPDATE SET
                doi=excluded.doi,normalized_doi=excluded.normalized_doi,title=excluded.title,
                normalized_title=excluded.normalized_title,source_title=excluded.source_title,
-               document_type=excluded.document_type,abstract=excluded.abstract,
-               publication_year=excluded.publication_year,publication_date=excluded.publication_date,
-               volume=excluded.volume,issue=excluded.issue,begin_page=excluded.begin_page,
-               end_page=excluded.end_page,article_number=excluded.article_number,pmid=excluded.pmid,
-               times_cited_wos=excluded.times_cited_wos,times_cited_total=excluded.times_cited_total,
-               raw_record=excluded.raw_record,last_imported_at=excluded.last_imported_at,
-               last_batch_id=excluded.last_batch_id""",
+               source_abbrev_29=excluded.source_abbrev_29,source_iso_abbrev=excluded.source_iso_abbrev,
+               publication_type_code=excluded.publication_type_code,document_type=excluded.document_type,
+               abstract=excluded.abstract,publication_year=excluded.publication_year,
+               publication_date=excluded.publication_date,early_access_date=excluded.early_access_date,
+               early_access_year=excluded.early_access_year,wos_data_date=excluded.wos_data_date,
+               volume=excluded.volume,issue=excluded.issue,begin_page=excluded.begin_page,end_page=excluded.end_page,
+               article_number=excluded.article_number,pmid=excluded.pmid,times_cited_wos=excluded.times_cited_wos,
+               times_cited_total=excluded.times_cited_total,raw_record=excluded.raw_record,
+               last_imported_at=excluded.last_imported_at,last_batch_id=excluded.last_batch_id""",
             (
                 record.ut,
                 record.doi,
@@ -238,10 +265,16 @@ class WosCorpusStore:
                 record.title,
                 record.normalized_title,
                 record.source_title,
+                record.source_abbrev_29,
+                record.source_iso_abbrev,
+                record.publication_type_code,
                 record.document_type,
                 record.abstract,
                 record.publication_year,
                 record.publication_date,
+                record.early_access_date,
+                record.early_access_year,
+                record.wos_data_date,
                 record.volume,
                 record.issue,
                 record.begin_page,
@@ -272,8 +305,7 @@ class WosCorpusStore:
         full_map: dict[str, int] = {}
         for author in record.authors:
             cur = con.execute(
-                "INSERT INTO wos_authors(ut,order_index,au_name,full_name,normalized_au,normalized_full_name) "
-                "VALUES(?,?,?,?,?,?)",
+                "INSERT INTO wos_authors(ut,order_index,au_name,full_name,normalized_au,normalized_full_name) VALUES(?,?,?,?,?,?)",
                 (
                     record.ut,
                     author.order_index,
@@ -301,38 +333,27 @@ class WosCorpusStore:
             candidates: list[int] = []
             tokens = key.split()
             for author in record.authors:
-                fk = normalize_author_key(author.full_name)
+                full_key = normalize_author_key(author.full_name)
                 if (
-                    fk
+                    full_key
                     and tokens
-                    and fk.split()[0] == tokens[0]
+                    and full_key.split()[0] == tokens[0]
                     and (
                         len(tokens) == 1
                         or any(
-                            token.startswith(tokens[-1])
-                            or tokens[-1].startswith(token)
-                            for token in fk.split()[1:]
+                            token.startswith(tokens[-1]) or tokens[-1].startswith(token)
+                            for token in full_key.split()[1:]
                         )
                     )
                 ):
                     candidates.append(author_ids[author.order_index])
             return candidates[0] if len(set(candidates)) == 1 else None
 
-        for namespace, values in (
-            ("RESEARCHER_ID", record.researcher_ids),
-            ("ORCID", record.orcids),
-        ):
+        for namespace, values in (("RESEARCHER_ID", record.researcher_ids), ("ORCID", record.orcids)):
             for raw in values:
                 con.execute(
-                    "INSERT INTO wos_author_identifiers(wos_author_id,ut,namespace,value,raw_value) "
-                    "VALUES(?,?,?,?,?)",
-                    (
-                        identifier_author_id(raw),
-                        record.ut,
-                        namespace,
-                        _identifier_value(raw),
-                        raw,
-                    ),
+                    "INSERT INTO wos_author_identifiers(wos_author_id,ut,namespace,value,raw_value) VALUES(?,?,?,?,?)",
+                    (identifier_author_id(raw), record.ut, namespace, _identifier_value(raw), raw),
                 )
 
         for address in record.addresses:
@@ -345,8 +366,7 @@ class WosCorpusStore:
                 aid = full_map.get(normalize_author_key(name) or "")
                 if aid is not None:
                     con.execute(
-                        "INSERT OR IGNORE INTO wos_author_addresses(wos_author_id,address_id) "
-                        "VALUES(?,?)",
+                        "INSERT OR IGNORE INTO wos_author_addresses(wos_author_id,address_id) VALUES(?,?)",
                         (aid, address_id),
                     )
 
@@ -358,17 +378,15 @@ class WosCorpusStore:
 
         for group in record.correspondence_groups:
             cur = con.execute(
-                "INSERT INTO wos_correspondence_groups(ut,order_index,raw_group,raw_address) "
-                "VALUES(?,?,?,?)",
+                "INSERT INTO wos_correspondence_groups(ut,order_index,raw_group,raw_address) VALUES(?,?,?,?)",
                 (record.ut, group.order_index, group.raw_group, group.address),
             )
-            gid = int(cur.lastrowid)
+            group_id = int(cur.lastrowid)
             for name in group.member_names:
                 key = normalize_author_key(name)
                 con.execute(
-                    "INSERT INTO wos_correspondence_members(correspondence_group_id,wos_author_id,raw_member_name,normalized_member_name) "
-                    "VALUES(?,?,?,?)",
-                    (gid, au_map.get(key or ""), name, key),
+                    "INSERT INTO wos_correspondence_members(correspondence_group_id,wos_author_id,raw_member_name,normalized_member_name) VALUES(?,?,?,?)",
+                    (group_id, au_map.get(key or ""), name, key),
                 )
 
         for i, email in enumerate(record.emails):
@@ -377,10 +395,7 @@ class WosCorpusStore:
                 (record.ut, i, email),
             )
 
-        for kind, values in (
-            ("AUTHOR", record.author_keywords),
-            ("KEYWORDS_PLUS", record.keywords_plus),
-        ):
+        for kind, values in (("AUTHOR", record.author_keywords), ("KEYWORDS_PLUS", record.keywords_plus)):
             for i, value in enumerate(values):
                 con.execute(
                     "INSERT INTO wos_keywords(ut,keyword_type,order_index,keyword) VALUES(?,?,?,?)",
@@ -400,30 +415,29 @@ class WosCorpusStore:
                 (record.ut, record.funding_agencies, record.funding_text),
             )
 
-        for ref in record.references:
+        for reference in record.references:
             con.execute(
-                "INSERT INTO wos_cited_references(source_ut,order_index,raw_reference,cited_doi,cited_author,cited_year,cited_source,volume,page,target_ut) "
-                "VALUES(?,?,?,?,?,?,?,?,?,NULL)",
+                "INSERT INTO wos_cited_references(source_ut,order_index,raw_reference,cited_doi,cited_author,cited_year,cited_source,volume,page,target_ut) VALUES(?,?,?,?,?,?,?,?,?,NULL)",
                 (
                     record.ut,
-                    ref.order_index,
-                    ref.raw_text,
-                    ref.doi,
-                    ref.cited_author,
-                    ref.cited_year,
-                    ref.cited_source,
-                    ref.volume,
-                    ref.page,
+                    reference.order_index,
+                    reference.raw_text,
+                    reference.doi,
+                    reference.cited_author,
+                    reference.cited_year,
+                    reference.cited_source,
+                    reference.volume,
+                    reference.page,
                 ),
             )
 
         con.execute(
-            "INSERT OR REPLACE INTO wos_record_metrics(ut,batch_id,observed_at,times_cited_wos,times_cited_total) "
-            "VALUES(?,?,?,?,?)",
+            "INSERT OR REPLACE INTO wos_record_metrics(ut,batch_id,observed_at,source_data_date,times_cited_wos,times_cited_total) VALUES(?,?,?,?,?,?)",
             (
                 record.ut,
                 batch_id,
                 imported_at,
+                record.wos_data_date,
                 record.times_cited_wos,
                 record.times_cited_total,
             ),
@@ -450,20 +464,16 @@ class WosCorpusStore:
 
     def stats(self) -> dict[str, int]:
         with self.connect() as con:
-            def q(sql: str) -> int:
+            def count(sql: str) -> int:
                 return int(con.execute(sql).fetchone()[0])
 
             return {
-                "records": q("SELECT count(*) FROM wos_records"),
-                "authors": q("SELECT count(*) FROM wos_authors"),
-                "corresponding_members": q(
-                    "SELECT count(*) FROM wos_correspondence_members"
-                ),
-                "cited_references": q("SELECT count(*) FROM wos_cited_references"),
-                "resolved_citation_edges": q(
-                    "SELECT count(*) FROM wos_cited_references WHERE target_ut IS NOT NULL"
-                ),
-                "import_batches": q("SELECT count(*) FROM wos_import_batches"),
+                "records": count("SELECT count(*) FROM wos_records"),
+                "authors": count("SELECT count(*) FROM wos_authors"),
+                "corresponding_members": count("SELECT count(*) FROM wos_correspondence_members"),
+                "cited_references": count("SELECT count(*) FROM wos_cited_references"),
+                "resolved_citation_edges": count("SELECT count(*) FROM wos_cited_references WHERE target_ut IS NOT NULL"),
+                "import_batches": count("SELECT count(*) FROM wos_import_batches"),
             }
 
     def find_by_doi(self, doi: str) -> list[dict[str, Any]]:
@@ -474,8 +484,7 @@ class WosCorpusStore:
             return [
                 dict(row)
                 for row in con.execute(
-                    "SELECT * FROM wos_records WHERE normalized_doi=? ORDER BY ut",
-                    (value,),
+                    "SELECT * FROM wos_records WHERE normalized_doi=? ORDER BY ut", (value,)
                 ).fetchall()
             ]
 
@@ -487,8 +496,7 @@ class WosCorpusStore:
             return [
                 dict(row)
                 for row in con.execute(
-                    "SELECT * FROM wos_records WHERE normalized_title=? "
-                    "ORDER BY publication_year,ut",
+                    "SELECT * FROM wos_records WHERE normalized_title=? ORDER BY publication_year,ut",
                     (value,),
                 ).fetchall()
             ]
@@ -528,12 +536,11 @@ class WosCorpusStore:
             ]
             groups = []
             for group in con.execute(
-                "SELECT * FROM wos_correspondence_groups WHERE ut=? ORDER BY order_index",
-                (ut,),
+                "SELECT * FROM wos_correspondence_groups WHERE ut=? ORDER BY order_index", (ut,)
             ).fetchall():
                 members = [
-                    dict(x)
-                    for x in con.execute(
+                    dict(row)
+                    for row in con.execute(
                         "SELECT m.*,a.au_name,a.full_name FROM wos_correspondence_members m "
                         "LEFT JOIN wos_authors a ON a.wos_author_id=m.wos_author_id "
                         "WHERE m.correspondence_group_id=? ORDER BY m.rowid",
@@ -541,53 +548,45 @@ class WosCorpusStore:
                     ).fetchall()
                 ]
                 groups.append({**dict(group), "members": members})
-            funding = con.execute(
-                "SELECT * FROM wos_funding WHERE ut=?", (ut,)
-            ).fetchone()
+            funding = con.execute("SELECT * FROM wos_funding WHERE ut=?", (ut,)).fetchone()
             result.update(
                 authors=authors,
                 correspondence_groups=groups,
                 emails=[
-                    r["email"]
-                    for r in con.execute(
-                        "SELECT email FROM wos_emails WHERE ut=? ORDER BY order_index",
-                        (ut,),
+                    row["email"]
+                    for row in con.execute(
+                        "SELECT email FROM wos_emails WHERE ut=? ORDER BY order_index", (ut,)
                     ).fetchall()
                 ],
                 keywords=[
-                    dict(r)
-                    for r in con.execute(
-                        "SELECT keyword_type,keyword FROM wos_keywords WHERE ut=? "
-                        "ORDER BY keyword_type,order_index",
+                    dict(row)
+                    for row in con.execute(
+                        "SELECT keyword_type,keyword FROM wos_keywords WHERE ut=? ORDER BY keyword_type,order_index",
                         (ut,),
                     ).fetchall()
                 ],
                 classifications=[
-                    dict(r)
-                    for r in con.execute(
-                        "SELECT namespace,value FROM wos_classifications WHERE ut=? "
-                        "ORDER BY namespace,order_index",
+                    dict(row)
+                    for row in con.execute(
+                        "SELECT namespace,value FROM wos_classifications WHERE ut=? ORDER BY namespace,order_index",
                         (ut,),
                     ).fetchall()
                 ],
                 organizations=[
-                    r["organization"]
-                    for r in con.execute(
-                        "SELECT organization FROM wos_organizations WHERE ut=? ORDER BY order_index",
-                        (ut,),
+                    row["organization"]
+                    for row in con.execute(
+                        "SELECT organization FROM wos_organizations WHERE ut=? ORDER BY order_index", (ut,)
                     ).fetchall()
                 ],
                 funding=dict(funding) if funding else {},
                 reference_count=int(
                     con.execute(
-                        "SELECT count(*) FROM wos_cited_references WHERE source_ut=?",
-                        (ut,),
+                        "SELECT count(*) FROM wos_cited_references WHERE source_ut=?", (ut,)
                     ).fetchone()[0]
                 ),
                 resolved_reference_count=int(
                     con.execute(
-                        "SELECT count(*) FROM wos_cited_references "
-                        "WHERE source_ut=? AND target_ut IS NOT NULL",
+                        "SELECT count(*) FROM wos_cited_references WHERE source_ut=? AND target_ut IS NOT NULL",
                         (ut,),
                     ).fetchone()[0]
                 ),
@@ -601,8 +600,7 @@ class WosCorpusStore:
             return [
                 dict(row)
                 for row in con.execute(
-                    "SELECT * FROM wos_cited_references WHERE source_ut=? "
-                    "ORDER BY order_index LIMIT ? OFFSET ?",
+                    "SELECT * FROM wos_cited_references WHERE source_ut=? ORDER BY order_index LIMIT ? OFFSET ?",
                     (ut, max(1, min(limit, 2000)), max(0, offset)),
                 ).fetchall()
             ]
