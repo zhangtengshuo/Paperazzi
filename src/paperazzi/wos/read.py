@@ -1,4 +1,4 @@
-"""Rich read projection over the normalized independent WoS corpus."""
+"""Rich read projections over the normalized independent WoS corpus."""
 from __future__ import annotations
 
 import re
@@ -12,7 +12,7 @@ _FUNDING_ITEM_RE = re.compile(r"^(.*?)(?:\s*\[([^\]]+)\])?$")
 def parse_funding_items(raw_fu: str | None) -> list[dict[str, Any]]:
     """Conservatively split WoS FU into funder/grant display/search items.
 
-    Raw FU/FX remain authoritative and are always retained.  This helper only adds
+    Raw FU/FX remain authoritative and are always retained. This helper only adds
     a reversible convenience projection; it does not attempt funder identity resolution.
     """
     if not raw_fu:
@@ -89,3 +89,52 @@ def rich_record(store: WosCorpusStore, ut: str) -> dict[str, Any] | None:
     funding["items"] = parse_funding_items(funding.get("funding_agencies_raw"))
     record["funding"] = funding
     return record
+
+
+def search_records(store: WosCorpusStore, query: str, *, limit: int = 50) -> list[dict[str, Any]]:
+    """Search across the major WoS corpus dimensions, not only title/DOI."""
+    q = query.strip().casefold()
+    if not q:
+        return []
+    like = f"%{q}%"
+    with store.connect() as con:
+        rows = con.execute(
+            """SELECT DISTINCT r.ut,r.doi,r.title,r.source_title,r.publication_year,
+                              r.times_cited_wos,r.times_cited_total
+               FROM wos_records r
+               LEFT JOIN wos_authors a ON a.ut=r.ut
+               LEFT JOIN wos_author_identifiers ai ON ai.ut=r.ut
+               LEFT JOIN wos_keywords k ON k.ut=r.ut
+               LEFT JOIN wos_organizations o ON o.ut=r.ut
+               LEFT JOIN wos_classifications c ON c.ut=r.ut
+               LEFT JOIN wos_funding f ON f.ut=r.ut
+               WHERE lower(coalesce(r.title,'')) LIKE ?
+                  OR lower(coalesce(r.doi,'')) LIKE ?
+                  OR lower(coalesce(r.ut,'')) LIKE ?
+                  OR lower(coalesce(r.source_title,'')) LIKE ?
+                  OR lower(coalesce(a.full_name,a.au_name,'')) LIKE ?
+                  OR lower(coalesce(ai.value,'')) LIKE ?
+                  OR lower(coalesce(k.keyword,'')) LIKE ?
+                  OR lower(coalesce(o.organization,'')) LIKE ?
+                  OR lower(coalesce(c.value,'')) LIKE ?
+                  OR lower(coalesce(f.funding_agencies_raw,'')) LIKE ?
+                  OR lower(coalesce(f.funding_text_raw,'')) LIKE ?
+               ORDER BY r.publication_year DESC,r.ut
+               LIMIT ?""",
+            (like, like, like, like, like, like, like, like, like, like, like, max(1, min(limit, 500))),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def rich_references(store: WosCorpusStore, ut: str, *, limit: int = 500, offset: int = 0) -> list[dict[str, Any]]:
+    """Return CR rows with locally resolved WoS target metadata when available."""
+    with store.connect() as con:
+        rows = con.execute(
+            """SELECT cr.*,t.title AS target_title,t.doi AS target_doi,
+                      t.source_title AS target_source_title,t.publication_year AS target_publication_year
+               FROM wos_cited_references cr
+               LEFT JOIN wos_records t ON t.ut=cr.target_ut
+               WHERE cr.source_ut=? ORDER BY cr.order_index LIMIT ? OFFSET ?""",
+            (ut, max(1, min(limit, 2000)), max(0, offset)),
+        ).fetchall()
+    return [dict(row) for row in rows]
