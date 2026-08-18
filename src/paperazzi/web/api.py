@@ -35,6 +35,7 @@ from paperazzi.web.identity_review_ui import IDENTITY_REVIEW_MULTICANDIDATE_JS
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 from paperazzi.web.wos_api import build_wos_router
+from paperazzi.web.wos_priority_ui import WOS_PRIORITY_UI_JS
 from paperazzi.web.wos_ui import WOS_UI_JS
 from paperazzi.wos.integration import WosPaperConsumer
 from paperazzi.wos.presentation import apply_wos_effective_roles
@@ -140,19 +141,36 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         enhancement = (
             f"<script>{IDENTITY_REVIEW_MULTICANDIDATE_JS}</script>"
             f"<script>{WOS_UI_JS}</script>"
+            f"<script>{WOS_PRIORITY_UI_JS}</script>"
         )
         return APP_HTML.replace("</body>", enhancement + "</body>")
 
     @app.get("/health")
     def health() -> dict[str, object]:
         if not path.is_file():
-            return {"status": "NO_DATABASE", "database": str(path), "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
+            return {
+                "status": "NO_DATABASE",
+                "database": str(path),
+                "wos_database": str(wos_path),
+                "wos_available": wos_path.is_file(),
+            }
         try:
             with engine.connect() as connection:
                 connection.execute(sa.text("SELECT 1"))
-            return {"status": "OK", "database": str(path), "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
+            return {
+                "status": "OK",
+                "database": str(path),
+                "wos_database": str(wos_path),
+                "wos_available": wos_path.is_file(),
+            }
         except Exception as exc:  # pragma: no cover
-            return {"status": "ERROR", "database": str(path), "error": type(exc).__name__, "wos_database": str(wos_path), "wos_available": wos_path.is_file()}
+            return {
+                "status": "ERROR",
+                "database": str(path),
+                "error": type(exc).__name__,
+                "wos_database": str(wos_path),
+                "wos_available": wos_path.is_file(),
+            }
 
     @app.get("/api/audit/summary")
     def audit_summary() -> dict[str, object]:
@@ -171,8 +189,12 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
     ) -> dict[str, object]:
         with service() as query_service:
             return query_service.list_papers(
-                q=q, year=year, venue=venue, pdf_available=pdf_available,
-                limit=limit, offset=offset,
+                q=q,
+                year=year,
+                venue=venue,
+                pdf_available=pdf_available,
+                limit=limit,
+                offset=offset,
             )
 
     @app.get("/api/papers/{paper_id}")
@@ -204,7 +226,9 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             "paper_id": paper_id,
             "review": review,
             "deterministic": {
-                "machine_predicted_corresponding_authors": paper_row.get("machine_predicted_corresponding_authors", []),
+                "machine_predicted_corresponding_authors": paper_row.get(
+                    "machine_predicted_corresponding_authors", []
+                ),
                 "flags": paper_row.get("flags", []),
                 "risk_score": paper_row.get("risk_score"),
                 "severity": paper_row.get("severity"),
@@ -220,7 +244,9 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         except PdfUnavailableError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         return FileResponse(
-            path=pdf_path, media_type="application/pdf", filename=pdf_path.name,
+            path=pdf_path,
+            media_type="application/pdf",
+            filename=pdf_path.name,
             content_disposition_type="inline",
         )
 
@@ -273,7 +299,9 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
     @app.get("/api/reviews/identity")
-    def identity_reviews(limit: int = Query(default=100, ge=1, le=500)) -> list[dict[str, object]]:
+    def identity_reviews(
+        limit: int = Query(default=100, ge=1, le=500)
+    ) -> list[dict[str, object]]:
         with session_scope() as session:
             return list_identity_review_queue(session, limit=limit)
 
@@ -302,30 +330,44 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             return sync_author_name_variants(session)
 
     @app.post("/api/reviews/identity/{review_item_id}/link")
-    def link_identity_review(review_item_id: int, request: IdentityTargetRequest) -> dict[str, object]:
+    def link_identity_review(
+        review_item_id: int, request: IdentityTargetRequest
+    ) -> dict[str, object]:
         try:
             with session_scope(write=True) as session:
                 return link_review_mention(
-                    session, review_item_id, request.target_author_id, notes=request.notes
+                    session,
+                    review_item_id,
+                    request.target_author_id,
+                    notes=request.notes,
                 )
         except IdentityResolutionError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
 
     @app.post("/api/reviews/identity/{review_item_id}/not-same")
-    def not_same_identity_review(review_item_id: int, request: IdentityCandidateRequest) -> dict[str, object]:
+    def not_same_identity_review(
+        review_item_id: int, request: IdentityCandidateRequest
+    ) -> dict[str, object]:
         try:
             with session_scope(write=True) as session:
                 return reject_review_candidate(
-                    session, review_item_id, request.candidate_author_id, notes=request.notes
+                    session,
+                    review_item_id,
+                    request.candidate_author_id,
+                    notes=request.notes,
                 )
         except IdentityResolutionError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
 
     @app.post("/api/reviews/identity/{review_item_id}/create-identity")
-    def create_identity_review(review_item_id: int, request: ReviewNotesRequest) -> dict[str, object]:
+    def create_identity_review(
+        review_item_id: int, request: ReviewNotesRequest
+    ) -> dict[str, object]:
         try:
             with session_scope(write=True) as session:
-                return create_identity_from_review(session, review_item_id, notes=request.notes)
+                return create_identity_from_review(
+                    session, review_item_id, notes=request.notes
+                )
         except IdentityResolutionError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
 
@@ -344,7 +386,9 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
 
     @app.post("/api/authors/not-same")
-    def mark_author_identities_different(request: MergeAuthorsRequest) -> dict[str, object]:
+    def mark_author_identities_different(
+        request: MergeAuthorsRequest,
+    ) -> dict[str, object]:
         try:
             with session_scope(write=True) as session:
                 return mark_canonical_authors_not_same(
@@ -374,6 +418,7 @@ app = create_app()
 
 def main() -> None:
     import uvicorn
+
     uvicorn.run(
         "paperazzi.web.api:app",
         host=os.environ.get("PAPERAZZI_HOST", "127.0.0.1"),
