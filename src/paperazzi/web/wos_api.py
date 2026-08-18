@@ -10,7 +10,8 @@ from fastapi import APIRouter, HTTPException, Query
 
 from paperazzi.database.models import Paper
 from paperazzi.wos.integration import WosPaperConsumer, match_all_papers
-from paperazzi.wos.read import rich_record
+from paperazzi.wos.parser import normalize_doi
+from paperazzi.wos.read import rich_record, rich_references, search_records
 from paperazzi.wos.store import WosCorpusStore
 
 
@@ -41,7 +42,7 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
     def wos_search(q: str = Query(min_length=1), limit: int = Query(default=50, ge=1, le=500)) -> dict[str, object]:
         if not wos_path.is_file():
             return {"available": False, "query": q, "items": []}
-        return {"available": True, "query": q, "items": store.search(q, limit=limit)}
+        return {"available": True, "query": q, "items": search_records(store, q, limit=limit)}
 
     @router.get("/api/wos/records/{ut}")
     def wos_record(ut: str) -> dict[str, object]:
@@ -62,7 +63,36 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
             return {"available": False, "ut": ut, "items": []}
         if store.get_record(ut) is None:
             raise HTTPException(status_code=404, detail=f"WoS record {ut} is not in the local corpus")
-        return {"available": True, "ut": ut, "items": store.list_references(ut, limit=limit, offset=offset)}
+        items = rich_references(store, ut, limit=limit, offset=offset)
+        with session_scope() as session:
+            inspector = sa.inspect(session.get_bind())
+            paper_ids_by_ut: dict[str, list[int]] = {}
+            if inspector.has_table("paper_wos_links"):
+                for target_ut, paper_id in session.execute(sa.text(
+                    "SELECT l.wos_ut,l.paper_id FROM paper_wos_links l JOIN papers p ON p.paper_id=l.paper_id "
+                    "WHERE l.status='ACCEPTED' AND p.active_in_zotero=1"
+                )).all():
+                    paper_ids_by_ut.setdefault(str(target_ut), []).append(int(paper_id))
+            paper_ids_by_doi: dict[str, list[int]] = {}
+            for paper_id, doi in session.execute(
+                sa.select(Paper.paper_id, Paper.doi).where(
+                    Paper.active_in_zotero.is_(True), Paper.doi.is_not(None)
+                )
+            ).all():
+                normalized = normalize_doi(doi)
+                if normalized:
+                    paper_ids_by_doi.setdefault(normalized, []).append(int(paper_id))
+
+        for item in items:
+            target_ids: set[int] = set()
+            if item.get("target_ut"):
+                target_ids.update(paper_ids_by_ut.get(str(item["target_ut"]), []))
+            if item.get("cited_doi"):
+                target_ids.update(paper_ids_by_doi.get(str(item["cited_doi"]), []))
+            item["target_paper_ids"] = sorted(target_ids)
+            item["target_in_zotero"] = bool(target_ids)
+            item["target_in_local_wos"] = bool(item.get("target_ut"))
+        return {"available": True, "ut": ut, "items": items}
 
     @router.get("/api/wos/frontier")
     def wos_frontier(limit: int = Query(default=100, ge=1, le=1000)) -> dict[str, object]:
@@ -79,9 +109,6 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
             if result.get("status") == "WOS_MATCHED" and result.get("wos_ut"):
                 rich = rich_record(store, str(result["wos_ut"]))
                 if rich is not None:
-                    # The consumer projection de-duplicates RP members across multiple
-                    # Corresponding Address groups; retain that role list while replacing
-                    # the rest of the record with the richer author/identifier projection.
                     rich["corresponding_authors"] = result.get("record", {}).get("corresponding_authors", [])
                     result["record"] = rich
             return result
