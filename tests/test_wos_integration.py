@@ -8,7 +8,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
 from paperazzi.database.models import Paper
-from paperazzi.wos.integration import WosPaperConsumer, match_all_papers
+from paperazzi.wos.integration import MatchDecision, WosPaperConsumer, apply_match, match_all_papers
 from paperazzi.wos.store import WosCorpusStore
 
 
@@ -119,7 +119,6 @@ class WosIntegrationTests(unittest.TestCase):
             decisions = {row["paper_id"]: row for row in result["decisions"]}
             self.assertEqual(decisions[1]["match_method"], "DOI_EXACT")
             self.assertEqual(decisions[2]["match_method"], "TITLE_EXACT")
-            # With no match-state migration yet, the consumer says not checked rather than falsely claiming absence.
             self.assertEqual(WosPaperConsumer(session, self.wos_db).state(3)["status"], "WOS_NOT_CHECKED")
 
     def test_apply_persists_positive_and_negative_match_state(self) -> None:
@@ -141,7 +140,6 @@ class WosIntegrationTests(unittest.TestCase):
             )
             self.assertEqual(matched["record"]["reference_count"], 1)
             self.assertTrue(matched["record"]["funding"])
-
             missing = WosPaperConsumer(session, self.wos_db).state(3)
             self.assertEqual(missing["status"], "WOS_NOT_IN_LOCAL_CORPUS")
             self.assertTrue(missing["available"])
@@ -163,6 +161,27 @@ class WosIntegrationTests(unittest.TestCase):
             self.assertEqual(
                 session.execute(sa.text("SELECT count(*) FROM paper_wos_match_state")).scalar(),
                 3,
+            )
+
+    def test_fresh_nonmatch_supersedes_old_accepted_link(self) -> None:
+        WosCorpusStore(self.wos_db).import_text(WOS_SAMPLE)
+        create_bridge_tables(self.engine)
+        with Session(self.engine) as session:
+            self.assertTrue(apply_match(session, MatchDecision(1, "WOS_MATCHED", "WOS:DOI", "DOI_EXACT", 1.0, candidate_count=1)))
+            session.commit()
+            self.assertEqual(WosPaperConsumer(session, self.wos_db).state(1)["status"], "WOS_MATCHED")
+
+        with Session(self.engine) as session:
+            self.assertFalse(apply_match(session, MatchDecision(1, "WOS_NOT_IN_LOCAL_CORPUS", reason="fresh check found no candidate")))
+            session.commit()
+            self.assertEqual(WosPaperConsumer(session, self.wos_db).state(1)["status"], "WOS_NOT_IN_LOCAL_CORPUS")
+            self.assertEqual(
+                session.execute(sa.text("SELECT count(*) FROM paper_wos_links WHERE paper_id=1 AND status='ACCEPTED'")).scalar(),
+                0,
+            )
+            self.assertEqual(
+                session.execute(sa.text("SELECT count(*) FROM paper_wos_links WHERE paper_id=1 AND status='SUPERSEDED'")).scalar(),
+                1,
             )
 
 
