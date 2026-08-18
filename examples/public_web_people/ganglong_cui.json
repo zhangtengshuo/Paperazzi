@@ -1,0 +1,265 @@
+{
+  "schema": "paperazzi.public_web_person.sample.v0",
+  "person": {
+    "person_key": "ganglong-cui",
+    "canonical_name": "Ganglong Cui",
+    "name_variants": ["崔刚龙", "Cui, Ganglong", "G. L. Cui"],
+    "primary_affiliation_observed": "Beijing Normal University, College of Chemistry",
+    "observed_at": "2026-08-19"
+  },
+  "media": [
+    {
+      "media_id": "gc-portrait-bnu",
+      "media_type": "PORTRAIT",
+      "caption": "Official Beijing Normal University College of Chemistry portrait",
+      "source_page_url": "https://chem2.bnu.edu.cn/szll/jcrc/qtgccqnrcjh/121300.html",
+      "asset_url": "https://chem2.bnu.edu.cn/images/content/2022-08/20220809200602361834.jpg",
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "OFFICIAL_INSTITUTION"
+    },
+    {
+      "media_id": "gc-portrait-ccs",
+      "media_type": "PORTRAIT",
+      "caption": "Chinese Chemical Society senior-member portrait",
+      "source_page_url": "https://www.chemsoc.org.cn/member/senior/56935.html",
+      "asset_url": "https://img.chemsoc.org.cn/member/users/id60881_FDKIBOHJ.jpg",
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "PROFESSIONAL_SOCIETY"
+    },
+    {
+      "media_id": "gc-2023-quantum-computational-chemistry-event",
+      "media_type": "EVENT_PHOTO_PAGE",
+      "caption": "Institutional event-news page contains photographs from the 2023 Capital Frontier Academic Achievement Report meeting on quantum computational chemistry, where Cui gave remarks and chaired the academic exchange session.",
+      "source_page_url": "https://bcs.bnu.edu.cn/xwzx/xkxw/61375f3d4f41458dbb8416264936eff9.htm",
+      "asset_url": null,
+      "copyright_status": "UNKNOWN",
+      "storage_policy": "LINK_ONLY",
+      "source_quality": "INSTITUTION_NEWS"
+    }
+  ],
+  "web_presences": [
+    {
+      "kind": "OFFICIAL_PROFILE",
+      "url": "https://faculty.bnu.edu.cn/cuiganglong/zh_CN/index.htm",
+      "host": "Beijing Normal University"
+    },
+    {
+      "kind": "OFFICIAL_BIOGRAPHY",
+      "url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html",
+      "host": "Beijing Normal University College of Chemistry"
+    },
+    {
+      "kind": "SOCIETY_PROFILE",
+      "url": "https://www.chemsoc.org.cn/member/senior/56935.html",
+      "host": "Chinese Chemical Society"
+    }
+  ],
+  "assertions": [
+    {
+      "assertion_id": "gc-role-bnu-professor",
+      "predicate": "AFFILIATED_WITH",
+      "object_type": "ORGANIZATION",
+      "object_label": "Beijing Normal University, College of Chemistry",
+      "role_detail": "Professor; doctoral and master's supervisor; College vice dean on the currently indexed faculty profile",
+      "start_date": "2014-04-02",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://faculty.bnu.edu.cn/cuiganglong/zh_CN/jsxx/38892/jsxx/jsxx.htm"
+    },
+    {
+      "assertion_id": "gc-advisor-fang-bsc",
+      "predicate": "ACADEMIC_ADVISOR",
+      "object_type": "PERSON",
+      "object_label": "Weihai Fang (方维海)",
+      "role_detail": "BSc-stage advisor according to the BNU College of Chemistry biography",
+      "start_date": "2000",
+      "end_date": "2004",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html"
+    },
+    {
+      "assertion_id": "gc-advisor-fang-phd",
+      "predicate": "ACADEMIC_ADVISOR",
+      "object_type": "PERSON",
+      "object_label": "Weihai Fang (方维海)",
+      "role_detail": "Doctoral advisor according to the BNU College of Chemistry biography",
+      "start_date": "2004",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html",
+      "notes": "The older College biography gives 2004-2007 for the BNU doctoral stage followed by 2007-2009 joint doctoral training at Duke; the current BNU faculty profile indexes the PhD period as 2004.09-2010.01. Preserve both source observations rather than silently reconciling dates."
+    },
+    {
+      "assertion_id": "gc-advisor-yang-joint",
+      "predicate": "JOINT_TRAINING_ADVISOR",
+      "object_type": "PERSON",
+      "object_label": "Weitao Yang (杨伟涛)",
+      "role_detail": "Joint doctoral training at Duke University",
+      "start_date": "2007",
+      "end_date": "2009",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html"
+    },
+    {
+      "assertion_id": "gc-mentor-yang-postdoc",
+      "predicate": "POSTDOC_ADVISOR",
+      "object_type": "PERSON",
+      "object_label": "Weitao Yang (杨伟涛)",
+      "role_detail": "Postdoctoral research at Duke University",
+      "start_date": "2010",
+      "end_date": "2011",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html"
+    },
+    {
+      "assertion_id": "gc-mentor-thiel",
+      "predicate": "MENTOR",
+      "object_type": "PERSON",
+      "object_label": "Walter Thiel",
+      "role_detail": "Humboldt scholar stage at the Max Planck Institute for Coal Research; BNU biography explicitly names Thiel as mentor/advisor",
+      "start_date": "2011",
+      "end_date": "2014",
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.99,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html"
+    },
+    {
+      "assertion_id": "gc-ccs-photochemistry",
+      "predicate": "COMMITTEE_MEMBER",
+      "object_type": "ORGANIZATION",
+      "object_label": "Chinese Chemical Society Photochemistry Committee",
+      "role_detail": "Committee member",
+      "start_date": "2023-01",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.98,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://faculty.bnu.edu.cn/cuiganglong/zh_CN/index.htm"
+    },
+    {
+      "assertion_id": "gc-ccs-theoretical-chemistry",
+      "predicate": "COMMITTEE_MEMBER",
+      "object_type": "ORGANIZATION",
+      "object_label": "Chinese Chemical Society Theoretical Chemistry Committee",
+      "role_detail": "Committee member",
+      "start_date": "2023-01",
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.98,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://faculty.bnu.edu.cn/cuiganglong/zh_CN/index.htm"
+    },
+    {
+      "assertion_id": "gc-center-theory-ai",
+      "predicate": "MEMBER_OF_CENTER",
+      "object_type": "ORGANIZATION",
+      "object_label": "BNU Center for Theoretical Chemistry and Intelligent Computing",
+      "role_detail": "Listed faculty member; the public roster also lists Weihai Fang, Franz Michael Dolg, Zhendong Li, Jiajun Ren and Jiushu Shao",
+      "start_date": null,
+      "end_date": null,
+      "status": "SUPPORTED_EXPLICIT",
+      "confidence": 0.98,
+      "visibility_class": "PUBLIC_PROFESSIONAL",
+      "source_url": "https://gdyjy.bnu.edu.cn/szll/llhxyznjszx1/index.htm"
+    }
+  ],
+  "events": [
+    {
+      "event_key": "bms-2025-session-4-ai-theoretical-chemistry",
+      "title": "Beijing Conference on Molecular Sciences 2025 — Session 4: AI Chemistry and Theoretical Chemistry",
+      "event_type": "CONFERENCE_SESSION",
+      "date": "2025",
+      "role": "SPEAKER_AT",
+      "place": "Beijing",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://bms2025.tiemeeting.com/Contents/39016.html",
+      "notes": "Conference page lists Ganglong Cui, Beijing Normal University, among the session speakers."
+    },
+    {
+      "event_key": "cecam-ab-initio-qmd-school-2026",
+      "title": "CECAM Flagship School: Frontiers in Ab Initio Quantum Molecular Dynamics",
+      "event_type": "SUMMER_SCHOOL",
+      "date": "2026-07-25/2026-07-29",
+      "role": "SESSION_CHAIR_AT",
+      "place": "Peking University, Beijing",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://indico.pku.edu.cn/event/51/page/209-invited-session-chairs",
+      "notes": "Listed as an invited session chair together with a broad international theoretical-chemistry network, including Weihai Fang."
+    },
+    {
+      "event_key": "capital-frontier-quantum-computational-chemistry-2023",
+      "title": "2023 Capital Frontier Academic Achievement Report — Quantum Computational Chemistry",
+      "event_type": "INSTITUTIONAL_ACADEMIC_EVENT",
+      "date": "2023-11-03",
+      "role": "HOST_AND_REMARKS",
+      "place": "Beijing Normal University",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://bcs.bnu.edu.cn/xwzx/xkxw/61375f3d4f41458dbb8416264936eff9.htm",
+      "notes": "Institutional news says Cui, as vice dean, gave opening remarks and chaired the academic-report exchange session. The page contains event photographs."
+    },
+    {
+      "event_key": "beijing-chemistry-congress-2021",
+      "title": "2021 Beijing Chemistry Congress",
+      "event_type": "CONFERENCE",
+      "date": "2021",
+      "role": "ORGANIZING_COMMITTEE_VICE_CHAIR",
+      "place": "Beijing",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://bcs.bnu.edu.cn/xwzx/tzgg/113562.htm"
+    },
+    {
+      "event_key": "bnu-chemistry-freshman-opening-2017",
+      "title": "BNU College of Chemistry 2017 freshman opening ceremony and first lecture",
+      "event_type": "INSTITUTIONAL_EVENT",
+      "date": "2017-09-07",
+      "role": "FACULTY_REPRESENTATIVE_SPEAKER",
+      "place": "Beijing Normal University",
+      "status": "SUPPORTED_EXPLICIT",
+      "source_url": "https://chem2.bnu.edu.cn/xsyd/xshd/147126.html"
+    }
+  ],
+  "source_observations": [
+    {
+      "source_url": "https://chem2.bnu.edu.cn/szll/jcrc/zjxztpjs/121300.html",
+      "source_kind": "OFFICIAL_PROFILE",
+      "evidence_summary": "Detailed education/career biography explicitly names Weihai Fang, Weitao Yang and Walter Thiel as advisors/mentors at different stages.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://faculty.bnu.edu.cn/cuiganglong/zh_CN/index.htm",
+      "source_kind": "OFFICIAL_PROFILE",
+      "evidence_summary": "Current BNU profile provides employment, committee service and current institutional role information.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://bms2025.tiemeeting.com/Contents/39016.html",
+      "source_kind": "CONFERENCE_PROGRAM",
+      "evidence_summary": "Speaker roster for AI Chemistry and Theoretical Chemistry session.",
+      "source_quality": "HIGH"
+    },
+    {
+      "source_url": "https://indico.pku.edu.cn/event/51/page/209-invited-session-chairs",
+      "source_kind": "CONFERENCE_PROGRAM",
+      "evidence_summary": "Public organizer page for invited session chairs of the 2026 CECAM flagship school.",
+      "source_quality": "HIGH"
+    }
+  ],
+  "collection_notes": [
+    "No public student roster specific to Cui was found in this initial search. Do not convert frequent coauthors into student/supervision edges without an explicit source.",
+    "Official BNU pages disagree on the exact PhD-period end date; keep both observations and expose the conflict if timeline precision matters.",
+    "Repeated co-appearance with Weihai Fang is expected from the advisor relationship and shared institutional center, but event co-presence should remain an event-derived relationship rather than a new factual friendship/collaboration edge."
+  ]
+}
