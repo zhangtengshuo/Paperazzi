@@ -34,6 +34,7 @@ from paperazzi.web.identity_review_ui import IDENTITY_REVIEW_MULTICANDIDATE_JS
 from paperazzi.web.queries import NotFoundError, PaperazziQueryService, PdfUnavailableError
 from paperazzi.web.ui import APP_HTML
 from paperazzi.web.wos_api import build_wos_router
+from paperazzi.web.wos_ui import WOS_UI_JS
 
 DEFAULT_DB = Path("data/paperazzi.sqlite3")
 DEFAULT_WOS_DB = Path("data/wos.sqlite3")
@@ -133,7 +134,10 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
 
     @app.get("/", response_class=HTMLResponse, include_in_schema=False)
     def home() -> str:
-        enhancement = f"<script>{IDENTITY_REVIEW_MULTICANDIDATE_JS}</script>"
+        enhancement = (
+            f"<script>{IDENTITY_REVIEW_MULTICANDIDATE_JS}</script>"
+            f"<script>{WOS_UI_JS}</script>"
+        )
         return APP_HTML.replace("</body>", enhancement + "</body>")
 
     @app.get("/health")
