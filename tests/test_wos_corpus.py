@@ -49,6 +49,19 @@ DA 2026-08-18
 ER
 """
 
+DUPLICATE_TARGET = """PT J
+AU Smith, AC
+AF Smith, Another C.
+TI Duplicate DOI target
+SO JOURNAL B
+DT Article
+PY 2020
+DI 10.1000/test-b
+UT WOS:BBC
+DA 2026-08-18
+ER
+"""
+
 
 class WosParserTests(unittest.TestCase):
     def test_group_level_corresponding_author_semantics(self) -> None:
@@ -89,12 +102,23 @@ class WosStoreTests(unittest.TestCase):
             self.assertEqual(store.stats()["records"], 2)
             self.assertEqual(store.stats()["cited_references"], 2)
 
+    def test_duplicate_target_doi_is_not_forced_into_a_citation_edge(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            store = WosCorpusStore(Path(tmp) / "wos.sqlite3")
+            store.import_text(SAMPLE)
+            self.assertEqual(store.stats()["resolved_citation_edges"], 1)
+            store.import_text(DUPLICATE_TARGET)
+            self.assertEqual(store.stats()["resolved_citation_edges"], 0)
+            ref = store.list_references("WOS:AAA")[0]
+            self.assertEqual(ref["cited_doi"], "10.1000/test-b")
+            self.assertIsNone(ref["target_ut"])
+            self.assertEqual(store.citation_frontier()[0]["cited_doi"], "10.1000/test-b")
+
     def test_citation_frontier_retains_unresolved_external_references(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             store = WosCorpusStore(Path(tmp) / "wos.sqlite3")
             store.import_text(SAMPLE)
             frontier = store.citation_frontier()
-            # Reference without a DOI is retained in wos_cited_references but cannot be a DOI frontier item.
             self.assertEqual(store.stats()["cited_references"], 2)
             self.assertEqual(frontier, [])
 
