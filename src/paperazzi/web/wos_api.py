@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+import os
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,7 @@ import sqlalchemy as sa
 from fastapi import APIRouter, HTTPException, Query
 
 from paperazzi.database.models import Paper
+from paperazzi.web.analytics_api import build_analytics_router
 from paperazzi.wos.integration import WosPaperConsumer, match_all_papers
 from paperazzi.wos.parser import normalize_doi
 from paperazzi.wos.read import rich_record, rich_references, search_records
@@ -194,4 +196,8 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
             except RuntimeError as exc:
                 raise HTTPException(status_code=409, detail=str(exc)) from exc
 
+    analytics_path = Path(
+        os.environ.get("PAPERAZZI_ANALYTICS_DB", "data/analytics.sqlite3")
+    )
+    router.include_router(build_analytics_router(session_factory, wos_path, analytics_path))
     return router
