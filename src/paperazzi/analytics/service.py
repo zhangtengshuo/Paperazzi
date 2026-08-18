@@ -26,6 +26,17 @@ def _pair_neighbor(edge: dict[str, Any], seed: str) -> str:
     return str(edge["target_key"] if edge["source_key"] == seed else edge["source_key"])
 
 
+def _empty_relation_components() -> dict[str, Any]:
+    return {
+        "direct_citation": 0.0,
+        "bibliographic_coupling": 0.0,
+        "co_citation": 0.0,
+        "shared_reference_count": 0,
+        "co_citation_count": 0,
+        "warnings": [],
+    }
+
+
 class GraphAnalyticsService:
     def __init__(self, analytics_path: str | Path):
         self.store = AnalyticsStore(analytics_path)
@@ -75,6 +86,39 @@ class GraphAnalyticsService:
             "interpretation_guardrail": "Centrality is a structural corpus metric, not a paper-quality score.",
         }
 
+    def _metadata_candidate_nodes(
+        self,
+        run_id: str,
+        seed_ut: str,
+        seed_authors: set[str],
+        seed_concepts: set[str],
+    ) -> dict[str, dict[str, Any]]:
+        """Find papers related only through explicit author/concept metadata.
+
+        This keeps the related-paper candidate stage from being citation-only. The
+        scan is intentionally simple for v1; it operates over the materialized paper
+        nodes of one analysis run and can later be replaced by inverted indexes.
+        """
+        if not seed_authors and not seed_concepts:
+            return {}
+        with self.store.connect() as con:
+            rows = con.execute(
+                """SELECT node_key,attributes_json FROM analysis_nodes
+                   WHERE analysis_run_id=? AND node_type='PAPER'""",
+                (run_id,),
+            ).fetchall()
+        result: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            candidate_ut = str(row["node_key"])
+            if candidate_ut == seed_ut:
+                continue
+            attrs = _decode(row["attributes_json"])
+            authors = set(attrs.get("authors", []))
+            concepts = set(attrs.get("concepts", []))
+            if seed_authors.intersection(authors) or seed_concepts.intersection(concepts):
+                result[candidate_ut] = attrs
+        return result
+
     def related(
         self,
         ut: str,
@@ -89,6 +133,7 @@ class GraphAnalyticsService:
         seed = self.store.node(rid, ut)
         if seed is None:
             raise AnalyticsNotFoundError(f"paper {ut} is not in analysis run")
+
         edges = self.store.edges_for_node(
             rid,
             ut,
@@ -100,25 +145,12 @@ class GraphAnalyticsService:
             candidate = _pair_neighbor(edge, ut)
             if candidate == ut:
                 continue
-            entry = by_candidate.setdefault(
-                candidate,
-                {
-                    "direct_citation": 0.0,
-                    "bibliographic_coupling": 0.0,
-                    "co_citation": 0.0,
-                    "shared_reference_count": 0,
-                    "co_citation_count": 0,
-                    "warnings": [],
-                },
-            )
+            entry = by_candidate.setdefault(candidate, _empty_relation_components())
             components = edge.get("components", {})
             if edge["predicate"] == "CITES_OBSERVED":
                 entry["direct_citation"] = 1.0
                 entry.setdefault("citation_directions", []).append(
-                    {
-                        "citing": edge["source_key"],
-                        "cited": edge["target_key"],
-                    }
+                    {"citing": edge["source_key"], "cited": edge["target_key"]}
                 )
             elif edge["predicate"] == "BIBLIOGRAPHIC_COUPLING":
                 cosine = components.get("cosine")
@@ -131,25 +163,37 @@ class GraphAnalyticsService:
                         "BIBLIOGRAPHIC_COUPLING_NORMALIZATION_SUPPRESSED_INCOMPLETE_CR"
                     )
             elif edge["predicate"] == "CO_CITATION":
-                entry["co_citation"] = float(components.get("normalized_co_citation", edge.get("weight") or 0.0))
+                entry["co_citation"] = float(
+                    components.get("normalized_co_citation", edge.get("weight") or 0.0)
+                )
                 entry["co_citation_count"] = int(components.get("co_citation_count", 0))
                 entry["co_citation_quality"] = edge["quality_status"]
 
         seed_attrs = seed["attributes"]
         seed_authors = set(seed_attrs.get("authors", []))
         seed_concepts = set(seed_attrs.get("concepts", []))
+        metadata_candidates = self._metadata_candidate_nodes(
+            rid, ut, seed_authors, seed_concepts
+        )
+        for candidate_ut in metadata_candidates:
+            by_candidate.setdefault(candidate_ut, _empty_relation_components())
+
         items: list[dict[str, Any]] = []
         for candidate_ut, components in by_candidate.items():
-            candidate = self.store.node(rid, candidate_ut)
-            if candidate is None:
-                continue
-            attrs = candidate["attributes"]
+            attrs = metadata_candidates.get(candidate_ut)
+            if attrs is None:
+                candidate = self.store.node(rid, candidate_ut)
+                if candidate is None:
+                    continue
+                attrs = candidate["attributes"]
             authors = set(attrs.get("authors", []))
             concepts = set(attrs.get("concepts", []))
+            shared_authors = sorted(seed_authors & authors)
+            shared_concepts = sorted(seed_concepts & concepts)
             author_union = seed_authors | authors
             concept_union = seed_concepts | concepts
-            author_jaccard = len(seed_authors & authors) / len(author_union) if author_union else 0.0
-            concept_jaccard = len(seed_concepts & concepts) / len(concept_union) if concept_union else 0.0
+            author_jaccard = len(shared_authors) / len(author_union) if author_union else 0.0
+            concept_jaccard = len(shared_concepts) / len(concept_union) if concept_union else 0.0
             score = (
                 0.20 * components["direct_citation"]
                 + 0.35 * min(1.0, components["bibliographic_coupling"])
@@ -164,6 +208,17 @@ class GraphAnalyticsService:
                 "shared_author_jaccard": author_jaccard,
                 "shared_concept_jaccard": concept_jaccard,
             }
+            evidence_classes: list[str] = []
+            if components["direct_citation"]:
+                evidence_classes.append("DIRECT_CITATION")
+            if components["shared_reference_count"]:
+                evidence_classes.append("SHARED_REFERENCES")
+            if components["co_citation_count"]:
+                evidence_classes.append("CO_CITATION")
+            if shared_authors:
+                evidence_classes.append("SHARED_AUTHORS")
+            if shared_concepts:
+                evidence_classes.append("SHARED_CONCEPTS")
             items.append(
                 {
                     "ut": candidate_ut,
@@ -172,6 +227,9 @@ class GraphAnalyticsService:
                     "venue": attrs.get("venue"),
                     "score": score,
                     "reasons": reasons,
+                    "evidence_classes": evidence_classes,
+                    "shared_authors": shared_authors,
+                    "shared_concepts": shared_concepts,
                     "shared_reference_count": components["shared_reference_count"],
                     "top_shared_references": components.get("top_shared_references", []),
                     "co_citation_count": components["co_citation_count"],
@@ -180,7 +238,12 @@ class GraphAnalyticsService:
                 }
             )
         items.sort(
-            key=lambda row: (-row["score"], -row["shared_reference_count"], -row["co_citation_count"], row["ut"])
+            key=lambda row: (
+                -row["score"],
+                -row["shared_reference_count"],
+                -row["co_citation_count"],
+                row["ut"],
+            )
         )
         return {
             "analysis_run": run,
@@ -192,6 +255,13 @@ class GraphAnalyticsService:
                 "SHARED_AUTHORS": 0.10,
                 "SHARED_CONCEPTS": 0.10,
                 "semantic_embeddings": False,
+                "candidate_sources": [
+                    "DIRECT_CITATION",
+                    "BIBLIOGRAPHIC_COUPLING",
+                    "CO_CITATION",
+                    "SHARED_AUTHORS",
+                    "SHARED_CONCEPTS",
+                ],
             },
             "items": items[: max(1, min(limit, 500))],
         }
@@ -211,10 +281,10 @@ class GraphAnalyticsService:
         if seed is None:
             raise AnalyticsNotFoundError(f"paper {ut} is not in analysis run")
         edges = self.store.edges_for_node(rid, ut, limit=10000)
-        direct_out = []
-        direct_in = []
-        coupling = []
-        cocit = []
+        direct_out: list[dict[str, Any]] = []
+        direct_in: list[dict[str, Any]] = []
+        coupling: list[dict[str, Any]] = []
+        cocit: list[dict[str, Any]] = []
         for edge in edges:
             neighbor_ut = _pair_neighbor(edge, ut)
             neighbor = self.store.node(rid, neighbor_ut)
@@ -235,8 +305,18 @@ class GraphAnalyticsService:
                 coupling.append(summary)
             elif edge["predicate"] == "CO_CITATION":
                 cocit.append(summary)
-        coupling.sort(key=lambda row: (-(row["weight"] or -1.0), -int(row["components"].get("shared_reference_count", 0))))
-        cocit.sort(key=lambda row: (-(row["weight"] or 0.0), -int(row["components"].get("co_citation_count", 0))))
+        coupling.sort(
+            key=lambda row: (
+                -(row["weight"] if row["weight"] is not None else -1.0),
+                -int(row["components"].get("shared_reference_count", 0)),
+            )
+        )
+        cocit.sort(
+            key=lambda row: (
+                -(row["weight"] or 0.0),
+                -int(row["components"].get("co_citation_count", 0)),
+            )
+        )
         return {
             "analysis_run": run,
             "seed": seed,
@@ -260,9 +340,9 @@ class GraphAnalyticsService:
         if run is None:
             raise AnalyticsUnavailableError("analysis run does not exist")
         rid = str(run["analysis_run_id"])
-        for ut in (source_ut, target_ut):
-            if self.store.node(rid, ut) is None:
-                raise AnalyticsNotFoundError(f"paper {ut} is not in analysis run")
+        for endpoint in (source_ut, target_ut):
+            if self.store.node(rid, endpoint) is None:
+                raise AnalyticsNotFoundError(f"paper {endpoint} is not in analysis run")
         citation_edges = self.store.edges(rid, "CITES_OBSERVED")
         adjacency: dict[str, set[str]] = {}
         directions: set[tuple[str, str]] = set()
@@ -295,11 +375,13 @@ class GraphAnalyticsService:
         rendered = []
         for path in paths:
             nodes = []
-            for ut in path:
-                node = self.store.node(rid, ut)
+            for path_ut in path:
+                node = self.store.node(rid, path_ut)
                 attrs = node["attributes"] if node else {}
-                nodes.append({"ut": ut, "title": attrs.get("title"), "year": attrs.get("year")})
-            edges = []
+                nodes.append(
+                    {"ut": path_ut, "title": attrs.get("title"), "year": attrs.get("year")}
+                )
+            path_edge_rows = []
             for left, right in zip(path, path[1:]):
                 if (left, right) in directions:
                     direction = "FORWARD_CITATION"
@@ -307,8 +389,18 @@ class GraphAnalyticsService:
                 else:
                     direction = "REVERSE_TRAVERSAL"
                     citing, cited = right, left
-                edges.append({"from": left, "to": right, "direction": direction, "citing": citing, "cited": cited})
-            rendered.append({"nodes": nodes, "edges": edges, "hop_count": len(path) - 1})
+                path_edge_rows.append(
+                    {
+                        "from": left,
+                        "to": right,
+                        "direction": direction,
+                        "citing": citing,
+                        "cited": cited,
+                    }
+                )
+            rendered.append(
+                {"nodes": nodes, "edges": path_edge_rows, "hop_count": len(path) - 1}
+            )
         return {
             "analysis_run": run,
             "source_ut": source_ut,
@@ -337,7 +429,8 @@ class GraphAnalyticsService:
         with self.store.connect() as con:
             rows = con.execute(
                 """SELECT node_key,attributes_json FROM analysis_nodes
-                   WHERE analysis_run_id=? AND node_type='RPYS_YEAR' ORDER BY CAST(node_key AS INTEGER)""",
+                   WHERE analysis_run_id=? AND node_type='RPYS_YEAR'
+                   ORDER BY CAST(node_key AS INTEGER)""",
                 (rid,),
             ).fetchall()
         series = []
@@ -350,7 +443,7 @@ class GraphAnalyticsService:
             "analysis_run": run,
             "series": series,
             "peaks": [row for row in series if row.get("is_peak")],
-            "quality_warning": "RPYS is based on observed local WoS references and is completeness-aware only through run provenance.",
+            "quality_warning": "RPYS is based on observed local WoS references and is completeness-aware through run provenance; zero-count neighboring years are included in the local baseline.",
         }
 
 
