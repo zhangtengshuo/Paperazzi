@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "paperazzi"
 version = "0.1.0.dev0"
-description = "Local-first Zotero-centered scholarly author knowledge base"
+description = "Local-first scholarly knowledge system integrating Zotero and an independent WoS background corpus"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 license = { text = "Private" }
@@ -25,6 +25,7 @@ web = [
 
 [project.scripts]
 paperazzi-zotero-probe = "paperazzi.zotero_sqlite.probe:main"
+paperazzi-wos = "paperazzi.wos.cli:main"
 paperazzi-web = "paperazzi.web.api:main"
 
 [tool.setuptools]
