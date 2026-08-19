@@ -11,6 +11,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from paperazzi.database.models import Paper
 from paperazzi.web.analytics_api import build_analytics_router
+from paperazzi.web.collections_api import build_collections_router
 from paperazzi.wos.integration import WosPaperConsumer, match_all_papers
 from paperazzi.wos.parser import normalize_doi
 from paperazzi.wos.read import rich_record, rich_references, search_records
@@ -60,12 +61,7 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
         ut: str,
         limit: int = Query(default=100, ge=1, le=1000),
     ) -> dict[str, object]:
-        """Show every imported observation of a stable WoS UT.
-
-        This is especially useful for diagnosing WoS exports where NR reports cited
-        references but the CR payload is absent. Repeated UT observations are expected
-        and are merged into the canonical corpus record rather than rejected.
-        """
+        """Show every imported observation of a stable WoS UT."""
         if not wos_path.is_file():
             return {"available": False, "ut": ut, "items": []}
         record = store.get_record(ut)
@@ -184,12 +180,7 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
 
     @router.post("/api/wos/match")
     def match_wos(apply: bool = False) -> dict[str, object]:
-        """Match active Paperazzi papers to the current local WoS corpus.
-
-        Missing WoS coverage remains a normal result. `apply=false` is a dry run;
-        `apply=true` persists accepted links plus explicit matched/ambiguous/not-local
-        coverage state so the UI can distinguish 'not checked' from 'checked, no hit'.
-        """
+        """Match active Paperazzi papers to the current local WoS corpus."""
         with session_scope(write=apply) as session:
             try:
                 return match_all_papers(session, wos_path, apply=apply)
@@ -200,4 +191,5 @@ def build_wos_router(session_factory: Any, wos_db_path: str | Path) -> APIRouter
         os.environ.get("PAPERAZZI_ANALYTICS_DB", "data/analytics.sqlite3")
     )
     router.include_router(build_analytics_router(session_factory, wos_path, analytics_path))
+    router.include_router(build_collections_router(session_factory))
     return router
