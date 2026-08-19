@@ -11,6 +11,7 @@ from paperazzi.ingest.models import (
     CanonicalCollection,
     CanonicalCreator,
     CanonicalTag,
+    CanonicalZoteroCollection,
     CanonicalZoteroItem,
 )
 
@@ -62,8 +63,6 @@ def resolve_attachment_path(
         if stored_path.startswith("attachments:"):
             return None, None, "linked-base-directory-required"
         if _WINDOWS_ABSOLUTE_RE.match(stored_path):
-            # Do not silently rewrite a Windows path when running under WSL/Linux.
-            # A later path-mapping layer can translate drive letters explicitly.
             return stored_path, None, "linked-windows-path-unmapped"
         path = Path(stored_path).expanduser()
         if path.is_absolute():
@@ -73,8 +72,6 @@ def resolve_attachment_path(
     if link_mode == 3:
         return None, None, "linked-url-no-local-file"
 
-    # Imported/embedded attachments should normally use storage:. Preserve any
-    # non-standard value for diagnosis rather than inventing a filesystem path.
     return stored_path, None, "nonstandard-imported-path"
 
 
@@ -89,6 +86,50 @@ class ZoteroSQLiteReader:
 
     def libraries(self) -> list[dict[str, Any]]:
         return [_row_dict(row) for row in self.conn.execute(self.adapter.libraries_sql)]
+
+    def read_collection_catalog(self) -> list[CanonicalZoteroCollection]:
+        """Read every Zotero collection node, including currently empty nodes.
+
+        The catalog is intentionally read from ``collections`` rather than from
+        ``collectionItems``.  Stable identity is ``(libraryID, key)``.  A malformed
+        missing-parent reference is preserved as the raw parent ID/key information
+        available from the source instead of causing the child to disappear.
+        """
+        result: list[CanonicalZoteroCollection] = []
+        seen: set[tuple[int, str]] = set()
+        for row in self.conn.execute(self.adapter.collection_catalog_sql):
+            library_id = int(row["libraryID"])
+            collection_key = str(row["collectionKey"])
+            identity = (library_id, collection_key)
+            if identity in seen:
+                raise ZoteroDataError(
+                    f"Duplicate Zotero collection identity libraryID={library_id}, key={collection_key}"
+                )
+            seen.add(identity)
+            result.append(
+                CanonicalZoteroCollection(
+                    library_id=library_id,
+                    collection_id=int(row["collectionID"]),
+                    collection_key=collection_key,
+                    name=str(row["collectionName"]),
+                    parent_collection_id=(
+                        None
+                        if row["parentCollectionID"] is None
+                        else int(row["parentCollectionID"])
+                    ),
+                    parent_collection_key=(
+                        None
+                        if row["parentCollectionKey"] is None
+                        else str(row["parentCollectionKey"])
+                    ),
+                    parent_name=(
+                        None
+                        if row["parentCollectionName"] is None
+                        else str(row["parentCollectionName"])
+                    ),
+                )
+            )
+        return result
 
     def read_items(self, *, include_deleted: bool = False) -> list[CanonicalZoteroItem]:
         item_rows = self.conn.execute(
