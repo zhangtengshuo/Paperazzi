@@ -168,6 +168,25 @@ class Userdata125Adapter:
         ORDER BY ci.itemID, ci.orderIndex, c.collectionID
     """
 
+    # Complete collection catalog, intentionally independent of collectionItems.
+    # Zotero userdata 125 exposes no collection sibling-order column, so runtime UI
+    # ordering is a deterministic name.casefold()/key fallback.
+    collection_catalog_sql = """
+        SELECT
+            c.libraryID,
+            c.collectionID,
+            c.key AS collectionKey,
+            c.collectionName,
+            c.parentCollectionID,
+            pc.key AS parentCollectionKey,
+            pc.collectionName AS parentCollectionName
+        FROM collections AS c
+        LEFT JOIN collections AS pc
+          ON pc.collectionID = c.parentCollectionID
+         AND pc.libraryID = c.libraryID
+        ORDER BY c.libraryID, lower(c.collectionName), c.key
+    """
+
     tags_sql = """
         SELECT it.itemID, it.type AS tagType, t.tagID, t.name
         FROM itemTags AS it
