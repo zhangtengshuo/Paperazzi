@@ -34,7 +34,7 @@ class ZoteroCollectionQueryService:
         self.session = session
         if not sa.inspect(session.get_bind()).has_table("zotero_collections"):
             raise CollectionCatalogUnavailable(
-                "zotero_collections is unavailable; run Alembic migration 0011 and a catalog-aware Zotero scan"
+                "zotero_collections is unavailable; run current Alembic migrations and a catalog-aware Zotero scan"
             )
 
     def _catalog_rows(self, library_id: int) -> list[dict[str, Any]]:
@@ -113,6 +113,16 @@ class ZoteroCollectionQueryService:
 
         children: dict[str | None, list[dict[str, Any]]] = defaultdict(list)
         orphaned: list[dict[str, Any]] = []
+        orphan_keys: set[str] = set()
+
+        def mark_orphan(node: dict[str, Any], reason: str) -> None:
+            key = str(node["collection_key"])
+            node["orphaned"] = True
+            node["orphan_reason"] = reason
+            if key not in orphan_keys:
+                orphan_keys.add(key)
+                orphaned.append(node)
+
         for node in nodes.values():
             parent_key = node["parent_collection_key"]
             parent_id = node["parent_collection_id"]
@@ -123,10 +133,9 @@ class ZoteroCollectionQueryService:
             else:
                 # A non-null source parent ID whose row is absent is not a root.
                 # Preserve it in a diagnostic orphan bucket instead of guessing.
-                node["orphaned"] = True
                 node["missing_parent_collection_id"] = parent_id
                 node["missing_parent_collection_key"] = parent_key
-                orphaned.append(node)
+                mark_orphan(node, "MISSING_PARENT")
 
         for group in children.values():
             group.sort(key=_sort_key)
@@ -138,21 +147,37 @@ class ZoteroCollectionQueryService:
 
         def build(node: dict[str, Any], ancestors: list[dict[str, str]]) -> set[int]:
             key = str(node["collection_key"])
-            if key in visiting:
-                node["orphaned"] = True
-                node["cycle_detected"] = True
-                return set(membership_sets.get(key, set()))
             if key in visited:
                 return set(subtree_sets.get(key, set()))
+            if key in visiting:
+                # Caller normally detects this before recursing. Keep this fallback
+                # for malformed source graphs while never returning a recursive child.
+                node["cycle_detected"] = True
+                mark_orphan(node, "PARENT_CYCLE")
+                return set(membership_sets.get(key, set()))
+
             visiting.add(key)
             path = [*ancestors, {"collection_key": key, "name": str(node["name"])}]
             node["path"] = path
             node["depth"] = len(path) - 1
-            node_children = children.get(key, [])
-            node["children"] = node_children
+            safe_children: list[dict[str, Any]] = []
             paper_ids = set(membership_sets.get(key, set()))
-            for child in node_children:
+
+            for child in children.get(key, []):
+                child_key = str(child["collection_key"])
+                if child_key in visiting:
+                    # Do not retain an object edge back to an ancestor; otherwise the
+                    # response cannot be serialized and UI recursion never terminates.
+                    node["cycle_detected"] = True
+                    child["cycle_detected"] = True
+                    child["cycle_parent_collection_key"] = key
+                    mark_orphan(child, "PARENT_CYCLE")
+                    paper_ids.update(membership_sets.get(child_key, set()))
+                    continue
+                safe_children.append(child)
                 paper_ids.update(build(child, path))
+
+            node["children"] = safe_children
             node["subtree_active_paper_count"] = len(paper_ids)
             subtree_sets[key] = paper_ids
             visiting.remove(key)
@@ -162,12 +187,35 @@ class ZoteroCollectionQueryService:
         roots = children.get(None, [])
         for root in roots:
             build(root, [])
-        for node in orphaned:
+        for node in list(orphaned):
             if str(node["collection_key"]) not in visited:
                 build(node, [])
 
-        def prune(node: dict[str, Any]) -> dict[str, Any] | None:
-            child_rows = [p for child in node["children"] if (p := prune(child)) is not None]
+        # A closed parent cycle can contain no root and no missing parent, so no node
+        # would have been visited above. Surface every remaining component explicitly
+        # instead of silently dropping it from the catalog response.
+        for node in sorted(nodes.values(), key=_sort_key):
+            key = str(node["collection_key"])
+            if key in visited:
+                continue
+            mark_orphan(node, "DISCONNECTED_OR_PARENT_CYCLE")
+            build(node, [])
+
+        orphaned.sort(key=_sort_key)
+
+        def prune(node: dict[str, Any], stack: set[str] | None = None) -> dict[str, Any] | None:
+            stack = set() if stack is None else set(stack)
+            key = str(node["collection_key"])
+            if key in stack:
+                # Defensive serialization guard; normal build() already truncates
+                # cyclic child edges.
+                return {**node, "children": [], "cycle_detected": True}
+            stack.add(key)
+            child_rows = [
+                p
+                for child in node["children"]
+                if (p := prune(child, stack)) is not None
+            ]
             copy = {**node, "children": child_rows}
             if include_empty or copy["active_paper_count"] or child_rows:
                 return copy
@@ -215,9 +263,14 @@ class ZoteroCollectionQueryService:
     def collection(self, library_id: int, collection_key: str) -> dict[str, Any]:
         tree = self.tree(library_id, include_empty=True)
         stack = [*tree["roots"], *tree["orphaned"]]
+        seen: set[str] = set()
         while stack:
             node = stack.pop()
-            if node["collection_key"] == collection_key:
+            key = str(node["collection_key"])
+            if key in seen:
+                continue
+            seen.add(key)
+            if key == collection_key:
                 return node
             stack.extend(node["children"])
         raise CollectionNotFound(
@@ -336,7 +389,11 @@ class ZoteroCollectionQueryService:
             chain: list[dict[str, Any]] = []
             cursor: str | None = key
             seen: set[str] = set()
-            while cursor and cursor not in seen:
+            cycle_detected = False
+            while cursor:
+                if cursor in seen:
+                    cycle_detected = True
+                    break
                 seen.add(cursor)
                 row = catalog.get(cursor)
                 if row is None:
@@ -353,6 +410,7 @@ class ZoteroCollectionQueryService:
                     "name": membership.name,
                     "order_index": membership.order_index,
                     "path": chain,
+                    "cycle_detected": cycle_detected,
                 }
             )
         tags = [
