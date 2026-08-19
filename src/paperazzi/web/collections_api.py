@@ -13,9 +13,44 @@ from paperazzi.web.collections import (
     ZoteroCollectionQueryService,
 )
 from paperazzi.web.collections_ui import COLLECTIONS_UI_JS
+from paperazzi.web.queries import PaperazziQueryService
+
+
+def _install_paper_detail_enrichment() -> None:
+    """Attach Zotero organization to the existing paper-detail query contract.
+
+    ``create_app`` already imports ``PaperazziQueryService`` before routers are built.
+    Replacing this one method on the class is therefore the smallest backward-compatible
+    way to enrich ``GET /api/papers/{id}`` without making every list row perform tree
+    reconstruction.  The hook is explicit and idempotent and can be inlined into the
+    main query service in a later Web refactor.
+    """
+    if getattr(PaperazziQueryService.get_paper, "_zotero_collection_enriched", False):
+        return
+    original = PaperazziQueryService.get_paper
+
+    def enriched(self: PaperazziQueryService, paper_id: int) -> dict[str, Any]:
+        payload = original(self, paper_id)
+        try:
+            payload["zotero_organization"] = ZoteroCollectionQueryService(
+                self.session
+            ).paper_organization(paper_id)
+        except CollectionCatalogUnavailable:
+            payload["zotero_organization"] = {
+                "paper_id": paper_id,
+                "available": False,
+                "collections": [],
+                "collection_paths": [],
+                "tags": [],
+            }
+        return payload
+
+    enriched._zotero_collection_enriched = True  # type: ignore[attr-defined]
+    PaperazziQueryService.get_paper = enriched  # type: ignore[method-assign]
 
 
 def build_collections_router(session_factory: Any) -> APIRouter:
+    _install_paper_detail_enrichment()
     router = APIRouter()
 
     @contextmanager
