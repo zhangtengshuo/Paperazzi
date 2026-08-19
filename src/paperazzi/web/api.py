@@ -37,6 +37,7 @@ from paperazzi.web.ui import APP_HTML
 from paperazzi.web.wos_api import build_wos_router
 from paperazzi.web.wos_priority_ui import WOS_PRIORITY_UI_JS
 from paperazzi.web.wos_ui import WOS_UI_JS
+from paperazzi.web.zotero_organization import paper_zotero_organization
 from paperazzi.wos.integration import WosPaperConsumer
 from paperazzi.wos.presentation import apply_wos_effective_roles
 
@@ -202,6 +203,7 @@ def create_app(db_path: str | Path | None = None) -> FastAPI:
         try:
             with session_scope() as session:
                 detail = PaperazziQueryService(session).get_paper(paper_id)
+                detail["zotero_organization"] = paper_zotero_organization(session, paper_id)
                 try:
                     wos_detail = WosPaperConsumer(session, wos_path).detail(paper_id)
                 except (sqlite3.Error, OSError, ValueError) as exc:
