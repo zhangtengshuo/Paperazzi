@@ -25,8 +25,9 @@ def _sort_key(node: dict[str, Any]) -> tuple[str, str]:
 class ZoteroCollectionQueryService:
     """Bounded-query collection tree and paper navigation service.
 
-    Tree construction uses one catalog query, one membership-count query and one
-    active-library count query.  It never issues one SQL query per collection node.
+    The tree itself is built from exactly three data reads regardless of node count:
+    current catalog rows, active collection memberships, and the active paper total.
+    Subtree counts are then set unions in memory, avoiding one query per collection.
     """
 
     def __init__(self, session: Any):
@@ -50,64 +51,60 @@ class ZoteroCollectionQueryService:
             ).mappings()
         ]
 
-    def _direct_counts(self, library_id: int) -> dict[str, int]:
+    def _active_membership_sets(self, library_id: int) -> dict[str, set[int]]:
         rows = self.session.execute(
             sa.text(
-                """SELECT c.collection_key,COUNT(DISTINCT p.paper_id) AS n
+                """SELECT c.collection_key,p.paper_id
                    FROM zotero_item_collections c
                    JOIN zotero_item_state s ON s.zotero_item_state_id=c.zotero_item_state_id
                    JOIN papers p ON p.paper_id=s.paper_id
                    WHERE s.library_id=:library_id
                      AND s.present_in_last_scan=1
                      AND p.active_in_zotero=1
-                     AND c.collection_key IS NOT NULL
-                   GROUP BY c.collection_key"""
+                     AND c.collection_key IS NOT NULL"""
             ),
             {"library_id": library_id},
         ).all()
-        return {str(key): int(count) for key, count in rows}
+        result: dict[str, set[int]] = defaultdict(set)
+        for key, paper_id in rows:
+            result[str(key)].add(int(paper_id))
+        return result
 
-    def _library_counts(self, library_id: int) -> tuple[int, int, int]:
-        total = int(
+    def _active_paper_count(self, library_id: int) -> int:
+        return int(
             self.session.execute(
                 sa.text(
                     """SELECT COUNT(DISTINCT p.paper_id)
                        FROM papers p JOIN zotero_item_state s ON s.paper_id=p.paper_id
-                       WHERE p.active_in_zotero=1 AND s.present_in_last_scan=1 AND s.library_id=:library_id"""
+                       WHERE p.active_in_zotero=1
+                         AND s.present_in_last_scan=1
+                         AND s.library_id=:library_id"""
                 ),
                 {"library_id": library_id},
             ).scalar()
             or 0
         )
-        filed = int(
-            self.session.execute(
-                sa.text(
-                    """SELECT COUNT(DISTINCT p.paper_id)
-                       FROM papers p
-                       JOIN zotero_item_state s ON s.paper_id=p.paper_id
-                       JOIN zotero_item_collections c ON c.zotero_item_state_id=s.zotero_item_state_id
-                       WHERE p.active_in_zotero=1 AND s.present_in_last_scan=1 AND s.library_id=:library_id"""
-                ),
-                {"library_id": library_id},
-            ).scalar()
-            or 0
-        )
-        return total, filed, max(0, total - filed)
 
     def tree(self, library_id: int, *, include_empty: bool = True) -> dict[str, Any]:
         rows = self._catalog_rows(library_id)
-        direct = self._direct_counts(library_id)
-        total, filed, unfiled = self._library_counts(library_id)
+        membership_sets = self._active_membership_sets(library_id)
+        total = self._active_paper_count(library_id)
+        filed_ids: set[int] = set()
+        for paper_ids in membership_sets.values():
+            filed_ids.update(paper_ids)
+        filed = len(filed_ids)
+        unfiled = max(0, total - filed)
 
         nodes: dict[str, dict[str, Any]] = {}
         for row in rows:
             key = str(row["collection_key"])
+            direct_count = len(membership_sets.get(key, set()))
             nodes[key] = {
                 **row,
                 "collection_key": key,
-                "active_paper_count": direct.get(key, 0),
+                "active_paper_count": direct_count,
                 "subtree_active_paper_count": 0,
-                "has_active_papers": direct.get(key, 0) > 0,
+                "has_active_papers": direct_count > 0,
                 "depth": 0,
                 "path": [],
                 "children": [],
@@ -117,13 +114,18 @@ class ZoteroCollectionQueryService:
         children: dict[str | None, list[dict[str, Any]]] = defaultdict(list)
         orphaned: list[dict[str, Any]] = []
         for node in nodes.values():
-            parent = node["parent_collection_key"]
-            if parent is None:
+            parent_key = node["parent_collection_key"]
+            parent_id = node["parent_collection_id"]
+            if parent_key is None and parent_id is None:
                 children[None].append(node)
-            elif str(parent) in nodes:
-                children[str(parent)].append(node)
+            elif parent_key is not None and str(parent_key) in nodes:
+                children[str(parent_key)].append(node)
             else:
+                # A non-null source parent ID whose row is absent is not a root.
+                # Preserve it in a diagnostic orphan bucket instead of guessing.
                 node["orphaned"] = True
+                node["missing_parent_collection_id"] = parent_id
+                node["missing_parent_collection_key"] = parent_key
                 orphaned.append(node)
 
         for group in children.values():
@@ -132,31 +134,30 @@ class ZoteroCollectionQueryService:
 
         visiting: set[str] = set()
         visited: set[str] = set()
+        subtree_sets: dict[str, set[int]] = {}
 
-        def build(node: dict[str, Any], ancestors: list[dict[str, str]]) -> int:
+        def build(node: dict[str, Any], ancestors: list[dict[str, str]]) -> set[int]:
             key = str(node["collection_key"])
             if key in visiting:
                 node["orphaned"] = True
                 node["cycle_detected"] = True
-                return int(node["active_paper_count"])
+                return set(membership_sets.get(key, set()))
             if key in visited:
-                return int(node["subtree_active_paper_count"])
+                return set(subtree_sets.get(key, set()))
             visiting.add(key)
             path = [*ancestors, {"collection_key": key, "name": str(node["name"])}]
             node["path"] = path
             node["depth"] = len(path) - 1
             node_children = children.get(key, [])
             node["children"] = node_children
-            subtree_paper_ids: set[int] = set(self._paper_ids_for_collection(library_id, key))
+            paper_ids = set(membership_sets.get(key, set()))
             for child in node_children:
-                build(child, path)
-                subtree_paper_ids.update(
-                    self._paper_ids_for_collection(library_id, str(child["collection_key"]), include_descendants=True, nodes=nodes)
-                )
-            node["subtree_active_paper_count"] = len(subtree_paper_ids)
+                paper_ids.update(build(child, path))
+            node["subtree_active_paper_count"] = len(paper_ids)
+            subtree_sets[key] = paper_ids
             visiting.remove(key)
             visited.add(key)
-            return len(subtree_paper_ids)
+            return paper_ids
 
         roots = children.get(None, [])
         for root in roots:
@@ -167,9 +168,9 @@ class ZoteroCollectionQueryService:
 
         def prune(node: dict[str, Any]) -> dict[str, Any] | None:
             child_rows = [p for child in node["children"] if (p := prune(child)) is not None]
-            node = {**node, "children": child_rows}
-            if include_empty or node["active_paper_count"] or child_rows:
-                return node
+            copy = {**node, "children": child_rows}
+            if include_empty or copy["active_paper_count"] or child_rows:
+                return copy
             return None
 
         visible_roots = [p for root in roots if (p := prune(root)) is not None]
@@ -183,22 +184,23 @@ class ZoteroCollectionQueryService:
                 "active_papers": total,
                 "papers_with_collection": filed,
                 "unfiled_papers": unfiled,
+                "active_collection_memberships": sum(len(v) for v in membership_sets.values()),
                 "collection_nodes": len(rows),
                 "root_nodes": len(roots),
                 "orphaned_nodes": len(orphaned),
                 "ordering": "name.casefold(), collection_key",
+                "tree_query_contract": "3 bounded source reads; recursive counts computed in memory",
             },
             "roots": visible_roots,
             "orphaned": visible_orphans,
         }
 
-    def _descendant_keys(self, library_id: int, key: str, *, nodes: dict[str, dict[str, Any]] | None = None) -> set[str]:
-        if nodes is None:
-            nodes = {str(r["collection_key"]): r for r in self._catalog_rows(library_id)}
+    def _descendant_keys(self, library_id: int, key: str) -> set[str]:
+        nodes = {str(r["collection_key"]): r for r in self._catalog_rows(library_id)}
         children: dict[str, list[str]] = defaultdict(list)
         for child_key, node in nodes.items():
             parent = node.get("parent_collection_key")
-            if parent is not None:
+            if parent is not None and str(parent) in nodes:
                 children[str(parent)].append(child_key)
         result = {key}
         stack = [key]
@@ -209,37 +211,6 @@ class ZoteroCollectionQueryService:
                     result.add(child)
                     stack.append(child)
         return result
-
-    def _paper_ids_for_collection(
-        self,
-        library_id: int,
-        collection_key: str,
-        *,
-        include_descendants: bool = False,
-        nodes: dict[str, dict[str, Any]] | None = None,
-    ) -> list[int]:
-        keys = (
-            self._descendant_keys(library_id, collection_key, nodes=nodes)
-            if include_descendants
-            else {collection_key}
-        )
-        rows = (
-            self.session.query(Paper.paper_id)
-            .join(ZoteroItemState, ZoteroItemState.paper_id == Paper.paper_id)
-            .join(
-                ZoteroItemCollection,
-                ZoteroItemCollection.zotero_item_state_id == ZoteroItemState.zotero_item_state_id,
-            )
-            .filter(
-                Paper.active_in_zotero.is_(True),
-                ZoteroItemState.present_in_last_scan.is_(True),
-                ZoteroItemState.library_id == library_id,
-                ZoteroItemCollection.collection_key.in_(sorted(keys)),
-            )
-            .distinct()
-            .all()
-        )
-        return [int(row[0]) for row in rows]
 
     def collection(self, library_id: int, collection_key: str) -> dict[str, Any]:
         tree = self.tree(library_id, include_empty=True)
@@ -343,7 +314,7 @@ class ZoteroCollectionQueryService:
             str(row["collection_key"]): dict(row)
             for row in self.session.execute(
                 sa.text(
-                    """SELECT collection_key,name,parent_collection_key
+                    """SELECT collection_key,name,parent_collection_key,parent_collection_id
                        FROM zotero_collections
                        WHERE library_id=:library_id AND present_in_last_scan=1"""
                 ),
