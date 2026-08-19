@@ -26,12 +26,41 @@ class CanonicalCreator:
 
 @dataclass(frozen=True, slots=True)
 class CanonicalCollection:
+    """One item-to-collection membership observed in Zotero.
+
+    ``order_index`` is the item's position inside the collection.  It is not the
+    sibling order of collection nodes; the observed Zotero schema does not expose a
+    collection-node sibling-order column.
+    """
+
     collection_id: int
     collection_key: str
     name: str
     parent_collection_id: int | None
     parent_collection_key: str | None
     order_index: int
+
+
+@dataclass(frozen=True, slots=True)
+class CanonicalZoteroCollection:
+    """One node in the complete Zotero collection catalog.
+
+    This record has a lifecycle independent from ``CanonicalCollection`` membership
+    rows so empty collections and collections containing only non-bibliographic items
+    remain visible in Paperazzi.
+    """
+
+    library_id: int
+    collection_id: int
+    collection_key: str
+    name: str
+    parent_collection_id: int | None
+    parent_collection_key: str | None
+    parent_name: str | None = None
+
+    @property
+    def stable_identity(self) -> tuple[int, str]:
+        return self.library_id, self.collection_key
 
 
 @dataclass(frozen=True, slots=True)
@@ -240,8 +269,12 @@ class CanonicalZoteroItem:
             }
         )
 
-    def to_dict(self) -> dict[str, Any]:
-        result = asdict(self)
-        result["zotero_identity"] = self.zotero_identity
-        result["content_hash"] = self.content_hash()
-        return result
+
+__all__ = [
+    "CanonicalAttachment",
+    "CanonicalCollection",
+    "CanonicalCreator",
+    "CanonicalTag",
+    "CanonicalZoteroCollection",
+    "CanonicalZoteroItem",
+]
