@@ -39,5 +39,16 @@ WOS_PRIORITY_UI_JS = r'''
       }catch(_e){}
     }
   };
+
+  // Collection navigation is served as a separate static enhancement so the base
+  // dependency-free UI remains small.  The endpoint is registered on the same local
+  // FastAPI application; no external network request is involved.
+  if(!document.getElementById('paperazzi-collections-ui')){
+    const script=document.createElement('script');
+    script.id='paperazzi-collections-ui';
+    script.src='/api/collections/ui.js';
+    script.defer=true;
+    document.body.appendChild(script);
+  }
 })();
 '''
