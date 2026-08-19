@@ -21,7 +21,7 @@ from paperazzi.database.engine import create_paperazzi_engine  # noqa: E402
 EXPECTED_TABLES = {
     "zotero_scan_runs", "papers", "zotero_item_state", "zotero_item_versions",
     "paper_creator_mentions", "zotero_item_tags", "zotero_item_collections",
-    "zotero_attachments", "paper_documents",
+    "zotero_collections", "zotero_attachments", "paper_documents",
     "document_extraction_runs", "document_extraction_attempts",
     "document_evidence_spans", "paper_reference_sections", "paper_references",
     "paper_reference_identifiers", "paper_reference_matches",
@@ -31,6 +31,8 @@ EXPECTED_TABLES = {
 EXPECTED_INDEXES = {
     "ix_papers_doi", "ix_papers_title", "ix_papers_publication_year",
     "ix_zotero_item_state_last_seen_run_id", "ix_mentions_paper_order",
+    "ix_zotero_collections_library_parent", "ix_zotero_collections_present",
+    "ix_zotero_collections_numeric_id",
     "ix_paper_documents_paper_id", "ix_paper_documents_change_key",
     "ix_extraction_runs_document_started",
     "ix_evidence_document_kind", "ix_ref_sections_document_status",
@@ -94,6 +96,7 @@ class Phase3MigrationGateTests(unittest.TestCase):
         with engine.connect() as conn:
             tables = set(sa.inspect(conn).get_table_names())
             self.assertNotIn("document_extraction_runs", tables)
+            self.assertNotIn("zotero_collections", tables)
             self.assertIn("papers", tables)
         up = alembic("upgrade", "head", db_path=self.db)
         self.assertEqual(up.returncode, 0, up.stderr[-500:])
@@ -116,6 +119,11 @@ class Phase3MigrationGateTests(unittest.TestCase):
                 "present_in_last_scan, first_seen_run_id, last_seen_run_id, created_at, "
                 "updated_at) VALUES (1, 1, 'K', 0, 1, 1, 1, '2026-08-17', '2026-08-17')"
             )
+            conn.exec_driver_sql(
+                "INSERT INTO zotero_collections (library_id, collection_id, collection_key, name, "
+                "present_in_last_scan, first_seen_run_id, last_seen_run_id, created_at, updated_at) "
+                "VALUES (1, 10, 'C', 'Collection', 1, 1, 1, '2026-08-17', '2026-08-17')"
+            )
         with self.assertRaises(sa.exc.IntegrityError):
             with engine.begin() as conn:
                 conn.exec_driver_sql(
@@ -123,6 +131,20 @@ class Phase3MigrationGateTests(unittest.TestCase):
                     "present_in_last_scan, first_seen_run_id, last_seen_run_id, created_at, "
                     "updated_at) VALUES (1, 1, 'K', 0, 1, 1, 1, '2026-08-17', '2026-08-17')"
                 )
+        with self.assertRaises(sa.exc.IntegrityError):
+            with engine.begin() as conn:
+                conn.exec_driver_sql(
+                    "INSERT INTO zotero_collections (library_id, collection_id, collection_key, name, "
+                    "present_in_last_scan, first_seen_run_id, last_seen_run_id, created_at, updated_at) "
+                    "VALUES (1, 99, 'C', 'Duplicate key', 1, 1, 1, '2026-08-17', '2026-08-17')"
+                )
+        # The same collection key in another Zotero library is a different stable identity.
+        with engine.begin() as conn:
+            conn.exec_driver_sql(
+                "INSERT INTO zotero_collections (library_id, collection_id, collection_key, name, "
+                "present_in_last_scan, first_seen_run_id, last_seen_run_id, created_at, updated_at) "
+                "VALUES (2, 99, 'C', 'Other library', 1, 1, 1, '2026-08-17', '2026-08-17')"
+            )
         with self.assertRaises(sa.exc.IntegrityError):
             with engine.begin() as conn:
                 conn.exec_driver_sql(
