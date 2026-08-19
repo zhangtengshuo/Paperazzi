@@ -6,6 +6,8 @@ Zotero ``collections`` table and retains historical rows when a collection disap
 from __future__ import annotations
 
 from collections.abc import Sequence
+import hashlib
+import json
 from typing import Any
 
 import sqlalchemy as sa
@@ -29,10 +31,36 @@ from .persistence import (
 CATALOG_TABLE = "zotero_collections"
 
 
+def _collection_catalog_hash(collections: Sequence[CanonicalZoteroCollection]) -> str:
+    payload = [
+        {
+            "library_id": row.library_id,
+            "collection_id": row.collection_id,
+            "collection_key": row.collection_key,
+            "name": row.name,
+            "parent_collection_id": row.parent_collection_id,
+            "parent_collection_key": row.parent_collection_key,
+            "parent_name": row.parent_name,
+        }
+        for row in sorted(collections, key=lambda c: (c.library_id, c.collection_key))
+    ]
+    encoded = json.dumps(
+        payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def _require_catalog_table(session: Any) -> None:
-    if not sa.inspect(session.get_bind()).has_table(CATALOG_TABLE):
+    inspector = sa.inspect(session.get_bind())
+    if not inspector.has_table(CATALOG_TABLE):
         raise ScanPersistenceError(
-            "zotero_collections table is unavailable; run Alembic migration 0011"
+            "zotero_collections table is unavailable; run current Alembic migrations"
+        )
+    scan_columns = {column["name"] for column in inspector.get_columns("zotero_scan_runs")}
+    required = {"collection_count", "collection_catalog_hash"}
+    if not required.issubset(scan_columns):
+        raise ScanPersistenceError(
+            "collection scan summary columns are unavailable; run Alembic migration 0012"
         )
 
 
@@ -151,6 +179,7 @@ def persist_zotero_scan_with_collection_catalog(
 
     session = session_factory()
     try:
+        _require_catalog_table(session)
         run = ZoteroScanRun(
             run_token=run_token,
             status="STARTED",
@@ -183,6 +212,22 @@ def persist_zotero_scan_with_collection_catalog(
             run.bibliographic_corpus_hash = _corpus_hash(canonical_items, "bibliographic_hash")
             run.canonical_corpus_hash = _corpus_hash(canonical_items, "canonical_hash")
             run.completed_at = utcnow()
+            # 0012 columns are intentionally not on the Phase-3 ORM model yet; update
+            # them explicitly so the migration remains additive and older code paths
+            # can continue to read the scan ledger.
+            session.execute(
+                sa.text(
+                    """UPDATE zotero_scan_runs
+                       SET collection_count=:collection_count,
+                           collection_catalog_hash=:catalog_hash
+                       WHERE scan_run_id=:run_id"""
+                ),
+                {
+                    "collection_count": len(collection_catalog),
+                    "catalog_hash": _collection_catalog_hash(collection_catalog),
+                    "run_id": run_id,
+                },
+            )
             session.commit()
             counts = dict(result["counts"])
             counts.update({f"COLLECTION_{k.upper()}": v for k, v in catalog_counts.items()})
