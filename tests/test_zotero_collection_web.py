@@ -75,6 +75,11 @@ class ZoteroCollectionWebTests(unittest.TestCase):
                     paths = [[x["name"] for x in path] for path in org.json()["collection_paths"]]
                     self.assertIn(["Programming", "Julia", "Makie"], paths)
 
+                    detail = client.get(f"/api/papers/{paper_id}")
+                    self.assertEqual(detail.status_code, 200, detail.text)
+                    self.assertIn("zotero_organization", detail.json())
+                    self.assertEqual(len(detail.json()["zotero_organization"]["collections"]), 2)
+
                     script = client.get("/api/collections/ui.js")
                     self.assertEqual(script.status_code, 200)
                     self.assertIn("library-layout", script.text)
