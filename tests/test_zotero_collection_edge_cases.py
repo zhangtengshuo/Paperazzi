@@ -50,7 +50,7 @@ class ZoteroCollectionEdgeCaseTests(unittest.TestCase):
         ]
 
     @staticmethod
-    def item():
+    def item(*, makie_parent_key: str = "JULIA001", makie_parent_id: int = 12):
         return replace(
             make_item(
                 key="CN000001",
@@ -60,14 +60,21 @@ class ZoteroCollectionEdgeCaseTests(unittest.TestCase):
             ),
             collections=(
                 CanonicalCollection(11, "YQ202400", "0A_2024青基", 10, "FOUND001", 2),
-                CanonicalCollection(13, "MAKIE001", "Makie", 12, "JULIA001", 7),
+                CanonicalCollection(
+                    13,
+                    "MAKIE001",
+                    "Makie",
+                    makie_parent_id,
+                    makie_parent_key,
+                    7,
+                ),
             ),
         )
 
-    def scan(self, token: str, catalog):
+    def scan(self, token: str, catalog, *, item=None):
         return persist_zotero_scan_with_collection_catalog(
             self.session_factory,
-            [self.item()],
+            [item or self.item()],
             catalog,
             {"run_token": token, "source_db_path": "/tmp/zotero.sqlite"},
         )
@@ -91,13 +98,17 @@ class ZoteroCollectionEdgeCaseTests(unittest.TestCase):
             self.assertEqual(papers["items"][0]["title"], "单线态裂变中的非绝热动力学")
             self.assertEqual(papers["items"][0]["collection_order_index"], 2)
 
-    def test_reparent_updates_catalog_without_changing_item_bibliography(self) -> None:
+    def test_reparent_updates_organization_but_not_bibliographic_state(self) -> None:
         first = self.scan("edge-reparent-1", self.catalog())
         self.assertEqual(first.status, "COMPLETED")
         moved = self.catalog(makie_parent_key="YQ202400", makie_parent_id=11)
-        second = self.scan("edge-reparent-2", moved)
+        moved_item = self.item(makie_parent_key="YQ202400", makie_parent_id=11)
+        second = self.scan("edge-reparent-2", moved, item=moved_item)
         self.assertEqual(second.status, "COMPLETED")
-        self.assertEqual(second.counts["UNCHANGED"], 1)
+        # The per-item organization projection legitimately changes because the
+        # membership row carries the collection's current parent key. Bibliographic
+        # content must remain stable.
+        self.assertEqual(second.counts["MODIFIED"], 1)
         self.assertGreaterEqual(second.counts["COLLECTION_UPDATED"], 1)
 
         with self.session_factory() as session:
