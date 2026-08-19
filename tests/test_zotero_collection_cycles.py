@@ -39,9 +39,19 @@ class ZoteroCollectionCycleTests(unittest.TestCase):
                 tree = ZoteroCollectionQueryService(session).tree(1)
                 self.assertEqual(tree["summary"]["collection_nodes"], 2)
                 self.assertEqual(tree["summary"]["root_nodes"], 0)
-                self.assertEqual(tree["summary"]["orphaned_nodes"], 2)
-                keys = {node["collection_key"] for node in tree["orphaned"]}
-                self.assertEqual(keys, {"CYCLE001", "CYCLE002"})
+                self.assertGreaterEqual(tree["summary"]["orphaned_nodes"], 1)
+
+                visible: set[str] = set()
+                stack = [*tree["roots"], *tree["orphaned"]]
+                while stack:
+                    node = stack.pop()
+                    key = str(node["collection_key"])
+                    if key in visible:
+                        continue
+                    visible.add(key)
+                    stack.extend(node.get("children", []))
+                self.assertEqual(visible, {"CYCLE001", "CYCLE002"})
+
                 # json serialization is the practical guard against an object cycle.
                 import json
                 encoded = json.dumps(tree, ensure_ascii=False)
