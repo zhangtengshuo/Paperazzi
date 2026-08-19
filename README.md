@@ -73,6 +73,53 @@ micromamba run -n Paperazzi python scripts/check_paperazzi_environment.py
 
 The environment check must report `"pass": true` before authoritative local testing begins.
 
+## Zotero collection navigation workflow
+
+Paperazzi now persists the **complete Zotero collection catalog** separately from item-to-collection membership so the Web UI can reproduce the Zotero-style nested collection sidebar without losing empty folders.
+
+The source and persistence boundary is:
+
+```text
+Zotero collections              Zotero collectionItems
+(full catalog, read-only)        (membership + item order)
+        |                                  |
+        +----------------+-----------------+
+                         v
+               Paperazzi Zotero scan
+                  |              |
+                  v              v
+        zotero_collections   zotero_item_collections
+        catalog lifecycle    membership lifecycle
+```
+
+Stable collection identity is `(library_id, collection_key)`. Collection names are mutable labels. The observed Zotero schema does not expose a reliable collection-node sibling-order field, so tree siblings use deterministic `(name.casefold(), collection_key)` ordering; `collectionItems.orderIndex` remains authoritative for paper order inside a collection.
+
+After pulling current `main`, run:
+
+```bash
+micromamba run -n Paperazzi alembic upgrade head
+micromamba run -n Paperazzi python scripts/scan_zotero_with_collections.py
+micromamba run -n Paperazzi paperazzi-web
+```
+
+The scan reads the live local Zotero database through the existing read-only SQLite path. The frozen collection snapshot under `docs/phase5/runs/20260819-zotero-collection-tree/` is validation data only and is never a production runtime source.
+
+Web collection APIs include:
+
+```text
+GET /api/collections/tree
+GET /api/collections/{collection_key}
+GET /api/collections/{collection_key}/papers
+GET /api/collections/unfiled/papers
+GET /api/papers/{paper_id}/organization
+```
+
+Collection selection shows direct members by default. `include_descendants=true` provides an explicit unique-paper subtree query. Tree construction uses bounded source reads rather than one SQL query per collection node. Missing-parent and cyclic source structures are surfaced as diagnostics instead of being silently promoted to roots.
+
+Detailed local validation instructions are in:
+
+`docs/phase5/ZOTERO_COLLECTION_TREE_RUNBOOK.md`
+
 ## WoS corpus workflow
 
 ### 1. Export from Web of Science
@@ -218,6 +265,8 @@ PAPERAZZI_WOS_DB=/path/to/wos.sqlite3
 
 The browser now includes:
 
+- a Zotero-style nested collection sidebar on the Papers surface, including **All papers**, **Unfiled**, empty collections, persisted expand/collapse state, breadcrumbs, and direct paper counts;
+- collection paths and Zotero tags on paper detail, while keeping collections and tags as separate organization dimensions;
 - Zotero/Paperazzi paper and author surfaces;
 - explicit per-paper WoS state (`WOS_MATCHED`, `WOS_NOT_IN_LOCAL_CORPUS`, `WOS_MATCH_AMBIGUOUS`, `WOS_NOT_CHECKED`);
 - WoS correspondence authors, affiliations/organizations, identifiers, abstract, keywords/topics, funding, citation metrics and references;
@@ -254,6 +303,7 @@ Environment and validation contracts:
 - `constraints/phase5-test.txt`
 - `scripts/check_paperazzi_environment.py`
 - `docs/phase5/PHASE5_TESTING.md`
+- `docs/phase5/ZOTERO_COLLECTION_TREE_RUNBOOK.md`
 - `prompts/local_ai/PHASE5_REAL_DB_TEST_AGENT.md`
 
 ## Repository layout
